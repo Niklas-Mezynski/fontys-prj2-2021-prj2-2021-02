@@ -14,13 +14,14 @@
 
 - it is important to guarantee high profit and a good revenue with each of the flight-routes. For that I need performance indicators of those routes.
 
-- I would like to arrange quick price changes that last only for a specific amount of time, so I can react to current circumstances and offer fair prices.
 
 ## As a **sales officer**...
 
 - I want to start the sale process for a flight so *sale employees* can sell tickets for it.
 
 - I want to be able register new flights so the company can sell tickets for it.
+
+- I would like to arrange quick price changes that last for a specific time interval. 
 
 
 
