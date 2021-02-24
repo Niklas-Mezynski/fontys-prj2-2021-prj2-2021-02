@@ -1,0 +1,108 @@
+@startuml test
+skinparam classAttributeIconSize 0
+skinparam componentStyle uml2
+hide circle
+
+class Flight {
+    +arrvial
+    +departure
+    +flightnumber
+    +price
+}
+
+class PriceReduction {
+    +endDate
+}
+
+class StaticPriceReduction {
+    +percentage
+}
+
+class DynamicPriceReduction {
+
+}
+
+class Route {
+    +departurePort:Airport
+    +arrivalPort:Airport
+}
+
+class Airport {
+    +name
+    +city
+    +country
+}
+
+class Booking {
+    +bookingDate: Date
+    +totalPrice
+}
+
+class Ticket {
+    +name
+    +seatNumber
+    +rowNumber
+}
+
+class Plane {
+    +name
+    +type
+    +manufacturer
+}
+
+class Seat {
+    +seatNumber
+    +rowNumber
+}
+
+class SeatOption {
+    +price
+    +name
+    +isSelected
+}
+
+class FlightOption {
+    +price
+    +name
+    +maxAvailible
+}
+
+class Employee {
+    +name
+    +email
+    +password
+}
+
+class SalesEmployee {
+
+}
+
+class SalesOfficer {
+
+}
+
+class SalesManager {
+
+}
+
+
+SalesEmployee "0..1" -right- "1" Employee: \t
+SalesOfficer "0..1" -up- "1" Employee : \t
+Employee "1" -- "0..1" SalesManager : \t
+Booking "0..*" -- "1" Flight: \t
+SalesOfficer "1" -- "0..*" Flight: \t
+SalesEmployee "1" -- "0..*" Booking: \t
+Ticket "1..*" -- "1" Booking: \t
+Flight "1..*" -right- "1" Route: \t
+Route -right- Airport: \t
+Flight "1..*" -- "0..*" PriceReduction: \t
+PriceReduction -- StaticPriceReduction: \t
+PriceReduction -- DynamicPriceReduction: \t
+SeatOption "0..*" - "1" Seat: \t
+Plane "1" -left- "1..*" Seat: \t
+Flight "1" -down- "1" Plane: \t
+Ticket "0..1" - "1" Seat: \t
+FlightOption "0..*" - "1" Flight: \t
+FlightOption "0..*" - "0..*" Booking: \t
+
+@enduml
