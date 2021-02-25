@@ -87,16 +87,16 @@ class SalesManager extends Employee {
 }
 
 Booking "*" -- "1" Flight
-SalesOfficer "1" -left- "*" Flight: \t\t\t
+SalesOfficer "1" -l- "*" Flight: \t\t\t
 SalesEmployee "1" -- "*" Booking
 Ticket "1..*" --- "1" Booking
 Flight "1..*" -- "1" Route
 Route "*" -- "1" Airport: arrives at port
 Route "*" -- "1" Airport: departs from port
 Flight "1..*" -- "*" PriceReduction
-SeatOption "*" - "1" Seat
-Plane "1" -- "1..*" Seat: \t
-Flight "*" ---- "1" Plane
+SeatOption "*" - "1" Seat: \t
+Plane "1" -left- "1..*" Seat: \t
+Flight "*" -- "1" Plane
 note on link
 A plane can only be
 associated with one active
