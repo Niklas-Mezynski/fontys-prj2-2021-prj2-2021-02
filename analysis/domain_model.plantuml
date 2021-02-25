@@ -1,6 +1,7 @@
 @startuml test
 skinparam classAttributeIconSize 0
 skinparam componentStyle uml2
+'left to right direction
 hide circle
 
 class Flight {
@@ -20,7 +21,7 @@ class StaticPriceReduction extends PriceReduction {
 }
 
 class DynamicPriceReduction extends PriceReduction {
-
+    +source
 }
 
 class Route {
@@ -85,30 +86,24 @@ class SalesManager extends Employee {
 
 }
 
-together {
-    class Booking
-    class Ticket
-    class Seat
-}
-
-Booking "0..*" -- "1" Flight
-SalesOfficer "1" -left- "0..*" Flight: \t\t\t
-SalesEmployee "1" -- "0..*" Booking
-Ticket "1..*" -- "1" Booking
+Booking "*" -- "1" Flight
+SalesOfficer "1" -left- "*" Flight: \t\t\t
+SalesEmployee "1" -- "*" Booking
+Ticket "1..*" --- "1" Booking
 Flight "1..*" -- "1" Route
 Route "*" -- "1" Airport: arrives at port
 Route "*" -- "1" Airport: departs from port
-Flight "1..*" -- "0..*" PriceReduction
-SeatOption "0..*" - "1" Seat
-Plane "1" -- "1..*" Seat
-Flight "*" -- "1" Plane
+Flight "1..*" -- "*" PriceReduction
+SeatOption "*" - "1" Seat
+Plane "1" -- "1..*" Seat: \t
+Flight "*" ---- "1" Plane
 note on link
 A plane can only be
 associated with one active
 flight at a time
 end note
 Ticket "0..1" -- "1" Seat
-FlightOption "0..*" - "1" Flight
-FlightOption "0..*" - "0..*" Booking
+FlightOption "*" - "1" Flight
+FlightOption "*" - "*" Booking: \t
 
 @enduml
