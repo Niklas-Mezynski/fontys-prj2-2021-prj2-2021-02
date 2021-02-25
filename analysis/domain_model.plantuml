@@ -1,0 +1,114 @@
+@startuml test
+skinparam classAttributeIconSize 0
+skinparam componentStyle uml2
+hide circle
+
+class Flight {
+    +arrvial
+    +departure
+    +flightnumber
+    +price
+}
+
+
+class PriceReduction {
+    +endDate
+}
+
+class StaticPriceReduction extends PriceReduction {
+    +percentage
+}
+
+class DynamicPriceReduction extends PriceReduction {
+
+}
+
+class Route {
+}
+
+class Airport {
+    +name
+    +city
+    +country
+}
+
+class Booking {
+    +bookingDate: Date
+    +totalPrice
+}
+
+class Ticket {
+    +name
+    +seatNumber
+    +rowNumber
+}
+
+class Plane {
+    +name
+    +type
+    +manufacturer
+}
+
+class Seat {
+    +seatNumber
+    +rowNumber
+}
+
+class Option {
+    +price
+    +name
+}
+
+class SeatOption extends Option {
+    +isSelected
+}
+
+class FlightOption extends Option {
+    +maxAvailible
+}
+
+class Employee {
+    +name
+    +email
+    +password
+}
+
+class SalesEmployee extends Employee {
+
+}
+
+class SalesOfficer extends Employee {
+
+}
+
+class SalesManager extends Employee {
+
+}
+
+together {
+    class Booking
+    class Ticket
+    class Seat
+}
+
+Booking "0..*" -- "1" Flight
+SalesOfficer "1" -left- "0..*" Flight: \t\t\t
+SalesEmployee "1" -- "0..*" Booking
+Ticket "1..*" -- "1" Booking
+Flight "1..*" -- "1" Route
+Route "*" -- "1" Airport: arrives at port
+Route "*" -- "1" Airport: departs from port
+Flight "1..*" -- "0..*" PriceReduction
+SeatOption "0..*" - "1" Seat
+Plane "1" -- "1..*" Seat
+Flight "*" -- "1" Plane
+note on link
+A plane can only be
+associated with one active
+flight at a time
+end note
+Ticket "0..1" -- "1" Seat
+FlightOption "0..*" - "1" Flight
+FlightOption "0..*" - "0..*" Booking
+
+@enduml
