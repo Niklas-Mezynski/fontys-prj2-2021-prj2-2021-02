@@ -4,9 +4,11 @@
 
 - I want to be able to search for upcoming flights so I can help the customer to find the flight he is looking for and then proceed to book it.
 
-- it is necessary to have access to a huge variety of flights to convince	customers with different options.
+- it is necessary to have access to a huge variety of flights to convince	customers with different destinations.
 
 - I want to have a simple User Interface in order to work efficient
+
+- I would like to have a good overview of additonal flightoptions to satisfy the customers. 
 
 ## As a **sales manager**...
 
