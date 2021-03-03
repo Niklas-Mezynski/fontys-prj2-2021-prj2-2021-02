@@ -2,16 +2,13 @@
 skinparam classAttributeIconSize 0
 skinparam componentStyle uml2
 'left to right direction
-'skinparam linetype polyline
 hide circle
 
 class Flight {
-    +arrvial
-    +departure
     +flightnumber
     +price
+    +afterWhichTime
 }
-
 
 class PriceReduction {
     +endDate
@@ -30,7 +27,10 @@ together {
     class Route {
     }
 
-'    class RouteLeg
+    class RouteLeg {
+        +arrvial
+        +departure
+    }
 
     class Airport {
         +name
@@ -47,8 +47,6 @@ class Booking {
 
 class Ticket {
     +name
-    +seatNumber
-    +rowNumber
 }
 
 class Plane {
@@ -81,31 +79,30 @@ class Employee {
 }
 
 together {
-    class SalesOfficer extends Employee
     class SalesManager extends Employee
     class SalesEmployee extends Employee
+    class SalesOfficer extends Employee
 }
 
 
 
-Ticket "*" -- "1..*" Flight
-SalesOfficer "1" --- "*" Flight: \t\t\t
+Booking "*" -- "1" Flight
+SalesOfficer "1" - "*" Flight: \t\t\t
 SalesEmployee "1" - "*" Booking: \t
-Ticket "1..*" --- "1" Booking
-Flight "1..*" -d- "1" Route
-Route "*" -- "1" Airport: arrives at port >
-Route "*" -- "1" Airport: departs from port >
+Ticket "1..*" -- "1" Booking
+Flight "1..*" -- "1" Route
+RouteLeg "*" -- "1" Airport: arrives at port >
+RouteLeg "*" -- "1" Airport: departs from port >
 Flight "1..*" - "*" PriceReduction
 SeatOption "*" -- "1" Seat: \t
 SeatOption "*" - "*" Ticket: chosen
 Plane "1" -u- "1..*" Seat: \t
-Flight "*" -u- "1" Plane: \t
-Ticket "*" - "1" Seat
-FlightOption "*" - "1" Flight
+RouteLeg "*" - "*" Plane: \t
+Ticket "*" - "1" Seat: \t
+FlightOption "*" - "1" RouteLeg
 FlightOption "*" - "*" Ticket: \t
-'Route "*" -l- "*" RouteLeg: \t\t\t\t\t
+Route "1" -l- "*" RouteLeg: \tis nth part of the route\t\t >
 Route -[hidden] PriceReduction: \t\t\t
-'SalesOfficer -[hidden] SalesEmployee: \t
-SalesEmployee -l[hidden]- SalesOfficer
-SalesOfficer -l[hidden]- SalesManager
+'SalesManager -l[hidden] SalesEmployee: \t
+SeatOption -r[hidden]- FlightOption
 @enduml
