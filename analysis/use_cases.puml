@@ -33,6 +33,12 @@ UC2 --|> UC5: <<includes>>
 UC3 --|> UC1: <<includes>>
 UC3 --|> UC4: <<includes>>
 
+UC11 --|>UC1: <<includes>>
+UC12 --|>UC1: <<includes>>
+UC13 --|>UC1: <<includes>>
+UC14 --|>UC1: <<includes>>
+UC7 --|>UC1: <<includes>>
+
 se --> UC1
 se --> UC3
 se --> UC4
@@ -41,11 +47,12 @@ se --> UC10
 so --> UC2
 so --> UC5
 so --> UC7
-so --> UC8
 so --> UC11
 so --> UC12
 so --> UC13
 so --> UC14
+so --> UC8
+so --> UC15
 
 sm --> UC6
 @enduml
