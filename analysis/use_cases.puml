@@ -1,0 +1,51 @@
+@startuml
+left to right direction
+skinparam classAttributeIconSize 0
+skinparam componentStyle uml2
+skinparam actorStyle awesome
+hide circle
+
+actor "Sales Employee" as se
+actor "Sales Manager" as sm
+actor "Sales Officer" as so
+
+rectangle FlightBookingSystem {
+  usecase "Search for a Flight" as UC1
+  usecase "Create a Flight" as UC2
+  usecase "Book Tickets" as UC3
+  usecase "Cancel Tickets" as UC10
+  usecase "View additional FlightOptions" as UC4
+  usecase "Create FlightOptions" as UC5
+  usecase "Edit FlightOptions" as UC11
+  usecase "Remove FlightOptions" as UC12
+  usecase "View KPI's" as UC6
+  usecase "Create PriceReductions" as UC7
+  usecase "Edit PriceReductions" as UC13
+  usecase "Remove PriceReductions" as UC14
+  usecase "Start SalesProcess" as UC8
+  usecase "Stop SalesProcess" as UC15
+  usecase "Create FlightLeg Stops" as UC9
+}
+
+UC2 --|> UC9: <<includes>>
+UC2 --|> UC5: <<includes>>
+
+UC3 --|> UC1: <<includes>>
+UC3 --|> UC4: <<includes>>
+
+se --> UC1
+se --> UC3
+se --> UC4
+se --> UC10
+
+so --> UC2
+so --> UC5
+so --> UC7
+so --> UC8
+so --> UC11
+so --> UC12
+so --> UC13
+so --> UC14
+
+sm --> UC6
+@enduml

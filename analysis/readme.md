@@ -4,9 +4,9 @@ Put in here all analysis artefacts and documentation.
 
 > Below are only examples! You can also use Visual Paradigm Models. Remove this and this text. 
 
-[comment]: <> (## Use Case Diagram)
+## Use Case Diagram
 
-[comment]: <> (![UC diagram]&#40;images/example-uc-diagram.jpg&#41;)
+![UC diagram](images/use_cases.svg)
 
 ## Domain Model
 
