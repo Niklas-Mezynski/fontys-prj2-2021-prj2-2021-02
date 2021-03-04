@@ -293,3 +293,74 @@ Actor accesses an existing FlightOption to modify it
 
 ### Result:
 The selected FlightOption is modified
+
+
+
+## Create FlightLeg Stops
+
+### Actor:
+Sales Officer
+
+### Description:
+Actor adds a FlightLeg to an Existing Route
+
+### Pre-condition
+Actor is logged in as SalesOfficer and accesses an already existing route
+
+### Scenario
+1. System gives opportunity to enter the destination of the FlightLeg
+2. Actor gives the new destination
+3. System gives opportunity to put the new destination in the wanted order
+4. User indicates, where to put the new destination
+
+### Result
+The Actor has added a new FlightLeg to an existing Route
+
+## Create FlightOption
+
+### Actor
+Sales Officer
+
+### Description:
+Actor adds a FlightOption to an existing Flight
+
+### Pre-condition
+Actor is logged in as SalesOfficer and accesses an already existing Flight
+
+### Scenario
+1. System asks for name of the new FlightOption
+2. Actor gives name for the FlightOption
+3. System gives the option to select for which seats this option is available
+4. Actor selects the wanted seats
+5. System gives opportunity to set the price for this option
+6. Actor gives price for the option
+7. System gives overview of the option, and asks to submit
+8. Actor submits
+
+### Extensions
+
+### Exceptions
+2. Name for the FlightOption already exists
+
+### Result
+A Flight option has been created and added to an existing flight
+
+## Remove FlightOption
+
+### Actor
+Sales Officer
+
+### Description
+Actor can remove a FlightOption from a Flight
+
+### Pre-Condition
+Actor is logged in as Sales Officer and has selected an existing Flight
+
+### Scenario
+1. System gives Overview of all registered Flight Options for selected Flight
+2. Actor selects the Option, which should be deleted
+3. System asks Actor to confirm the deletion
+4. Actor Confirms the deletion
+
+### Result
+FlightOption has been deleted from an existing flight
