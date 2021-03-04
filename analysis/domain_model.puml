@@ -6,12 +6,15 @@ skinparam componentStyle uml2
 hide circle
 
 class Flight {
-    +arrvial
+    +arrival
     +departure
     +flightnumber
     +price
 }
 
+class RecurringFlight extends Flight {
+    +interval
+}
 
 class PriceReduction {
     +endDate
@@ -47,8 +50,6 @@ class Booking {
 
 class Ticket {
     +name
-    +seatNumber
-    +rowNumber
 }
 
 class Plane {
@@ -70,7 +71,7 @@ class Option {
 class SeatOption extends Option
 
 class FlightOption extends Option {
-    +maxAvailible
+    +maxAvailable
 }
 
 
@@ -88,14 +89,14 @@ together {
 
 
 
-Ticket "*" -- "1..*" Flight
+Ticket "*" -- "1" Flight
 SalesOfficer "1" --- "*" Flight: \t\t\t
 SalesEmployee "1" - "*" Booking: \t
 Ticket "1..*" --- "1" Booking
 Flight "1..*" -d- "1" Route
 Route "*" -- "1" Airport: arrives at port >
 Route "*" -- "1" Airport: departs from port >
-Flight "1..*" - "*" PriceReduction
+Flight "1..*" -r- "*" PriceReduction: \t
 SeatOption "*" -- "1" Seat: \t
 SeatOption "*" - "*" Ticket: chosen
 Plane "1" -u- "1..*" Seat: \t

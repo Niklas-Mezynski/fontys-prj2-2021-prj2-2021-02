@@ -24,22 +24,24 @@ rectangle FlightBookingSystem {
   usecase "Remove PriceReductions" as UC14
   usecase "Start SalesProcess" as UC8
   usecase "Stop SalesProcess" as UC15
-  usecase "Create FlightLeg Stops" as UC9
+  usecase "Create Route" as UC9
+  usecase "Edit Route" as UC18
+  usecase "Remove Route" as UC19
   usecase "Login" as UC16
   usecase "Logout" as UC17
 }
 
-UC2 --|> UC9: <<includes>>
-UC2 --|> UC5: <<includes>>
+UC2 --|> UC9: <<extends>>
+UC2 --|> UC5: <<extends>>
 
 UC3 --|> UC1: <<includes>>
 UC3 --|> UC4: <<includes>>
-
+/'
 UC11 --|>UC1: <<includes>>
 UC12 --|>UC1: <<includes>>
 UC13 --|>UC1: <<includes>>
 UC14 --|>UC1: <<includes>>
-UC7 --|>UC1: <<includes>>
+UC7 --|>UC1: <<includes>>'/
 
 se --> UC1
 se --> UC3
@@ -59,6 +61,8 @@ so --> UC8
 so --> UC15
 so --> UC16
 so --> UC17
+so --> UC18
+so --> UC19
 
 sm --> UC6
 sm --> UC16
