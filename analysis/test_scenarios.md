@@ -113,26 +113,59 @@
 
 <tr>
 <td><!-- UseCase Name-->Edit PriceReduction</td>
-<td><!-- TestCaseDescription--></td>
+<td><!-- TestCaseDescription-->SalesOfficer edits static price reduction</td>
 <td>
 <ol>
 <!--Steps-->
-<li></li>
+<li>Select Flight with static price reduction</li>
+<li>Select to edit the price reduction</li>
+<li>give the new Percentage</li>
+<li>Submit change</li>
 </ol>
 </td>
-<td><!--Expected Result--></td>
+<td><!--Expected Result-->Static price reduction has been changed</td>
+</tr>
+
+<tr>
+<td><!-- UseCase Name-->Edit PriceReduction</td>
+<td><!-- TestCaseDescription-->SalesOfficer edits static price reduction</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Select Flight with static price reduction</li>
+<li>??</li>
+</ol>
+</td>
+<td><!--Expected Result-->Dynamic pricereduction has ben edited</td>
 </tr>
 
 <tr>
 <td><!-- UseCase Name-->Create Price Reduction</td>
-<td><!-- TestCaseDescription--></td>
+<td><!-- TestCaseDescription-->SalesOfficer adds a static pricereduction to an existing flight</td>
 <td>
 <ol>
 <!--Steps-->
-<li></li>
+<li>Select flight, to which the pricereduction should be added</li>
+<li>Select option to add a price reduction</li>
+<li>Select reduction type: Static</li>
+<li>Give percentage of reduction</li>
+<li>Submit price reduction</li>
 </ol>
 </td>
-<td><!--Expected Result--></td>
+<td><!--Expected Result-->Static price reduction has been added</td>
+</tr>
+
+<tr>
+<td><!-- UseCase Name-->Create Price Reduction</td>
+<td><!-- TestCaseDescription-->SalesOfficer adds a dynamic pricereduction to an existing flight</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Select flight, to which the pricereduction should be added</li>
+<li>??</li>
+</ol>
+</td>
+<td><!--Expected Result-->Dynamic price reduction has been added</td>
 </tr>
 
 
