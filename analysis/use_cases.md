@@ -177,17 +177,9 @@ Extensions
 
 7. Actor denies
 
-8. System asks if he wants to change or to delete changes
-
-	1. Actor wants to change the dates
-
-		1. System asks for other dates to change to
-
-		2. Actor sets new dates
-
-		3. Back to 7
-
-	1. Actor wants to delete changes
+	1. Return to step 5
+	 
+	2. Actor wants to delete changes
 
 		1. System sends the Actor back to start page
 </td>
@@ -644,6 +636,10 @@ flight is at its initial price again
       <td><b>Description</b></td><td>Actor wants to add a new Flight to the System</td>
 </tr>
 <tr>
+        <td><b>Pre-condition</b></td>
+        <td>Route of the flight already exists</td>
+    </tr>
+<tr>
 <td><b>Scenario</b></td>
 <td>
 <ol>
@@ -684,7 +680,6 @@ A new flight has been registered in the system.
 <td><b>Extension</b></td>
 <td>
 
-4a. Actor chooses the option to create a <u>new flight route</u>.
 
 </td>
 </tr>
