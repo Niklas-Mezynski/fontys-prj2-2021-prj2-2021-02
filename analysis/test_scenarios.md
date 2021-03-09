@@ -5,110 +5,163 @@
 
 <tr>
 <td><!-- UseCase Name-->Search For Flight</td>
-<td><!-- TestCaseDescription--></td>
+<td><!-- TestCaseDescription-->Actor searches for a flight to Barcelona</td>
 <td>
-<ol>
-<!--Steps-->
-<li></li>
-</ol>
+
+1. Actor chooses the search flight option
+
+2. Systems offers a way to enter the search term
+
+3. Actor enters "Barcelona" as Destination
+
+4. System lists upcoming flights with Barcelona as arrival airport
+
+
 </td>
-<td><!--Expected Result--></td>
+<td><!--Expected Result-->System shows all upcoming flights to Barcelona</td>
 </tr>
 
 <tr>
 <td><!-- UseCase Name-->View FlightOptions</td>
+<td><!-- TestCaseDescription-->Actor wants to see which FlightOptions are available  for a specific flight from "Frankfurt" to "New York"</td>
+<td>
+
+1. Actor clicks on a flight from "Frankfurt" to "New York"
+
+2. System shows the overview for this flight
+
+3. Actor chooses to view aditional FlightOptions
+
+4. System shows amount of business class seats, amount of first class seats, amount of extra meals left (for this specific flight)
+
+
+</td>
+<td><!--Expected Result-->Actor sees how many FlightOtions still are available</td>
+</tr>
+
+<tr>
+<td><!-- UseCase Name-->Start Sales Process (Normal case)</td>
+<td><!-- TestCaseDescription-->Sales Officer wants to start the sales process of flight "XAX-01B"</td>
+<td>
+
+1. Actor <u>searches for flight</u> "XAX-01B"
+
+2. System lists this flight
+
+3. Actor selects the flight
+
+4. System asks for start and end date for the sales prcoess
+
+5. Actor enters "20.04.2021" as start date and "20.06.2021" as end date
+
+6. System asks to confirm these dates
+
+7. Actor confirms
+
+8. System saves the change
+
+
+</td>
+<td><!--Expected Result-->Flight is now available for booking</td>
+</tr>
+
+<tr>
+<td><!-- UseCase Name-->Start Sales Process (Extension 7.i)</td>
 <td><!-- TestCaseDescription--></td>
 <td>
-<ol>
-<!--Steps-->
-<li></li>
-</ol>
+
+1. Actor chooses to correct the dates
+
+2. Actor chooses "20.07.2021" as end date instead
+
+3. Actor confirms
+
+4. System saves the change
+
 </td>
 <td><!--Expected Result--></td>
 </tr>
 
 <tr>
-<td><!-- UseCase Name-->Start Sales Process</td>
+<td><!-- UseCase Name-->Start Sales Process (Extension 7.ii)</td>
 <td><!-- TestCaseDescription--></td>
 <td>
-<ol>
-<!--Steps-->
-<li></li>
-</ol>
+
+1. Actor chooses to cancel the whole process.
+
+2. System confirms.
+
 </td>
-<td><!--Expected Result--></td>
+<td><!--Expected Result-->The sales process hasn't been started</td>
 </tr>
 
 <tr>
-<td><!-- UseCase Name-->Start Sales Process</td>
-<td><!-- TestCaseDescription--></td>
+<td><!-- UseCase Name-->Stop Sales Process (Normal case)</td>
+<td><!-- TestCaseDescription-->Actor wants to stop the sales process of flight "XAX-01B"</td>
 <td>
-<ol>
-<!--Steps-->
-<li></li>
-</ol>
+
+1. Actor <u>searches for flight</u> "XAX-01B"
+
+2. System lists this flight
+
+3. Actor chooses to stop the flight process for this flight.
+
+4. System asks for confirmation
+
+5. Actor confirms.
+
+6. System stops the sales process
+
+
+
 </td>
-<td><!--Expected Result--></td>
+<td><!--Expected Result-->Flight cannot be booked anymore</td>
 </tr>
 
 <tr>
-<td><!-- UseCase Name-->Start Sales Process</td>
+<td><!-- UseCase Name-->Stop Sales Process (Extension 5.)</td>
 <td><!-- TestCaseDescription--></td>
 <td>
-<ol>
-<!--Steps-->
-<li></li>
-</ol>
+
+1. Actor denies
+
+2. System does not stop the sales process.
+
 </td>
-<td><!--Expected Result--></td>
+<td><!--Expected Result-->Flight can still be booked.</td>
 </tr>
 
 <tr>
-<td><!-- UseCase Name-->Stop Sales Process</td>
-<td><!-- TestCaseDescription--></td>
+<td><!-- UseCase Name-->Book tickets (Normal case)</td>
+<td><!-- TestCaseDescription-->Sales employee wants to book a ticket for flight "XAX-01B"</td>
 <td>
-<ol>
-<!--Steps-->
-<li></li>
-</ol>
+
+1. Actor selects the flight
+
+2. System shows that there are still business class seats available
+
+3. Actor choosed "business class" as a flight option
+
+4. System confimrs the selction.
+
+5. Actor chooses to finish the booking.
+
+6. System prints the ticket for the customer.
 </td>
-<td><!--Expected Result--></td>
+<td><!--Expected Result-->Customer has his ticket for flight "XAX-01B" with a business class seat</td>
 </tr>
 
 <tr>
-<td><!-- UseCase Name-->Stop Sales Process</td>
-<td><!-- TestCaseDescription--></td>
+<td><!-- UseCase Name-->Book tickets (Extension 5.1)</td>
+<td><!-- TestCaseDescription-->Employee wants to add another flight with id "X1B-406"</td>
 <td>
-<ol>
-<!--Steps-->
-<li></li>
-</ol>
-</td>
-<td><!--Expected Result--></td>
-</tr>
 
-<tr>
-<td><!-- UseCase Name-->book tickets</td>
-<td><!-- TestCaseDescription--></td>
-<td>
-<ol>
-<!--Steps-->
-<li></li>
-</ol>
-</td>
-<td><!--Expected Result--></td>
-</tr>
+1. Actor selects flight
 
-<tr>
-<td><!-- UseCase Name-->book tickets</td>
-<td><!-- TestCaseDescription--></td>
-<td>
-<ol>
-<!--Steps-->
-<li></li>
-</ol>
+2. Start again at Book tickets (Normal case) Step 2.
+
 </td>
-<td><!--Expected Result--></td>
+<td><!--Expected Result-->Customer now has two flight tickets with seats in the business class.</td>
 </tr>
 
 <tr>
