@@ -1,76 +1,92 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="780.39px" preserveAspectRatio="none" style="width:620px;height:780px;" version="1.1" viewBox="0 0 620 780" width="620.31px" zoomAndPan="magnify"><defs><filter height="300%" id="f1j70nlsrwi33d" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="1.74"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="3.48" dy="3.48" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[bd6e5d4dd3d7814cbdc3148d3ed1ec4b]
-class Flight--><rect codeLine="6" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="83.9006" id="Flight" style="stroke:#A80036;stroke-width:1.305;" width="66.99" x="267.525" y="357.57"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="26.1" x="287.97" y="372.7576">Flight</text><line style="stroke:#A80036;stroke-width:1.305;" x1="268.395" x2="333.645" y1="379.4016" y2="379.4016"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="31.32" x="272.745" y="392.816">+arrvial</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="46.11" x="272.745" y="404.8533">+departure</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="56.55" x="272.745" y="416.8906">+flightnumber</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="26.1" x="272.745" y="428.9278">+price</text><line style="stroke:#A80036;stroke-width:1.305;" x1="268.395" x2="333.645" y1="434.5106" y2="434.5106"/><!--MD5=[9e4b02fb54a6422030841fdfe1b2bbed]
-class PriceReduction--><rect codeLine="14" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="47.7888" id="PriceReduction" style="stroke:#A80036;stroke-width:1.305;" width="78.3" x="348.87" y="568.98"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="73.08" x="351.48" y="584.1676">PriceReduction</text><line style="stroke:#A80036;stroke-width:1.305;" x1="349.74" x2="426.3" y1="590.8116" y2="590.8116"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="40.02" x="354.09" y="604.226">+endDate</text><line style="stroke:#A80036;stroke-width:1.305;" x1="349.74" x2="426.3" y1="609.8088" y2="609.8088"/><!--MD5=[eb3a587f0867d5d9b762cb70168f7421]
-class StaticPriceReduction--><rect codeLine="18" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="47.7888" id="StaticPriceReduction" style="stroke:#A80036;stroke-width:1.305;" width="104.4" x="335.82" y="709.05"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="99.18" x="338.43" y="724.2376">StaticPriceReduction</text><line style="stroke:#A80036;stroke-width:1.305;" x1="336.69" x2="439.35" y1="730.8816" y2="730.8816"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="53.07" x="341.04" y="744.296">+percentage</text><line style="stroke:#A80036;stroke-width:1.305;" x1="336.69" x2="439.35" y1="749.8788" y2="749.8788"/><!--MD5=[1f192814fb32c9c55833e52ec5c4ac3a]
-class DynamicPriceReduction--><rect codeLine="22" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="47.7888" id="DynamicPriceReduction" style="stroke:#A80036;stroke-width:1.305;" width="120.06" x="470.67" y="709.05"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="114.84" x="473.28" y="724.2376">DynamicPriceReduction</text><line style="stroke:#A80036;stroke-width:1.305;" x1="471.54" x2="589.86" y1="730.8816" y2="730.8816"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="34.8" x="475.89" y="744.296">+source</text><line style="stroke:#A80036;stroke-width:1.305;" x1="471.54" x2="589.86" y1="749.8788" y2="749.8788"/><!--MD5=[fc92a9f5bb5fae84dd7fa4034e6b4444]
-class Route--><rect codeLine="26" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="35.7516" id="Route" style="stroke:#A80036;stroke-width:1.305;" width="33.93" x="264.045" y="575.07"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="28.71" x="266.655" y="590.2576">Route</text><line style="stroke:#A80036;stroke-width:1.305;" x1="264.915" x2="297.105" y1="596.9016" y2="596.9016"/><line style="stroke:#A80036;stroke-width:1.305;" x1="264.915" x2="297.105" y1="603.8616" y2="603.8616"/><!--MD5=[ffe09eff7e904b42cb9ab485252a98fc]
-class Airport--><rect codeLine="29" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="71.8634" id="Airport" style="stroke:#A80036;stroke-width:1.305;" width="47.85" x="204.885" y="696.87"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="30.45" x="213.585" y="712.0576">Airport</text><line style="stroke:#A80036;stroke-width:1.305;" x1="205.755" x2="251.865" y1="718.7016" y2="718.7016"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="27.84" x="210.105" y="732.116">+name</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="20.01" x="210.105" y="744.1533">+city</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="37.41" x="210.105" y="756.1906">+country</text><line style="stroke:#A80036;stroke-width:1.305;" x1="205.755" x2="251.865" y1="761.7734" y2="761.7734"/><!--MD5=[c6c2aa411a70f0170997fbec83374a43]
-class Booking--><rect codeLine="35" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="59.8261" id="Booking" style="stroke:#A80036;stroke-width:1.305;" width="91.35" x="349.305" y="244.47"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="39.15" x="375.405" y="259.6576">Booking</text><line style="stroke:#A80036;stroke-width:1.305;" x1="350.175" x2="439.785" y1="266.3016" y2="266.3016"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="80.91" x="354.525" y="279.716">+bookingDate: Date</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="43.5" x="354.525" y="291.7533">+totalPrice</text><line style="stroke:#A80036;stroke-width:1.305;" x1="350.175" x2="439.785" y1="297.3361" y2="297.3361"/><!--MD5=[ac6bea31e13c94c7baa9ad18feb7405e]
-class Ticket--><rect codeLine="40" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="71.8634" id="Ticket" style="stroke:#A80036;stroke-width:1.305;" width="66.12" x="175.74" y="6.09"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="27.84" x="194.88" y="21.2776">Ticket</text><line style="stroke:#A80036;stroke-width:1.305;" x1="176.61" x2="240.99" y1="27.9216" y2="27.9216"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="27.84" x="180.96" y="41.336">+name</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="55.68" x="180.96" y="53.3733">+seatNumber</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="54.81" x="180.96" y="65.4106">+rowNumber</text><line style="stroke:#A80036;stroke-width:1.305;" x1="176.61" x2="240.99" y1="70.9934" y2="70.9934"/><!--MD5=[10813612642ae27aa5ff8d66c0f223e4]
-class Plane--><rect codeLine="46" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="71.8634" id="Plane" style="stroke:#A80036;stroke-width:1.305;" width="72.21" x="46.545" y="556.8"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="27.84" x="68.73" y="571.9876">Plane</text><line style="stroke:#A80036;stroke-width:1.305;" x1="47.415" x2="117.885" y1="578.6316" y2="578.6316"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="27.84" x="51.765" y="592.046">+name</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="23.49" x="51.765" y="604.0833">+type</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="61.77" x="51.765" y="616.1206">+manufacturer</text><line style="stroke:#A80036;stroke-width:1.305;" x1="47.415" x2="117.885" y1="621.7034" y2="621.7034"/><!--MD5=[3640288bb00e105a19a150bd568b9756]
-class Seat--><rect codeLine="52" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="59.8261" id="Seat" style="stroke:#A80036;stroke-width:1.305;" width="66.12" x="6.09" y="244.47"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="21.75" x="28.275" y="259.6576">Seat</text><line style="stroke:#A80036;stroke-width:1.305;" x1="6.96" x2="71.34" y1="266.3016" y2="266.3016"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="55.68" x="11.31" y="279.716">+seatNumber</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="54.81" x="11.31" y="291.7533">+rowNumber</text><line style="stroke:#A80036;stroke-width:1.305;" x1="6.96" x2="71.34" y1="297.3361" y2="297.3361"/><!--MD5=[b07065dfc0d0e09965ec10bfc328bb3e]
-class Option--><rect codeLine="57" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="59.8261" id="Option" style="stroke:#A80036;stroke-width:1.305;" width="38.28" x="203.58" y="131.37"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="31.32" x="207.06" y="146.5576">Option</text><line style="stroke:#A80036;stroke-width:1.305;" x1="204.45" x2="240.99" y1="153.2016" y2="153.2016"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="26.1" x="208.8" y="166.616">+price</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="27.84" x="208.8" y="178.6533">+name</text><line style="stroke:#A80036;stroke-width:1.305;" x1="204.45" x2="240.99" y1="184.2361" y2="184.2361"/><!--MD5=[0589ec48fae7a5d943e67f959c690f14]
-class SeatOption--><rect codeLine="62" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="47.7888" id="SeatOption" style="stroke:#A80036;stroke-width:1.305;" width="59.16" x="132.24" y="250.56"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="53.07" x="135.285" y="265.7476">SeatOption</text><line style="stroke:#A80036;stroke-width:1.305;" x1="133.11" x2="190.53" y1="272.3916" y2="272.3916"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="48.72" x="137.46" y="285.806">+isSelected</text><line style="stroke:#A80036;stroke-width:1.305;" x1="133.11" x2="190.53" y1="291.3888" y2="291.3888"/><!--MD5=[d013e7741bab9ab2458350aac5b42366]
-class FlightOption--><rect codeLine="66" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="47.7888" id="FlightOption" style="stroke:#A80036;stroke-width:1.305;" width="67.86" x="221.85" y="250.56"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="57.42" x="227.07" y="265.7476">FlightOption</text><line style="stroke:#A80036;stroke-width:1.305;" x1="222.72" x2="288.84" y1="272.3916" y2="272.3916"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="57.42" x="227.07" y="285.806">+maxAvailible</text><line style="stroke:#A80036;stroke-width:1.305;" x1="222.72" x2="288.84" y1="291.3888" y2="291.3888"/><!--MD5=[7421f545a0d8420c5bec41e74b387d9c]
-class Employee--><rect codeLine="70" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="71.8634" id="Employee" style="stroke:#A80036;stroke-width:1.305;" width="59.16" x="457.62" y="6.09"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="47.85" x="463.275" y="21.2776">Employee</text><line style="stroke:#A80036;stroke-width:1.305;" x1="458.49" x2="515.91" y1="27.9216" y2="27.9216"/><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="27.84" x="462.84" y="41.336">+name</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="26.1" x="462.84" y="53.3733">+email</text><text fill="#000000" font-family="sans-serif" font-size="9.57" lengthAdjust="spacing" textLength="48.72" x="462.84" y="65.4106">+password</text><line style="stroke:#A80036;stroke-width:1.305;" x1="458.49" x2="515.91" y1="70.9934" y2="70.9934"/><!--MD5=[678d329b45fee62ac006f4cfe741bd05]
-class SalesEmployee--><rect codeLine="76" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="35.7516" id="SalesEmployee" style="stroke:#A80036;stroke-width:1.305;" width="80.91" x="358.005" y="143.55"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="75.69" x="360.615" y="158.7376">SalesEmployee</text><line style="stroke:#A80036;stroke-width:1.305;" x1="358.875" x2="438.045" y1="165.3816" y2="165.3816"/><line style="stroke:#A80036;stroke-width:1.305;" x1="358.875" x2="438.045" y1="172.3416" y2="172.3416"/><!--MD5=[e59725891c984a14fcafcdb3c340c895]
-class SalesOfficer--><rect codeLine="80" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="35.7516" id="SalesOfficer" style="stroke:#A80036;stroke-width:1.305;" width="63.51" x="454.575" y="381.495"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="58.29" x="457.185" y="396.6826">SalesOfficer</text><line style="stroke:#A80036;stroke-width:1.305;" x1="455.445" x2="517.215" y1="403.3266" y2="403.3266"/><line style="stroke:#A80036;stroke-width:1.305;" x1="455.445" x2="517.215" y1="410.2866" y2="410.2866"/><!--MD5=[71cea2dfb2163bac4b85ec617c47f2aa]
-class SalesManager--><rect codeLine="84" fill="#FEFECE" filter="url(#f1j70nlsrwi33d)" height="35.7516" id="SalesManager" style="stroke:#A80036;stroke-width:1.305;" width="74.82" x="533.31" y="143.55"/><text fill="#000000" font-family="sans-serif" font-size="10.44" lengthAdjust="spacing" textLength="69.6" x="535.92" y="158.7376">SalesManager</text><line style="stroke:#A80036;stroke-width:1.305;" x1="534.18" x2="607.26" y1="165.3816" y2="165.3816"/><line style="stroke:#A80036;stroke-width:1.305;" x1="534.18" x2="607.26" y1="172.3416" y2="172.3416"/><!--MD5=[41deeaeea5a904ff27e0fd4ec11f5b47]
-reverse link PriceReduction to StaticPriceReduction--><path d="M388.02,634.4823 C388.02,658.7205 388.02,688.605 388.02,708.876 " fill="none" id="PriceReduction-backto-StaticPriceReduction" style="stroke:#A80036;stroke-width:0.87;"/><polygon fill="none" points="381.93,634.3257,388.02,616.9257,394.11,634.3257,381.93,634.3257" style="stroke:#A80036;stroke-width:0.87;"/><!--MD5=[c3b89e6a5883d54172f63d6f6190d7c3]
-reverse link PriceReduction to DynamicPriceReduction--><path d="M424.5687,629.2101 C450.399,654.2574 484.2855,687.1086 506.7402,708.876 " fill="none" id="PriceReduction-backto-DynamicPriceReduction" style="stroke:#A80036;stroke-width:0.87;"/><polygon fill="none" points="420.1578,633.4122,411.9015,616.9257,428.6316,624.6687,420.1578,633.4122" style="stroke:#A80036;stroke-width:0.87;"/><!--MD5=[62979509efb6a401679488b7640a9c28]
-reverse link Option to SeatOption--><path d="M198.3513,206.8164 C190.1646,221.7891 181.3602,237.8841 174.4524,250.5165 " fill="none" id="Option-backto-SeatOption" style="stroke:#A80036;stroke-width:0.87;"/><polygon fill="none" points="193.0269,203.8584,206.7207,191.5131,203.7105,209.7048,193.0269,203.8584" style="stroke:#A80036;stroke-width:0.87;"/><!--MD5=[2704d8449d0551760f4d3c581dfbc96b]
-reverse link Option to FlightOption--><path d="M236.3703,208.2432 C240.6942,222.807 245.2878,238.2843 248.9244,250.5165 " fill="none" id="Option-backto-FlightOption" style="stroke:#A80036;stroke-width:0.87;"/><polygon fill="none" points="230.5239,209.931,231.4026,191.5131,242.1993,206.4597,230.5239,209.931" style="stroke:#A80036;stroke-width:0.87;"/><!--MD5=[900c01674a364e7a3c4894e36e6e8ad4]
-reverse link Employee to SalesEmployee--><path d="M449.8944,92.4375 C436.2093,110.5509 421.602,129.891 411.4665,143.3064 " fill="none" id="Employee-backto-SalesEmployee" style="stroke:#A80036;stroke-width:0.87;"/><polygon fill="none" points="445.2225,88.5138,460.578,78.3,454.9491,95.8566,445.2225,88.5138" style="stroke:#A80036;stroke-width:0.87;"/><!--MD5=[cbd01b3874cee46697394db47cc4516a]
-reverse link Employee to SalesOfficer--><path d="M487.0695,95.8827 C486.8694,177.4104 486.4953,329.8518 486.3735,381.1296 " fill="none" id="Employee-backto-SalesOfficer" style="stroke:#A80036;stroke-width:0.87;"/><polygon fill="none" points="480.9795,95.8218,487.113,78.4392,493.1595,95.8566,480.9795,95.8218" style="stroke:#A80036;stroke-width:0.87;"/><!--MD5=[6246bf4e1a992497e7ff707672dbd8f1]
-reverse link Employee to SalesManager--><path d="M522.4959,92.7072 C535.3284,110.7423 548.9874,129.9519 558.4791,143.3064 " fill="none" id="Employee-backto-SalesManager" style="stroke:#A80036;stroke-width:0.87;"/><polygon fill="none" points="517.3803,96.0132,512.256,78.3,527.307,88.9575,517.3803,96.0132" style="stroke:#A80036;stroke-width:0.87;"/><!--MD5=[c1d051e32d7e31fb60a610d2b664aa06]
-link Booking to Flight--><path codeLine="88" d="M372.7167,304.5261 C360.6672,320.3166 345.5901,340.0656 332.3748,357.3873 " fill="none" id="Booking-Flight" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="4.35" x="364.0136" y="322.9031">*</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="6.09" x="330.4428" y="348.02">1</text><!--MD5=[b98ce127f4852f04cfcaaedbc5fbf2c8]
-link Flight to SalesOfficer--><path codeLine="89" d="M334.5759,399.33 C368.6799,399.33 421.1235,399.33 454.5663,399.33 " fill="none" id="Flight-SalesOfficer" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="4.35" x="341.3871" y="395.8169">*</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="6.09" x="441.6233" y="395.8026">1</text><!--MD5=[748232659348ef27415227af069f3dee]
-link SalesEmployee to Booking--><path codeLine="90" d="M397.9206,179.4114 C397.3812,196.6809 396.546,223.6335 395.8935,244.296 " fill="none" id="SalesEmployee-Booking" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="6.09" x="390.8673" y="197.8974">1</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="4.35" x="391.303" y="235.0838">*</text><!--MD5=[6de173d7dd0bb43f2f15465228b450ec]
-link Ticket to Booking--><path codeLine="91" d="M237.2751,78.3348 C273.9543,123.7401 337.0206,201.84 371.229,244.209 " fill="none" id="Ticket-Booking" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="17.4" x="222.9032" y="96.7252">1..*</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="6.09" x="360.031" y="234.9802">1</text><!--MD5=[9faafb343f19a07eecf6c2d5392629e3]
-link Flight to Route--><path codeLine="92" d="M296.7483,441.1161 C292.4157,482.7108 285.8994,545.1507 282.7848,574.983 " fill="none" id="Flight-Route" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="17.4" x="277.362" y="460.3154">1..*</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="6.09" x="276.3217" y="565.5276">1</text><!--MD5=[61aab75e20857d293909c2b6825d841d]
-link Route to Airport--><path codeLine="93" d="M263.8449,597.8466 C238.8759,604.7979 193.4358,621.5715 174,655.11 C161.0805,677.3994 184.6227,701.307 204.7632,716.4711 " fill="none" id="Route-Airport" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="67.86" x="174.87" y="667.7208">arrives at port</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="4.35" x="252.8467" y="595.0121">*</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="6.09" x="191.7309" y="708.3628">1</text><!--MD5=[61aab75e20857d293909c2b6825d841d]
-link Route to Airport--><path codeLine="94" d="M274.5024,611.0184 C266.4462,632.3769 252.5001,669.3258 242.1297,696.8004 " fill="none" id="Route-Airport-1" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="85.26" x="257.52" y="667.7208">departs from port</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="4.35" x="267.819" y="629.5278">*</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="6.09" x="237.7414" y="687.531">1</text><!--MD5=[c53e5be9d688cd7684a766242ddce892]
-link Flight to PriceReduction--><path codeLine="95" d="M319.5771,441.1161 C337.2468,480.0747 363.1989,537.3033 377.5365,568.9191 " fill="none" id="Flight-PriceReduction" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="17.4" x="303.6865" y="460.3154">1..*</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="4.35" x="370.2592" y="559.6261">*</text><!--MD5=[93e553a500862b1ae1b8795774402f50]
-link SeatOption to Seat--><path codeLine="96" d="M131.9529,274.485 C113.9265,274.485 90.9324,274.485 72.3492,274.485 " fill="none" id="SeatOption-Seat" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="4.35" x="120.9942" y="270.9081">*</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="6.09" x="79.2583" y="271.0276">1</text><!--MD5=[2f8ca8acfb38ec32c6616854fe560ec5]
-link Seat to Plane--><path codeLine="97" d="M43.1607,304.5783 C51.1821,362.9205 69.1302,493.6119 77.7954,556.6695 " fill="none" id="Seat-Plane" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="17.4" x="24.9254" y="322.9646">1..*</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="6.09" x="70.397" y="547.39">1</text><!--MD5=[cfc08e0978cc1e2dd8223872cb207220]
-link Flight to Plane--><path codeLine="98" d="M267.3336,403.4103 C226.3566,409.1088 157.7658,424.7514 118.32,467.19 C95.7609,491.463 87.348,529.0209 84.2769,556.6086 " fill="none" id="Flight-Plane" style="stroke:#A80036;stroke-width:0.87;"/><path d="M122.67,471.54 L122.67,522.87 L273.18,522.87 L273.18,480.24 L264.48,471.54 L122.67,471.54 " fill="#FBFB77" filter="url(#f1j70nlsrwi33d)" style="stroke:#A80036;stroke-width:0.87;"/><path d="M264.48,471.54 L264.48,480.24 L273.18,480.24 L264.48,471.54 " fill="#FBFB77" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="100.05" x="127.89" y="487.6308">A plane can only be</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="132.24" x="127.89" y="501.8566">associated with one active</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="71.34" x="127.89" y="516.0825">flight at a time</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="4.35" x="256.1475" y="400.675">*</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="6.09" x="77.952" y="547.319">1</text><!--MD5=[1b02a19573a7431ec5c21488b73eecc1]
-link Ticket to Seat--><path codeLine="104" d="M182.8479,78.3348 C149.4312,123.7401 91.9677,201.84 60.7869,244.209 " fill="none" id="Ticket-Seat" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="19.14" x="158.2686" y="96.7252">0..1</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="6.09" x="58.241" y="234.9802">1</text><!--MD5=[f572f39a3d24a8e41ad8a527653f072a]
-link FlightOption to Flight--><path codeLine="105" d="M264.2886,298.5144 C270.3786,315.0879 278.748,337.8471 285.9516,357.4656 " fill="none" id="FlightOption-Flight" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="4.35" x="261.3241" y="317.0742">*</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="6.09" x="277.2012" y="348.1098">1</text><!--MD5=[51c549aeea579acc29b5206c14e2b702]
-link FlightOption to Booking--><path codeLine="106" d="M289.8318,274.485 C307.7016,274.485 329.8431,274.485 349.1919,274.485 " fill="none" id="FlightOption-Booking" style="stroke:#A80036;stroke-width:0.87;"/><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="4.35" x="296.7375" y="271.014">*</text><text fill="#000000" font-family="sans-serif" font-size="11.31" lengthAdjust="spacing" textLength="4.35" x="338.0971" y="271.3628">*</text><!--MD5=[f8c960526916ddd978d32dbaed319a5c]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="923.4px" preserveAspectRatio="none" style="width:800px;height:923px;" version="1.1" viewBox="0 0 800 923" width="800.1px" zoomAndPan="magnify"><defs><filter height="300%" id="f16b6zupto56m6" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="1.8"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="3.6" dy="3.6" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[eb3a587f0867d5d9b762cb70168f7421]
+class StaticPriceReduction--><rect codeLine="22" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="49.4367" id="StaticPriceReduction" style="stroke:#A80036;stroke-width:1.35;" width="108" x="296.001" y="849.6"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="102.6" x="298.701" y="865.3113">StaticPriceReduction</text><line style="stroke:#A80036;stroke-width:1.35;" x1="296.901" x2="403.101" y1="872.1844" y2="872.1844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="54.9" x="301.401" y="886.0614">+percentage</text><line style="stroke:#A80036;stroke-width:1.35;" x1="296.901" x2="403.101" y1="891.8367" y2="891.8367"/><!--MD5=[1f192814fb32c9c55833e52ec5c4ac3a]
+class DynamicPriceReduction--><rect codeLine="26" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="49.4367" id="DynamicPriceReduction" style="stroke:#A80036;stroke-width:1.35;" width="124.2" x="435.501" y="849.6"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="118.8" x="438.201" y="865.3113">DynamicPriceReduction</text><line style="stroke:#A80036;stroke-width:1.35;" x1="436.401" x2="558.801" y1="872.1844" y2="872.1844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="36" x="440.901" y="886.0614">+source</text><line style="stroke:#A80036;stroke-width:1.35;" x1="436.401" x2="558.801" y1="891.8367" y2="891.8367"/><!--MD5=[fc92a9f5bb5fae84dd7fa4034e6b4444]
+class Route--><rect codeLine="32" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="36.9844" id="Route" style="stroke:#A80036;stroke-width:1.35;" width="35.1" x="133.551" y="723.6"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="29.7" x="136.251" y="739.3113">Route</text><line style="stroke:#A80036;stroke-width:1.35;" x1="134.451" x2="167.751" y1="746.1844" y2="746.1844"/><line style="stroke:#A80036;stroke-width:1.35;" x1="134.451" x2="167.751" y1="753.3844" y2="753.3844"/><!--MD5=[ffe09eff7e904b42cb9ab485252a98fc]
+class Airport--><rect codeLine="37" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="74.3414" id="Airport" style="stroke:#A80036;stroke-width:1.35;" width="49.5" x="58.851" y="837"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="31.5" x="67.851" y="852.7113">Airport</text><line style="stroke:#A80036;stroke-width:1.35;" x1="59.751" x2="107.451" y1="859.5844" y2="859.5844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="28.8" x="64.251" y="873.4614">+name</text><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="20.7" x="64.251" y="885.9138">+city</text><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="38.7" x="64.251" y="898.3661">+country</text><line style="stroke:#A80036;stroke-width:1.35;" x1="59.751" x2="107.451" y1="904.1414" y2="904.1414"/><!--MD5=[e59725891c984a14fcafcdb3c340c895]
+class SalesOfficer--><rect codeLine="84" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="36.9844" id="SalesOfficer" style="stroke:#A80036;stroke-width:1.35;" width="65.7" x="722.151" y="296.1"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="60.3" x="724.851" y="311.8113">SalesOfficer</text><line style="stroke:#A80036;stroke-width:1.35;" x1="723.051" x2="786.951" y1="318.6844" y2="318.6844"/><line style="stroke:#A80036;stroke-width:1.35;" x1="723.051" x2="786.951" y1="325.8844" y2="325.8844"/><!--MD5=[71cea2dfb2163bac4b85ec617c47f2aa]
+class SalesManager--><rect codeLine="85" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="36.9844" id="SalesManager" style="stroke:#A80036;stroke-width:1.35;" width="77.4" x="497.601" y="296.1"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="72" x="500.301" y="311.8113">SalesManager</text><line style="stroke:#A80036;stroke-width:1.35;" x1="498.501" x2="574.101" y1="318.6844" y2="318.6844"/><line style="stroke:#A80036;stroke-width:1.35;" x1="498.501" x2="574.101" y1="325.8844" y2="325.8844"/><!--MD5=[678d329b45fee62ac006f4cfe741bd05]
+class SalesEmployee--><rect codeLine="86" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="36.9844" id="SalesEmployee" style="stroke:#A80036;stroke-width:1.35;" width="83.7" x="606.951" y="296.1"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="78.3" x="609.651" y="311.8113">SalesEmployee</text><line style="stroke:#A80036;stroke-width:1.35;" x1="607.851" x2="689.751" y1="318.6844" y2="318.6844"/><line style="stroke:#A80036;stroke-width:1.35;" x1="607.851" x2="689.751" y1="325.8844" y2="325.8844"/><!--MD5=[bd6e5d4dd3d7814cbdc3148d3ed1ec4b]
+class Flight--><rect codeLine="7" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="86.7938" id="Flight" style="stroke:#A80036;stroke-width:1.35;" width="69.3" x="308.151" y="560.7"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="27" x="329.301" y="576.4113">Flight</text><line style="stroke:#A80036;stroke-width:1.35;" x1="309.051" x2="376.551" y1="583.2844" y2="583.2844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="32.4" x="313.551" y="597.1614">+arrival</text><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="47.7" x="313.551" y="609.6138">+departure</text><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="58.5" x="313.551" y="622.0661">+flightnumber</text><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="27" x="313.551" y="634.5185">+price</text><line style="stroke:#A80036;stroke-width:1.35;" x1="309.051" x2="376.551" y1="640.2938" y2="640.2938"/><!--MD5=[a88511d3fd18bb0b34f8f9dcba9782a6]
+class RecurringFlight--><rect codeLine="14" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="49.4367" id="RecurringFlight" style="stroke:#A80036;stroke-width:1.35;" width="81" x="414.801" y="717.3"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="75.6" x="417.501" y="733.0113">RecurringFlight</text><line style="stroke:#A80036;stroke-width:1.35;" x1="415.701" x2="494.901" y1="739.8844" y2="739.8844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="36.9" x="420.201" y="753.7614">+interval</text><line style="stroke:#A80036;stroke-width:1.35;" x1="415.701" x2="494.901" y1="759.5367" y2="759.5367"/><!--MD5=[9e4b02fb54a6422030841fdfe1b2bbed]
+class PriceReduction--><rect codeLine="18" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="49.4367" id="PriceReduction" style="stroke:#A80036;stroke-width:1.35;" width="81" x="302.301" y="717.3"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="75.6" x="305.001" y="733.0113">PriceReduction</text><line style="stroke:#A80036;stroke-width:1.35;" x1="303.201" x2="382.401" y1="739.8844" y2="739.8844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="41.4" x="307.701" y="753.7614">+endDate</text><line style="stroke:#A80036;stroke-width:1.35;" x1="303.201" x2="382.401" y1="759.5367" y2="759.5367"/><!--MD5=[c6c2aa411a70f0170997fbec83374a43]
+class Booking--><rect codeLine="45" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="61.8891" id="Booking" style="stroke:#A80036;stroke-width:1.35;" width="94.5" x="488.151" y="422.1"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="40.5" x="515.151" y="437.8113">Booking</text><line style="stroke:#A80036;stroke-width:1.35;" x1="489.051" x2="581.751" y1="444.6844" y2="444.6844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="83.7" x="493.551" y="458.5614">+bookingDate: Date</text><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="45" x="493.551" y="471.0138">+totalPrice</text><line style="stroke:#A80036;stroke-width:1.35;" x1="489.051" x2="581.751" y1="476.7891" y2="476.7891"/><!--MD5=[ac6bea31e13c94c7baa9ad18feb7405e]
+class Ticket--><rect codeLine="50" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="49.4367" id="Ticket" style="stroke:#A80036;stroke-width:1.35;" width="39.6" x="398.601" y="151.2"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="28.8" x="404.001" y="166.9113">Ticket</text><line style="stroke:#A80036;stroke-width:1.35;" x1="399.501" x2="437.301" y1="173.7844" y2="173.7844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="28.8" x="404.001" y="187.6614">+name</text><line style="stroke:#A80036;stroke-width:1.35;" x1="399.501" x2="437.301" y1="193.4367" y2="193.4367"/><!--MD5=[10813612642ae27aa5ff8d66c0f223e4]
+class Plane--><rect codeLine="54" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="74.3414" id="Plane" style="stroke:#A80036;stroke-width:1.35;" width="74.7" x="263.151" y="415.8"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="28.8" x="286.101" y="431.5113">Plane</text><line style="stroke:#A80036;stroke-width:1.35;" x1="264.051" x2="336.951" y1="438.3844" y2="438.3844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="28.8" x="268.551" y="452.2614">+name</text><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="24.3" x="268.551" y="464.7138">+type</text><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="63.9" x="268.551" y="477.1661">+manufacturer</text><line style="stroke:#A80036;stroke-width:1.35;" x1="264.051" x2="336.951" y1="482.9414" y2="482.9414"/><!--MD5=[3640288bb00e105a19a150bd568b9756]
+class Seat--><rect codeLine="60" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="61.8891" id="Seat" style="stroke:#A80036;stroke-width:1.35;" width="68.4" x="266.301" y="283.5"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="22.5" x="289.251" y="299.2113">Seat</text><line style="stroke:#A80036;stroke-width:1.35;" x1="267.201" x2="333.801" y1="306.0844" y2="306.0844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="57.6" x="271.701" y="319.9614">+seatNumber</text><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="56.7" x="271.701" y="332.4138">+rowNumber</text><line style="stroke:#A80036;stroke-width:1.35;" x1="267.201" x2="333.801" y1="338.1891" y2="338.1891"/><!--MD5=[b07065dfc0d0e09965ec10bfc328bb3e]
+class Option--><rect codeLine="65" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="61.8891" id="Option" style="stroke:#A80036;stroke-width:1.35;" width="39.6" x="227.601" y="6.3"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="32.4" x="231.201" y="22.0113">Option</text><line style="stroke:#A80036;stroke-width:1.35;" x1="228.501" x2="266.301" y1="28.8844" y2="28.8844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="27" x="233.001" y="42.7614">+price</text><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="28.8" x="233.001" y="55.2138">+name</text><line style="stroke:#A80036;stroke-width:1.35;" x1="228.501" x2="266.301" y1="60.9891" y2="60.9891"/><!--MD5=[0589ec48fae7a5d943e67f959c690f14]
+class SeatOption--><rect codeLine="70" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="36.9844" id="SeatOption" style="stroke:#A80036;stroke-width:1.35;" width="60.3" x="267.651" y="157.5"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="54.9" x="270.351" y="173.2113">SeatOption</text><line style="stroke:#A80036;stroke-width:1.35;" x1="268.551" x2="327.051" y1="180.0844" y2="180.0844"/><line style="stroke:#A80036;stroke-width:1.35;" x1="268.551" x2="327.051" y1="187.2844" y2="187.2844"/><!--MD5=[d013e7741bab9ab2458350aac5b42366]
+class FlightOption--><rect codeLine="72" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="49.4367" id="FlightOption" style="stroke:#A80036;stroke-width:1.35;" width="73.8" x="161.901" y="151.2"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="59.4" x="169.101" y="166.9113">FlightOption</text><line style="stroke:#A80036;stroke-width:1.35;" x1="162.801" x2="234.801" y1="173.7844" y2="173.7844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="63" x="167.301" y="187.6614">+maxAvailable</text><line style="stroke:#A80036;stroke-width:1.35;" x1="162.801" x2="234.801" y1="193.4367" y2="193.4367"/><!--MD5=[7421f545a0d8420c5bec41e74b387d9c]
+class Employee--><rect codeLine="77" fill="#FEFECE" filter="url(#f16b6zupto56m6)" height="74.3414" id="Employee" style="stroke:#A80036;stroke-width:1.35;" width="61.2" x="618.201" y="138.6"/><text fill="#000000" font-family="sans-serif" font-size="10.8" lengthAdjust="spacing" textLength="49.5" x="624.051" y="154.3113">Employee</text><line style="stroke:#A80036;stroke-width:1.35;" x1="619.101" x2="678.501" y1="161.1844" y2="161.1844"/><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="28.8" x="623.601" y="175.0614">+name</text><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="27" x="623.601" y="187.5138">+email</text><text fill="#000000" font-family="sans-serif" font-size="9.9" lengthAdjust="spacing" textLength="50.4" x="623.601" y="199.9661">+password</text><line style="stroke:#A80036;stroke-width:1.35;" x1="619.101" x2="678.501" y1="205.7414" y2="205.7414"/><!--MD5=[bde9b825a588d3a970645b4d0ccc1cc1]
+reverse link Flight to RecurringFlight--><path d="M388.953,660.744 C405.117,680.328 422.424,701.307 435.312,716.922 " fill="none" id="Flight-backto-RecurringFlight" style="stroke:#A80036;stroke-width:0.9;"/><polygon fill="none" points="384.066,664.713,377.469,646.821,393.786,656.694,384.066,664.713" style="stroke:#A80036;stroke-width:0.9;"/><!--MD5=[41deeaeea5a904ff27e0fd4ec11f5b47]
+reverse link PriceReduction to StaticPriceReduction--><path d="M345.123,785.016 C346.293,806.238 347.67,831.231 348.66,849.222 " fill="none" id="PriceReduction-backto-StaticPriceReduction" style="stroke:#A80036;stroke-width:0.9;"/><polygon fill="none" points="338.823,785.205,344.124,766.89,351.405,784.512,338.823,785.205" style="stroke:#A80036;stroke-width:0.9;"/><!--MD5=[c3b89e6a5883d54172f63d6f6190d7c3]
+reverse link PriceReduction to DynamicPriceReduction--><path d="M385.191,778.68 C411.876,801.189 445.608,829.62 469.125,849.447 " fill="none" id="PriceReduction-backto-DynamicPriceReduction" style="stroke:#A80036;stroke-width:0.9;"/><polygon fill="none" points="380.898,783.306,371.196,766.89,389.016,773.667,380.898,783.306" style="stroke:#A80036;stroke-width:0.9;"/><!--MD5=[62979509efb6a401679488b7640a9c28]
+reverse link Option to SeatOption--><path d="M264.888,85.707 C274.005,110.457 284.616,139.266 291.276,157.329 " fill="none" id="Option-backto-SeatOption" style="stroke:#A80036;stroke-width:0.9;"/><polygon fill="none" points="258.894,87.678,258.588,68.607,270.72,83.322,258.894,87.678" style="stroke:#A80036;stroke-width:0.9;"/><!--MD5=[2704d8449d0551760f4d3c581dfbc96b]
+reverse link Option to FlightOption--><path d="M230.508,85.788 C222.669,107.856 213.696,133.128 207.297,151.137 " fill="none" id="Option-backto-FlightOption" style="stroke:#A80036;stroke-width:0.9;"/><polygon fill="none" points="224.649,83.466,236.619,68.607,236.529,87.678,224.649,83.466" style="stroke:#A80036;stroke-width:0.9;"/><!--MD5=[cbd01b3874cee46697394db47cc4516a]
+reverse link Employee to SalesOfficer--><path d="M688.455,227.925 C707.058,251.892 728.028,278.901 741.366,296.082 " fill="none" id="Employee-backto-SalesOfficer" style="stroke:#A80036;stroke-width:0.9;"/><polygon fill="none" points="683.325,231.588,677.259,213.507,693.279,223.866,683.325,231.588" style="stroke:#A80036;stroke-width:0.9;"/><!--MD5=[6246bf4e1a992497e7ff707672dbd8f1]
+reverse link Employee to SalesManager--><path d="M607.077,227.583 C587.295,251.64 564.948,278.82 550.746,296.082 " fill="none" id="Employee-backto-SalesManager" style="stroke:#A80036;stroke-width:0.9;"/><polygon fill="none" points="602.352,223.407,618.651,213.507,612.09,231.417,602.352,223.407" style="stroke:#A80036;stroke-width:0.9;"/><!--MD5=[900c01674a364e7a3c4894e36e6e8ad4]
+reverse link Employee to SalesEmployee--><path d="M648.801,231.678 C648.801,254.673 648.801,279.792 648.801,296.082 " fill="none" id="Employee-backto-SalesEmployee" style="stroke:#A80036;stroke-width:0.9;"/><polygon fill="none" points="642.501,231.507,648.801,213.507,655.101,231.507,642.501,231.507" style="stroke:#A80036;stroke-width:0.9;"/><!--MD5=[e28ede45569a650da0d43bb7e552cca5]
+link Ticket to Flight--><path codeLine="91" d="M415.152,200.772 C407.178,258.363 385.434,409.158 359.901,533.7 C358.11,542.439 355.977,551.745 353.826,560.61 " fill="none" id="Ticket-Flight" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="403.9157" y="220.3371">*</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="6.3" x="348.6826" y="550.9342">1</text><!--MD5=[f202937217e83757716e107d22e9c49b]
+link SalesOfficer to Flight--><path codeLine="92" d="M743.157,333.099 C719.343,367.47 662.427,444.033 598.401,490.5 C527.382,542.043 429.012,576.936 377.478,592.965 " fill="none" id="SalesOfficer-Flight" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="6.3" x="732.6399" y="352.5191">1</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="384.748" y="587.1327">*</text><!--MD5=[748232659348ef27415227af069f3dee]
+link SalesEmployee to Booking--><path codeLine="93" d="M634.212,333.054 C615.6,355.5 583.146,394.65 560.529,421.938 " fill="none" id="SalesEmployee-Booking" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="6.3" x="622.9229" y="352.4615">1</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="560.3901" y="412.4116">*</text><!--MD5=[6de173d7dd0bb43f2f15465228b450ec]
+link Ticket to Booking--><path codeLine="94" d="M425.952,200.853 C437.094,235.404 459.216,300.924 483.201,354.6 C493.551,377.766 507.105,403.002 517.815,422.019 " fill="none" id="Ticket-Booking" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="18" x="407.635" y="220.0627">1..*</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="6.3" x="507.4326" y="412.2701">1</text><!--MD5=[9faafb343f19a07eecf6c2d5392629e3]
+link Flight to Route--><path codeLine="95" d="M308.088,629.496 C267.084,658.656 200.475,706.032 168.849,728.523 " fill="none" id="Flight-Route" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="18" x="282.848" y="630.282">1..*</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="6.3" x="175.7715" y="719.4412">1</text><!--MD5=[61aab75e20857d293909c2b6825d841d]
+link Route to Airport--><path codeLine="96" d="M133.479,743.904 C104.382,746.541 46.962,756.459 21.501,793.8 C5.4,817.416 34.974,843.246 58.59,858.906 " fill="none" id="Route-Airport" style="stroke:#A80036;stroke-width:0.9;"/><polygon fill="#000000" points="23.5454,805.8291,30.2041,800.4508,25.7711,797.5641,23.5454,805.8291" style="stroke:#000000;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="70.2" x="34.101" y="806.8456">arrives at port</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="121.8996" y="739.7864">*</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="6.3" x="45.4258" y="851.2144">1</text><!--MD5=[61aab75e20857d293909c2b6825d841d]
+link Route to Airport--><path codeLine="97" d="M142.002,760.554 C131.922,780.03 115.398,811.971 102.501,836.91 " fill="none" id="Route-Airport-1" style="stroke:#A80036;stroke-width:0.9;"/><polygon fill="#000000" points="126.5333,806.055,132.6231,800.04,127.9245,797.6093,126.5333,806.055" style="stroke:#000000;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="88.2" x="136.701" y="806.8456">departs from port</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="134.3101" y="779.9615">*</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="6.3" x="98.8096" y="827.318">1</text><!--MD5=[c53e5be9d688cd7684a766242ddce892]
+link Flight to PriceReduction--><path codeLine="98" d="M342.801,647.199 C342.801,670.176 342.801,697.743 342.801,717.057 " fill="none" id="Flight-PriceReduction" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="18" x="323.4791" y="666.756">1..*</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="337.7807" y="707.4019">*</text><!--MD5=[93e553a500862b1ae1b8795774402f50]
+link SeatOption to Seat--><path codeLine="99" d="M296.379,194.571 C295.281,210.717 294.102,235.215 295.101,256.5 C295.515,265.257 296.28,274.752 297.108,283.437 " fill="none" id="SeatOption-Seat" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="290.8922" y="213.6872">*</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="6.3" x="289.5198" y="273.6916">1</text><!--MD5=[36bfaf086298c3b0d1dd3af234af7f23]
+link SeatOption to Ticket--><path codeLine="100" d="M328.23,175.95 C350.28,175.95 379.458,175.95 398.574,175.95 " fill="none" id="SeatOption-Ticket" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="37.8" x="344.376" y="170.0956">chosen</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="334.97" y="172.2345">*</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="387.037" y="171.4611">*</text><!--MD5=[2f8ca8acfb38ec32c6616854fe560ec5]
+link Seat to Plane--><path codeLine="101" d="M300.501,345.807 C300.501,366.435 300.501,393.822 300.501,415.656 " fill="none" id="Seat-Plane" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="18" x="280.8979" y="364.8497">1..*</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="6.3" x="293.6793" y="406.0551">1</text><!--MD5=[5925267d20d4cbd47004d7cc587f1a48]
+link Plane to Flight--><path codeLine="102" d="M310.959,490.869 C316.953,511.974 324.504,538.56 330.741,560.547 " fill="none" id="Plane-Flight" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="6.3" x="305.6867" y="509.3788">1</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="324.1392" y="550.862">*</text><!--MD5=[1b02a19573a7431ec5c21488b73eecc1]
+link Ticket to Seat--><path codeLine="103" d="M398.403,200.052 C378.63,223.002 348.264,258.228 326.601,283.365 " fill="none" id="Ticket-Seat" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="386.8115" y="203.2456">*</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="6.3" x="324.6758" y="273.8437">1</text><!--MD5=[f572f39a3d24a8e41ad8a527653f072a]
+link FlightOption to Flight--><path codeLine="104" d="M198.189,200.916 C197.703,255.204 201.609,390.258 247.401,490.5 C261.603,521.595 286.938,550.854 307.935,571.734 " fill="none" id="FlightOption-Flight" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="193.0629" y="220.1394">*</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="6.3" x="294.6258" y="562.2144">1</text><!--MD5=[568c37120f94136ec4795393f812d931]
+link FlightOption to Ticket--><path codeLine="105" d="M231.417,151.119 C238.005,146.646 245.034,142.245 251.901,138.6 C286.677,120.132 295.974,114.219 334.701,107.1 C348.075,104.643 353.097,101.097 365.301,107.1 C383.859,116.226 397.764,135.297 406.674,151.065 " fill="none" id="FlightOption-Ticket" style="stroke:#A80036;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="233.9391" y="141.5013">*</text><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="4.5" x="398.9418" y="141.4349">*</text><!--MD5=[acf56a8f8467e02c4605aaa557a62e7e]
+link Route to PriceReduction--><!--MD5=[70b70201ec7e4915402bfb5d7dc85ee9]
+link SalesOfficer to SalesEmployee--><!--MD5=[7d909e55e0e99f5c9daa9edac99a5d0b]
+link SalesManager to SalesOfficer--><!--MD5=[e95c839a6cf14325a4de3b1d16d80a1c]
 @startuml test
 skinparam classAttributeIconSize 0
 skinparam componentStyle uml2
 'left to right direction
+'skinparam linetype polyline
 hide circle
 
 class Flight {
-    +arrvial
+    +arrival
     +departure
     +flightnumber
     +price
 }
 
+class RecurringFlight extends Flight {
+    +interval
+}
 
 class PriceReduction {
     +endDate
 }
+together {
+    class StaticPriceReduction extends PriceReduction {
+        +percentage
+    }
 
-class StaticPriceReduction extends PriceReduction {
-    +percentage
+    class DynamicPriceReduction extends PriceReduction {
+        +source
+    }
 }
 
-class DynamicPriceReduction extends PriceReduction {
-    +source
+together {
+    class Route {
+    }
+
+'    class RouteLeg
+
+    class Airport {
+        +name
+        +city
+        +country
+    }
 }
 
-class Route {
-}
-
-class Airport {
-    +name
-    +city
-    +country
-}
 
 class Booking {
     +bookingDate: Date
@@ -79,8 +95,6 @@ class Booking {
 
 class Ticket {
     +name
-    +seatNumber
-    +rowNumber
 }
 
 class Plane {
@@ -99,13 +113,12 @@ class Option {
     +name
 }
 
-class SeatOption extends Option {
-    +isSelected
-}
+class SeatOption extends Option
 
 class FlightOption extends Option {
-    +maxAvailible
+    +maxAvailable
 }
+
 
 class Employee {
     +name
@@ -113,38 +126,34 @@ class Employee {
     +password
 }
 
-class SalesEmployee extends Employee {
-
+together {
+    class SalesOfficer extends Employee
+    class SalesManager extends Employee
+    class SalesEmployee extends Employee
 }
 
-class SalesOfficer extends Employee {
 
-}
 
-class SalesManager extends Employee {
-
-}
-
-Booking "*" - - "1" Flight
-SalesOfficer "1" -l- "*" Flight: \t\t\t
-SalesEmployee "1" - - "*" Booking
+Ticket "*" - - "1" Flight
+SalesOfficer "1" - - - "*" Flight: \t\t\t
+SalesEmployee "1" - "*" Booking: \t
 Ticket "1..*" - - - "1" Booking
-Flight "1..*" - - "1" Route
-Route "*" - - "1" Airport: arrives at port
-Route "*" - - "1" Airport: departs from port
-Flight "1..*" - - "*" PriceReduction
-SeatOption "*" - "1" Seat: \t
-Plane "1" -left- "1..*" Seat: \t
-Flight "*" - - "1" Plane
-note on link
-A plane can only be
-associated with one active
-flight at a time
-end note
-Ticket "0..1" - - "1" Seat
+Flight "1..*" -d- "1" Route
+Route "*" - - "1" Airport: arrives at port >
+Route "*" - - "1" Airport: departs from port >
+Flight "1..*" -r- "*" PriceReduction: \t
+SeatOption "*" - - "1" Seat: \t
+SeatOption "*" - "*" Ticket: chosen
+Plane "1" -u- "1..*" Seat: \t
+Flight "*" -u- "1" Plane: \t
+Ticket "*" - "1" Seat
 FlightOption "*" - "1" Flight
-FlightOption "*" - "*" Booking: \t
-
+FlightOption "*" - "*" Ticket: \t
+'Route "*" -l- "*" RouteLeg: \t\t\t\t\t
+Route -[hidden] PriceReduction: \t\t\t
+'SalesOfficer -[hidden] SalesEmployee: \t
+SalesEmployee -l[hidden]- SalesOfficer
+SalesOfficer -l[hidden]- SalesManager
 @enduml
 
 @startuml test
@@ -153,33 +162,41 @@ skinparam componentStyle uml2
 hide circle
 
 class Flight {
-    +arrvial
+    +arrival
     +departure
     +flightnumber
     +price
 }
 
+class RecurringFlight extends Flight {
+    +interval
+}
 
 class PriceReduction {
     +endDate
 }
+together {
+    class StaticPriceReduction extends PriceReduction {
+        +percentage
+    }
 
-class StaticPriceReduction extends PriceReduction {
-    +percentage
+    class DynamicPriceReduction extends PriceReduction {
+        +source
+    }
 }
 
-class DynamicPriceReduction extends PriceReduction {
-    +source
+together {
+    class Route {
+    }
+
+
+    class Airport {
+        +name
+        +city
+        +country
+    }
 }
 
-class Route {
-}
-
-class Airport {
-    +name
-    +city
-    +country
-}
 
 class Booking {
     +bookingDate: Date
@@ -188,8 +205,6 @@ class Booking {
 
 class Ticket {
     +name
-    +seatNumber
-    +rowNumber
 }
 
 class Plane {
@@ -208,13 +223,12 @@ class Option {
     +name
 }
 
-class SeatOption extends Option {
-    +isSelected
-}
+class SeatOption extends Option
 
 class FlightOption extends Option {
-    +maxAvailible
+    +maxAvailable
 }
+
 
 class Employee {
     +name
@@ -222,38 +236,32 @@ class Employee {
     +password
 }
 
-class SalesEmployee extends Employee {
-
+together {
+    class SalesOfficer extends Employee
+    class SalesManager extends Employee
+    class SalesEmployee extends Employee
 }
 
-class SalesOfficer extends Employee {
 
-}
 
-class SalesManager extends Employee {
-
-}
-
-Booking "*" - - "1" Flight
-SalesOfficer "1" -l- "*" Flight: \t\t\t
-SalesEmployee "1" - - "*" Booking
+Ticket "*" - - "1" Flight
+SalesOfficer "1" - - - "*" Flight: \t\t\t
+SalesEmployee "1" - "*" Booking: \t
 Ticket "1..*" - - - "1" Booking
-Flight "1..*" - - "1" Route
-Route "*" - - "1" Airport: arrives at port
-Route "*" - - "1" Airport: departs from port
-Flight "1..*" - - "*" PriceReduction
-SeatOption "*" - "1" Seat: \t
-Plane "1" -left- "1..*" Seat: \t
-Flight "*" - - "1" Plane
-note on link
-A plane can only be
-associated with one active
-flight at a time
-end note
-Ticket "0..1" - - "1" Seat
+Flight "1..*" -d- "1" Route
+Route "*" - - "1" Airport: arrives at port >
+Route "*" - - "1" Airport: departs from port >
+Flight "1..*" -r- "*" PriceReduction: \t
+SeatOption "*" - - "1" Seat: \t
+SeatOption "*" - "*" Ticket: chosen
+Plane "1" -u- "1..*" Seat: \t
+Flight "*" -u- "1" Plane: \t
+Ticket "*" - "1" Seat
 FlightOption "*" - "1" Flight
-FlightOption "*" - "*" Booking: \t
-
+FlightOption "*" - "*" Ticket: \t
+Route -[hidden] PriceReduction: \t\t\t
+SalesEmployee -l[hidden]- SalesOfficer
+SalesOfficer -l[hidden]- SalesManager
 @enduml
 
 PlantUML version 1.2021.01(Tue Feb 02 08:55:08 CET 2021)
