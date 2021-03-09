@@ -128,8 +128,9 @@ process is a must-have item before the roll-out of **Business Application Flight
 #### Costs
 600.000 € in employee costs
 
-### Project tolerances
-10 % wear tolerance
+[comment]: <> (### Project tolerances)
+
+[comment]: <> (10 % wear tolerance)
 
 ## Risks and assumptions (R)
 During the investigation for this Project Charter several risks were mentioned:
