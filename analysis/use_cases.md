@@ -177,17 +177,9 @@ Extensions
 
 7. Actor denies
 
-8. System asks if he wants to change or to delete changes
-
-	1. Actor wants to change the dates
-
-		1. System asks for other dates to change to
-
-		2. Actor sets new dates
-
-		3. Back to 7
-
-	1. Actor wants to delete changes
+	1. Return to step 5
+	 
+	2. Actor wants to delete changes
 
 		1. System sends the Actor back to start page
 </td>
