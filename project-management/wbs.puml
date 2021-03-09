@@ -1,0 +1,41 @@
+@startwbs
+'skinparam monochrome true
+<style>
+wbsDiagram {
+  Linecolor Black
+  BackgroundColor Skyblue
+}
+</style>
+* Flight Sales Application
+
+** Analysis Phase
+*** User Stories
+*** Data Dictionary
+*** Domain Model
+*** Use Cases
+**** Use Case Descriptions
+**** Use Case Diagram
+*** Test Scenarios
+*** Activity Diagram
+
+** Design Phase
+*** Class Diagram
+*** Sequence Diagrams
+*** Database Design
+*** UI
+**** UI-Design
+**** Wireframes
+**** Mockups
+
+** Implementation Phase
+*** Presentation Logic
+*** Application Logic
+*** Data Logic
+*** Integration Test
+
+** Project Management
+*** Project Charter
+*** Work Breakdown Structure
+
+
+@endwbs
