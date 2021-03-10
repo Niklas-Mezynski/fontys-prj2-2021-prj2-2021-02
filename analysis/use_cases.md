@@ -28,6 +28,157 @@
 - Edit Route
 - Remove Route
 
+
+## Create Route
+
+<table>
+   <tr>
+      <td><b>Actor</b></td><td>Sales Officer</td>
+   </tr>
+	<tr>
+      <td><b>Description</b></td><td>Create a Route</td>
+</tr>
+<tr>
+<td>
+<b>Pre-condition</b>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td><b>Scenario</b></td>
+<td>
+<ol>
+<li>
+Actor chooses to add a new Route
+</li>
+<li>
+System asks for arrival and departure airport
+</li>
+<li>
+Actor gives arrival and departure airport
+</li>
+<li>
+System asks for confirmation
+</li>
+<li>
+Actor confirms given information
+</li>
+</ol>
+</td>
+</tr>
+<tr>
+<td><b>Result</b></td>
+<td>
+Actor has added a new route
+</td>
+</tr>
+<tr>
+<td>
+<b>Exceptions</b>
+</td>
+<td>
+5. One or more given airports are incorrect
+</td>
+</tr>
+</table>
+
+## Edit Route
+
+<table>
+   <tr>
+      <td><b>Actor</b></td><td>Sales Officer</td>
+   </tr>
+	<tr>
+      <td><b>Description</b></td><td>Edit a Route</td>
+</tr>
+<tr>
+<td>
+<b>Pre-condition</b>
+</td>
+<td>
+The Route to be edited was created
+</td>
+</tr>
+<tr>
+<td><b>Scenario</b></td>
+<td>
+<ol>
+<li>
+Actor chooses to edit a new Route
+</li>
+<li>
+System gives opportunity to edit arrival and departure airport
+</li>
+<li>
+Actor changes arrival and departure airport to desire
+</li>
+<li>
+System asks for confirmation
+</li>
+<li>
+Actor confirms given information
+</li>
+</ol>
+</td>
+</tr>
+<tr>
+<td><b>Result</b></td>
+<td>
+Actor has edited a route
+</td>
+</tr>
+<tr>
+<td>
+<b>Exceptions</b>
+</td>
+<td>
+5. One or more given airports are incorrect
+</td>
+</tr>
+</table>
+
+## Remove Route
+
+<table>
+   <tr>
+      <td><b>Actor</b></td><td>Sales Officer</td>
+   </tr>
+	<tr>
+      <td><b>Description</b></td><td>Remove a Route</td>
+</tr>
+<tr>
+<td>
+<b>Pre-condition</b>
+</td>
+<td>
+Route to be deleted was already created
+</td>
+</tr>
+<tr>
+<td><b>Scenario</b></td>
+<td>
+<ol>
+<li>
+Actor chooses to delete a Route
+</li>
+<li>
+System asks for confirmation
+</li>
+<li>
+Actor confirms his intention
+</li>
+</ol>
+</td>
+</tr>
+<tr>
+<td><b>Result</b></td>
+<td>
+Actor has deleted a route
+</td>
+</tr>
+</table>
+
 ## Search for Flight
 
 <table>
