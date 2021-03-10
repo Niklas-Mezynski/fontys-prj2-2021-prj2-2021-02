@@ -8,7 +8,7 @@
 - Edit PriceReduction : Philip
 - Create PriceReduction : Philip
 - edit flight options: Philip
-- Create FlightLeg Stops: Anatol
+- Create FlightLeg Stops: Anatol (for removal)
 - Create Flight Option: Anatol
 - remove flight options: Anatol
 - View KPIs: Niklas
@@ -21,6 +21,12 @@
 ***TODO***:
 
 - Register?
+- Update Create Flight
+- Edit Flight
+- Remove Flight
+- Create Route
+- Edit Route
+- Remove Route
 
 ## Search for Flight
 
