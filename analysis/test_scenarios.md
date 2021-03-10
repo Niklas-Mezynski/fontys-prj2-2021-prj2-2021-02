@@ -398,6 +398,78 @@
 </tr>
 
 <tr>
+<td><!-- UseCase Name-->Create Route</td>
+<td><!-- TestCaseDescription-->Sales Officer can create a new Route</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Select function to add a new Route</li>
+<li>Enter existing Airports as departure and arrival airport</li>
+<li>Confirm information</li>
+</ol>
+</td>
+<td><!--Expected Result-->Route has been created</td>
+</tr>
+
+<tr>
+<td><!-- UseCase Name-->Create Route</td>
+<td><!-- TestCaseDescription-->Sales Officer can not create a new Route if Airport does not exist</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Select function to add a new Route</li>
+<li>Enter at least one <b>not-existing</b> Airport as departure and arrival airport</li>
+<li>Confirm information</li>
+</ol>
+</td>
+<td><!--Expected Result-->Route has not been created</td>
+</tr>
+
+<tr>
+<td><!-- UseCase Name-->Edit Route</td>
+<td><!-- TestCaseDescription-->Sales Office can edit an existing Route</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Select the function to edit routes</li>
+<li>Select desired Route to be edited</li>
+<li>Change departure and/or arrival airport to an existing airport</li>
+<li>Confirm Changes</li>
+</ol>
+</td>
+<td><!--Expected Result-->Route has been edited</td>
+</tr>
+
+<tr>
+<td><!-- UseCase Name-->Edit Route</td>
+<td><!-- TestCaseDescription-->Sales Officer can not edit an existing Route if new Airport doesnt exist</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Select the function to edit routes</li>
+<li>Select desired Route to be edited</li>
+<li>Change departure and/or arrival airport to an <b>not-existing</b> airport</li>
+<li>Confirm Changes</li>
+</ol>
+</td>
+<td><!--Expected Result-->Route has not been edited</td>
+</tr>
+
+<tr>
+<td><!-- UseCase Name-->Remove Route</td>
+<td><!-- TestCaseDescription-->Sales Officer can remove an existing Route</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Select function to delete Routes</li>
+<li>Select desired Route</li>
+<li>Confirm deletion</li>
+</ol>
+</td>
+<td><!--Expected Result--> Desired Route was removed</td>
+</tr>
+
+<tr>
 <td><!-- UseCase Name--></td>
 <td><!-- TestCaseDescription--></td>
 <td>
