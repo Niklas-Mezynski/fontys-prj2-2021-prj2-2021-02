@@ -783,6 +783,7 @@ flight is at its initial price again
 </table>
 
 
+
 ## Create a flight
 
 <table>
@@ -799,32 +800,22 @@ flight is at its initial price again
 <tr>
 <td><b>Scenario</b></td>
 <td>
-<ol>
-<li>
-Actor selects option to create a new flight.
-</li>
-<li>
-Systems offers a search for the different flight routes.
-</li>
-<li>
-Actor chooses a flight route.
-</li>
-<li>
-System asks the actor to enter start date and time.
-</li>
-<li>
-Actor enters start date and time.
-</li>
-<li>
-System asks if all values are correct.
-</li>
-<li>
-Actor confirms the values
-</li>
-<li>
-System adds the flight to the system.
-</li>
-</ol>
+
+1. Actor selects option to create a new flight.
+
+2. Systems offers a search for the different flight routes.
+
+3. Actor chooses a flight route.
+
+4. System asks the actor to enter start date and time.
+
+5. Actor enters start date and time.
+
+6. System asks if all values are correct.
+
+7. Actor confirms the values
+
+8. System adds the flight to the system.
 </td>
 </tr>
 <tr>
@@ -837,11 +828,118 @@ A new flight has been registered in the system.
 <td><b>Extension</b></td>
 <td>
 
+3. Actor wants to create a flight route.    
+    1.  Use case <ins>create route</ins>
+    2. Continue at step 4.
 
+7. Actor does not confirm the values
+    1. Return to step 4.
 </td>
 </tr>
 </table>
 
+
+
+## Edit flight
+
+<table>
+   <tr>
+      <td><b>Actor</b></td><td>Sales Officer</td>
+   </tr>
+	<tr>
+      <td><b>Description</b></td><td>Actor wants to edit an existing Flight</td>
+</tr>
+<tr>
+        <td><b>Pre-condition</b></td>
+        <td>Flight already exists</td>
+    </tr>
+<tr>
+<td><b>Scenario</b></td>
+<td>
+
+1. Actor selects option to edit a flight.
+
+2. Systems offers a search for the different flights.
+
+3. Actor chooses a flight.
+
+4. System asks the actor to edit the flight data.
+
+5. Actor changes the data.
+
+6. System asks if all values are correct.
+
+7. Actor confirms the values.
+
+8. System edits the flight in the system.
+</td>
+</tr>
+<tr>
+<td><b>Result</b></td>
+<td>
+The flight has been edited.
+</td>
+</tr>
+<tr>
+<td><b>Extension</b></td>
+<td>
+
+7. Actor does not confirm the values
+    1. Return to step 4.
+</td>
+</tr>
+</table>
+
+
+
+## Remove flight
+
+<table>
+   <tr>
+      <td><b>Actor</b></td><td>Sales Officer</td>
+   </tr>
+	<tr>
+      <td><b>Description</b></td><td>Actor wants to remove an existing Flight</td>
+</tr>
+<tr>
+        <td><b>Pre-condition</b></td>
+        <td>Flight process was not started yet.</td>
+    </tr>
+<tr>
+<td><b>Scenario</b></td>
+<td>
+
+1. Actor selects option to remove a flight.
+
+2. Systems offers a search for the different flights.
+
+3. Actor chooses a flight.
+
+4. System asks the actor if he wants to remove the flight.
+
+5. Actor confirms.
+
+6. System removes the flight from the system.
+</td>
+</tr>
+<tr>
+<td><b>Result</b></td>
+<td>
+The flight has been removed.
+</td>
+</tr>
+<tr>
+<td><b>Exception</b></td>
+<td>
+
+5. Sales process already started
+
+    1. System shows error message
+
+    2. Return to step 1.
+</td>
+</tr>
+</table>
 
 ## Logout
 <table>
@@ -922,3 +1020,5 @@ Actor is logged in and granted access onto several functions
 </td>
 </tr>
 </table>
+
+
