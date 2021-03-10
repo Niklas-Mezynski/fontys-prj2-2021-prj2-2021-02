@@ -362,6 +362,54 @@
 </tr>
 
 <tr>
+<td><!-- UseCase Name-->Edit a flight</td>
+<td><!-- TestCaseDescription-->Sales officer wants to edit an existing Flight</td>
+<td>
+
+1. Actor selects option to edit a flight
+
+2. System offers search function
+
+3. Actor searches for a flight to Düsseldorf
+
+4. System asks actor to edit the data
+
+5. Actor increases start and arrival date by "1 day"
+
+6. System asks if all values are correct
+
+6. Actor confirms the values
+
+8. System edits the flight in the system
+
+</td>
+<td><!--Expected Result-->Flight has been edited with the correct data</td>
+</tr>
+
+
+<tr>
+<td><!-- UseCase Name-->Remove a flight</td>
+<td><!-- TestCaseDescription-->Sales officer wants to remove an existing Flight</td>
+<td>
+
+1. Actor selects option to remove a flight
+
+2. System offers search function
+
+3. Actor searches for a flight to Düsseldorf
+
+4. System asks actor if he wants to remove the flight
+
+5. Actor confirms
+
+6. System removes the flight from the system
+
+</td>
+<td><!--Expected Result-->Flight has been removed from the system</td>
+</tr>
+
+
+<tr>
 <td><!-- UseCase Name-->Login</td>
 <td><!-- TestCaseDescription-->Employee can log in with his account</td>
 <td>
