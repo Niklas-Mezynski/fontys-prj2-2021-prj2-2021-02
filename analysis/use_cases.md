@@ -21,12 +21,6 @@
 ***TODO***:
 
 - Register?
-- Update Create Flight
-- Edit Flight
-- Remove Flight
-- Create Route
-- Edit Route
-- Remove Route
 
 
 ## Create Route
