@@ -1016,3 +1016,43 @@ Actor is logged in and granted access onto several functions
 </table>
 
 
+
+## Create Plane
+<table>
+   <tr>
+      <td><b>Actor</b></td><td>Sales Officer</td>
+   </tr>
+	<tr>
+      <td><b>Description</b></td><td>The Actor is about to create a new plane that can be used for flights</td>
+    </tr>
+    <tr>
+        <td><b>Pre-condition</b></td>
+        <td>Actor is already logged in</td>
+    </tr>
+<tr>
+<td><b>Scenario</b></td>
+<td>
+<ol>
+<li>
+Actor chooses to create a new plane
+</li>
+<li>
+System offers to add seatrows/-columns
+</li>
+<li>
+Actor determines the amount of rows and seats in total and confirms his/her choice
+</li>
+<li>
+System saves the new plane and its capacity
+</li>
+</ol>
+</td>
+
+</tr>
+<tr>
+<td><b>Result</b></td>
+<td>
+A new plane is created and can be edited, removed or used for a specific flight
+</td>
+</tr>
+</table>
