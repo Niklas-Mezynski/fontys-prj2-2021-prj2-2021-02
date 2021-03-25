@@ -1,16 +1,13 @@
 package com.g02.flightsalesfx;
 
-import com.g02.flightsalesfx.persistence.EmployeeStorageService;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Paint;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +29,7 @@ public class CreatePlaneController {
     @FXML
     public HBox seatContainer;
 
-    private ToggleGroup toggleGroupSeatOptions = new ToggleGroup();
+    private final ToggleGroup toggleGroupSeatOptions = new ToggleGroup();
 
     private final List<Seat> seats = new ArrayList<>();
     private SeatOption currentSelected = null;
@@ -41,6 +38,22 @@ public class CreatePlaneController {
     private void addSeatRow() {
         System.out.println("add row");
         seatContainer.getChildren().add(createRow());
+    }
+
+    @FXML
+    private void cloneSeatRow() {
+        System.out.println("Clone row");
+        var row = createRow();
+        if (!seatContainer.getChildren().isEmpty()) {
+            var node = ((VBox) seatContainer.getChildren().get(seatContainer.getChildren().size() - 1)).getChildren().size() - 1;
+            for (int i = 0; i < node; i++) {
+                var seat = new Seat(row);
+                seats.add(seat);
+                row.getChildren().add(row.getChildren().size() - 1, seat);
+            }
+        }
+        seatContainer.getChildren().add(row);
+        updateSeatText();
     }
 
     @FXML
@@ -54,13 +67,26 @@ public class CreatePlaneController {
         box.setAlignment(Pos.CENTER);
         var addButton = new Button();
         addButton.setText("ADD");
+        addButton.setFont(Font.font("Source Code Pro Semibold"));
         addButton.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         addButton.setOnAction(actionEvent -> {
             var seatButton = new Seat(box);
             this.seats.add(seatButton);
             var children = box.getChildren();
             children.add(children.size() - 1, seatButton);
-            seats.forEach(Seat::updateText);
+            updateSeatText();
+        });
+        addButton.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+                System.out.println("right click");
+                box.getChildren().forEach(o -> {
+                    if (o instanceof Seat)
+                        seats.remove(o);
+                    else
+                        assert false;
+                });
+                seatContainer.getChildren().remove(box);
+            }
         });
         box.getChildren().add(addButton);
         return box;
@@ -109,6 +135,8 @@ public class CreatePlaneController {
 
         public Seat(VBox box) {
             this.box = box;
+            this.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+            this.setFont(Font.font("Source Code Pro Semibold"));
             setOnAction(actionEvent -> {
                 if (currentSelected != null) {
                     options.add(currentSelected);
@@ -123,16 +151,15 @@ public class CreatePlaneController {
         }
 
         void updateText() {
-            var i = box.getChildren().indexOf(this) + 1;
-            var i1 = seatContainer.getChildren().indexOf(box);
-            String s;
-            if (i1 < 26) {
-                s = String.valueOf((char) (i1 + 65));
+            var i = box.getChildren().indexOf(this);
+            var i1 = seatContainer.getChildren().indexOf(box) + 1;
+            String s = String.format("%02d", i1);
+            if (i < 26) {
+                s += String.valueOf((char) (i + 65));
             } else {
-                s = String.valueOf((char) ((i1 / 26) + 64));
-                s += String.valueOf((char) (i1 + 65 - 26));
+                s += String.valueOf((char) ((i / 26) + 64));
+                s += String.valueOf((char) (i + 65 - 26));
             }
-            s += i;
             if (currentSelected != null && options.contains(currentSelected)) {
                 s += ": X";
             }

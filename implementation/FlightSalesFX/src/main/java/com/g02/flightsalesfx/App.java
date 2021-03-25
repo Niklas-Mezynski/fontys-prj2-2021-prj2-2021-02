@@ -1,5 +1,10 @@
 package com.g02.flightsalesfx;
 
+import com.g02.flightsalesfx.businessEntities.Employee;
+import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
+import com.g02.flightsalesfx.businessLogic.BusinessLogicImplementationProvider;
+import com.g02.flightsalesfx.persistence.PersistenceAPI;
+import com.g02.flightsalesfx.persistence.PersistenceApiImplementationProvider;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,10 +18,16 @@ import java.io.IOException;
  */
 public class App extends Application {
 
+    public static Employee employee;
     private static Scene scene;
+
+    static PersistenceAPI persistenceAPI;
+    static BusinessLogicAPI businessLogicAPI;
 
     @Override
     public void start(Stage stage) throws IOException {
+        persistenceAPI = PersistenceApiImplementationProvider.getImplementation();
+        businessLogicAPI = BusinessLogicImplementationProvider.getImplementation(persistenceAPI);
         scene = new Scene(loadFXML("createPlane"), 800, 600);
         stage.setScene(scene);
         stage.setTitle("Flight Ticket Sales");

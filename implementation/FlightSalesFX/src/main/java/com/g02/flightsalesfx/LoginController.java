@@ -17,8 +17,12 @@ public class LoginController {
     private Button loginButton;
 
     @FXML
-    void login(ActionEvent event) {
-
+    void login(ActionEvent event) throws java.io.IOException {
+        var employee = App.businessLogicAPI.login(username.getText(), password.getText());
+        if (employee != null) {
+            App.employee = employee;
+            App.setRoot("home");
+        }
     }
 
 }
