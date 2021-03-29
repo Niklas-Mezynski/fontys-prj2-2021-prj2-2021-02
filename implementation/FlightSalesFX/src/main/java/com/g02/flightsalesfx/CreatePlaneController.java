@@ -164,7 +164,11 @@ public class CreatePlaneController {
                 s += String.valueOf((char) (i + 65 - 26));
             }
             if (currentSelected != null && options.contains(currentSelected)) {
-                s += ": X";
+                //s += ": X";
+                this.setFocused(true);
+            }
+            else {
+                this.setFocused(false);
             }
             this.setText(s);
         }
