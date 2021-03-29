@@ -5,6 +5,8 @@
  */
 package com.g02.flightsalesfx.businessEntities;
 
+import java.util.List;
+
 /**
  *
  * @author anato

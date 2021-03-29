@@ -7,6 +7,7 @@
 
 package com.g02.flightsalesfx.persistence;
 
+import com.g02.flightsalesfx.businessEntities.OptionManager;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
 import com.g02.flightsalesfx.businessLogic.OptionManagerImpl;
 import java.util.List;
@@ -19,7 +20,7 @@ public class SeatOptionsStorageServiceImpl implements SeatOptionsStorageService{
     
     private List<SeatOption> seatOptions;
     
-    public SeatOptionsStorageServiceImpl(OptionManagerImpl optionMgr){
+    public SeatOptionsStorageServiceImpl(OptionManager optionMgr){
         add(optionMgr.createSeatOption("SeatOption1"));
         add(optionMgr.createSeatOption("SeatOption2"));
     }

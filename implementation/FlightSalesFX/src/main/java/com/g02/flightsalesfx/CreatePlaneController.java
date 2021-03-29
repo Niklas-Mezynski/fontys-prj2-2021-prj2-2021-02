@@ -1,5 +1,8 @@
 package com.g02.flightsalesfx;
 
+import com.g02.flightsalesfx.businessEntities.Plane;
+import com.g02.flightsalesfx.businessEntities.Seat;
+import com.g02.flightsalesfx.persistence.PlaneStorageService;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -9,29 +12,34 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CreatePlaneController {
 
-    @FXML
-    public VBox seatOptions;
-
-/*    @FXML
-    public VBox flightOptions;*/
-
-    @FXML
-    public Button addSeatOptionButton;
-
-    @FXML
-    public Button addRow;
-
-    @FXML
-    public HBox seatContainer;
-
     private final ToggleGroup toggleGroupSeatOptions = new ToggleGroup();
 
+    /*    @FXML
+        public VBox flightOptions;*/
     private final List<Seat> seats = new ArrayList<>();
+    @FXML
+    public VBox seatOptions;
+    @FXML
+    public Button addSeatOptionButton;
+    @FXML
+    public Button addRow;
+    @FXML
+    public HBox seatContainer;
+    @FXML
+    public TextField planeName;
+    @FXML
+    public TextField planeType;
+    @FXML
+    public TextField planeManufacturer;
     private SeatOption currentSelected = null;
 
     @FXML
@@ -90,21 +98,51 @@ public class CreatePlaneController {
         return box;
     }
 
+    @FXML
+    private void savePlane() {
+        var name = planeName.getText();
+        var type = planeType.getText();
+        var manufacturer = planeManufacturer.getText();
+        var plane = App.businessLogicAPI.getPlaneManager().createPlane(name, manufacturer, type);
+        var seatsStream = seats.stream().map(seat -> App.businessLogicAPI.getSeatManager().createSeat(seat.row(), seat.column(), seat.options.stream()
+                .map(seatOption -> App.businessLogicAPI.getOptionManager().createSeatOption(seatOption.getSeatOptionName()))
+                .collect(Collectors.toList())));
+        plane.addAllSeats(seatsStream.sorted().collect(Collectors.toList()));
+        System.out.println(plane);
+        var planeStorageService = App.persistenceAPI.getPlaneStorageService(App.businessLogicAPI.getPlaneManager());
+        planeStorageService.add(plane);
+        exit();
+    }
+
+    @FXML
+    private void exit(){
+        try {
+            App.setRoot("home");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateSeatText() {
+        seats.forEach(Seat::updateText);
+    }
+
     private class SeatOption extends HBox {
         String optionName = "";
         ToggleButton chooseButton;
         TextField changeNameTextField;
-        Spinner<Integer> changeAvailableSpinner;
+        Spinner<Double> changeAvailableSpinner;
 
         public SeatOption() {
             chooseButton = new ToggleButton();
             changeNameTextField = new TextField();
             changeAvailableSpinner = new Spinner<>();
-            changeAvailableSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE));
+            changeAvailableSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0D, Double.MAX_VALUE, 0, 0.01));
+            changeAvailableSpinner.setEditable(true);
             this.setSpacing(10);
             this.getChildren().addAll(chooseButton, changeNameTextField, changeAvailableSpinner);
-            this.changeNameTextField.textProperty().addListener(e->{
-                optionName=changeNameTextField.getText();
+            this.changeNameTextField.textProperty().addListener(e -> {
+                optionName = changeNameTextField.getText();
             });
             chooseButton.getStyleClass().add("selectSeatOption");
             chooseButton.setToggleGroup(toggleGroupSeatOptions);
@@ -122,14 +160,6 @@ public class CreatePlaneController {
         }
     }
 
-    private void savePlane() {
-
-    }
-
-    private void updateSeatText() {
-        seats.forEach(Seat::updateText);
-    }
-
     private class Seat extends Button {
         List<SeatOption> options = new ArrayList<>();
         private VBox box;
@@ -142,8 +172,7 @@ public class CreatePlaneController {
                 if (currentSelected != null) {
                     if (!options.contains(currentSelected)) {
                         options.add(currentSelected);
-                    }
-                    else {
+                    } else {
                         options.remove(currentSelected);
                     }
                 } else {
@@ -151,14 +180,15 @@ public class CreatePlaneController {
                     if (box.getChildren().size() <= 1) {
                         seatContainer.getChildren().remove(box);
                     }
+                    seats.remove(this);
                 }
                 updateSeatText();
             });
         }
 
         void updateText() {
-            var i = box.getChildren().indexOf(this);
-            var i1 = seatContainer.getChildren().indexOf(box) + 1;
+            var i = column();
+            var i1 = row() + 1;
             String s = String.format("%02d", i1);
             if (i < 26) {
                 s += String.valueOf((char) (i + 65));
@@ -168,9 +198,8 @@ public class CreatePlaneController {
             }
             if (currentSelected != null && options.contains(currentSelected)) {
                 //s += ": X";
-                this.setStyle("-fx-background-color: #ff0000; ");
-            }
-            else {
+                this.setStyle("-fx-text-fill: #007698; ");
+            } else {
                 this.setStyle("");
             }
             this.setText(s);

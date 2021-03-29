@@ -29,3 +29,7 @@ HBox.plane>VBox {
 ToggleButton.selectSeatOption {
     -fx-min-width: 30;
 }
+
+.selected-seat {
+    -fx-border-color: red;
+}

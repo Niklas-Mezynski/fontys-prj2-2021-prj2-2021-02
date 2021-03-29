@@ -10,5 +10,7 @@ package com.g02.flightsalesfx.businessEntities;
  * @author anato
  */
 public interface PlaneManager {
-    
+
+    public Plane createPlane(String name, String manufacturer, String type);
+
 }
