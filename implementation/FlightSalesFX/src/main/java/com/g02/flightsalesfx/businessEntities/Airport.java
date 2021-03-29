@@ -15,6 +15,6 @@ public interface Airport {
     
     public String getCity();
     
-    public String getContry();
+    public String getCountry();
     
 }

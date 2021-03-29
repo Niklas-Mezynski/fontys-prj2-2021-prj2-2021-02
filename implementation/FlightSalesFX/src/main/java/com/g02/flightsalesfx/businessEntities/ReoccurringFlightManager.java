@@ -9,6 +9,6 @@ package com.g02.flightsalesfx.businessEntities;
  *
  * @author anato
  */
-public interface ReoccuringFlightManager {
+public interface ReoccurringFlightManager {
     
 }

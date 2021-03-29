@@ -9,7 +9,7 @@ package com.g02.flightsalesfx.businessEntities;
  *
  * @author anato
  */
-public interface ReoccuringFlight extends Flight{
+public interface ReoccurringFlight extends Flight{
     
     public int getInterval();
     

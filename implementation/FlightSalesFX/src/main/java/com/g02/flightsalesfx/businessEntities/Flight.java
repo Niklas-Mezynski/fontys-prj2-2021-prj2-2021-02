@@ -31,7 +31,7 @@ public interface Flight {
     
     public SalesOfficer getCreatedBy();
     
-    public List<PriceReduction> getPriceRedctions();
+    public List<PriceReduction> getPriceReductions();
     
     public Plane getPlane();
     
