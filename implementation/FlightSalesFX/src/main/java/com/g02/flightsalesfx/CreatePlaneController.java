@@ -142,7 +142,12 @@ public class CreatePlaneController {
             this.setFont(Font.font("Source Code Pro Semibold"));
             setOnAction(actionEvent -> {
                 if (currentSelected != null) {
-                    options.add(currentSelected);
+                    if (!options.contains(currentSelected)) {
+                        options.add(currentSelected);
+                    }
+                    else {
+                        options.remove(currentSelected);
+                    }
                 } else {
                     box.getChildren().remove(this);
                     if (box.getChildren().size() <= 1) {
@@ -165,10 +170,10 @@ public class CreatePlaneController {
             }
             if (currentSelected != null && options.contains(currentSelected)) {
                 //s += ": X";
-                this.setFocused(true);
+                this.setStyle("-fx-background-color: #ff0000; ");
             }
             else {
-                this.setFocused(false);
+                this.setStyle("");
             }
             this.setText(s);
         }
