@@ -170,10 +170,10 @@ public class CreatePlaneController {
             }
             if (currentSelected != null && options.contains(currentSelected)) {
                 //s += ": X";
-                this.setFocused(true);
+                this.setStyle("-fx-background-color: #ff0000; ");
             }
             else {
-                this.setFocused(false);
+                this.setStyle("");
             }
             this.setText(s);
         }
