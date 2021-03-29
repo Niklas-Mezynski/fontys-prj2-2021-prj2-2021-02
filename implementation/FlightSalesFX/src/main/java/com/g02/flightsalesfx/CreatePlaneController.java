@@ -105,6 +105,9 @@ public class CreatePlaneController {
             changeAvailableSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE));
             this.setSpacing(10);
             this.getChildren().addAll(chooseButton, changeNameTextField, changeAvailableSpinner);
+            this.changeNameTextField.textProperty().addListener(e->{
+                optionName=changeNameTextField.getText();
+            });
             chooseButton.getStyleClass().add("selectSeatOption");
             chooseButton.setToggleGroup(toggleGroupSeatOptions);
             chooseButton.setOnAction(actionEvent -> {
