@@ -158,6 +158,10 @@ public class CreatePlaneController {
                 System.out.println("select seatOption");
             });
         }
+
+        public String getSeatOptionName() {
+            return changeNameTextField.getText();
+        }
     }
 
     private class Seat extends Button {

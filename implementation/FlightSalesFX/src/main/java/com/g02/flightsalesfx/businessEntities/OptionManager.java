@@ -10,5 +10,5 @@ package com.g02.flightsalesfx.businessEntities;
  * @author anato
  */
 public interface OptionManager {
-    
+    SeatOption createSeatOption(String name);
 }
