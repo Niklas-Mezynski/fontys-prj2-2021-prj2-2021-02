@@ -142,7 +142,12 @@ public class CreatePlaneController {
             this.setFont(Font.font("Source Code Pro Semibold"));
             setOnAction(actionEvent -> {
                 if (currentSelected != null) {
-                    options.add(currentSelected);
+                    if (!options.contains(currentSelected)) {
+                        options.add(currentSelected);
+                    }
+                    else {
+                        options.remove(currentSelected);
+                    }
                 } else {
                     box.getChildren().remove(this);
                     if (box.getChildren().size() <= 1) {
