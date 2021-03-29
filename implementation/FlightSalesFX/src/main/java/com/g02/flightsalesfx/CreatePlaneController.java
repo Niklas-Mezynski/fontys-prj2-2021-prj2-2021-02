@@ -204,6 +204,14 @@ public class CreatePlaneController {
             }
             this.setText(s);
         }
+
+        public int row() {
+            return seatContainer.getChildren().indexOf(box);
+        }
+
+        public int column() {
+            return box.getChildren().indexOf(this);
+        }
     }
 
 }

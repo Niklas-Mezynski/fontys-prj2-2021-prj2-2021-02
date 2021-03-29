@@ -9,8 +9,8 @@ import java.util.List;
 
 /**
  *
- * @author anato
+ * @author
  */
 public interface SeatManager {
-    
+    public Seat createSeat(int row, int seat, List<SeatOption> seatOptions);
 }
