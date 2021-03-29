@@ -80,10 +80,8 @@ public class CreatePlaneController {
             if (mouseEvent.getButton() == MouseButton.SECONDARY) {
                 System.out.println("right click");
                 box.getChildren().forEach(o -> {
-                    if (o instanceof Seat)
-                        seats.remove(o);
-                    else
-                        assert false;
+                    assert o instanceof Seat;
+                    seats.remove(o);
                 });
                 seatContainer.getChildren().remove(box);
             }
