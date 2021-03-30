@@ -35,6 +35,7 @@ public class CreatePlaneTest {
         App.setRoot("home");
         this.stage=stage;
     }
+
     @Test
     void createPlaneOpens(FxRobot nils) {
         //See the comment above if this produces a weird error
