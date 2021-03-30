@@ -28,7 +28,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         persistenceAPI = PersistenceApiImplementationProvider.getImplementation();
         businessLogicAPI = BusinessLogicImplementationProvider.getImplementation(persistenceAPI);
-        scene = new Scene(loadFXML("home"), 800, 600);
+        scene = new Scene(loadFXML("login"), 800, 600);
         stage.setScene(scene);
         stage.setTitle("Flight Ticket Sales");
 

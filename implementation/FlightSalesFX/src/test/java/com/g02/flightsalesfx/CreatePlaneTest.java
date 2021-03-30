@@ -32,6 +32,7 @@ public class CreatePlaneTest {
     void start(Stage stage) throws IOException {
         var app=new App();
         app.start(stage);
+        App.setRoot("home");
         this.stage=stage;
     }
     @Test
