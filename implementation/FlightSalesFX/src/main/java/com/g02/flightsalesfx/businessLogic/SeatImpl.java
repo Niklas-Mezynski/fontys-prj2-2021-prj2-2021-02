@@ -4,6 +4,7 @@ import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SeatImpl implements Seat, Comparable<Seat> {
 
@@ -57,5 +58,18 @@ public class SeatImpl implements Seat, Comparable<Seat> {
             return this.getSeatNumber()-o.getSeatNumber();
         }
         return this.getRowNumber()-o.getRowNumber();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SeatImpl seat = (SeatImpl) o;
+        return rowNumber == seat.rowNumber && seatNumber == seat.seatNumber && Objects.equals(seatOptions, seat.seatOptions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rowNumber, seatNumber, seatOptions);
     }
 }

@@ -6,6 +6,7 @@ import com.g02.flightsalesfx.businessEntities.Seat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class PlaneImpl implements Plane {
 
@@ -64,5 +65,18 @@ public class PlaneImpl implements Plane {
                 ", type='" + type + '\'' +
                 ", seatList=" + seatList +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlaneImpl plane = (PlaneImpl) o;
+        return Objects.equals(name, plane.name) && Objects.equals(manufacturer, plane.manufacturer) && Objects.equals(type, plane.type) && Objects.equals(seatList, plane.seatList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, manufacturer, type, seatList);
     }
 }
