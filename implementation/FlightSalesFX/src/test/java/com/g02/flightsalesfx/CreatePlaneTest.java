@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testfx.assertions.api.Assertions.assertThat;
@@ -116,6 +117,58 @@ public class CreatePlaneTest {
         plane.addSeat(new SeatImpl(0, 1));
         assertThat(planes).element(0).isEqualTo(plane);
     }
+    @Test
+    void removeSeat(FxRobot test){
+        test.clickOn(test.lookup("#goToCreatePlane").queryAs(Button.class));
+        test.clickOn(test.lookup("#addRow").queryAs(Button.class));
+        var buttons = test.lookup(s->s instanceof Button).queryAllAs(Button.class);
+        Button addButton=null;
+        for (Button button : buttons) {
+            if(button.getText().equals("ADD")){
+                addButton=button;
+            }
+        }
+        test.clickOn(addButton);
+        test.clickOn(addButton);
+        test.clickOn(addButton);
+        buttons=test.lookup(s->s instanceof Button).queryAllAs(Button.class);
+        for(Button button:buttons){
+            if(button.getText().equals("01A")){
+                addButton=button;
+            }
+        }
+        test.clickOn(addButton);
+        buttons=test.lookup(s->s instanceof Button).queryAllAs(Button.class);
+        Boolean isRemoved=true;
+        for(Button button:buttons){
+            if(button.getText().equals("01C")){
+                isRemoved=false;
+            }
+        }
+        assertThat(isRemoved).isTrue();
+        test.clickOn(helperGetButtonByName("01B",test).get(0));
+        test.clickOn(helperGetButtonByName("01A",test).get(0));
+        var emptyList=helperGetButtonByName("ADD",test);
+        assertThat(emptyList.isEmpty()).isTrue();
+
+    }
+
+    @Test
+    void removeRow(FxRobot test){
+        test.clickOn(test.lookup("#goToCreatePlane").queryAs(Button.class));
+        test.clickOn(test.lookup("#addRow").queryAs(Button.class));
+        test.clickOn(test.lookup("#addRow").queryAs(Button.class));
+        for(Button button:helperGetButtonByName("ADD",test)){
+            test.clickOn(button);
+            test.clickOn(button);
+            test.clickOn(button);
+        }
+        Button b=helperGetButtonByName("ADD",test).get(1);
+        test.clickOn(b);
+        test.rightClickOn(b).drop();
+        var text=helperGetButtonByName("02B",test);
+        assertThat(true).isTrue();
+    }
 
     @Test
     void cloneRow(FxRobot test) {
@@ -129,7 +182,6 @@ public class CreatePlaneTest {
         for (Button button : buttons) {
             if (button.getText().equals("ADD")) {
                 a = true;
-                addButton = button;
                 addButton = button;
             }
         }
@@ -190,6 +242,12 @@ public class CreatePlaneTest {
         assertThat(seatButton.getTextFill()).isEqualTo(p);
         nils.clickOn(seatOptionButtons);
         assertThat(seatButton.getTextFill()).isNotEqualTo(p);
+    }
+
+    List<Button> helperGetButtonByName(String buttonText,FxRobot test){
+        var buttons=test.lookup(s->s instanceof Button).queryAllAs(Button.class);
+        var test2= buttons.stream().filter(s->s.getText().equals(buttonText)).collect(Collectors.toList());
+        return test2;
     }
 
 }
