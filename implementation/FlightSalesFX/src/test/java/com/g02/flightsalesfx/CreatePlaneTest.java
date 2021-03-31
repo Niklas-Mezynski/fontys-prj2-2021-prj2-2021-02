@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.MouseButton;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -165,9 +166,9 @@ public class CreatePlaneTest {
         }
         Button b=helperGetButtonByName("ADD",test).get(1);
         test.clickOn(b);
-        test.rightClickOn(b).drop();
+        test.rightClickOn(b);
         var text=helperGetButtonByName("02B",test);
-        assertThat(true).isTrue();
+        assertThat(text).isEmpty();
     }
 
     @Test
