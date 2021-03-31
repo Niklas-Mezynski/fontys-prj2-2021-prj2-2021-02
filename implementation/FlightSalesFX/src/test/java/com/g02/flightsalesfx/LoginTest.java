@@ -4,7 +4,7 @@ import com.sun.tools.javac.Main;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.assertj.core.api.Assertions;
+import org.assertj.core.api.*;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +14,7 @@ import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
 
-import static org.testfx.assertions.api.Assertions.assertThat;
+import static org.testfx.assertions.api.Assertions.*;
 
 
 @ExtendWith(ApplicationExtension.class)
@@ -41,5 +41,17 @@ public class LoginTest {
         assertThat(App.employee).isNotNull();
         assertThat(App.employee.getEmail()).isEqualTo(username);
         assertThat(App.employee.getPassword()).isEqualTo(password);
+    }
+
+    @Test
+    void testLoginNoSuccess(FxRobot test) {
+        assertThat(stage.getTitle()).isEqualTo("Flight Ticket Sales");
+        assertThat(test.lookup("#titleLabel").queryAs(Label.class)).hasText("Login");
+        var username = "urselmann@gmx.de";
+        test.lookup("#username").queryAs(TextField.class).setText(username);
+        var password = "urselIstDieBeste";
+        test.lookup("#password").queryAs(TextField.class).setText(password);
+        test.lookup("#loginButton").queryButton().fire();
+        assertThat(App.employee).isNull();
     }
 }

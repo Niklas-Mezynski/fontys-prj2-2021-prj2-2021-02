@@ -74,4 +74,42 @@ public class CreatePlaneTest {
         assertThat(a).isTrue();
     }
 
+    @Test
+    void cloneRow(FxRobot test){
+        test.clickOn(test.lookup("#goToCreatePlane").queryAs(Button.class));
+        Assertions.assertThat(test.lookup(".label").queryAs(Label.class)).hasText("Create Plane");
+        test.clickOn(test.lookup("#addRow").queryAs(Button.class));
+
+        var buttons=test.lookup((s)-> s instanceof Button).queryAllAs(Button.class);
+        var a=false;
+        Button addButton=null;
+        for (Button button : buttons) {
+            if (button.getText().equals("ADD")){
+                a = true;
+                addButton=button;
+                addButton=button;
+            }
+        }
+        assertThat(a).isTrue();
+        test.clickOn(addButton);
+        buttons=test.lookup((s)-> s instanceof Button).queryAllAs(Button.class);
+        a=false;
+        for (Button button : buttons) {
+            if (button.getText().equals("01A")){
+                a = true;
+            }
+        }
+        assertThat(a).isTrue();
+        test.clickOn(addButton);
+        test.clickOn(test.lookup("#addRow1").queryAs(Button.class));
+        buttons=test.lookup((s)-> s instanceof Button).queryAllAs(Button.class);
+        a=false;
+        for (Button button : buttons) {
+            if (button.getText().equals("02B")){
+                a = true;
+            }
+        }
+        assertThat(a).isTrue();
+    }
+
 }
