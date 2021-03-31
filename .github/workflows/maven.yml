@@ -25,5 +25,5 @@ jobs:
       with:
         repositories: '[{ "id": "fontysvenlo.org", "url": "https://www.fontysvenlo.org/repository" }]'
     - name: Build with Maven
-      run: mvn -B package --file implementation/FlightSalesFX/pom.xml
+      run: mvn -B package --file implementation/FlightSalesFX/pom.xml --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
 
