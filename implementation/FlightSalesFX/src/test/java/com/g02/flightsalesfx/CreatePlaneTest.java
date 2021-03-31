@@ -3,6 +3,7 @@ package com.g02.flightsalesfx;
 import com.g02.flightsalesfx.businessEntities.Seat;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -75,41 +76,78 @@ public class CreatePlaneTest {
     }
 
     @Test
-    void cloneRow(FxRobot test){
+    void cloneRow(FxRobot test) {
         test.clickOn(test.lookup("#goToCreatePlane").queryAs(Button.class));
         Assertions.assertThat(test.lookup(".label").queryAs(Label.class)).hasText("Create Plane");
         test.clickOn(test.lookup("#addRow").queryAs(Button.class));
 
-        var buttons=test.lookup((s)-> s instanceof Button).queryAllAs(Button.class);
-        var a=false;
-        Button addButton=null;
+        var buttons = test.lookup((s) -> s instanceof Button).queryAllAs(Button.class);
+        var a = false;
+        Button addButton = null;
         for (Button button : buttons) {
-            if (button.getText().equals("ADD")){
+            if (button.getText().equals("ADD")) {
                 a = true;
-                addButton=button;
-                addButton=button;
+                addButton = button;
+                addButton = button;
             }
         }
         assertThat(a).isTrue();
         test.clickOn(addButton);
-        buttons=test.lookup((s)-> s instanceof Button).queryAllAs(Button.class);
-        a=false;
+        buttons = test.lookup((s) -> s instanceof Button).queryAllAs(Button.class);
+        a = false;
         for (Button button : buttons) {
-            if (button.getText().equals("01A")){
+            if (button.getText().equals("01A")) {
                 a = true;
             }
         }
         assertThat(a).isTrue();
         test.clickOn(addButton);
         test.clickOn(test.lookup("#addRow1").queryAs(Button.class));
-        buttons=test.lookup((s)-> s instanceof Button).queryAllAs(Button.class);
-        a=false;
+        buttons = test.lookup((s) -> s instanceof Button).queryAllAs(Button.class);
+        a = false;
         for (Button button : buttons) {
-            if (button.getText().equals("02B")){
+            if (button.getText().equals("02B")) {
                 a = true;
             }
         }
         assertThat(a).isTrue();
+    }
+        
+        @Test
+    void seatOptionAddingRemovingTest(FxRobot nils) throws IOException {
+        nils.clickOn(nils.lookup("#goToCreatePlane").queryAs(Button.class));
+        Assertions.assertThat(nils.lookup(".label").queryAs(Label.class)).hasText("Create Plane");
+        nils.clickOn(nils.lookup("#addRow").queryAs(Button.class));
+        var buttons=nils.lookup((s)-> s instanceof Button).queryAllAs(Button.class);
+        Button addButton=null;
+        for (Button button : buttons) {
+            if (button.getText().equals("ADD")){
+                addButton=button;
+            }
+        }
+        nils.clickOn(addButton);
+        buttons=nils.lookup((s)-> s instanceof Button).queryAllAs(Button.class);
+        Button seatButton=null;
+        for (Button button : buttons) {
+            if (button.getText().equals("01A")){
+                seatButton=button;
+            }
+        }
+        var p=seatButton.getTextFill();
+        nils.clickOn(nils.lookup("#addSeatOptionButton").queryButton());
+        var seatOptionButtons=nils.lookup(b->b instanceof ToggleButton).queryAs(ToggleButton.class);
+        assertThat(seatOptionButtons).isNotNull();
+        nils.clickOn(seatOptionButtons);
+        nils.clickOn(seatButton);
+        assertThat(seatButton.getTextFill()).isNotEqualTo(p);
+        nils.clickOn(seatButton);
+        assertThat(seatButton.getTextFill()).isEqualTo(p);
+        nils.clickOn(seatButton);
+        assertThat(seatButton.getTextFill()).isNotEqualTo(p);
+        nils.clickOn(seatOptionButtons);
+        assertThat(seatButton.getTextFill()).isEqualTo(p);
+        nils.clickOn(seatOptionButtons);
+        assertThat(seatButton.getTextFill()).isNotEqualTo(p);
     }
 
 }
