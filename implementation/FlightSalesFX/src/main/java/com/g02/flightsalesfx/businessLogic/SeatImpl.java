@@ -13,11 +13,11 @@ public class SeatImpl implements Seat {
     private List<SeatOption> seatOptions;
 
 //    Useless constructor because cant be accessed from SeatManagerImpl
-//    public SeatImpl(int rowNumber, int seatNumber) {
-//        this.rowNumber = rowNumber;
-//        this.seatNumber = seatNumber;
-//        this.seatOptions = new ArrayList<>();
-//    }
+    public SeatImpl(int rowNumber, int seatNumber) {
+        this.rowNumber = rowNumber;
+        this.seatNumber = seatNumber;
+        this.seatOptions = new ArrayList<>();
+    }
 
     public SeatImpl(int rowNumber, int seatNumber, List<SeatOption> toAdd) {
         this.rowNumber = rowNumber;
