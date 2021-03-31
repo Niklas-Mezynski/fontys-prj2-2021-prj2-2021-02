@@ -16,7 +16,7 @@ public class EmployeeStorageServiceImpl implements EmployeeStorageService {
 
     public EmployeeStorageServiceImpl(EmployeeManager employeeManager) {
         this.employeeManager = employeeManager;
-        employees = new ArrayList<Employee>();
+        employees = new ArrayList<>();
         SalesEmployee salesEmployee = employeeManager.createSalesEmployee("Peter", "peter@gmx.de", "peterIstDerBeste");
         SalesOfficer salesOfficer = employeeManager.createSalesOfficer("Franz", "franz@gmx.de", "franzIstDerBeste");
         employees.add(salesEmployee);
