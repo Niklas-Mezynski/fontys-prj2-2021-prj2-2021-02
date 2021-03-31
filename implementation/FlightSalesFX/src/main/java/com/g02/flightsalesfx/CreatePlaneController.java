@@ -137,7 +137,7 @@ public class CreatePlaneController {
         seats.forEach(SeatButton::updateText);
     }
 
-    public class SeatOption extends HBox implements Seat {
+    public class SeatOption extends HBox {
         String optionName = "";
         ToggleButton chooseButton;
         TextField changeNameTextField;
@@ -173,29 +173,10 @@ public class CreatePlaneController {
             return changeNameTextField.getText();
         }
 
-        @Override
-        public int getRowNumber() {
-            return 0;
-        }
-
-        @Override
-        public int getSeatNumber() {
-            return 0;
-        }
-
-        @Override
-        public void addSeatOption(com.g02.flightsalesfx.businessEntities.SeatOption so) {
-
-        }
-
-        @Override
-        public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) {
-
-        }
 
     }
 
-    public class SeatButton extends Button {
+    public class SeatButton extends Button implements Seat {
         List<SeatOption> options = new ArrayList<>();
         private VBox box;
 
@@ -250,6 +231,26 @@ public class CreatePlaneController {
 
         public int column() {
             return box.getChildren().indexOf(this);
+        }
+
+        @Override
+        public int getRowNumber() {
+            return row();
+        }
+
+        @Override
+        public int getSeatNumber() {
+            return column();
+        }
+
+        @Override
+        public void addSeatOption(com.g02.flightsalesfx.businessEntities.SeatOption so) {
+
+        }
+
+        @Override
+        public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) {
+
         }
     }
 
