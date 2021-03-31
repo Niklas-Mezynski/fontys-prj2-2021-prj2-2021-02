@@ -1040,10 +1040,16 @@ Actor chooses to create a new plane
 System offers to add seatrows/-columns
 </li>
 <li>
-Actor determines the amount of rows and seats in total and confirms his/her choice
+Actor determines the amount of rows and seats in total
 </li>
 <li>
-System saves the new plane and its capacity
+System requires other plane information
+</li>
+<li>
+Actor enters specific information and confirms
+</li>
+<li>
+System saves the new plane and its characteristics
 </li>
 </ol>
 </td>
