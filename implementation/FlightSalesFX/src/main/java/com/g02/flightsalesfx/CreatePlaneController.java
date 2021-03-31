@@ -92,6 +92,7 @@ public class CreatePlaneController {
                     seats.remove(o);
                 });
                 seatContainer.getChildren().remove(box);
+                updateSeatText();
             }
         });
         box.getChildren().add(addButton);
