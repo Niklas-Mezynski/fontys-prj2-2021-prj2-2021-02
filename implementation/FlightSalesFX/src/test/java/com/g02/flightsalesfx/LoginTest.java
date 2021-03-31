@@ -43,7 +43,7 @@ public class LoginTest {
         fxRobot.lookup("#username").queryAs(TextField.class).setText(username);
         var password = "peterIstDerBeste";
         fxRobot.lookup("#password").queryAs(TextField.class).setText(password);
-        fxRobot.lookup("#loginButton").queryButton().fire();
+        fxRobot.clickOn(fxRobot.lookup("#loginButton").queryButton());
         assertThat(App.employee).isNotNull();
         assertThat(App.employee.getEmail()).isEqualTo(username);
         assertThat(App.employee.getPassword()).isEqualTo(password);
