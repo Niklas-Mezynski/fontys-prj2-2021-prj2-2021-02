@@ -56,14 +56,6 @@ public class SeatImpl implements Seat {
     }
 
     @Override
-    public int compareTo(Seat o) {
-        if(this.getRowNumber() == o.getRowNumber()){
-            return this.getSeatNumber()-o.getSeatNumber();
-        }
-        return this.getRowNumber()-o.getRowNumber();
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

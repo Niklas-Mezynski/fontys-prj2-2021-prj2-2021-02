@@ -12,4 +12,11 @@ public interface Seat extends Comparable<Seat> {
 
     void addAllSeatOptions(List<? extends SeatOption> seatOptionList);
 
+    default int compareTo(Seat o) {
+        if(this.getRowNumber() == o.getRowNumber()){
+            return this.getSeatNumber()-o.getSeatNumber();
+        }
+        return this.getRowNumber()-o.getRowNumber();
+    }
+
 }
