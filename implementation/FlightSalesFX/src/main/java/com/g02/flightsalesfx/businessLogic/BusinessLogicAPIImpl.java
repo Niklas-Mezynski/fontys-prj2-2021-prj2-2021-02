@@ -66,4 +66,13 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         }
         return first.get();
     }
+
+    @Override
+    public boolean createPlaneFromUI(String name, String type, String manufacturer, List<Seat> seats) {
+        var plane = getPlaneManager().createPlane(name, manufacturer, type);
+        plane.addAllSeats(seats.stream().sorted().collect(Collectors.toList()));
+        System.out.println(plane);
+        var planeStorageService = persistenceAPI.getPlaneStorageService(getPlaneManager());
+        return planeStorageService.add(plane);
+    }
 }
