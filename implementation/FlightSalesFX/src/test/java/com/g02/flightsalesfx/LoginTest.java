@@ -17,6 +17,15 @@ import static org.testfx.assertions.api.Assertions.*;
 @ExtendWith(ApplicationExtension.class)
 public class LoginTest {
 
+    static {
+        if (Boolean.getBoolean("headless")) {
+            System.setProperty("testfx.robot", "glass");
+            System.setProperty("testfx.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+        }
+    }
+    
     private Stage stage;
 
     @Start
