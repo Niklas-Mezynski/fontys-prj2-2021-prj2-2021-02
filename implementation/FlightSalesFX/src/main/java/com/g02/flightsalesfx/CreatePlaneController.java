@@ -1,8 +1,7 @@
 package com.g02.flightsalesfx;
 
-import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Seat;
-import com.g02.flightsalesfx.persistence.PlaneStorageService;
+import com.g02.flightsalesfx.businessEntities.SeatOption;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -14,10 +13,8 @@ import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CreatePlaneController {
 
@@ -25,7 +22,7 @@ public class CreatePlaneController {
 
     /*    @FXML
         public VBox flightOptions;*/
-    private final List<Seat> seats = new ArrayList<>();
+    private final List<SeatButton> seats = new ArrayList<>();
     @FXML
     public VBox seatOptions;
     @FXML
@@ -55,7 +52,7 @@ public class CreatePlaneController {
         if (!seatContainer.getChildren().isEmpty()) {
             var node = ((VBox) seatContainer.getChildren().get(seatContainer.getChildren().size() - 1)).getChildren().size() - 1;
             for (int i = 0; i < node; i++) {
-                var seat = new Seat(row);
+                var seat = new SeatButton(row);
                 seats.add(seat);
                 row.getChildren().add(row.getChildren().size() - 1, seat);
             }
@@ -78,17 +75,13 @@ public class CreatePlaneController {
         addButton.setFont(Font.font("Source Code Pro Semibold"));
         addButton.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         addButton.setOnAction(actionEvent -> {
-            var seatButton = new Seat(box);
-            this.seats.add(seatButton);
-            var children = box.getChildren();
-            children.add(children.size() - 1, seatButton);
-            updateSeatText();
+            createSeat(box);
         });
         addButton.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.SECONDARY) {
                 System.out.println("right click");
                 box.getChildren().forEach(o -> {
-                    assert o instanceof Seat;
+                    assert o instanceof SeatButton;
                     seats.remove(o);
                 });
                 seatContainer.getChildren().remove(box);
@@ -99,12 +92,32 @@ public class CreatePlaneController {
         return box;
     }
 
+    public SeatButton createSeat(VBox box) {
+        var seatButton = new SeatButton(box);
+        this.seats.add(seatButton);
+        var children = box.getChildren();
+        children.add(children.size() - 1, seatButton);
+        updateSeatText();
+        return seatButton;
+    }
+
     @FXML
     private void savePlane() {
         var name = planeName.getText();
         var type = planeType.getText();
         var manufacturer = planeManufacturer.getText();
-        var plane = App.businessLogicAPI.getPlaneManager().createPlane(name, manufacturer, type);
+        var collect = seats.stream().map(seatButton -> (Seat) seatButton).collect(Collectors.toList());
+        var planeCreated = App.businessLogicAPI.createPlaneFromUI(name, type, manufacturer, collect);
+        if (planeCreated) {
+            exit();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error saving plane");
+            alert.setContentText("There was an error while saving the created plane. Try again!");
+            alert.showAndWait();
+        }
+        /*var plane = App.businessLogicAPI.getPlaneManager().createPlane(name, manufacturer, type);
         var seatsStream = seats.stream().map(seat -> App.businessLogicAPI.getSeatManager().createSeat(seat.row(), seat.column(), seat.options.stream()
                 .map(seatOption -> App.businessLogicAPI.getOptionManager().createSeatOption(seatOption.getSeatOptionName()))
                 .collect(Collectors.toList())));
@@ -112,7 +125,7 @@ public class CreatePlaneController {
         System.out.println(plane);
         var planeStorageService = App.persistenceAPI.getPlaneStorageService(App.businessLogicAPI.getPlaneManager());
         planeStorageService.add(plane);
-        exit();
+        exit();*/
     }
 
     @FXML
@@ -125,10 +138,10 @@ public class CreatePlaneController {
     }
 
     private void updateSeatText() {
-        seats.forEach(Seat::updateText);
+        seats.forEach(SeatButton::updateText);
     }
 
-    private class SeatOption extends HBox {
+    public class SeatOption extends HBox implements Seat {
         String optionName = "";
         ToggleButton chooseButton;
         TextField changeNameTextField;
@@ -163,13 +176,34 @@ public class CreatePlaneController {
         public String getSeatOptionName() {
             return changeNameTextField.getText();
         }
+
+        @Override
+        public int getRowNumber() {
+            return 0;
+        }
+
+        @Override
+        public int getSeatNumber() {
+            return 0;
+        }
+
+        @Override
+        public void addSeatOption(com.g02.flightsalesfx.businessEntities.SeatOption so) {
+
+        }
+
+        @Override
+        public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) {
+
+        }
+
     }
 
-    private class Seat extends Button {
+    public class SeatButton extends Button {
         List<SeatOption> options = new ArrayList<>();
         private VBox box;
 
-        public Seat(VBox box) {
+        public SeatButton(VBox box) {
             this.box = box;
             this.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
             this.setFont(Font.font("Source Code Pro Semibold"));
@@ -189,6 +223,10 @@ public class CreatePlaneController {
                 }
                 updateSeatText();
             });
+        }
+
+        public List<SeatOption> getOptions() {
+            return options;
         }
 
         void updateText() {
