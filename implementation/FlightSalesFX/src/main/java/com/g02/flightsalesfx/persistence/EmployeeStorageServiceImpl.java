@@ -19,8 +19,14 @@ public class EmployeeStorageServiceImpl implements EmployeeStorageService {
         employees = new ArrayList<>();
         SalesEmployee salesEmployee = employeeManager.createSalesEmployee("Peter", "peter@gmx.de", "peterIstDerBeste");
         SalesOfficer salesOfficer = employeeManager.createSalesOfficer("Franz", "franz@gmx.de", "franzIstDerBeste");
+        SalesOfficer salesManagerShort = employeeManager.createSalesOfficer("a", "a", "a");
+        SalesOfficer salesOfficerShort = employeeManager.createSalesOfficer("b", "b", "b");
+        SalesOfficer salesEmployeeShort = employeeManager.createSalesOfficer("c", "c", "c");
         employees.add(salesEmployee);
         employees.add(salesOfficer);
+        employees.add(salesManagerShort);
+        employees.add(salesOfficerShort);
+        employees.add(salesEmployeeShort);
     }
 
     @Override
