@@ -17,8 +17,9 @@ public class PlaneStorageServiceImpl implements PlaneStorageService {
     }
 
     @Override
-    public void add(Plane plane) {
+    public boolean add(Plane plane) {
         planes.add( plane );
+        return true;
     }
 
     @Override

@@ -18,4 +18,6 @@ public interface BusinessLogicAPI {
 
     public Employee login(String email, String password);
 
+    public boolean createPlaneFromUI(String name, String type, String manufacturer, List<Seat> seats);
+
 }
