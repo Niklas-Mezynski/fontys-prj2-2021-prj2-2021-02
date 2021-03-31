@@ -1,14 +1,11 @@
 package com.g02.flightsalesfx.businessLogic;
 
-import com.g02.flightsalesfx.businessEntities.Employee;
-import com.g02.flightsalesfx.businessEntities.EmployeeManager;
-import com.g02.flightsalesfx.businessEntities.PlaneManager;
-import com.g02.flightsalesfx.businessEntities.SeatManager;
-import com.g02.flightsalesfx.businessEntities.OptionManager;
-import com.g02.flightsalesfx.persistence.EmployeeStorageService;
+import com.g02.flightsalesfx.CreatePlaneController;
+import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.persistence.PersistenceAPI;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     final PersistenceAPI persistenceAPI;

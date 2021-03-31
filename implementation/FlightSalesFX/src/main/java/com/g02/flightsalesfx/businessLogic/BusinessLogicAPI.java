@@ -1,10 +1,9 @@
 package com.g02.flightsalesfx.businessLogic;
 
-import com.g02.flightsalesfx.businessEntities.Employee;
-import com.g02.flightsalesfx.businessEntities.EmployeeManager;
-import com.g02.flightsalesfx.businessEntities.PlaneManager;
-import com.g02.flightsalesfx.businessEntities.SeatManager;
-import com.g02.flightsalesfx.businessEntities.OptionManager;
+import com.g02.flightsalesfx.CreatePlaneController;
+import com.g02.flightsalesfx.businessEntities.*;
+
+import java.util.List;
 
 public interface BusinessLogicAPI {
 
