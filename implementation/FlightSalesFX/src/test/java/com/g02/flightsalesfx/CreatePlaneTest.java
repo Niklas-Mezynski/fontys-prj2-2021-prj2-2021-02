@@ -127,6 +127,7 @@ public class CreatePlaneTest {
         fxRobot.clickOn(fxRobot.lookup("#savePlaneButton").queryButton());
         Mockito.verify(businessLogicAPI, Mockito.times(1)).createPlaneFromUI(any(), any(), any(), any());
     }
+
     @Test
     void removeSeat(FxRobot test){
         test.clickOn(test.lookup("#goToCreatePlane").queryAs(Button.class));
