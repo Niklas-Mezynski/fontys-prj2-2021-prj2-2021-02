@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-        args: "--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED"
+        args: "--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED --add-opens java.base/*=ALL-UNNAMED"
     - name: Generate settings.xml for Maven Builds
       uses: whelk-io/maven-settings-xml-action@v14
       with:
