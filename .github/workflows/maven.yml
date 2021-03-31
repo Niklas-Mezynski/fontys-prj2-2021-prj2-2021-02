@@ -27,4 +27,3 @@ jobs:
         repositories: '[{ "id": "fontysvenlo.org", "url": "https://www.fontysvenlo.org/repository" }]'
     - name: Build with Maven
       run: mvn -B package --file implementation/FlightSalesFX/pom.xml
-
