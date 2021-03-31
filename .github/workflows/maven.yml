@@ -35,5 +35,5 @@ jobs:
           ${{ runner.os }}-maven-
     - name: Build with Maven
       env:
-        MAVEN_OPTS: "-ea --add-modules javafx.controls,javafx.fxml,javafx.graphics --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED --add-exports javafx.graphics/com.sun.glass.ui=ALL-UNNAMED"
+        MAVEN_OPTS: "-ea --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED --add-exports javafx.graphics/com.sun.glass.ui=ALL-UNNAMED"
       run: mvn -B package --file implementation/FlightSalesFX/pom.xml -Dtestfx.headless=true
