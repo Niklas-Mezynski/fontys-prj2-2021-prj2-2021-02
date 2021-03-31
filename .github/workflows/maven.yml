@@ -20,10 +20,11 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
+        args: "--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED"
     - name: Generate settings.xml for Maven Builds
       uses: whelk-io/maven-settings-xml-action@v14
       with:
         repositories: '[{ "id": "fontysvenlo.org", "url": "https://www.fontysvenlo.org/repository" }]'
     - name: Build with Maven
-      run: mvn -B package --file implementation/FlightSalesFX/pom.xml --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+      run: mvn -B package --file implementation/FlightSalesFX/pom.xml
 
