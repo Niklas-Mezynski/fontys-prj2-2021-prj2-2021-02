@@ -57,10 +57,11 @@ public class BusinessLogicAPIImplTest {
         Seat seat2 = api.getSeatManager().createSeat(RowNo2,SeatNo2, so);
         assertThat(Integer.signum(seat1.compareTo(seat2))).isEqualTo(expected);
     }
+
     @Disabled //Currently broken, tests for wrong things
     @Test
     void t04PlaneTest() {
-        List<Seat> seats = new ArrayList<>();
+        /*List<Seat> seats = new ArrayList<>();
         List<SeatOption> so = new ArrayList<>();
 
         Seat seat1 = api.getSeatManager().createSeat(1,1, so);
@@ -76,7 +77,11 @@ public class BusinessLogicAPIImplTest {
             assertThat(plane.toString()).contains("rowNumber=1", "seatNumber=1");
             plane.addAllSeats(seats);
             assertThat(plane.toString()).contains("rowNumber=1", "seatNumber=1", "rowNumber=2", "seatNumber=3");
-        });
+        });*/
+        List<Seat> seats = new ArrayList<>();
+
+//        seats.add(new SeatButton(vbox));
+        api.createPlaneFromUI("D-ABCH", "A380", "Airbus", seats);
     }
 
     @Test
