@@ -45,7 +45,7 @@ public class BusinessLogicAPIImplTest {
 
     }
 
-    @Disabled
+//    @Disabled
     @ParameterizedTest
     @CsvSource( {
             //RowNo1, SeatNo1, RowNo2, SeatNo2, expected
