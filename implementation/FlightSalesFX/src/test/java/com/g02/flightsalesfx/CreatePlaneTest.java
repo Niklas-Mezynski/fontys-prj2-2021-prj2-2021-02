@@ -136,13 +136,6 @@ public class CreatePlaneTest {
         assertThat(a).isTrue();
         test.clickOn(addButton);
         buttons = test.lookup((s) -> s instanceof Button).queryAllAs(Button.class);
-        a = false;
-        for (Button button : buttons) {
-            if (button.getText().equals("01A")) {
-                a = true;
-            }
-        }
-        assertThat(a).isTrue();
         test.clickOn(addButton);
         test.clickOn(test.lookup("#addRow1").queryAs(Button.class));
         buttons = test.lookup((s) -> s instanceof Button).queryAllAs(Button.class);

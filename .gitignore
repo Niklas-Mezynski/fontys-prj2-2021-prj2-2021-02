@@ -25,3 +25,11 @@ hs_err_pid*
 .idea
 target/
 *.iml
+.vscode/launch.json
+.vscode/settings.json
+implementation/FlightSalesFX/.classpath
+implementation/FlightSalesFX/.project
+implementation/FlightSalesFX/.settings/org.eclipse.core.resources.prefs
+implementation/FlightSalesFX/.settings/org.eclipse.jdt.apt.core.prefs
+implementation/FlightSalesFX/.settings/org.eclipse.jdt.core.prefs
+implementation/FlightSalesFX/.settings/org.eclipse.m2e.core.prefs
