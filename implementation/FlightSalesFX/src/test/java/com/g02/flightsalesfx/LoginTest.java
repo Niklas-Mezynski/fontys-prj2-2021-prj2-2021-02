@@ -1,11 +1,8 @@
 package com.g02.flightsalesfx;
 
-import com.sun.tools.javac.Main;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.assertj.core.api.*;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
