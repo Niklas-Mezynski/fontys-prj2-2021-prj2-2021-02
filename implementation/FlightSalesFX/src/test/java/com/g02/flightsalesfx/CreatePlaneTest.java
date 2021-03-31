@@ -33,6 +33,15 @@ import static org.testfx.assertions.api.Assertions.assertThat;
 public class CreatePlaneTest {
     private Stage stage;
 
+    static {
+        if (Boolean.getBoolean("headless")) {
+            System.setProperty("testfx.robot", "glass");
+            System.setProperty("testfx.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+        }
+    }
+
     @Start
     void start(Stage stage) throws IOException {
         var app = new App();

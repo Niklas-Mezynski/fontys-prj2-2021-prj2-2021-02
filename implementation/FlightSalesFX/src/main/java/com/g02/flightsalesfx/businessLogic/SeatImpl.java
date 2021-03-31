@@ -6,20 +6,23 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class SeatImpl implements Seat, Comparable<Seat> {
+public class SeatImpl implements Seat {
 
     private int rowNumber;
     private int seatNumber;
     private List<SeatOption> seatOptions;
 
-    public SeatImpl(int rowNumber, int seatNumber) {
+//    Useless constructor because cant be accessed from SeatManagerImpl
+//    public SeatImpl(int rowNumber, int seatNumber) {
+//        this.rowNumber = rowNumber;
+//        this.seatNumber = seatNumber;
+//        this.seatOptions = new ArrayList<>();
+//    }
+
+    public SeatImpl(int rowNumber, int seatNumber, List<SeatOption> toAdd) {
         this.rowNumber = rowNumber;
         this.seatNumber = seatNumber;
         this.seatOptions = new ArrayList<>();
-    }
-
-    public SeatImpl(int rowNumber, int seatNumber, List<SeatOption> toAdd) {
-        this(rowNumber, seatNumber);
         this.seatOptions.addAll(toAdd);
     }
 
