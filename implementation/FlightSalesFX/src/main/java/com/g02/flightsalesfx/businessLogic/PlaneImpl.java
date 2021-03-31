@@ -21,14 +21,15 @@ public class PlaneImpl implements Plane {
         this.seatList = new ArrayList<>();
     }
 
-    public PlaneImpl(String name, String manu, String type, List<Seat> toAdd) {
-        this.name = name;
-        this.manufacturer = manu;
-        this.type = type;
-        this.seatList = new ArrayList<>();
-
-        seatList.addAll(toAdd);
-    }
+//    Constructor never called by PlaneManager
+//    public PlaneImpl(String name, String manu, String type, List<Seat> toAdd) {
+//        this.name = name;
+//        this.manufacturer = manu;
+//        this.type = type;
+//        this.seatList = new ArrayList<>();
+//
+//        seatList.addAll(toAdd);
+//    }
 
 
     @Override
