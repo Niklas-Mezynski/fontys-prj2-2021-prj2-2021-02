@@ -157,11 +157,6 @@ public class CreatePlaneController {
             });
         }
 
-        public String getSeatOptionName() {
-            return changeNameTextField.getText();
-        }
-
-
     }
 
     public class SeatButton extends Button implements Seat {
@@ -188,10 +183,6 @@ public class CreatePlaneController {
                 }
                 updateSeatText();
             });
-        }
-
-        public List<SeatOption> getOptions() {
-            return options;
         }
 
         void updateText() {
@@ -232,14 +223,10 @@ public class CreatePlaneController {
         }
 
         @Override
-        public void addSeatOption(com.g02.flightsalesfx.businessEntities.SeatOption so) {
-
-        }
+        public void addSeatOption(com.g02.flightsalesfx.businessEntities.SeatOption so) { }
 
         @Override
-        public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) {
-
-        }
+        public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) { }
     }
 
 }

@@ -2,7 +2,8 @@ package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.gui.PlaneTable;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -11,6 +12,9 @@ public class HomeController {
 
     @FXML
     public VBox planesListVBox;
+    @FXML
+    public AnchorPane planePane;
+    public MenuItem createPlane;
 
 
     public void initialize() {
@@ -23,21 +27,9 @@ public class HomeController {
     }
 
     @FXML
-    public void gotoCreatePlane() {
-        try {
-            App.setRoot("createPlane");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void gotoCreatePlane() throws IOException {
+        App.setRoot("createPlane");
     }
 
-    private Label getLabel(Plane plane) {
-        class PlaneLabel extends Label {
-            public PlaneLabel(Plane s) {
-                super(s.toString());
-            }
-        }
-        return new PlaneLabel(plane);
-    }
 
 }

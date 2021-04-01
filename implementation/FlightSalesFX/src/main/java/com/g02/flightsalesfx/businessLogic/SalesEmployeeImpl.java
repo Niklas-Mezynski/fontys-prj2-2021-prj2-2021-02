@@ -35,7 +35,7 @@ public class SalesEmployeeImpl implements SalesEmployee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SalesEmployeeImpl that = (SalesEmployeeImpl) o;
-        return Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(password, that.password);
+        return Objects.equals(getName(), that.getName()) && Objects.equals(getEmail(), that.getEmail()) && Objects.equals(getPassword(), that.getPassword());
     }
 
     @Override

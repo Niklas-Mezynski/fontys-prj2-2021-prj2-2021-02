@@ -1,19 +1,13 @@
 package com.g02.flightsalesfx;
 
-import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
-import com.g02.flightsalesfx.businessLogic.BusinessLogicAPIImpl;
-import com.g02.flightsalesfx.businessLogic.PlaneImpl;
-import com.g02.flightsalesfx.businessLogic.SeatImpl;
-import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import org.junit.jupiter.api.Disabled;
-import javafx.scene.input.MouseButton;
+import javafx.geometry.VerticalDirection;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.testfx.api.FxRobot;
@@ -21,17 +15,13 @@ import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.testfx.assertions.api.Assertions.assertThat;
 
 /**
@@ -54,6 +44,13 @@ public class CreatePlaneTest {
     @Mock
     private BusinessLogicAPI businessLogicAPI;
 
+    /**
+     * Setting up the test.
+     * Create the mocks and inject it into the App
+     * Skip Login and move to the home page
+     * @param stage
+     * @throws IOException if home.fxml can't be found
+     */
     @Start
     void start(Stage stage) throws IOException {
         var app = new App();
@@ -64,17 +61,25 @@ public class CreatePlaneTest {
         this.stage = stage;
     }
 
+    /**
+     * Test if the createPlane scene can be opened from the homepage
+     * @param fxRobot
+     */
     @Test
-    void createPlaneOpens(FxRobot nils) {
+    void createPlaneOpens(FxRobot fxRobot) {
         //See the comment above if this produces a weird error
         assertThat(stage.getTitle()).isEqualTo("Flight Ticket Sales");
-        assertThat(nils.lookup(".label").queryAs(Label.class)).doesNotHaveText("Create Plane");
-        assertThat(nils.lookup("#goToCreatePlane").queryAs(Button.class)).hasText("Create Plane");
-        nils.clickOn(nils.lookup("#goToCreatePlane").queryAs(Button.class));
+        assertThat(fxRobot.lookup(".label").queryAs(Label.class)).doesNotHaveText("Create Plane");
+        assertThat(fxRobot.lookup("#goToCreatePlane").queryAs(Button.class)).hasText("Create Plane");
+        fxRobot.clickOn(fxRobot.lookup("#goToCreatePlane").queryAs(Button.class));
         //Now in createPlane
-        assertThat(nils.lookup(".label").queryAs(Label.class)).hasText("Create Plane");
+        assertThat(fxRobot.lookup(".label").queryAs(Label.class)).hasText("Create Plane");
     }
 
+    /**
+     * Test that a new row and seat can be added on the UI
+     * @param nils
+     */
     @Test
     void addRowAndSeatWorks(FxRobot nils) {
         nils.clickOn(nils.lookup("#goToCreatePlane").queryAs(Button.class));
@@ -102,6 +107,10 @@ public class CreatePlaneTest {
         assertThat(a).isTrue();
     }
 
+    /**
+     * Test that the UI calls the createPlaneFromUI method of the businessLogicAPI by mocking it
+     * @param fxRobot
+     */
     @Test
     void testSavePlane(FxRobot fxRobot) {
         fxRobot.clickOn(fxRobot.lookup("#goToCreatePlane").queryAs(Button.class));
@@ -128,59 +137,108 @@ public class CreatePlaneTest {
         Mockito.verify(businessLogicAPI, Mockito.times(1)).createPlaneFromUI(any(), any(), any(), any());
     }
 
+    /**
+     * Test that if there is an error creating the plane an alert dialog is shown. Also using a mock of the businessLogic
+     * @param fxRobot
+     */
     @Test
-    void removeSeat(FxRobot test){
+    void savePlaneErrorAlertDialog(FxRobot fxRobot) {
+        fxRobot.clickOn(fxRobot.lookup("#goToCreatePlane").queryAs(Button.class));
+        Mockito.when(businessLogicAPI.createPlaneFromUI(any(), any(), any(), any())).thenReturn(false);
+        fxRobot.clickOn(fxRobot.lookup("#savePlaneButton").queryButton());
+        Node dialogPane = fxRobot.lookup(".dialog-pane").queryAs(DialogPane.class);
+        var are_you_sure = fxRobot.from(dialogPane).lookup((Text t) -> t.getText().startsWith("There was an error while saving the created plane. Try again!"));
+        assertThat(are_you_sure.queryAll()).isNotEmpty();
+    }
+
+    /**
+     * Test that the SeatButtons have the correct labels
+     * @param fxRobot
+     */
+    @Test
+    void testSeatButtonLabelAfter26Seats(FxRobot fxRobot) {
+        fxRobot.clickOn(fxRobot.lookup("#goToCreatePlane").queryAs(Button.class));
+        assertThat(fxRobot.lookup(".label").queryAs(Label.class)).hasText("Create Plane");
+        fxRobot.clickOn(fxRobot.lookup("#addRow").queryAs(Button.class));
+        var buttons = fxRobot.lookup((s) -> s instanceof Button).queryAllAs(Button.class);
+        for (Button button : buttons) {
+            if (button.getText().equals("ADD")) {
+                for (int i = 0; i < 27; i++) {
+                    fxRobot.clickOn(button);
+                    if (i > 10)
+                        fxRobot.scroll(10, VerticalDirection.DOWN);
+                }
+            }
+        }
+        var nodes = fxRobot.lookup(node -> node instanceof CreatePlaneController.SeatButton).queryAllAs(CreatePlaneController.SeatButton.class);
+        assertThat(nodes).anyMatch(node -> node.getText().equals("01AA"));
+    }
+
+    /**
+     * Test that seats can be remove after they were added
+     * @param test
+     */
+    @Test
+    void removeSeat(FxRobot test) {
         test.clickOn(test.lookup("#goToCreatePlane").queryAs(Button.class));
         test.clickOn(test.lookup("#addRow").queryAs(Button.class));
-        var buttons = test.lookup(s->s instanceof Button).queryAllAs(Button.class);
-        Button addButton=null;
+        var buttons = test.lookup(s -> s instanceof Button).queryAllAs(Button.class);
+        Button addButton = null;
         for (Button button : buttons) {
-            if(button.getText().equals("ADD")){
-                addButton=button;
+            if (button.getText().equals("ADD")) {
+                addButton = button;
             }
         }
         test.clickOn(addButton);
         test.clickOn(addButton);
         test.clickOn(addButton);
-        buttons=test.lookup(s->s instanceof Button).queryAllAs(Button.class);
-        for(Button button:buttons){
-            if(button.getText().equals("01A")){
-                addButton=button;
+        buttons = test.lookup(s -> s instanceof Button).queryAllAs(Button.class);
+        for (Button button : buttons) {
+            if (button.getText().equals("01A")) {
+                addButton = button;
             }
         }
         test.clickOn(addButton);
-        buttons=test.lookup(s->s instanceof Button).queryAllAs(Button.class);
-        Boolean isRemoved=true;
-        for(Button button:buttons){
-            if(button.getText().equals("01C")){
-                isRemoved=false;
+        buttons = test.lookup(s -> s instanceof Button).queryAllAs(Button.class);
+        Boolean isRemoved = true;
+        for (Button button : buttons) {
+            if (button.getText().equals("01C")) {
+                isRemoved = false;
             }
         }
         assertThat(isRemoved).isTrue();
-        test.clickOn(helperGetButtonByName("01B",test).get(0));
-        test.clickOn(helperGetButtonByName("01A",test).get(0));
-        var emptyList=helperGetButtonByName("ADD",test);
+        test.clickOn(helperGetButtonByName("01B", test).get(0));
+        test.clickOn(helperGetButtonByName("01A", test).get(0));
+        var emptyList = helperGetButtonByName("ADD", test);
         assertThat(emptyList.isEmpty()).isTrue();
 
     }
 
+    /**
+     * Test that rows can be removed after they were added
+     * @param test
+     */
     @Test
-    void removeRow(FxRobot test){
+    void removeRow(FxRobot test) {
         test.clickOn(test.lookup("#goToCreatePlane").queryAs(Button.class));
         test.clickOn(test.lookup("#addRow").queryAs(Button.class));
         test.clickOn(test.lookup("#addRow").queryAs(Button.class));
-        for(Button button:helperGetButtonByName("ADD",test)){
+        for (Button button : helperGetButtonByName("ADD", test)) {
             test.clickOn(button);
             test.clickOn(button);
             test.clickOn(button);
         }
-        Button b=helperGetButtonByName("ADD",test).get(1);
+        Button b = helperGetButtonByName("ADD", test).get(1);
         test.clickOn(b);
         test.rightClickOn(b);
-        var text=helperGetButtonByName("02B",test);
+        var text = helperGetButtonByName("02B", test);
         assertThat(text).isEmpty();
     }
 
+    /**
+     * Test that rows can be cloned and that the new row has as many seats as the row before it
+     * @param test
+     */
     @Test
     void cloneRow(FxRobot test) {
         test.clickOn(test.lookup("#goToCreatePlane").queryAs(Button.class));
@@ -218,20 +276,25 @@ public class CreatePlaneTest {
         assertThat(a).isTrue();
     }
 
+    /**
+     * Test that SeatOptions can be added and removed
+     * @param fxRobot
+     * @throws IOException
+     */
     @Test
-    void seatOptionAddingRemovingTest(FxRobot nils) throws IOException {
-        nils.clickOn(nils.lookup("#goToCreatePlane").queryAs(Button.class));
-        Assertions.assertThat(nils.lookup(".label").queryAs(Label.class)).hasText("Create Plane");
-        nils.clickOn(nils.lookup("#addRow").queryAs(Button.class));
-        var buttons = nils.lookup((s) -> s instanceof Button).queryAllAs(Button.class);
+    void seatOptionAddingRemovingTest(FxRobot fxRobot) throws IOException {
+        fxRobot.clickOn(fxRobot.lookup("#goToCreatePlane").queryAs(Button.class));
+        Assertions.assertThat(fxRobot.lookup(".label").queryAs(Label.class)).hasText("Create Plane");
+        fxRobot.clickOn(fxRobot.lookup("#addRow").queryAs(Button.class));
+        var buttons = fxRobot.lookup((s) -> s instanceof Button).queryAllAs(Button.class);
         Button addButton = null;
         for (Button button : buttons) {
             if (button.getText().equals("ADD")) {
                 addButton = button;
             }
         }
-        nils.clickOn(addButton);
-        buttons = nils.lookup((s) -> s instanceof Button).queryAllAs(Button.class);
+        fxRobot.clickOn(addButton);
+        buttons = fxRobot.lookup((s) -> s instanceof Button).queryAllAs(Button.class);
         Button seatButton = null;
         for (Button button : buttons) {
             if (button.getText().equals("01A")) {
@@ -239,25 +302,25 @@ public class CreatePlaneTest {
             }
         }
         var p = seatButton.getTextFill();
-        nils.clickOn(nils.lookup("#addSeatOptionButton").queryButton());
-        var seatOptionButtons = nils.lookup(b -> b instanceof ToggleButton).queryAs(ToggleButton.class);
+        fxRobot.clickOn(fxRobot.lookup("#addSeatOptionButton").queryButton());
+        var seatOptionButtons = fxRobot.lookup(b -> b instanceof ToggleButton).queryAs(ToggleButton.class);
         assertThat(seatOptionButtons).isNotNull();
-        nils.clickOn(seatOptionButtons);
-        nils.clickOn(seatButton);
+        fxRobot.clickOn(seatOptionButtons);
+        fxRobot.clickOn(seatButton);
         assertThat(seatButton.getTextFill()).isNotEqualTo(p);
-        nils.clickOn(seatButton);
+        fxRobot.clickOn(seatButton);
         assertThat(seatButton.getTextFill()).isEqualTo(p);
-        nils.clickOn(seatButton);
+        fxRobot.clickOn(seatButton);
         assertThat(seatButton.getTextFill()).isNotEqualTo(p);
-        nils.clickOn(seatOptionButtons);
+        fxRobot.clickOn(seatOptionButtons);
         assertThat(seatButton.getTextFill()).isEqualTo(p);
-        nils.clickOn(seatOptionButtons);
+        fxRobot.clickOn(seatOptionButtons);
         assertThat(seatButton.getTextFill()).isNotEqualTo(p);
     }
 
-    List<Button> helperGetButtonByName(String buttonText,FxRobot test){
-        var buttons=test.lookup(s->s instanceof Button).queryAllAs(Button.class);
-        var test2= buttons.stream().filter(s->s.getText().equals(buttonText)).collect(Collectors.toList());
+    List<Button> helperGetButtonByName(String buttonText, FxRobot test) {
+        var buttons = test.lookup(s -> s instanceof Button).queryAllAs(Button.class);
+        var test2 = buttons.stream().filter(s -> s.getText().equals(buttonText)).collect(Collectors.toList());
         return test2;
     }
 

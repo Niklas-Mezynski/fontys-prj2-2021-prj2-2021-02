@@ -13,8 +13,6 @@ public class PlaneImpl implements Plane {
     private String manufacturer;
     private String type;
     private List<Seat> seatList;
-    private int seatCount;
-    private int rowCount;
 
     public PlaneImpl(String name, String type, String manufacturer) {
         this.name = name;
@@ -22,13 +20,6 @@ public class PlaneImpl implements Plane {
         this.type = type;
         this.seatList = new ArrayList<>();
     }
-
-    public PlaneImpl(String name, String type, String manufacturer, List<Seat> toAdd) {
-        this(name, type, manufacturer);
-        this.seatList = new ArrayList<>();
-        seatList.addAll(toAdd);
-    }
-
 
     @Override
     public String getName() {
@@ -47,29 +38,22 @@ public class PlaneImpl implements Plane {
 
     @Override
     public int getSeatCount(){
-        return seatCount;
+        return seatList.size();
     }
 
     @Override
     public int getRowCount(){
-        return rowCount;
+        return seatList.stream().mapToInt(Seat::getRowNumber).max().orElse(-1) + 1;
     }
 
     @Override
     public void addSeat(Seat s) {
         this.seatList.add(s);
-        changeSeatRowCount();
     }
 
     @Override
     public void addAllSeats(List<? extends Seat> seatList) {
         this.seatList.addAll(seatList);
-        changeSeatRowCount();
-    }
-
-    private void changeSeatRowCount(){
-        seatCount=seatList.size();
-        rowCount=(seatList.get(seatList.size()-1).getRowNumber())+1;
     }
 
     @Override
@@ -82,11 +66,11 @@ public class PlaneImpl implements Plane {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlaneImpl plane = (PlaneImpl) o;
-        return Objects.equals(name, plane.name) && Objects.equals(manufacturer, plane.manufacturer) && Objects.equals(type, plane.type) && Objects.equals(seatList, plane.seatList);
+        return Objects.equals(getName(), plane.getName()) && Objects.equals(getManufacturer(), plane.getManufacturer()) && Objects.equals(getType(), plane.getType());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, manufacturer, type, seatList);
+        return Objects.hash(name, manufacturer, type);
     }
 }

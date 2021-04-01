@@ -1,16 +1,24 @@
 package com.g02.flightsalesfx;
 
+import com.g02.flightsalesfx.businessEntities.Employee;
+import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
+import com.g02.flightsalesfx.businessLogic.BusinessLogicAPIImpl;
+import com.g02.flightsalesfx.businessLogic.SalesEmployeeImpl;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import net.bytebuddy.matcher.ElementMatchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.testfx.assertions.api.Assertions.*;
 
 
@@ -28,10 +36,15 @@ public class LoginTest {
     
     private Stage stage;
 
+    @Mock
+    private BusinessLogicAPI businessLogicAPI;
+
     @Start
     void start(Stage stage) throws IOException {
         var app = new App();
         app.start(stage);
+        businessLogicAPI = Mockito.mock(BusinessLogicAPI.class);
+        App.businessLogicAPI = businessLogicAPI;
         this.stage = stage;
     }
 
@@ -40,24 +53,14 @@ public class LoginTest {
         assertThat(stage.getTitle()).isEqualTo("Flight Ticket Sales");
         assertThat(fxRobot.lookup("#titleLabel").queryAs(Label.class)).hasText("Login");
         var username = "peter@gmx.de";
-        fxRobot.lookup("#username").queryAs(TextField.class).setText(username);
+        var textField = fxRobot.lookup("#username").queryAs(TextField.class);
+        fxRobot.clickOn(textField);
+        fxRobot.write(username);
         var password = "peterIstDerBeste";
         fxRobot.lookup("#password").queryAs(TextField.class).setText(password);
+        Employee employee = new SalesEmployeeImpl("Peter", "peter@gmx.de", "peterIstDerBeste");
+        Mockito.when(businessLogicAPI.login(any(), any())).thenReturn(employee);
         fxRobot.clickOn(fxRobot.lookup("#loginButton").queryButton());
-        assertThat(App.employee).isNotNull();
-        assertThat(App.employee.getEmail()).isEqualTo(username);
-        assertThat(App.employee.getPassword()).isEqualTo(password);
-    }
-
-    @Test
-    void testLoginNoSuccess(FxRobot test) {
-        assertThat(stage.getTitle()).isEqualTo("Flight Ticket Sales");
-        assertThat(test.lookup("#titleLabel").queryAs(Label.class)).hasText("Login");
-        var username = "urselmann@gmx.de";
-        test.lookup("#username").queryAs(TextField.class).setText(username);
-        var password = "urselIstDieBeste";
-        test.lookup("#password").queryAs(TextField.class).setText(password);
-        test.lookup("#loginButton").queryButton().fire();
-        assertThat(App.employee).isNull();
+        Mockito.verify(businessLogicAPI).login(any(), any());
     }
 }
