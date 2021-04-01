@@ -36,6 +36,9 @@ public class CreatePlaneController {
     public TextField planeManufacturer;
     private SeatOption currentSelected = null;
 
+    /**
+     * Creates a new SeatRow and adds the corresponding VBox to the container
+     */
     @FXML
     private void addSeatRow() {
         System.out.println("add row");

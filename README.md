@@ -1,5 +1,7 @@
 # PRJ2 - Project 2  
 
+![example workflow](https://github.com/FontysVenlo/prj2-2021-prj2-2021-02/actions/workflows/maven.yml/badge.svg)
+
 The purpose of this repository is to document your Project work.
 
 ***Your group is responsible for the repository structure and content***, but we created some template folders for you. You do not need to stick to this.
