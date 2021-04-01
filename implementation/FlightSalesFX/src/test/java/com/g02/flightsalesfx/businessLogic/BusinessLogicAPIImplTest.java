@@ -58,30 +58,18 @@ public class BusinessLogicAPIImplTest {
         assertThat(Integer.signum(seat1.compareTo(seat2))).isEqualTo(expected);
     }
 
-    @Disabled //Currently broken, tests for wrong things
     @Test
     void t04PlaneTest() {
-        /*List<Seat> seats = new ArrayList<>();
-        List<SeatOption> so = new ArrayList<>();
-
-        Seat seat1 = api.getSeatManager().createSeat(1,1, so);
-        Seat seat2 = api.getSeatManager().createSeat(2,3, so);
-        seats.add(seat2);
-
-        Plane plane = api.getPlaneManager().createPlane("TestPlane", "TestManu", "SomeType");
-        SoftAssertions.assertSoftly( s -> {
-            s.assertThat(plane.getName()).isEqualTo("TestPlane");
-            s.assertThat(plane.getManufacturer()).isEqualTo("TestManu");
-            s.assertThat(plane.getType()).isEqualTo("SomeType");
-            plane.addSeat(seat1);
-            assertThat(plane.toString()).contains("rowNumber=1", "seatNumber=1");
-            plane.addAllSeats(seats);
-            assertThat(plane.toString()).contains("rowNumber=1", "seatNumber=1", "rowNumber=2", "seatNumber=3");
-        });*/
         List<Seat> seats = new ArrayList<>();
-
-//        seats.add(new SeatButton(vbox));
+        seats.add(new SeatImpl(0, 0));
+        seats.add(new SeatImpl(0, 1));
         api.createPlaneFromUI("D-ABCH", "A380", "Airbus", seats);
+
+        var planes = api.persistenceAPI.getPlaneStorageService(api.getPlaneManager()).getAll();
+        var plane = new PlaneImpl("D-ABCH", "A380", "Airbus");
+        plane.addSeat(new SeatImpl(0, 0));
+        plane.addSeat(new SeatImpl(0, 1));
+        assertThat(planes).element(0).isEqualTo(plane);
     }
 
     @Test
