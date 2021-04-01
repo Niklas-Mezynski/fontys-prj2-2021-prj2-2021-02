@@ -16,12 +16,12 @@ public class PlaneManagerImpl implements PlaneManager {
         return new PlaneImpl(name, type, manufacturer);
     }
 
-    public Plane createPlane(String name, String manufacturer, String type, List<? extends Seat> seatList) {
+   /* public Plane createPlane(String name, String manufacturer, String type, List<? extends Seat> seatList) {
         Plane newPlane = new PlaneImpl(name, type, manufacturer);
         newPlane.addAllSeats(seatList);
         
         return newPlane;
-    }
+    }*/
 
     public void setPlaneStorageService(PlaneStorageService planeStorageService) {
         this.planeStorageService = planeStorageService;

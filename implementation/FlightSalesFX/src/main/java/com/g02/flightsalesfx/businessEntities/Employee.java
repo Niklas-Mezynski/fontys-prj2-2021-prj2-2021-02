@@ -17,5 +17,4 @@ public interface Employee {
      */
     String getPassword();
 
-
 }

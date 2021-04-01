@@ -94,6 +94,7 @@ public class CreatePlaneController {
         addButton.setText("ADD");
         addButton.setFont(Font.font("Source Code Pro Semibold"));
         addButton.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        addButton.setOnAction(actionEvent -> createSeat(box));
         // Adding the click listener to add seats or remove the row depending on which mouse button was pressed
         addButton.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.SECONDARY) { // If it was right click remove the row and all seats that is contains
@@ -101,8 +102,6 @@ public class CreatePlaneController {
                 box.getChildren().forEach(seats::remove);
                 seatContainer.getChildren().remove(box);
                 updateSeatText();
-            } else if (mouseEvent.getButton() == MouseButton.PRIMARY) { // else create a new Seat
-                createSeat(box);
             }
         });
         // add the button to the VBox
@@ -196,11 +195,6 @@ public class CreatePlaneController {
             });
         }
 
-        public String getSeatOptionName() {
-            return changeNameTextField.getText();
-        }
-
-
     }
 
     /**
@@ -232,9 +226,6 @@ public class CreatePlaneController {
             });
         }
 
-        public List<SeatOptionBox> getOptions() {
-            return options;
-        }
 
         /**
          * Updates the text and converts row and seat number to a better readable string consisting of
@@ -296,17 +287,13 @@ public class CreatePlaneController {
          * @param so The SeatOption to add to this Seat
          */
         @Override
-        public void addSeatOption(com.g02.flightsalesfx.businessEntities.SeatOption so) {
-
-        }
+        public void addSeatOption(com.g02.flightsalesfx.businessEntities.SeatOption so) { }
 
         /**
          * @param seatOptionList The List of SeatOptions to add
          */
         @Override
-        public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) {
-
-        }
+        public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) { }
     }
 
 }

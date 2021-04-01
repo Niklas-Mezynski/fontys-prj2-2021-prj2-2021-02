@@ -69,7 +69,10 @@ public class BusinessLogicAPIImplTest {
         var plane = new PlaneImpl("D-ABCH", "A380", "Airbus");
         plane.addSeat(new SeatImpl(0, 0));
         plane.addSeat(new SeatImpl(0, 1));
-        assertThat(planes).element(0).isEqualTo(plane);
+        var plane1 = planes.get(0);
+        assertThat(plane1.getRowCount()).isEqualTo(1);
+        assertThat(plane1.getSeatCount()).isEqualTo(2);
+        assertThat(plane1).isEqualTo(plane);
     }
 
     @Test
@@ -91,5 +94,17 @@ public class BusinessLogicAPIImplTest {
             s.assertThat(salesManager.getPassword()).isEqualTo("max123");
             s.assertThat(salesOfficer.getPassword()).isEqualTo("huhn123");
         });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "Peter, peter@gmx.de, peterIstDerBeste, Peter, peter@gmx.de, peterIstDerBeste, false",
+            "Peter, peter@gmx.de, peterIstDerBeste, Franz, notexisting@gmx.de, franzIstDerBeste, true",
+    })
+    void testLogin(String refName, String refEmail, String refPassword, String compName, String compEmail, String compPassword, boolean isNull) {
+        Employee employee = new SalesEmployeeImpl(refName, refEmail, refPassword);
+        api.persistenceAPI.getEmployeeStorageService(api.getEmployeeManager()).add(employee);
+        var peterIstDerBeste = api.login(compEmail, compPassword);
+        assertThat(peterIstDerBeste == null).isEqualTo(isNull);
     }
 }

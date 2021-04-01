@@ -31,7 +31,6 @@ public class App extends Application {
         scene = new Scene(loadFXML("login"), 800, 600);
         stage.setScene(scene);
         stage.setTitle("Flight Ticket Sales");
-
         stage.show();
     }
 

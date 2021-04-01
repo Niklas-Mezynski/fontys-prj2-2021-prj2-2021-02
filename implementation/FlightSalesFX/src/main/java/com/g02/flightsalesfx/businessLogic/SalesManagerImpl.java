@@ -35,7 +35,7 @@ public class SalesManagerImpl implements SalesManager {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SalesManagerImpl that = (SalesManagerImpl) o;
-        return Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(password, that.password);
+        return Objects.equals(getName(), that.getName()) && Objects.equals(getEmail(), that.getEmail()) && Objects.equals(getPassword(), that.getPassword());
     }
 
     @Override

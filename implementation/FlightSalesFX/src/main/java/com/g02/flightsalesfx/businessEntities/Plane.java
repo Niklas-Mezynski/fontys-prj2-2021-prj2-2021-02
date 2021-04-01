@@ -19,6 +19,10 @@ public interface Plane {
      */
     String getType();
 
+    int getSeatCount();
+
+    int getRowCount();
+
     /**
      * Adds a Seat to the Plane
      * @param s The Seat to add
