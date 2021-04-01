@@ -74,14 +74,13 @@ public class CreatePlaneController {
         addButton.setText("ADD");
         addButton.setFont(Font.font("Source Code Pro Semibold"));
         addButton.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        addButton.setOnAction(actionEvent -> createSeat(box));
         addButton.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.SECONDARY) {
                 System.out.println("right click");
                 box.getChildren().forEach(seats::remove);
                 seatContainer.getChildren().remove(box);
                 updateSeatText();
-            } else if (mouseEvent.getButton()==MouseButton.PRIMARY) {
-                createSeat(box);
             }
         });
         box.getChildren().add(addButton);

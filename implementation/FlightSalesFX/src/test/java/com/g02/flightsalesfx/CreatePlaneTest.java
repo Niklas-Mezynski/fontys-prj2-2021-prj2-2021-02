@@ -4,6 +4,7 @@ import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
 import javafx.geometry.VerticalDirection;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -163,10 +164,13 @@ public class CreatePlaneTest {
         var buttons = fxRobot.lookup((s) -> s instanceof Button).queryAllAs(Button.class);
         for (Button button : buttons) {
             if (button.getText().equals("ADD")) {
-                for (int i = 0; i < 27; i++) {
-                    fxRobot.clickOn(button);
-                    if (i > 10)
-                        fxRobot.scroll(10, VerticalDirection.DOWN);
+                fxRobot.clickOn(button);
+                for (int i = 0; i < 26; i++) {
+                    fxRobot.press(KeyCode.SPACE);
+                    fxRobot.release(KeyCode.SPACE);
+//                    button.fire();
+               /*     if (i > 10)
+                        fxRobot.scroll(10, VerticalDirection.DOWN);*/
                 }
             }
         }
