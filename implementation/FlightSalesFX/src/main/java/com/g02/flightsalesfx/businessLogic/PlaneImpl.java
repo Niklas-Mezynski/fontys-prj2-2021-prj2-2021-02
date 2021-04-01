@@ -55,8 +55,19 @@ public class PlaneImpl implements Plane {
 
     @Override
     public String toString() {
-        return "Plane " + name + ", ID: " + type + ", Manufacturer: " + manufacturer + ", Seats: " + seatList.size() /*+ " Rows: " + (seatList.get(seatList.size() - 1).getRowNumber() + 1)*/;
+
+
+        return "Plane " + name + ", ID: " + type + ", Manufacturer: " + manufacturer + ", Seats: " + seatList.size() + " Rows: " + getRows();
     }
+
+    public int getRows(){
+        int rows = 0;
+        if(seatList.size()!=0){
+            rows = seatList.get(seatList.size() - 1).getRowNumber() + 1;
+        }
+        return rows;
+    }
+
 
     @Override
     public boolean equals(Object o) {

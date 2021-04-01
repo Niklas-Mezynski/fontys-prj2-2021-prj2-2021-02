@@ -3,12 +3,9 @@ package com.g02.flightsalesfx;
 import com.g02.flightsalesfx.businessEntities.Plane;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.List;
 
 public class HomeController {
 
