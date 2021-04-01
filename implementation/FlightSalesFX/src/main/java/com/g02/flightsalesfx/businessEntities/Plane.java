@@ -10,6 +10,10 @@ public interface Plane {
 
     String getType();
 
+    int getSeatCount();
+
+    int getRowCount();
+
     void addSeat(Seat s);
 
     void addAllSeats(List<? extends Seat> seatList);

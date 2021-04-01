@@ -13,6 +13,8 @@ public class PlaneImpl implements Plane {
     private String manufacturer;
     private String type;
     private List<Seat> seatList;
+    private int seatCount;
+    private int rowCount;
 
     public PlaneImpl(String name, String type, String manufacturer) {
         this.name = name;
@@ -44,13 +46,30 @@ public class PlaneImpl implements Plane {
     }
 
     @Override
+    public int getSeatCount(){
+        return seatCount;
+    }
+
+    @Override
+    public int getRowCount(){
+        return rowCount;
+    }
+
+    @Override
     public void addSeat(Seat s) {
         this.seatList.add(s);
+        changeSeatRowCount();
     }
 
     @Override
     public void addAllSeats(List<? extends Seat> seatList) {
         this.seatList.addAll(seatList);
+        changeSeatRowCount();
+    }
+
+    private void changeSeatRowCount(){
+        seatCount=seatList.size();
+        rowCount=(seatList.get(seatList.size()-1).getRowNumber())+1;
     }
 
     @Override
