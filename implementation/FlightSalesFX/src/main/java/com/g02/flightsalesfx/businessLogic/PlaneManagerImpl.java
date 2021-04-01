@@ -13,11 +13,11 @@ public class PlaneManagerImpl implements PlaneManager {
 
     @Override
     public Plane createPlane(String name, String manufacturer, String type) {
-        return new PlaneImpl(name, manufacturer, type);
+        return new PlaneImpl(name, type, manufacturer);
     }
 
     public Plane createPlane(String name, String manufacturer, String type, List<? extends Seat> seatList) {
-        Plane newPlane = new PlaneImpl(name, manufacturer, type);
+        Plane newPlane = new PlaneImpl(name, type, manufacturer);
         newPlane.addAllSeats(seatList);
         
         return newPlane;

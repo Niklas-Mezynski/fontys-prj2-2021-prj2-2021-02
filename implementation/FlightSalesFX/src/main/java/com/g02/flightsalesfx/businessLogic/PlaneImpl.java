@@ -4,7 +4,6 @@ import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Seat;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,19 +14,16 @@ public class PlaneImpl implements Plane {
     private String type;
     private List<Seat> seatList;
 
-    public PlaneImpl(String name, String manu, String type) {
+    public PlaneImpl(String name, String type, String manufacturer) {
         this.name = name;
-        this.manufacturer = manu;
+        this.manufacturer = manufacturer;
         this.type = type;
         this.seatList = new ArrayList<>();
     }
 
-    public PlaneImpl(String name, String manu, String type, List<Seat> toAdd) {
-        this.name = name;
-        this.manufacturer = manu;
-        this.type = type;
+    public PlaneImpl(String name, String type, String manufacturer, List<Seat> toAdd) {
+        this(name, type, manufacturer);
         this.seatList = new ArrayList<>();
-
         seatList.addAll(toAdd);
     }
 
