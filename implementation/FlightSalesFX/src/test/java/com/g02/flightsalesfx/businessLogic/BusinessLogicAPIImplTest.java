@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
-@TestMethodOrder( MethodOrderer.Alphanumeric.class )
+//@TestMethodOrder( MethodOrderer.Alphanumeric.class )
 public class BusinessLogicAPIImplTest {
     BusinessLogicAPIImpl api = new BusinessLogicAPIImpl(new PersistenceAPIImpl());
 
@@ -45,7 +45,7 @@ public class BusinessLogicAPIImplTest {
 
     }
 
-    @Disabled //Currently broken, throws errors
+//    @Disabled //Currently broken, throws errors
     @ParameterizedTest
     @CsvSource( {
             //RowNo1, SeatNo1, RowNo2, SeatNo2, expected
