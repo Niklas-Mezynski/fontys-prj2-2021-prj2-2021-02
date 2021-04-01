@@ -203,6 +203,9 @@ public class CreatePlaneController {
 
     }
 
+    /**
+     * Inner class SeatButton represents a Seat as a Button on the UI
+     */
     public class SeatButton extends Button implements Seat {
         private final VBox box;
         List<SeatOptionBox> options = new ArrayList<>();
@@ -233,6 +236,9 @@ public class CreatePlaneController {
             return options;
         }
 
+        /**
+         * Updates the text and converts row and seat number to a better readable string consisting of
+         */
         void updateText() {
             var i = column();
             var i1 = row() + 1;
@@ -252,29 +258,51 @@ public class CreatePlaneController {
             this.setText(s);
         }
 
+        /**
+         * get the row of the seat
+         * @return Integer
+         */
         public int row() {
             return seatContainer.getChildren().indexOf(box);
         }
 
+        /**
+         * get the seat number of the seat
+         * @return Integer
+         */
         public int column() {
             return box.getChildren().indexOf(this);
         }
 
+        /**
+         * get the row of the seat
+         * @return Integer
+         */
         @Override
         public int getRowNumber() {
             return row();
         }
 
+        /**
+         * get the seat number of the seat
+         * @return Integer
+         */
         @Override
         public int getSeatNumber() {
             return column();
         }
 
+        /**
+         * @param so The SeatOption to add to this Seat
+         */
         @Override
         public void addSeatOption(com.g02.flightsalesfx.businessEntities.SeatOption so) {
 
         }
 
+        /**
+         * @param seatOptionList The List of SeatOptions to add
+         */
         @Override
         public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) {
 
