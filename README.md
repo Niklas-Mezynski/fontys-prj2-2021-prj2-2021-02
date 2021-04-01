@@ -1,6 +1,7 @@
 # PRJ2 - Project 2  
 
 ![example workflow](https://github.com/FontysVenlo/prj2-2021-prj2-2021-02/actions/workflows/maven.yml/badge.svg)
+![Coverage Passing](https://github.com/FontysVenlo/prj2-2021-prj2-2021-02/actions/workflows/coverage.yml/badge.svg)
 
 The purpose of this repository is to document your Project work.
 
