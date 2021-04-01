@@ -12,7 +12,10 @@ import java.time.LocalDate;
  * @author anato
  */
 public interface PriceReduction {
-    
+
+    /**
+     * @return The LocalDate that this PriceReduction expires on
+     */
     public LocalDate getEndDate();
     
 }
