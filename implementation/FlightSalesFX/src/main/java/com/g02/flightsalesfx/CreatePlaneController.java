@@ -1,7 +1,6 @@
 package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Seat;
-import com.g02.flightsalesfx.businessEntities.SeatOption;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -20,8 +19,6 @@ public class CreatePlaneController {
 
     private final ToggleGroup toggleGroupSeatOptions = new ToggleGroup();
 
-    /*    @FXML
-        public VBox flightOptions;*/
     private final List<SeatButton> seats = new ArrayList<>();
     @FXML
     public VBox seatOptions;
@@ -88,13 +85,12 @@ public class CreatePlaneController {
         return box;
     }
 
-    public SeatButton createSeat(VBox box) {
+    public void createSeat(VBox box) {
         var seatButton = new SeatButton(box);
         this.seats.add(seatButton);
         var children = box.getChildren();
         children.add(children.size() - 1, seatButton);
         updateSeatText();
-        return seatButton;
     }
 
     @FXML
@@ -113,15 +109,6 @@ public class CreatePlaneController {
             alert.setContentText("There was an error while saving the created plane. Try again!");
             alert.showAndWait();
         }
-        /*var plane = App.businessLogicAPI.getPlaneManager().createPlane(name, manufacturer, type);
-        var seatsStream = seats.stream().map(seat -> App.businessLogicAPI.getSeatManager().createSeat(seat.row(), seat.column(), seat.options.stream()
-                .map(seatOption -> App.businessLogicAPI.getOptionManager().createSeatOption(seatOption.getSeatOptionName()))
-                .collect(Collectors.toList())));
-        plane.addAllSeats(seatsStream.sorted().collect(Collectors.toList()));
-        System.out.println(plane);
-        var planeStorageService = App.persistenceAPI.getPlaneStorageService(App.businessLogicAPI.getPlaneManager());
-        planeStorageService.add(plane);
-        exit();*/
     }
 
     @FXML
@@ -151,9 +138,7 @@ public class CreatePlaneController {
             changeAvailableSpinner.setEditable(true);
             this.setSpacing(10);
             this.getChildren().addAll(chooseButton, changeNameTextField, changeAvailableSpinner);
-            this.changeNameTextField.textProperty().addListener(e -> {
-                optionName = changeNameTextField.getText();
-            });
+            this.changeNameTextField.textProperty().addListener(e -> optionName = changeNameTextField.getText());
             chooseButton.getStyleClass().add("selectSeatOption");
             chooseButton.setToggleGroup(toggleGroupSeatOptions);
             chooseButton.setOnAction(actionEvent -> {
@@ -178,7 +163,7 @@ public class CreatePlaneController {
 
     public class SeatButton extends Button implements Seat {
         List<SeatOption> options = new ArrayList<>();
-        private VBox box;
+        private final VBox box;
 
         public SeatButton(VBox box) {
             this.box = box;
