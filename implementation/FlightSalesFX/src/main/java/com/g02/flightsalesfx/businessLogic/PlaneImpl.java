@@ -21,13 +21,6 @@ public class PlaneImpl implements Plane {
         this.seatList = new ArrayList<>();
     }
 
-    public PlaneImpl(String name, String type, String manufacturer, List<Seat> toAdd) {
-        this(name, type, manufacturer);
-        this.seatList = new ArrayList<>();
-        seatList.addAll(toAdd);
-    }
-
-
     @Override
     public String getName() {
         return this.name;
@@ -41,6 +34,16 @@ public class PlaneImpl implements Plane {
     @Override
     public String getType() {
         return this.type;
+    }
+
+    @Override
+    public int getSeatCount(){
+        return seatList.size();
+    }
+
+    @Override
+    public int getRowCount(){
+        return seatList.stream().mapToInt(Seat::getRowNumber).max().orElse(-1) + 1;
     }
 
     @Override
@@ -74,12 +77,12 @@ public class PlaneImpl implements Plane {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlaneImpl plane = (PlaneImpl) o;
-        return Objects.equals(name, plane.name) && Objects.equals(manufacturer, plane.manufacturer) && Objects.equals(type, plane.type) && Objects.equals(seatList, plane.seatList);
+        return Objects.equals(getName(), plane.getName()) && Objects.equals(getManufacturer(), plane.getManufacturer()) && Objects.equals(getType(), plane.getType());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, manufacturer, type, seatList);
+        return Objects.hash(name, manufacturer, type);
     }
 /*
     @Override
