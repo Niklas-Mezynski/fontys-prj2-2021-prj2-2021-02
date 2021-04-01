@@ -10,5 +10,8 @@ package com.g02.flightsalesfx.businessEntities;
  * @author anato
  */
 public interface Ticket {
+    /**
+     * @return The Flight that this Ticket belongs to
+     */
     public Flight getFlight();
 }

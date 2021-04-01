@@ -10,11 +10,22 @@ package com.g02.flightsalesfx.businessEntities;
  * @author anato
  */
 public interface Airport {
-    
+    /**
+     *
+     * @return Name of the airport
+     */
     public String getName();
-    
+
+    /**
+     *
+     * @return Name of the city that the airport is in
+     */
     public String getCity();
-    
+
+    /**
+     *
+     * @return Name of the country that the airport is in
+     */
     public String getCountry();
     
 }
