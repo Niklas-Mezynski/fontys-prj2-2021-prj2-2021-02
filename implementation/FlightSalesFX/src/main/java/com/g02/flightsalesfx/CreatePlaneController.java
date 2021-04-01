@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.g02.flightsalesfx.App.setRoot;
+
 public class CreatePlaneController {
 
     private final ToggleGroup toggleGroupSeatOptions = new ToggleGroup();
@@ -34,7 +36,7 @@ public class CreatePlaneController {
     public TextField planeType;
     @FXML
     public TextField planeManufacturer;
-    private SeatOption currentSelected = null;
+    private SeatOptionBox currentSelected = null;
 
     /**
      * Creates a new SeatRow and adds the corresponding VBox to the container
@@ -45,49 +47,74 @@ public class CreatePlaneController {
         seatContainer.getChildren().add(createRow());
     }
 
+    /**
+     * Clones the last added row. Only clones the amount of seats not the SeatOptions.
+     */
     @FXML
     private void cloneSeatRow() {
         System.out.println("Clone row");
+        // First a new row is created
         var row = createRow();
+        // If the last row has children, Seats were added to it so the amount of seats is queried.
         if (!seatContainer.getChildren().isEmpty()) {
             var node = ((VBox) seatContainer.getChildren().get(seatContainer.getChildren().size() - 1)).getChildren().size() - 1;
+            // Creating the seats and add it to the new row. The last element is always the ADD button so they are inserted on the index size() - 1
             for (int i = 0; i < node; i++) {
                 var seat = new SeatButton(row);
                 seats.add(seat);
                 row.getChildren().add(row.getChildren().size() - 1, seat);
             }
         }
+        // In the end the row is added to the container and all seat labels are updated
         seatContainer.getChildren().add(row);
+        // and all seat labels are updated
         updateSeatText();
     }
 
+    /**
+     * Adds a new SeatOptionBox to the UI.
+     */
     @FXML
     private void addSeatOption() {
-        seatOptions.getChildren().add(seatOptions.getChildren().size() - 1, new SeatOption());
+        seatOptions.getChildren().add(seatOptions.getChildren().size() - 1, new SeatOptionBox());
     }
 
+    /**
+     * Creates a new VBox as a container for all seats in a row. Also adds the ADD button at the end of the VBox
+     *
+     * @return VBox The created VBox that is not yet added to the container
+     */
     private VBox createRow() {
         var box = new VBox();
+        // Configuring the VBox with correct spacing and alignment
         box.setSpacing(2);
         box.setAlignment(Pos.CENTER);
+        // Creating the ADD button and configuring it with the correct label, font and size
         var addButton = new Button();
         addButton.setText("ADD");
         addButton.setFont(Font.font("Source Code Pro Semibold"));
         addButton.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        // Adding the click listener to add seats or remove the row depending on which mouse button was pressed
         addButton.setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+            if (mouseEvent.getButton() == MouseButton.SECONDARY) { // If it was right click remove the row and all seats that is contains
                 System.out.println("right click");
                 box.getChildren().forEach(seats::remove);
                 seatContainer.getChildren().remove(box);
                 updateSeatText();
-            } else if (mouseEvent.getButton()==MouseButton.PRIMARY) {
+            } else if (mouseEvent.getButton() == MouseButton.PRIMARY) { // else create a new Seat
                 createSeat(box);
             }
         });
+        // add the button to the VBox
         box.getChildren().add(addButton);
         return box;
     }
 
+    /**
+     * Creates a new Seats and adds it to the given box.
+     *
+     * @param box The box to which the seats are to be added
+     */
     public void createSeat(VBox box) {
         var seatButton = new SeatButton(box);
         this.seats.add(seatButton);
@@ -96,16 +123,21 @@ public class CreatePlaneController {
         updateSeatText();
     }
 
+    /**
+     * Saves the plane that the user created in the ui. If there is an error while creating or saving it an alert dialog is shown.
+     */
     @FXML
-    private void savePlane() {
+    private void savePlane() throws IOException {
         var name = planeName.getText();
         var type = planeType.getText();
         var manufacturer = planeManufacturer.getText();
+        // Map all internal used SeatButtons to Seat
         var collect = seats.stream().map(seatButton -> (Seat) seatButton).collect(Collectors.toList());
+        // Create the plane using the businessLogicAPI
         var planeCreated = App.businessLogicAPI.createPlaneFromUI(name, type, manufacturer, collect);
-        if (planeCreated) {
+        if (planeCreated) { // If the plane was saved successfully exit and return to the previous scene
             exit();
-        } else {
+        } else { // If there was an error, create and show and alert dialog to notify the user of this error
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Error saving plane");
@@ -114,26 +146,33 @@ public class CreatePlaneController {
         }
     }
 
+    /**
+     * Exit the current scene and return to the previous one, using the static setRoot method of App
+     * @see App#setRoot(String)
+     */
     @FXML
-    private void exit(){
-        try {
-            App.setRoot("home");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void exit() throws IOException {
+        setRoot("home");
     }
 
     private void updateSeatText() {
         seats.forEach(SeatButton::updateText);
     }
 
-    public class SeatOption extends HBox {
+    /**
+     * Inner class that represents a SeatOption on the UI.
+     * Extends HBox and has a Button, TextField and Spinner
+     */
+    public class SeatOptionBox extends HBox {
         String optionName = "";
+        // Button to toggle which SeatOption will be applied to the Seats if they are selected
         ToggleButton chooseButton;
+        // TextField to enter the name of the SeatOption
         TextField changeNameTextField;
+        // Spinner to enter the price of the SeatOption
         Spinner<Double> changeAvailableSpinner;
 
-        public SeatOption() {
+        public SeatOptionBox() {
             chooseButton = new ToggleButton();
             changeNameTextField = new TextField();
             changeAvailableSpinner = new Spinner<>();
@@ -164,9 +203,12 @@ public class CreatePlaneController {
 
     }
 
+    /**
+     * Inner class SeatButton represents a Seat as a Button on the UI
+     */
     public class SeatButton extends Button implements Seat {
-        List<SeatOption> options = new ArrayList<>();
         private final VBox box;
+        List<SeatOptionBox> options = new ArrayList<>();
 
         public SeatButton(VBox box) {
             this.box = box;
@@ -190,10 +232,13 @@ public class CreatePlaneController {
             });
         }
 
-        public List<SeatOption> getOptions() {
+        public List<SeatOptionBox> getOptions() {
             return options;
         }
 
+        /**
+         * Updates the text and converts row and seat number to a better readable string consisting of
+         */
         void updateText() {
             var i = column();
             var i1 = row() + 1;
@@ -213,29 +258,51 @@ public class CreatePlaneController {
             this.setText(s);
         }
 
+        /**
+         * get the row of the seat
+         * @return Integer
+         */
         public int row() {
             return seatContainer.getChildren().indexOf(box);
         }
 
+        /**
+         * get the seat number of the seat
+         * @return Integer
+         */
         public int column() {
             return box.getChildren().indexOf(this);
         }
 
+        /**
+         * get the row of the seat
+         * @return Integer
+         */
         @Override
         public int getRowNumber() {
             return row();
         }
 
+        /**
+         * get the seat number of the seat
+         * @return Integer
+         */
         @Override
         public int getSeatNumber() {
             return column();
         }
 
+        /**
+         * @param so The SeatOption to add to this Seat
+         */
         @Override
         public void addSeatOption(com.g02.flightsalesfx.businessEntities.SeatOption so) {
 
         }
 
+        /**
+         * @param seatOptionList The List of SeatOptions to add
+         */
         @Override
         public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) {
 

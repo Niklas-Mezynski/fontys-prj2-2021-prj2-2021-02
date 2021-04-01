@@ -10,5 +10,9 @@ package com.g02.flightsalesfx.businessEntities;
  * @author anato
  */
 public interface Booking {
+    /**
+     *
+     * @return returns the salesEmployee that created this booking
+     */
     public SalesEmployee getSalesEmployee();
 }

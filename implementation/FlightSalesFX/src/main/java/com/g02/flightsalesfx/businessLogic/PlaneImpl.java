@@ -81,4 +81,13 @@ public class PlaneImpl implements Plane {
     public int hashCode() {
         return Objects.hash(name, manufacturer, type, seatList);
     }
+/*
+    @Override
+    public int getRows(){
+        int rows = 0;
+        if(seatList.size()!=0){
+            rows = seatList.get(seatList.size() - 1).getRowNumber() + 1;
+        }
+        return rows;
+    }*/
 }
