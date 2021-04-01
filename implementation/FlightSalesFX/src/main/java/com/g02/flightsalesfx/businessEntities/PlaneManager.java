@@ -11,6 +11,12 @@ package com.g02.flightsalesfx.businessEntities;
  */
 public interface PlaneManager {
 
+    /**
+     * @param name Name of the Plane to create
+     * @param manufacturer Manufacturer of the Plane to create
+     * @param type Type of the Plane to create
+     * @return The newly created Plane
+     */
     public Plane createPlane(String name, String manufacturer, String type);
 
 }
