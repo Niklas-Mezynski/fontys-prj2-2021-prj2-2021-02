@@ -49,7 +49,7 @@ public class LoginTest {
     }
 
     @Test
-    void testLoginSuccess(FxRobot fxRobot) throws InterruptedException {
+    void testLoginSuccess(FxRobot fxRobot) {
         assertThat(stage.getTitle()).isEqualTo("Flight Ticket Sales");
         assertThat(fxRobot.lookup("#titleLabel").queryAs(Label.class)).hasText("Login");
         var username = "peter@gmx.de";
@@ -61,7 +61,6 @@ public class LoginTest {
         Employee employee = new SalesEmployeeImpl("Peter", "peter@gmx.de", "peterIstDerBeste");
         Mockito.when(businessLogicAPI.login(any(), any())).thenReturn(employee);
         fxRobot.clickOn(fxRobot.lookup("#loginButton").queryButton());
-        Thread.sleep(10);
         Mockito.verify(businessLogicAPI).login(any(), any());
     }
 }

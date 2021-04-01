@@ -150,6 +150,12 @@ public class CreatePlaneTest {
         Node dialogPane = fxRobot.lookup(".dialog-pane").queryAs(DialogPane.class);
         var are_you_sure = fxRobot.from(dialogPane).lookup((Text t) -> t.getText().startsWith("There was an error while saving the created plane. Try again!"));
         assertThat(are_you_sure.queryAll()).isNotEmpty();
+        for (Button queryAllA : fxRobot.from(dialogPane).lookup((Node node) -> node instanceof Button).queryAllAs(Button.class)) {
+            System.out.println(queryAllA.getText());
+            if (queryAllA.getText().equals("OK")) {
+                fxRobot.clickOn(queryAllA);
+            }
+        }
     }
 
     /**
