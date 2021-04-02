@@ -4,6 +4,7 @@ import com.g02.flightsalesfx.CreatePlaneController;
 import com.g02.flightsalesfx.businessEntities.*;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public interface BusinessLogicAPI {
 
@@ -19,4 +20,7 @@ public interface BusinessLogicAPI {
 
     public boolean createPlaneFromUI(String name, String type, String manufacturer, List<Seat> seats);
 
+    public List<Plane> getAllPlanes(Predicate<Plane> predicate);
+
+    void viewPlane(Plane plane);
 }
