@@ -25,10 +25,12 @@ public class HomeController {
         var planeTable = new PlaneTable(all, (event, row) -> {
             if (!row.isEmpty()) {
                 Plane rowData = row.getItem();
-                if (event.getClickCount() == 2) {
+                /*if (event.getClickCount() == 2) {
                     System.out.println("Double click on: " + rowData.getName());
-                } else if (event.getClickCount() == 1) {
+                } else */
+                if (event.getClickCount() == 1) {
                     System.out.println("Normal click on: " + rowData.getName());
+                    App.businessLogicAPI.viewPlane(rowData);
                 }
             }
         });

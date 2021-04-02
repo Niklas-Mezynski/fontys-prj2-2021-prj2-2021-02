@@ -5,7 +5,9 @@ import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.persistence.PersistenceAPI;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     final PersistenceAPI persistenceAPI;
@@ -71,5 +73,17 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         System.out.println(plane);
         var planeStorageService = persistenceAPI.getPlaneStorageService(getPlaneManager());
         return planeStorageService.add(plane);
+    }
+
+    @Override
+    public List<Plane> getAllPlanes(Predicate<Plane> predicate) {
+        var all = persistenceAPI.getPlaneStorageService(planeManager).getAll();
+        var planeStream = all.stream().filter(predicate);
+        return planeStream.collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public void viewPlane(Plane plane) {
+        // Todo
     }
 }
