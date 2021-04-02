@@ -19,7 +19,7 @@ public class HomeController {
 
 
     public void initialize() {
-        var all = App.persistenceAPI.getPlaneStorageService(App.businessLogicAPI.getPlaneManager()).getAll();
+        var all = App.businessLogicAPI.getAllPlanes(plane -> true);
 //        all.forEach(plane -> planesListVBox.getChildren().add(getLabel(plane)));
 //        planesListVBox.getChildren().add();
         var planeTable = new PlaneTable(all, (event, row) -> {
