@@ -17,4 +17,16 @@ public class RouteManagerImpl implements RouteManager {
     public Route createRoute(Airport departure, Airport arrival) {
         return new RouteImpl(departure, arrival);
     }
+
+    @Override
+    public void editRoute(Route toEdit, Airport newDep, Airport newArr) {
+        if(newDep != null){
+            toEdit.setDepartureAirport(newDep);
+        }
+        if(newArr != null){
+            toEdit.setArrivalAirport(newArr);
+        }
+    }
+
+
 }
