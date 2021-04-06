@@ -5,10 +5,12 @@
  */
 package com.g02.flightsalesfx.businessEntities;
 
+import com.g02.flightsalesfx.persistence.AirportStorageService;
+
 /**
  *
- * @author anato
+ * @author anatol
  */
 public interface AirportManager {
-    
+    public Airport createAirport(String name, String city, String country);
 }

@@ -12,13 +12,13 @@ package com.g02.flightsalesfx.businessEntities;
 public interface Route {
 
     /**
-     * @return The Airport that the Plane should arrive at
-     */
-    public Airport getArrivalAirport();
-
-    /**
      * @return The Airport that the Plane should depart from
      */
     public Airport getDepartureAirport();
+
+    /**
+     * @return The Airport that the Plane should arrive at
+     */
+    public Airport getArrivalAirport();
     
 }

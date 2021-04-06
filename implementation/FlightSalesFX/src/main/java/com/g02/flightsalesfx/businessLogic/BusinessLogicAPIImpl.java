@@ -10,11 +10,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BusinessLogicAPIImpl implements BusinessLogicAPI {
+
     final PersistenceAPI persistenceAPI;
     private EmployeeManagerImpl employeeManager;
     private PlaneManagerImpl planeManager;
     private SeatManagerImpl seatManager;
     private OptionManagerImpl optionManager;
+    private AirportManagerImpl airportManager;
+    private RouteManagerImpl routeManager;
 
     public BusinessLogicAPIImpl(PersistenceAPI persistenceAPI) {
         this.persistenceAPI = persistenceAPI;
@@ -54,6 +57,26 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
             optionManager.setSeatOptionStorageService(persistenceAPI.getSeatOptionStorageService(optionManager));
         }
         return optionManager;
+    }
+
+    @Override
+    public AirportManager getAirportManager() {
+        if(airportManager == null) {
+            airportManager = new AirportManagerImpl();
+            airportManager.setAirportStorageService(persistenceAPI.getAirportStorageService(airportManager));
+        }
+
+        return airportManager;
+    }
+
+    @Override
+    public RouteManager getRouteManager() {
+        if(routeManager == null) {
+            routeManager = new RouteManagerImpl();
+            routeManager.setRouteStorageService(persistenceAPI.getRouteStorageService(routeManager));
+        }
+
+        return routeManager;
     }
 
     @Override

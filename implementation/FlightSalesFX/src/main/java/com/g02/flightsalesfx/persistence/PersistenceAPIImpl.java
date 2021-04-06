@@ -1,9 +1,6 @@
 package com.g02.flightsalesfx.persistence;
 
-import com.g02.flightsalesfx.businessEntities.EmployeeManager;
-import com.g02.flightsalesfx.businessEntities.OptionManager;
-import com.g02.flightsalesfx.businessEntities.PlaneManager;
-import com.g02.flightsalesfx.businessEntities.SeatManager;
+import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.businessLogic.OptionManagerImpl;
 import com.g02.flightsalesfx.businessLogic.SeatManagerImpl;
 
@@ -13,6 +10,8 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     private PlaneStorageService planeStorageService;
     private SeatStorageService seatStorageService;
     private SeatOptionsStorageServiceImpl seatOptionStorageService;
+    private AirportStorageService airportStorageService;
+    private RouteStorageService routeStorageService;
 
     @Override
     public EmployeeStorageService getEmployeeStorageService(EmployeeManager employeeManager) {
@@ -43,5 +42,22 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
             seatOptionStorageService = new SeatOptionsStorageServiceImpl(optionManager);
         }
         return seatOptionStorageService;
+    }
+
+    @Override
+    public AirportStorageService getAirportStorageService(AirportManager airportManager) {
+        if(airportStorageService == null) {
+            airportStorageService = new AirportStorageServiceImpl(airportManager);
+        }
+
+        return airportStorageService;
+    }
+
+    @Override
+    public RouteStorageService getRouteStorageService(RouteManager routeManager) {
+        if (routeStorageService == null) {
+            routeStorageService = new RouteStorageServiceImpl(routeManager);
+        }
+        return routeStorageService;
     }
 }

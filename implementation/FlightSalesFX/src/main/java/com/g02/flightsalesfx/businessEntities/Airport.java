@@ -7,7 +7,7 @@ package com.g02.flightsalesfx.businessEntities;
 
 /**
  *
- * @author anato
+ * @author anatol
  */
 public interface Airport {
     /**

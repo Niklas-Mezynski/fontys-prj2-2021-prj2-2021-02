@@ -5,10 +5,11 @@
  */
 package com.g02.flightsalesfx.businessEntities;
 
+
 /**
  *
  * @author anato
  */
 public interface RouteManager {
-    
+    public Route createRoute(Airport departure, Airport arrival);
 }
