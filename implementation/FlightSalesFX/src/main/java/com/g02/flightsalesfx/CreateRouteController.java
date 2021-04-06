@@ -67,15 +67,21 @@ public class CreateRouteController {
         boolean routeCreated = false;
         if( (depAirport != null && arrAirport != null) && !(depAirport.equals(arrAirport))) {
             routeCreated = App.businessLogicAPI.createRouteFromUI(depAirport, arrAirport);
-        }
 
-        if (routeCreated) {
-            exit();
+            if (routeCreated) {
+                exit();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("There was an error Saving the route");
+                alert.setContentText("There was an error while saving the created route. Try again!");
+                alert.showAndWait();
+            }
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Error saving route");
-            alert.setContentText("There was an error while saving the created route. Try again!");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText("You have to select two different airports");
+            alert.setContentText("You either have selected the same airport twice or not selected two airports");
             alert.showAndWait();
         }
     }

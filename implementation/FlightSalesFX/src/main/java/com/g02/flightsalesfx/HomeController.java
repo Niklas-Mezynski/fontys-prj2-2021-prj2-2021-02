@@ -5,6 +5,9 @@ import com.g02.flightsalesfx.gui.PlaneTable;
 import com.g02.flightsalesfx.gui.RouteTable;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -21,8 +24,12 @@ public class HomeController {
     public VBox routeListVBox;
     @FXML
     public AnchorPane routePane;
+    @FXML
+    public TabPane tabPane;
+
 
     public void initialize() {
+        tabPane.getSelectionModel().select(App.inRootTab);
         var all = App.businessLogicAPI.getAllPlanes(plane -> true);
 //        all.forEach(plane -> planesListVBox.getChildren().add(getLabel(plane)));
 //        planesListVBox.getChildren().add();
@@ -38,6 +45,7 @@ public class HomeController {
                 }
             }
         });
+//        tabPane.getSelectionModel().select(App.homeControllerTab);
         planesListVBox.getChildren().add(planeTable);
         planeTable.setMinWidth(planePane.getPrefWidth());
 
@@ -51,11 +59,13 @@ public class HomeController {
 
     @FXML
     public void gotoCreatePlane() throws IOException {
+        App.inRootTab=0;
         App.setRoot("createPlane");
     }
 
     @FXML
     public void goToCreateRoute() throws IOException {
+        App.inRootTab=1;
         App.setRoot("createRoute");
     }
     
