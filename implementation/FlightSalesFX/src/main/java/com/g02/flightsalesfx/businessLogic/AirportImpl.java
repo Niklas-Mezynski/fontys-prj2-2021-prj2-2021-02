@@ -34,6 +34,6 @@ public class AirportImpl implements Airport {
      */
     @Override
     public String getCountry() {
-        return this.city;
+        return this.city +" "+this.country+" "+this.name;
     }
 }
