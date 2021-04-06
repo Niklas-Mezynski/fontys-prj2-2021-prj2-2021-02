@@ -4,6 +4,7 @@ import com.g02.flightsalesfx.businessEntities.Route;
 import com.g02.flightsalesfx.businessEntities.RouteManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RouteStorageServiceImpl implements RouteStorageService {
@@ -21,6 +22,6 @@ public class RouteStorageServiceImpl implements RouteStorageService {
 
     @Override
     public List<Route> getAll() {
-        return routes;
+        return Collections.unmodifiableList(routes);
     }
 }
