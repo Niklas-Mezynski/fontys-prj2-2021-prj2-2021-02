@@ -1,12 +1,14 @@
 package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Airport;
+import com.g02.flightsalesfx.businessEntities.Route;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.InputMethodEvent;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.g02.flightsalesfx.App.setRoot;
 
@@ -66,17 +68,32 @@ public class CreateRouteController {
 
         boolean routeCreated = false;
         if( (depAirport != null && arrAirport != null) && !(depAirport.equals(arrAirport))) {
-            routeCreated = App.businessLogicAPI.createRouteFromUI(depAirport, arrAirport);
-
-            if (routeCreated) {
-                exit();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("There was an error Saving the route");
-                alert.setContentText("There was an error while saving the created route. Try again!");
+            List<Route> routes = App.businessLogicAPI.getAllRoutes(route -> {
+                if(route.getDepartureAirport().equals(depAirport) && route.getArrivalAirport().equals(arrAirport)){
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            if(routes.size() != 0){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText("This Route already Exists");
+                alert.setContentText("You selected a combination of Departure and Arrival, that already exists.");
                 alert.showAndWait();
+            } else {
+                routeCreated = App.businessLogicAPI.createRouteFromUI(depAirport, arrAirport);
+                if (routeCreated) {
+                    exit();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("There was an error Saving the route");
+                    alert.setContentText("There was an error while saving the created route. Try again!");
+                    alert.showAndWait();
+                }
             }
+
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
@@ -84,6 +101,7 @@ public class CreateRouteController {
             alert.setContentText("You either have selected the same airport twice or not selected two airports");
             alert.showAndWait();
         }
+
     }
 
     /**
