@@ -24,7 +24,11 @@ public interface BusinessLogicAPI {
 
     public boolean createPlaneFromUI(String name, String type, String manufacturer, List<Seat> seats);
 
+    public boolean createRouteFromUI(Airport departure, Airport arrival);
+
     public List<Plane> getAllPlanes(Predicate<Plane> predicate);
+
+    public List<Route> getAllRoutes(Predicate<Route> predicate);
 
     void viewPlane(Plane plane);
 

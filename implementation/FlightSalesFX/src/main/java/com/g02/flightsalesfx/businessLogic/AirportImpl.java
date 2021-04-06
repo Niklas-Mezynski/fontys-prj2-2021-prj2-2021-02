@@ -2,6 +2,8 @@ package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.flightsalesfx.businessEntities.Airport;
 
+import java.util.Objects;
+
 public class AirportImpl implements Airport {
 
     private final String name;
@@ -40,5 +42,26 @@ public class AirportImpl implements Airport {
     @Override
     public String toString() {
         return this.name + ", " + this.city + ", " + this.country;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AirportImpl airport = (AirportImpl) o;
+
+        if (getName() != null ? !getName().equals(airport.getName()) : airport.getName() != null) return false;
+        if (getCity() != null ? !getCity().equals(airport.getCity()) : airport.getCity() != null) return false;
+        return getCountry() != null ? getCountry().equals(airport.getCountry()) : airport.getCountry() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getCity() != null ? getCity().hashCode() : 0);
+        result = 31 * result + (getCountry() != null ? getCountry().hashCode() : 0);
+        return result;
     }
 }

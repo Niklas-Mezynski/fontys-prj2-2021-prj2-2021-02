@@ -14,8 +14,9 @@ public class RouteStorageServiceImpl implements RouteStorageService {
     }
 
     @Override
-    public void add(Route route) {
+    public boolean add(Route route) {
         routes.add(route);
+        return true;
     }
 
     @Override
