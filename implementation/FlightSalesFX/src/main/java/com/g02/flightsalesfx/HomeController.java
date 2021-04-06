@@ -43,5 +43,9 @@ public class HomeController {
         App.setRoot("createPlane");
     }
 
-
+    @FXML
+    public void goToCreateRoute() throws IOException {
+        App.setRoot("createRoute");
+    }
+    
 }
