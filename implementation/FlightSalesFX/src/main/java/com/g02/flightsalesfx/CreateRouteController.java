@@ -1,9 +1,5 @@
 package com.g02.flightsalesfx;
 
-<<<<<<< Updated upstream
-public class CreateRouteController {
-    
-=======
 import com.g02.flightsalesfx.businessEntities.Airport;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,11 +17,10 @@ public class CreateRouteController {
     private ListView<Airport> listDep;
 
     @FXML
-    private TextField depTextField;
+    private TextField searchDep;
 
     @FXML
-    private TextField arrTextField;
-
+    private TextField searchArr;
 
     @FXML
     private Label lableDep;
@@ -49,8 +44,17 @@ public class CreateRouteController {
     void addRoute(ActionEvent event) {
         Airport depAirport = listDep.getSelectionModel().getSelectedItem();
         Airport arrAirport = listArr.getSelectionModel().getSelectedItem();
-        System.out.println();
+        System.out.println("Departure:" + depAirport +"\n Arrival: " + arrAirport);
     }
 
->>>>>>> Stashed changes
+    @FXML
+    void updateArrList(ActionEvent event) {
+
+    }
+
+    @FXML
+    void updateDepList(ActionEvent event) {
+
+    }
+
 }
