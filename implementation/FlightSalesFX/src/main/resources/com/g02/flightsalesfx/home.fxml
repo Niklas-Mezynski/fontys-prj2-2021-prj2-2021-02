@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.HomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.HomeController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -39,7 +39,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <ScrollPane vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <ScrollPane prefHeight="529.0" prefWidth="910.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <content>
                             <AnchorPane fx:id="planePane">
                                  <children>
@@ -71,28 +71,28 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="600.0">
                      <children>
-                        <ScrollPane>
+                        <ScrollPane minHeight="0.0" minWidth="0.0" prefHeight="529.0" prefWidth="910.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <content>
-                            <AnchorPane fx:id="routePane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="212.0">
+                            <AnchorPane fx:id="routePane">
                                  <children>
-                                    <VBox fx:id="routeListVBox" layoutX="6.0" prefHeight="200.0" prefWidth="122.0">
+                                    <VBox fx:id="routeListVBox" fillWidth="false" layoutX="6.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                        <children>
-                                          <HBox prefHeight="45.0" prefWidth="122.0">
+                                          <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                                              <children>
-                                                <Label prefHeight="45.0" prefWidth="124.0" text="All Routes">
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="All Routes">
                                                    <font>
                                                       <Font size="22.0" />
                                                    </font>
                                                 </Label>
                                              </children>
                                           </HBox>
+                                          <Button fx:id="goToCreateRoute" mnemonicParsing="false" onAction="#goToCreateRoute" text="Add Route" />
                                        </children>
                                     </VBox>
                                  </children>
                               </AnchorPane>
                           </content>
                         </ScrollPane>
-                        <Button fx:id="goToCreateRoute" layoutX="230.0" layoutY="14.0" mnemonicParsing="false" onAction="#goToCreateRoute" text="Add Route" />
                      </children></AnchorPane>
             </content>
           </Tab>
