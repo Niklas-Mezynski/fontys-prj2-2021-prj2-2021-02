@@ -18,6 +18,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     private OptionManagerImpl optionManager;
     private AirportManagerImpl airportManager;
     private RouteManagerImpl routeManager;
+    private PriceReductionManagerImpl priceReductionManager;
 
     public BusinessLogicAPIImpl(PersistenceAPI persistenceAPI) {
         this.persistenceAPI = persistenceAPI;
@@ -77,6 +78,15 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         }
 
         return routeManager;
+    }
+
+    @Override
+    public PriceReductionManager getPriceReductionManager() {
+        if(priceReductionManager == null) {
+            priceReductionManager = new PriceReductionManagerImpl();
+            priceReductionManager.setPriceReductionStorageService(persistenceAPI.getPriceReductionStorageService(priceReductionManager));
+        }
+        return priceReductionManager;
     }
 
     @Override

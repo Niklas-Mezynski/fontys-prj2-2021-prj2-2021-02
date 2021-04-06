@@ -5,11 +5,19 @@
  */
 package com.g02.flightsalesfx.businessEntities;
 
+import com.g02.flightsalesfx.businessLogic.DynamicPriceReductionImpl;
+import com.g02.flightsalesfx.businessLogic.StaticPriceReductionImpl;
+
+import java.time.LocalDate;
+
 /**
  *
  * @author anato
  */
 public interface PriceReductionManager {
 
-    public PriceReduction createPriceReduction();
+    public StaticPriceReductionImpl createStaticPriceReduction(String name, LocalDate endDate, double percentage);
+
+    public DynamicPriceReductionImpl createDynamicPriceReduction(String name, LocalDate endDate);
+
 }

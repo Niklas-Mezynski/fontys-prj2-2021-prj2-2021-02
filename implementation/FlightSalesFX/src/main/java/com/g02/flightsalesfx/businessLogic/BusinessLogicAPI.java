@@ -20,6 +20,8 @@ public interface BusinessLogicAPI {
 
     public RouteManager getRouteManager();
 
+    public PriceReductionManager getPriceReductionManager();
+
     public Employee login(String email, String password);
 
     public boolean createPlaneFromUI(String name, String type, String manufacturer, List<Seat> seats);

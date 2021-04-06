@@ -81,11 +81,11 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="600.0">
                      <children>
-                        <ScrollPane prefHeight="200.0" prefWidth="215.0">
+                        <ScrollPane>
                           <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="212.0">
+                            <AnchorPane fx:id="routePane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="212.0">
                                  <children>
-                                    <VBox layoutX="6.0" prefHeight="200.0" prefWidth="122.0">
+                                    <VBox fx:id="routeListVBox" layoutX="6.0" prefHeight="200.0" prefWidth="122.0">
                                        <children>
                                           <HBox prefHeight="45.0" prefWidth="122.0">
                                              <children>
@@ -102,7 +102,7 @@
                               </AnchorPane>
                           </content>
                         </ScrollPane>
-                        <Button fx:id="goToCreateRoute" onAction="#goToCreateRoute" layoutX="230.0" layoutY="14.0" mnemonicParsing="false" text="Add Route" />
+                        <Button fx:id="goToCreateRoute" layoutX="230.0" layoutY="14.0" mnemonicParsing="false" onAction="#goToCreateRoute" text="Add Route" />
                      </children></AnchorPane>
             </content>
           </Tab>

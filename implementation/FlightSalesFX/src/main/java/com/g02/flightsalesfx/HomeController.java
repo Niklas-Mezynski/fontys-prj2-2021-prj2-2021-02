@@ -2,6 +2,7 @@ package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.gui.PlaneTable;
+import com.g02.flightsalesfx.gui.RouteTable;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
@@ -16,7 +17,10 @@ public class HomeController {
     @FXML
     public AnchorPane planePane;
     public MenuItem createPlane;
-
+    @FXML
+    public VBox routeListVBox;
+    @FXML
+    public AnchorPane routePane;
 
     public void initialize() {
         var all = App.businessLogicAPI.getAllPlanes(plane -> true);
@@ -36,6 +40,13 @@ public class HomeController {
         });
         planesListVBox.getChildren().add(planeTable);
         planeTable.setMinWidth(planePane.getPrefWidth());
+
+        //List all Routes
+        var allRoutes = App.businessLogicAPI.getAllRoutes(route -> true);
+
+        var routeTable = new RouteTable(allRoutes);
+        routeListVBox.getChildren().add(routeTable);
+        routeTable.setMinWidth(routePane.getPrefWidth());
     }
 
     @FXML

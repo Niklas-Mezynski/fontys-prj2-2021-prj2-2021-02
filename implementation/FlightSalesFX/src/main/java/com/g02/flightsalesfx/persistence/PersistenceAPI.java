@@ -19,4 +19,6 @@ public interface PersistenceAPI {
 
     RouteStorageService getRouteStorageService(RouteManager routeManager);
 
+    PriceReductionStorageService getPriceReductionStorageService(PriceReductionManager PriceReductionManager);
+
 }

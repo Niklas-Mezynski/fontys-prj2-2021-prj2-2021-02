@@ -12,6 +12,7 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     private SeatOptionsStorageServiceImpl seatOptionStorageService;
     private AirportStorageService airportStorageService;
     private RouteStorageService routeStorageService;
+    private PriceReductionStorageService priceReductionStorageService;
 
     @Override
     public EmployeeStorageService getEmployeeStorageService(EmployeeManager employeeManager) {
@@ -59,5 +60,13 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
             routeStorageService = new RouteStorageServiceImpl(routeManager);
         }
         return routeStorageService;
+    }
+
+    @Override
+    public PriceReductionStorageService getPriceReductionStorageService(PriceReductionManager priceReductionManager) {
+        if(priceReductionStorageService == null) {
+            priceReductionStorageService = new PriceReductionStorageServiceImpl(priceReductionManager);
+        }
+        return priceReductionStorageService;
     }
 }
