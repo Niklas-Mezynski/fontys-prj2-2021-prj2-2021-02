@@ -4,8 +4,8 @@ import com.g02.flightsalesfx.businessEntities.Airport;
 import com.g02.flightsalesfx.businessEntities.Route;
 
 public class RouteImpl implements Route {
-    private final Airport departureAirport;
-    private final Airport arrivalAirport;
+    private  Airport departureAirport;
+    private  Airport arrivalAirport;
 
     public RouteImpl (Airport departureAirport, Airport arrivalAirport) {
         this.departureAirport = departureAirport;
@@ -26,5 +26,24 @@ public class RouteImpl implements Route {
     @Override
     public Airport getArrivalAirport() {
         return arrivalAirport;
+    }
+
+
+    /**
+     *
+     * @param newAp Airport to be set as Arrival Airport
+     */
+    @Override
+    public void setArrivalAirport(Airport newAp) {
+        this.arrivalAirport = newAp;
+    }
+
+    /**
+     *
+     * @param newAp Airport to be set as Departure Airport
+     */
+    @Override
+    public void setDepartureAirport(Airport newAp) {
+        this.departureAirport = newAp;
     }
 }

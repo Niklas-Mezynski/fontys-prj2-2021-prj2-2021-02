@@ -12,4 +12,6 @@ package com.g02.flightsalesfx.businessEntities;
  */
 public interface RouteManager {
     public Route createRoute(Airport departure, Airport arrival);
+
+    public void editRoute(Route toEdit, Airport newDep, Airport newArr);
 }

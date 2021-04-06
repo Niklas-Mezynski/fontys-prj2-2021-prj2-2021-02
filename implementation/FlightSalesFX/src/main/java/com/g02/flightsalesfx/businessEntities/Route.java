@@ -20,5 +20,18 @@ public interface Route {
      * @return The Airport that the Plane should arrive at
      */
     public Airport getArrivalAirport();
+
+
+    /**
+     *
+     * @param newAp Airport to be set as Arrival Airport
+     */
+    public void setArrivalAirport(Airport newAp);
+
+    /**
+     *
+     * @param newAp Airport to be set as Departure Airport
+     */
+    public void setDepartureAirport(Airport newAp);
     
 }

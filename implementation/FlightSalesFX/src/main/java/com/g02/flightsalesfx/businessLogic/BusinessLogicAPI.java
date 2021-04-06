@@ -33,4 +33,6 @@ public interface BusinessLogicAPI {
     void viewPlane(Plane plane);
 
     public List<Airport> getAllAirports(Predicate<Airport> predicate);
+
+    public List<Route> getAllRoutes(Predicate<Route> predicate);
 }
