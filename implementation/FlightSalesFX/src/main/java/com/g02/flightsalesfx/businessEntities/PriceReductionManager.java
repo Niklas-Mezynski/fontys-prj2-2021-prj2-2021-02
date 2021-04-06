@@ -10,5 +10,6 @@ package com.g02.flightsalesfx.businessEntities;
  * @author anato
  */
 public interface PriceReductionManager {
-    
+
+    public PriceReduction createPriceReduction();
 }

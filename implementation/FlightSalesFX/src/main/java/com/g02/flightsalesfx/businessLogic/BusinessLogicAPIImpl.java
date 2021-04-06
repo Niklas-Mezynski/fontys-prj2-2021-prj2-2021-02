@@ -120,14 +120,6 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
-    public List<Route> getAllRoutes(Predicate<Route> predicate) {
-        var allRoutes = persistenceAPI.getRouteStorageService(routeManager).getAll();
-        var routeStream = allRoutes.stream().filter(predicate);
-
-        return routeStream.collect(Collectors.toUnmodifiableList());
-    }
-
-    @Override
     public List<Airport> getAllAirports(Predicate<Airport> predicate) {
         var all = persistenceAPI.getAirportStorageService(airportManager).getAll();
         return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
