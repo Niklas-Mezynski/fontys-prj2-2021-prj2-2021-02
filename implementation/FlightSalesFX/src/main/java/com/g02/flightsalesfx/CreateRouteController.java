@@ -32,7 +32,7 @@ public class CreateRouteController {
     private Button buttonAdd;
 
     public void initialize() {
-        var allAirports = App.businessLogicAPI.getAllAirports();
+        var allAirports = App.businessLogicAPI.getAllAirports(Airport -> true);
         allAirports.sort((a, b) -> a.getName().compareTo(b.getName()));
 
         listDep.getItems().addAll(allAirports);
@@ -49,7 +49,9 @@ public class CreateRouteController {
 
     @FXML
     void updateArrList(ActionEvent event) {
-
+        var searchedAirports = App.businessLogicAPI.getAllAirports(Airport ->
+                Airport.getName().contains(searchArr.getText()));
+        listArr.getItems().addAll(searchedAirports);
     }
 
     @FXML

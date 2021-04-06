@@ -111,7 +111,8 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
-    public List<Airport> getAllAirports() {
-        return persistenceAPI.getAirportStorageService(airportManager).getAll();
+    public List<Airport> getAllAirports(Predicate<Airport> predicate) {
+        var all = persistenceAPI.getAirportStorageService(airportManager).getAll();
+        return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
     }
 }
