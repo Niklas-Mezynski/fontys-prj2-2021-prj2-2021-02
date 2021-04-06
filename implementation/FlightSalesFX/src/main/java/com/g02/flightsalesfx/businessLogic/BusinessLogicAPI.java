@@ -27,4 +27,6 @@ public interface BusinessLogicAPI {
     public List<Plane> getAllPlanes(Predicate<Plane> predicate);
 
     void viewPlane(Plane plane);
+
+    public List<Airport> getAllAirports();
 }

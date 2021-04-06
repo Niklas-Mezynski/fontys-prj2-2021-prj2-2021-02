@@ -109,4 +109,9 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     public void viewPlane(Plane plane) {
         // Todo
     }
+
+    @Override
+    public List<Airport> getAllAirports() {
+        return persistenceAPI.getAirportStorageService(airportManager).getAll();
+    }
 }
