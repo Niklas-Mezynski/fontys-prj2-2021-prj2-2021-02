@@ -4,5 +4,4 @@ import com.g02.flightsalesfx.businessEntities.PriceReduction;
 
 public abstract class PriceReductionImpl implements PriceReduction {
 
-    abstract String getName();
 }
