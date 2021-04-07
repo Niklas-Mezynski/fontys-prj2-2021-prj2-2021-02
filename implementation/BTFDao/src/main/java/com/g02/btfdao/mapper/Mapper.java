@@ -1,13 +1,20 @@
 package com.g02.btfdao.mapper;
 
+import com.g02.btfdao.annotations.Ignore;
+import com.g02.btfdao.utils.Pair;
 import com.g02.btfdao.utils.Savable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 public class Mapper {
 
@@ -25,12 +32,46 @@ public class Mapper {
         return Arrays.stream(getFields(aClass)).filter(field -> field.isAnnotationPresent(annotation)).toArray(Field[]::new);
     }
 
-    public static <E extends Savable> Object[] deconstruct(E e) {
-        return null;
+    public static Field[] getFields(Class<? extends Savable> aClass, Predicate<Field> predicate) {
+        return Arrays.stream(getFields(aClass)).filter(predicate).toArray(Field[]::new);
     }
 
-    public static <E extends Savable> E construct(Class<E> aClass, ResultSet resultSet) {
-        return null;
+    public static <E extends Savable> List<Pair<String, Object>> deconstruct(E e) {
+        var fields = getFields(e.getClass());
+        List<Pair<String, Object>> pairs = new ArrayList<>();
+        for (Field field : fields) {
+            try {
+                var o = field.get(e);
+                pairs.add(new Pair<>(field.getName(), o));
+            } catch (IllegalAccessException illegalAccessException) {
+                illegalAccessException.printStackTrace();
+            }
+        }
+        return pairs;
+    }
+
+    public static <E extends Savable> E construct(Class<E> aClass, ResultSet resultSet) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        boolean hasNext = true;
+        int i = 0;
+        List<Object> objects = new ArrayList<>();
+        while (hasNext) {
+            try {
+                var object = resultSet.getObject(i);
+                objects.add(object);
+            } catch (SQLException throwables) {
+                hasNext = false;
+                throwables.printStackTrace();
+            }
+            i++;
+        }
+        return construct(aClass, objects.toArray());
+    }
+
+    public static <E extends Savable> E construct(Class<E> aClass, Object[] objects) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
+        var fields = getFields(aClass, field -> !field.isAnnotationPresent(Ignore.class));
+        var constructor = aClass.getConstructor(Arrays.stream(fields).map(Field::getType).toArray(Class[]::new));
+        var e = constructor.newInstance(objects);
+        return e;
     }
 
 }
