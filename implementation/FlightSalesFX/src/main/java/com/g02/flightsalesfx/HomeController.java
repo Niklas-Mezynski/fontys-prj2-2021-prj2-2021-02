@@ -60,6 +60,7 @@ public class HomeController {
                     System.out.println("Ctrl + click on: " + rowData.toString() + rowData.getEnabled());
                     rowData.toggleEnable();
                     row.getTableView().refresh();
+                    //Todo save change in PersistanceLayer
                 }
             }
         });
