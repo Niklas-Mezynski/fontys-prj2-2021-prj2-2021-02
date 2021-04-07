@@ -25,11 +25,10 @@ public class StaticPriceReductionImpl extends PriceReductionImpl {
     }
 
     @Override
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    @Override
     public double getPercentageAsADouble() {
         return percentageAsDouble;
     }

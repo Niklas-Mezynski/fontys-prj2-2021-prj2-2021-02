@@ -19,6 +19,6 @@ public interface PriceReductionManager {
     public StaticPriceReductionImpl createStaticPriceReduction(String name, LocalDate endDate, double percentage);
 
     // todo: source
-    public DynamicPriceReductionImpl createDynamicPriceReduction(String name, LocalDate endDate, double percentage);
+    public DynamicPriceReductionImpl createDynamicPriceReduction(String name, String source, LocalDate endDate);
 
 }

@@ -18,5 +18,5 @@ public interface PriceReduction {
      */
     public LocalDate getEndDate();
 
-    public double getPercentageAsADouble();
+    public String getName();
 }

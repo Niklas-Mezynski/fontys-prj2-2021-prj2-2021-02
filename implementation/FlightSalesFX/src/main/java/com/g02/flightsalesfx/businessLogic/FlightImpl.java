@@ -53,9 +53,9 @@ public class FlightImpl implements Flight {
      */
     @Override
     public double getPrice() {
-        reductionList.stream()
+        /*reductionList.stream()
                 .forEach(priceReduction -> price = price*(1-priceReduction.getPercentageAsADouble()));
-
+*/
         return price;
     }
 
@@ -115,13 +115,13 @@ public class FlightImpl implements Flight {
         return p;
     }
 
-    public boolean removePriceReduction(PriceReduction p) {
+    /*public boolean removePriceReduction(PriceReduction p) {
         if(reductionList.contains(p)) {
             reductionList.remove(p);
             price = price * (1 + p.getPercentageAsADouble());
         }
         return false;
-    }
+    }*/
 
     /**
      * @return The Plane that this Flight uses

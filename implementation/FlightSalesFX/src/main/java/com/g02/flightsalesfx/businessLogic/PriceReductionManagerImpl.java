@@ -15,8 +15,8 @@ public class PriceReductionManagerImpl implements PriceReductionManager {
     }
 
     @Override
-    public DynamicPriceReductionImpl createDynamicPriceReduction(String name, LocalDate endDate) {
-        return new DynamicPriceReductionImpl(name, endDate);
+    public DynamicPriceReductionImpl createDynamicPriceReduction(String name, String source, LocalDate endDate) {
+        return new DynamicPriceReductionImpl(name, source, endDate);
     }
 
     public void setPriceReductionStorageService(PriceReductionStorageService priceReductionStorageService) {
