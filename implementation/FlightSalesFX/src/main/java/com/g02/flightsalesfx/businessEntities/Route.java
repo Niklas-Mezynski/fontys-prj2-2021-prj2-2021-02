@@ -33,5 +33,26 @@ public interface Route {
      * @param newAp Airport to be set as Departure Airport
      */
     public void setDepartureAirport(Airport newAp);
-    
+
+    /**
+     *
+     * @return true if a creation of a new flight with this route is allowed
+     */
+    public boolean getEnabled();
+
+    /**
+     * Enable the route to be used in new flights
+     */
+    public void enableRoute();
+
+    /**
+     * Disable the route to be used in new flights
+     */
+    public void disableRoute();
+
+    /**
+     * toggles the enable-state of the route
+     */
+    public void toggleEnable();
+
 }
