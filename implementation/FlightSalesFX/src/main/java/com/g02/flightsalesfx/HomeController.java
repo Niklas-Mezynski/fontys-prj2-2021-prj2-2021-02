@@ -1,13 +1,11 @@
 package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Plane;
+import com.g02.flightsalesfx.businessEntities.Route;
 import com.g02.flightsalesfx.gui.PlaneTable;
 import com.g02.flightsalesfx.gui.RouteTable;
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -52,10 +50,23 @@ public class HomeController {
         //List all Routes
         var allRoutes = App.businessLogicAPI.getAllRoutes(route -> true);
 
-        var routeTable = new RouteTable(allRoutes);
+        var routeTable = new RouteTable(allRoutes, (event, row) -> {
+            if (!row.isEmpty()) {
+                Route rowData = row.getItem();
+                /*if (event.getClickCount() == 2) {
+                    System.out.println("Double click on: " + rowData.getName());
+                } else */
+                if (event.getClickCount() == 1 && event.isControlDown()) {
+                    System.out.println("Ctrl + click on: " + rowData.toString() + rowData.getEnabled());
+                    rowData.toggleEnable();
+                    row.getTableView().refresh();
+                }
+            }
+        });
         routeListVBox.getChildren().add(routeTable);
         routeTable.setMinWidth(routePane.getPrefWidth());
     }
+
 
     @FXML
     public void gotoCreatePlane() throws IOException {
