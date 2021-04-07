@@ -89,14 +89,14 @@
                                        <children>
                                           <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                                              <children>
-                                                <VBox prefHeight="49.0" prefWidth="218.0">
+                                                <VBox prefHeight="49.0" prefWidth="243.0">
                                                    <children>
                                                       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="All Routes">
                                                          <font>
                                                             <Font size="22.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label prefHeight="17.0" prefWidth="215.0" text="Ctrl+LeftClick to Toggle Route-Enable" />
+                                                      <Label prefHeight="17.0" prefWidth="223.0" text="Ctrl + 2xLeftClick to Toggle Route-Enable" />
                                                    </children>
                                                 </VBox>
                                              </children>

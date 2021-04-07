@@ -56,7 +56,7 @@ public class HomeController {
                 /*if (event.getClickCount() == 2) {
                     System.out.println("Double click on: " + rowData.getName());
                 } else */
-                if (event.getClickCount() == 1 && event.isControlDown()) {
+                if (event.getClickCount() == 2 && event.isControlDown()) {
                     System.out.println("Ctrl + click on: " + rowData.toString() + rowData.getEnabled());
                     rowData.toggleEnable();
                     row.getTableView().refresh();

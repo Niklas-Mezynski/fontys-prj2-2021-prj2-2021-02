@@ -21,6 +21,7 @@ public class RouteTable extends TableView<Route> {
         arrivalColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalAirport"));
         setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         TableColumn<Route, String> enabledColumn = new TableColumn("Enabled");
+        getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         //Extract EnableStatus from Route field "rteEnable"
         enabledColumn.setCellValueFactory(param -> {
             Route rte = param.getValue();
