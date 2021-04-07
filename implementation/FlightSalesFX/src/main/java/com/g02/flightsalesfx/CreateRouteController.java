@@ -9,6 +9,8 @@ import javafx.scene.input.InputMethodEvent;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 import static com.g02.flightsalesfx.App.setRoot;
 
@@ -39,24 +41,20 @@ public class CreateRouteController {
     private Button buttonExit;
 
     public void initialize() {
-        var allAirports = App.businessLogicAPI.getAllAirports(Airport -> true);
+        final var allAirports = App.businessLogicAPI.getAllAirports(Airport -> true);
 //        allAirports.sort((a, b) -> a.getName().compareTo(b.getName()));
 
         listDep.getItems().addAll(allAirports);
         listArr.getItems().addAll(allAirports);
 
         searchDep.textProperty().addListener(((observableValue, oldValue, newValue) -> {
-            var searchedAirports = App.businessLogicAPI.getAllAirports(Airport ->
-                    Airport.getName().toLowerCase().contains(newValue.toLowerCase()));
             listDep.getItems().clear();
-            listDep.getItems().addAll(searchedAirports);
+            listDep.getItems().addAll(allAirports.stream().filter(a->a.getName().toLowerCase().contains(newValue.toLowerCase())).collect(Collectors.toList()));
         }));
 
         searchArr.textProperty().addListener(((observableValue, oldValue, newValue) -> {
-            var searchedAirports = App.businessLogicAPI.getAllAirports(Airport ->
-                    Airport.getName().toLowerCase().contains(newValue.toLowerCase()));
             listArr.getItems().clear();
-            listArr.getItems().addAll(searchedAirports);
+            listArr.getItems().addAll(allAirports.stream().filter(a->a.getName().toLowerCase().contains(newValue.toLowerCase())).collect(Collectors.toList()));
         }));
     }
 

@@ -22,11 +22,16 @@ public interface BusinessLogicAPI {
 
     public PriceReductionManager getPriceReductionManager();
 
+    public FlightManager getFlightManager();
+
     public Employee login(String email, String password);
 
     public boolean createPlaneFromUI(String name, String type, String manufacturer, List<Seat> seats);
 
     public boolean createRouteFromUI(Airport departure, Airport arrival);
+
+    //todo: createFlightFromUI and add params
+    //public boolean createFlightFromUI();
 
     public List<Plane> getAllPlanes(Predicate<Plane> predicate);
 

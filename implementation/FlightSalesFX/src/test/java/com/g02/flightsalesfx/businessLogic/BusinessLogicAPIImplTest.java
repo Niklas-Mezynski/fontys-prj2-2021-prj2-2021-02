@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,10 +102,34 @@ public class BusinessLogicAPIImplTest {
             "Peter, peter@gmx.de, peterIstDerBeste, Peter, peter@gmx.de, peterIstDerBeste, false",
             "Peter, peter@gmx.de, peterIstDerBeste, Franz, notexisting@gmx.de, franzIstDerBeste, true",
     })
-    void testLogin(String refName, String refEmail, String refPassword, String compName, String compEmail, String compPassword, boolean isNull) {
+    void t06Login(String refName, String refEmail, String refPassword, String compName, String compEmail, String compPassword, boolean isNull) {
         Employee employee = new SalesEmployeeImpl(refName, refEmail, refPassword);
         api.persistenceAPI.getEmployeeStorageService(api.getEmployeeManager()).add(employee);
         var peterIstDerBeste = api.login(compEmail, compPassword);
         assertThat(peterIstDerBeste == null).isEqualTo(isNull);
     }
+
+    @Test
+    void t07Airport() {
+        Airport airport = api.getAirportManager().createAirport("DUS", "Düsseldorf", "Germany");
+        SoftAssertions.assertSoftly( s -> {
+            s.assertThat(airport.getName()).isEqualTo("DUS");
+            s.assertThat(airport.getCity()).isEqualTo("Düsseldorf");
+            s.assertThat(airport.getCountry()).isEqualTo("Germany");
+        });
+    }
+
+    @Test
+    void t08Route() {
+        Airport a1 = api.getAirportManager().createAirport("DUS", "Düsseldorf", "Germany");
+        Airport a2 = api.getAirportManager().createAirport("BER", "Berlin", "Germany");
+
+        Route route = api.getRouteManager().createRoute(a1, a2);
+
+        SoftAssertions.assertSoftly( s -> {
+            s.assertThat(route.getDepartureAirport()).isEqualTo(a1);
+            s.assertThat(route.getArrivalAirport()).isEqualTo(a2);
+        });
+    }
+
 }

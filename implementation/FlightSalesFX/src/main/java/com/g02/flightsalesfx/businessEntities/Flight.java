@@ -19,12 +19,6 @@ public interface Flight {
     public void startSalesProcess();
 
     /**
-     * Applies a PriceReduction to a Flight
-     * @param p the PriceReduction to apply
-     */
-    public void applyPriceReduction(PriceReduction p);
-
-    /**
      * @return Flight number of this Flight
      */
     public int getFlightNumber();
@@ -74,5 +68,5 @@ public interface Flight {
      */
     public List<FlightOption> getFlightOptions();
     
-    
+    public PriceReduction applyPriceReduction(PriceReduction p);
 }

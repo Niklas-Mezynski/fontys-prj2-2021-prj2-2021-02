@@ -17,5 +17,6 @@ public interface PriceReduction {
      * @return The LocalDate that this PriceReduction expires on
      */
     public LocalDate getEndDate();
-    
+
+    public double getPercentageAsADouble();
 }
