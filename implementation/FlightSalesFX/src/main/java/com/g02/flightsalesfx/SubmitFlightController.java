@@ -30,7 +30,7 @@ public class SubmitFlightController {
 
     @FXML
     void saveFlight(ActionEvent event) {
-
+        var price = Double.valueOf(flightPrice.getText());
     }
 
 }
