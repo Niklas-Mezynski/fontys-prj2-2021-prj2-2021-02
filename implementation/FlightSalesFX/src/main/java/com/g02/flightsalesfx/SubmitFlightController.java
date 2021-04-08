@@ -32,6 +32,9 @@ public class SubmitFlightController {
     @FXML
     private Button exitFlightButton;
 
+    @FXML
+    private TextField flightNumberTextField;
+
     private List<Plane> selectedPlanes;
     private PlaneTable planeTable;
     private Plane selectedPlane = null;

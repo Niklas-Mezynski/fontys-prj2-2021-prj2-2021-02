@@ -1,9 +1,11 @@
 package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Employee;
+import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessLogic.AirportImpl;
 import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
 import com.g02.flightsalesfx.businessLogic.BusinessLogicImplementationProvider;
+import com.g02.flightsalesfx.businessLogic.SeatImpl;
 import com.g02.flightsalesfx.persistence.PersistenceAPI;
 import com.g02.flightsalesfx.persistence.PersistenceApiImplementationProvider;
 import javafx.application.Application;
@@ -15,6 +17,8 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * JavaFX App
@@ -62,6 +66,14 @@ public class App extends Application {
                 }
             }
         }
+
+        //Sample Planes
+        List<Seat> seats = new ArrayList<>();
+        seats.add(new SeatImpl(0, 0));
+        seats.add(new SeatImpl(0, 1));
+        seats.add(new SeatImpl(1, 0));
+        businessLogicAPI.createPlaneFromUI("D-ABCH", "A069", "Airbus", seats);
+        businessLogicAPI.createPlaneFromUI("B-VRTC", "B420", "QualityPlanes", seats);
 
     }
 
