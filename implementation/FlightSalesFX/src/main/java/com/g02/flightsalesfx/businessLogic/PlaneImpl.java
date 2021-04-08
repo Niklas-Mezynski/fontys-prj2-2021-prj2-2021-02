@@ -1,7 +1,9 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.flightsalesfx.businessEntities.Airport;
 import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Seat;
+import com.g02.flightsalesfx.persistence.AirportStorageService;
 
 import java.util.ArrayList;
 import java.util.List;

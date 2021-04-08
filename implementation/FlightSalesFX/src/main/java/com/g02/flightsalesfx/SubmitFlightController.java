@@ -1,5 +1,6 @@
 package com.g02.flightsalesfx;
 
+import com.g02.flightsalesfx.businessEntities.Airport;
 import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Route;
 import com.g02.flightsalesfx.businessEntities.SalesOfficer;
@@ -15,7 +16,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.g02.flightsalesfx.App.setRoot;
 
@@ -55,12 +59,14 @@ public class SubmitFlightController {
 
     }
 
-    private void createPlaneTableWithData(List<Plane> planes){
+    private void createPlaneTableWithData(List<Plane> planes) {
         planeTablePane.getChildren().remove(planeTable);
+        var extendedRoute = CreateFlightController.getExtendedRoute();
+        planes = planes.stream().filter(s -> helperIsPlaneAvailable(s, extendedRoute.getDepartureDateWithTime(), extendedRoute.getSelectedRoute().getDepartureAirport())).collect(Collectors.toList());
         planeTable = new PlaneTable(planes, (event, row) -> {
             if (!row.isEmpty()) {
                 Plane rowData = row.getItem();
-                if (event.getClickCount() == 1 ) {
+                if (event.getClickCount() == 1) {
                     System.out.println("Selected Plane: " + rowData.toString());
                     selectedPlane = rowData;
                     //Todo save change in PersistanceLayer
@@ -71,7 +77,7 @@ public class SubmitFlightController {
 
     }
 
-    private void updatePlanes(String term){
+    private void updatePlanes(String term) {
         String lowerTerm = term.toLowerCase();
         selectedPlanes = App.businessLogicAPI.getAllPlanes(plane -> {
             if (plane.toString().toLowerCase().contains(lowerTerm)) {
@@ -91,9 +97,9 @@ public class SubmitFlightController {
     @FXML
     void saveFlight(ActionEvent event) throws IOException {
         double price;
-        if(flightPrice.getText().contains(",")){
-            price=Integer.valueOf(flightPrice.getText().split(",")[0])+(Double.valueOf(flightPrice.getText().split(",")[1])/100);
-        }else {
+        if (flightPrice.getText().contains(",")) {
+            price = Integer.valueOf(flightPrice.getText().split(",")[0]) + (Double.valueOf(flightPrice.getText().split(",")[1]) / 100);
+        } else {
             price = Double.valueOf(flightPrice.getText());
         }
         var flightNumber = Integer.valueOf(flightNumberTextField.getText());
@@ -106,8 +112,8 @@ public class SubmitFlightController {
         var depDateTime = extendedRoute.getDepartureDateWithTime();
         var arrDateTime = extendedRoute.getArrivalDateWithTime();
 
-        var flightCreated = App.businessLogicAPI.createFlightFromUI(creator, flightNumber, depDateTime, arrDateTime,route, plane, price);
-        if(flightCreated) {
+        var flightCreated = App.businessLogicAPI.createFlightFromUI(creator, flightNumber, depDateTime, arrDateTime, route, plane, price);
+        if (flightCreated) {
             exit();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -119,4 +125,35 @@ public class SubmitFlightController {
 
     }
 
-}
+    static public boolean helperIsPlaneAvailable(Plane searchedPlane, LocalDateTime searchedTime, Airport searchAirport) {
+        var flightsArr = App.businessLogicAPI.getAllFlights(s -> s.getPlane().equals(searchedPlane));
+        var flightsDev = App.businessLogicAPI.getAllFlights(s -> s.getPlane().equals(searchedPlane));
+        /*
+        remove all flight that are not by the plane searched for
+        remove all flights that are in air at the time
+        if in air return null
+        retrace the flight order and select the airport the plane is at
+         */
+        if (flightsArr.isEmpty()) {
+            return true;
+        }
+        flightsArr = flightsArr.stream().filter(s -> s.getArrival().isBefore(searchedTime)).collect(Collectors.toList());
+        flightsDev = flightsDev.stream().filter(s -> s.getDeparture().isAfter(searchedTime)).collect(Collectors.toList());
+        if(flightsArr.isEmpty()&&flightsDev.isEmpty()){
+            return false;
+        }
+        if(flightsArr.isEmpty()){
+            var flightDepMin = flightsDev.stream().min((s1, s2) -> s1.getDeparture().compareTo(s2.getDeparture())).get();
+            return flightDepMin.getRoute().getDepartureAirport().equals(searchAirport);
+        }
+        if(flightsDev.isEmpty()){
+            var flightArrMax = flightsArr.stream().max((s1, s2) -> s1.getArrival().compareTo(s2.getArrival())).get();
+            return flightArrMax.getRoute().getArrivalAirport().equals(searchAirport);
+        }
+
+            var flightArrMax = flightsArr.stream().max((s1, s2) -> s1.getArrival().compareTo(s2.getArrival())).get();
+            var flightDepMin = flightsDev.stream().min((s1, s2) -> s1.getDeparture().compareTo(s2.getDeparture())).get();
+            return (flightDepMin.getRoute().getDepartureAirport().equals(flightArrMax.getRoute().getArrivalAirport())) && searchAirport.equals(flightDepMin.getRoute().getDepartureAirport());
+        }
+
+    }
