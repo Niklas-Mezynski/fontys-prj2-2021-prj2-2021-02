@@ -30,7 +30,8 @@ public class CreateFlightController {
 
     @FXML
     void saveFlight() {
-
+        var flightNumber = 123;
+        var creator = App.employee;
     }
 
 }
