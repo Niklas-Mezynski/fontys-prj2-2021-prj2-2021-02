@@ -77,6 +77,10 @@ public class CreateFlightController {
     void saveFlight() {
         var flightNumber = 123;
         var creator = App.employee;
+        var depDate = startDate.getValue();
+        var arrDate = endDate.getValue();
+
+
     }
 
 }

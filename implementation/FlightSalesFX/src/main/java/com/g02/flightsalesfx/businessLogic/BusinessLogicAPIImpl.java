@@ -4,6 +4,7 @@ import com.g02.flightsalesfx.CreatePlaneController;
 import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.persistence.PersistenceAPI;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -152,4 +153,9 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
     }
 
+    @Override
+    public boolean createFlightFromUI(SalesOfficer creator, int fNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane) {
+        //todo
+        return false;
+    }
 }
