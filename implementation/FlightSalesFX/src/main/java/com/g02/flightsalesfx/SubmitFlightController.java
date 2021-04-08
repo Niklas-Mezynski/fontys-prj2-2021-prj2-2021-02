@@ -90,7 +90,12 @@ public class SubmitFlightController {
 
     @FXML
     void saveFlight(ActionEvent event) throws IOException {
-        var price = Double.valueOf(flightPrice.getText());
+        double price;
+        if(flightPrice.getText().contains(",")){
+            price=Integer.valueOf(flightPrice.getText().split(",")[0])+(Double.valueOf(flightPrice.getText().split(",")[1])/100);
+        }else {
+            price = Double.valueOf(flightPrice.getText());
+        }
         var flightNumber = Integer.valueOf(flightNumberTextField.getText());
         var plane = selectedPlane;
         var creator = (SalesOfficer) App.employee;                  // ToDo: verify that only officer can register new flights
