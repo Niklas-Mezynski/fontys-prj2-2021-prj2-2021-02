@@ -93,6 +93,8 @@ public class SubmitFlightController {
         var flightNumber = 123;                                     // ToDo
         var plane = selectedPlane;
         var creator = (SalesOfficer) App.employee;                  // ToDo: verify that only officer can register new flights
+
+        // content of previous scene
         var extendedRoute = CreateFlightController.getExtendedRoute();
         var route = extendedRoute.getSelectedRoute();
         var depDateTime = extendedRoute.getDepartureDateWithTime();
