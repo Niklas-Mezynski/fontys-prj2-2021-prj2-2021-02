@@ -37,7 +37,7 @@ public class FlightImpl implements Flight {
      */
     @Override
     public String toString(){
-        return flightNumber+", "+ route+", "+plane+" takeoff: "+departure+" arrival: "+arrival;
+        return "ID: "+flightNumber+"; "+ route+"; "+plane+"; takeoff: "+departure+", arrival: "+arrival;
     }
     @Override
     public void startSalesProcess() {
