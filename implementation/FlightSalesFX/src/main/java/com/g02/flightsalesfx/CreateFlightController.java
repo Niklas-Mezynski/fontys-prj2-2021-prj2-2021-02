@@ -157,8 +157,9 @@ public class CreateFlightController {
         private LocalDateTime arrivalDateWithTime;
 
         public ExtendedRoute(LocalDate startDate, TextField startTime, TextField durationHours, TextField durationMinutes) {
-            if(getSelectedRoute().equals(null)){
+            if ( getSelectedRoute() ==null ) {
                 //todo: add alert
+                System.out.println("ALARM");
             }
 
             this.selectedRoute = getSelectedRoute();
