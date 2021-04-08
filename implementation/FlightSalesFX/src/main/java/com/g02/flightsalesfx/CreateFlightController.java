@@ -178,7 +178,6 @@ public class CreateFlightController {
         private LocalDateTime createArrivalInfo(TextField durHour, TextField durMin) {
             int hours = Integer.valueOf(durHour.getText());
             int mins = Integer.valueOf(durMin.getText());
-            //todo create arrivalDateTime
 
             return this.departureDateWithTime.plusHours(hours).plusMinutes(mins);
         }
