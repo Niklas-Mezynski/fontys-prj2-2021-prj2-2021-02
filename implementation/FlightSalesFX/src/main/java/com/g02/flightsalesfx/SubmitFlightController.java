@@ -96,7 +96,7 @@ public class SubmitFlightController {
     @FXML
     void saveFlight(ActionEvent event) {
         var price = Double.valueOf(flightPrice.getText());
-        var flightNumber = 123;                                     // ToDo
+        var flightNumber = Integer.valueOf(flightNumberTextField.getText());
         var plane = selectedPlane;
         var creator = (SalesOfficer) App.employee;                  // ToDo: verify that only officer can register new flights
 
