@@ -81,7 +81,7 @@ public class HomeController {
             System.out.println("Clicked on: " + selectedFlight);
         }) ;
 
-        flightVBox.getChildren().add(flightTable);
+        flightPane.getChildren().add(flightTable);
         flightTable.setMinWidth(flightPane.getPrefWidth());
 
     }
