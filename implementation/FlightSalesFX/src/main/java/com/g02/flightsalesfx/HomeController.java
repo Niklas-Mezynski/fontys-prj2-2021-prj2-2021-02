@@ -29,6 +29,8 @@ public class HomeController {
 
     @FXML
     private VBox flightVBox;
+    @FXML
+    private AnchorPane flightPane;
 
 
     public void initialize() {
@@ -80,7 +82,7 @@ public class HomeController {
         }) ;
 
         flightVBox.getChildren().add(flightTable);
-//        flightTable.setMinWidth();
+        flightTable.setMinWidth(flightPane.getPrefWidth());
 
     }
 
