@@ -12,6 +12,7 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
@@ -218,8 +219,19 @@ public class QueryBuilder {
     }
 
     public String createInsertSQL(Class<? extends Savable> aClass) {
-        var template = "INSERT INTO %1$s";
-        return "";
+        var template = "INSERT INTO %1$s (%2$s) values (%3$s) returning *;";
+        var insertedFields = Mapper.getInsertableFields(aClass);
+        return format(template,
+                Mapper.getTableName(aClass),
+                Arrays.stream(insertedFields).map(Mapper::getSQLFieldName).collect(Collectors.joining(", ")),
+                placeholders(insertedFields.length)
+        );
+    }
+
+    private static String placeholders(int a) {
+        return IntStream.range(0, a)
+                .mapToObj(b -> "?")
+                .collect(Collectors.joining(","));
     }
 
 

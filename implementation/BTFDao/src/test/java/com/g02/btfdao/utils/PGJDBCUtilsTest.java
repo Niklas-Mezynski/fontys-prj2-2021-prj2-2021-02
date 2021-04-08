@@ -4,11 +4,13 @@ import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.dao.DaoFactory;
 import com.g02.btfdao.mapper.Mapper;
 import com.g02.btfdao.queries.QueryBuilder;
+import com.g02.btfdao.queries.QueryExecutor;
 import com.g02.btfdao.testentities.Dog;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 
 public class PGJDBCUtilsTest {
@@ -38,9 +40,7 @@ public class PGJDBCUtilsTest {
 
     @Test
     void t4() {
-        Dog dog = new Dog();
-        dog.name = "Wuffy";
-        dog.id = 1;
+        Dog dog = new Dog(1,"Wuffy");
         var deconstruct = Mapper.deconstruct(dog);
         deconstruct.forEach(pair -> {
             System.out.println(pair.key() + ": " + pair.value());
@@ -68,5 +68,21 @@ public class PGJDBCUtilsTest {
         var queryBuilder = new QueryBuilder();
         var datebaseSQL = queryBuilder.createDropSQL(new String[]{"com.g02.btfdao.testentities.Dog","com.g02.btfdao.testentities.Cat"});
         System.out.println(datebaseSQL);
+    }
+    @Test
+    void t8() throws ClassNotFoundException {
+        var queryBuilder = new QueryBuilder();
+        var datebaseSQL = queryBuilder.createInsertSQL((Class<? extends Savable>) Class.forName("com.g02.btfdao.testentities.Dog"));
+        System.out.println(datebaseSQL);
+    }
+    @Test
+    void t9() throws ClassNotFoundException, SQLException {
+        Dog dog = new Dog(1,"Wuffy");
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        var con=simpledao.getConnection();
+        var queryBuilder = new QueryBuilder();
+        var queryExecutor = new QueryExecutor();
+        System.out.println(queryExecutor.doInsert(con, queryBuilder.createInsertSQL(Dog.class), dog).get());
+
     }
 }

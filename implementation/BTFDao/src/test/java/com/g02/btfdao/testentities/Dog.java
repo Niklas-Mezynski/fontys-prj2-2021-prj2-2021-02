@@ -3,6 +3,9 @@ package com.g02.btfdao.testentities;
 import com.g02.btfdao.annotations.*;
 import com.g02.btfdao.utils.Savable;
 
+import java.util.Arrays;
+import java.util.StringJoiner;
+
 @TableName("dogs")
 public class Dog implements Savable {
 
@@ -17,8 +20,15 @@ public class Dog implements Savable {
     public Dog(int id, String name) {
         this.id = id;
         this.name = name;
+//        this.cat=cat;
     }
 
-    public Dog() {
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Dog.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("name='" + name + "'")
+                .add("cat=" + Arrays.toString(cat))
+                .toString();
     }
 }

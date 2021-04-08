@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.function.Predicate;
 
 public class Dao<E extends Savable> {
-
     @SafeVarargs
     final E[] insert(E... e) {
         return null;

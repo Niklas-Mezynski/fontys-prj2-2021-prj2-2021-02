@@ -1,11 +1,9 @@
 package com.g02.btfdao.mapper;
 
-import com.g02.btfdao.annotations.FieldName;
-import com.g02.btfdao.annotations.Ignore;
-import com.g02.btfdao.annotations.PrimaryKey;
-import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.annotations.*;
 import com.g02.btfdao.utils.Pair;
 import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.utils.TypeMappings;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -53,26 +51,42 @@ public class Mapper {
         }
         return pairs;
     }
+    public static <E extends Savable> List<Pair<String, Object>> deconstructInsertableFields(E e) {
+        var fields = getInsertableFields(e.getClass());
+        List<Pair<String, Object>> pairs = new ArrayList<>();
+        for (Field field : fields) {
+            try {
+                var o = field.get(e);
+                pairs.add(new Pair<>(field.getName(), o));
+            } catch (IllegalAccessException illegalAccessException) {
+                illegalAccessException.printStackTrace();
+            }
+        }
+        return pairs;
+    }
 
     public static <E extends Savable> E construct(Class<E> aClass, ResultSet resultSet) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         boolean hasNext = true;
-        int i = 0;
+        int i = 1;
         List<Object> objects = new ArrayList<>();
         while (hasNext) {
             try {
                 var object = resultSet.getObject(i);
                 objects.add(object);
-            } catch (SQLException throwables) {
+            } catch (Exception throwables) {
                 hasNext = false;
-                throwables.printStackTrace();
+//                throwables.printStackTrace();
             }
             i++;
         }
+        var fields= Arrays.stream(getFields(aClass,ForeignKey.class)).filter(f->f.getType().isArray()).toArray(Field[]::new);
+
         return construct(aClass, objects.toArray());
     }
 
     public static <E extends Savable> E construct(Class<E> aClass, Object[] objects) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
-        var fields = getFields(aClass, field -> !field.isAnnotationPresent(Ignore.class));
+//        var fields = getFields(aClass,a->!a.isAnnotationPresent(Ignore.class));
+        var fields= getConstructableFields(aClass);
         var constructor = aClass.getConstructor(Arrays.stream(fields).map(Field::getType).toArray(Class[]::new));
         var e = constructor.newInstance(objects);
         return e;
@@ -99,6 +113,29 @@ public class Mapper {
     public static String getPrimaryKey(Class<? extends Savable> aClass) {
         var fields = getFields(aClass, PrimaryKey.class);
         return Arrays.stream(fields).map(Mapper::getSQLFieldName).collect(Collectors.joining(", "));
+    }
+
+    public static Field[] getInsertableFields(Class<? extends Savable> aClass) {
+        var fields=getFields(aClass);
+        return Arrays.stream(fields).filter(field->{
+            if (field.isAnnotationPresent(PrimaryKey.class)){
+                if (field.getAnnotation(PrimaryKey.class).autogen()){
+                    return false;
+                }
+            }
+            if (field.isAnnotationPresent(Ignore.class))return false;
+            if (field.getType().isArray()) return false;
+            return TypeMappings.getTypeName(field.getType()) != null;
+        }).toArray(Field[]::new);
+    }
+
+    public static Field[] getConstructableFields(Class<? extends Savable> aClass) {
+        var fields=getFields(aClass);
+        return Arrays.stream(fields).filter(field->{
+            if (field.getType().isArray()) return false;
+            if (field.isAnnotationPresent(Ignore.class))return false;
+            return TypeMappings.getTypeName(field.getType()) != null;
+        }).toArray(Field[]::new);
     }
 
 }
