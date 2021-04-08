@@ -84,4 +84,25 @@ public class RouteImpl implements Route {
 
         return "Route from: "+ departureAirport.toString() +" -> "+ arrivalAirport.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RouteImpl route = (RouteImpl) o;
+
+        if (rteEnabled != route.rteEnabled) return false;
+        if (departureAirport != null ? !departureAirport.equals(route.departureAirport) : route.departureAirport != null)
+            return false;
+        return arrivalAirport != null ? arrivalAirport.equals(route.arrivalAirport) : route.arrivalAirport == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = departureAirport != null ? departureAirport.hashCode() : 0;
+        result = 31 * result + (arrivalAirport != null ? arrivalAirport.hashCode() : 0);
+        result = 31 * result + (rteEnabled ? 1 : 0);
+        return result;
+    }
 }
