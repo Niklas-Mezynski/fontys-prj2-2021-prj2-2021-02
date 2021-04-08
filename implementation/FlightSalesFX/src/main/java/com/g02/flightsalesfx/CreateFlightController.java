@@ -52,6 +52,8 @@ public class CreateFlightController {
     private RouteTable routeTable;
     private Route selectedRoute = null;
 
+    private ExtendedRoute extendedRoute;
+
     public void initialize() {
         selectedRoutes = App.businessLogicAPI.getAllRoutes(route -> {
             return route.getEnabled();
@@ -115,18 +117,19 @@ public class CreateFlightController {
 
     @FXML
     void nextStep() throws IOException{
-
-
-
+        this.extendedRoute = new ExtendedRoute(getStartDate(), getStartTime(), getDurationHours(), getDurationMinutes());
         // After "saving" current selections
-        setRoot("submitPlane"); // todo: select correct fxml
+        setRoot("submitFlight");
     }
 
-    //getter
+    //getter for extendedRoute that is necessary for further flight-creation
+    public ExtendedRoute getExtendedRoute() {
+        return this.extendedRoute;
+    }
 
-
-    public DatePicker getStartDate() {
-        return startDate;
+    //general getters
+    public LocalDate getStartDate() {
+        return startDate.getValue();
     }
 
     public TextField getStartTime() {
@@ -141,6 +144,10 @@ public class CreateFlightController {
         return durationMinutes;
     }
 
+    public Route getSelectedRoute() {
+        return selectedRoute;
+    }
+
     //to save route + dateinfos for following flight creation
     public class ExtendedRoute {
 
@@ -149,7 +156,9 @@ public class CreateFlightController {
         private LocalDateTime arrivalDateWithTime;
 
         public ExtendedRoute(LocalDate startDate, TextField startTime, TextField durationHours, TextField durationMinutes) {
+            this.selectedRoute = getSelectedRoute();
             this.departureDateWithTime = createDepartureInfo(startDate, startTime);
+            this.arrivalDateWithTime = createArrivalInfo(durationHours, durationMinutes);
         }
 
         //helper
@@ -170,9 +179,8 @@ public class CreateFlightController {
             int hours = Integer.valueOf(durHour.getText());
             int mins = Integer.valueOf(durMin.getText());
             //todo create arrivalDateTime
-            
 
-            return null;
+            return this.departureDateWithTime.plusHours(hours).plusMinutes(mins);
         }
     }
 }
