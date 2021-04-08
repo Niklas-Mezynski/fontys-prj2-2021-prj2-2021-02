@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class App extends Application {
     static PersistenceAPI persistenceAPI;
     static BusinessLogicAPI businessLogicAPI;
     static int inRootTab=0;
+    static boolean comesFromCreateFlight = false;
 
     @Override
     public void start(Stage stage) throws IOException {
