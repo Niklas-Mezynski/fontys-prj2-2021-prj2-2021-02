@@ -1,6 +1,9 @@
 package com.g02.btfdao.mapper;
 
+import com.g02.btfdao.annotations.FieldName;
 import com.g02.btfdao.annotations.Ignore;
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
 import com.g02.btfdao.utils.Pair;
 import com.g02.btfdao.utils.Savable;
 
@@ -15,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Mapper {
 
@@ -72,6 +76,29 @@ public class Mapper {
         var constructor = aClass.getConstructor(Arrays.stream(fields).map(Field::getType).toArray(Class[]::new));
         var e = constructor.newInstance(objects);
         return e;
+    }
+
+    public static String getSQLFieldName(Field field) {
+        if (field.isAnnotationPresent(FieldName.class)) {
+            return field.getAnnotation(FieldName.class).value();
+        } else {
+            return field.getName();
+        }
+    }
+
+    public static String getTableName(String className) throws ClassNotFoundException {
+        Class<?> aClass = Class.forName(className);
+        return getTableName(aClass);
+    }
+
+    public static String getTableName(Class<?> aClass) {
+        var annotation = aClass.getAnnotation(TableName.class);
+        return annotation.value();
+    }
+
+    public static String getPrimaryKey(Class<? extends Savable> aClass) {
+        var fields = getFields(aClass, PrimaryKey.class);
+        return Arrays.stream(fields).map(Mapper::getSQLFieldName).collect(Collectors.joining(", "));
     }
 
 }

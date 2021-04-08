@@ -1,20 +1,18 @@
 package com.g02.btfdao.testentities;
 
-import com.g02.btfdao.annotations.ForeignKey;
-import com.g02.btfdao.annotations.Ignore;
-import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.*;
 import com.g02.btfdao.utils.Savable;
 
-import javax.xml.catalog.Catalog;
-
+@TableName("dogs")
 public class Dog implements Savable {
 
     @PrimaryKey(autogen = true)
+    @NotNull
     public int id;
+    @FieldName("test")
     public String name;
-    @Ignore
-    @ForeignKey("cat.id")
-    public int cat;
+    @ForeignKey("com.g02.btfdao.testentities.Cat#id")
+    public int[] cat;
 
     public Dog(int id, String name) {
         this.id = id;

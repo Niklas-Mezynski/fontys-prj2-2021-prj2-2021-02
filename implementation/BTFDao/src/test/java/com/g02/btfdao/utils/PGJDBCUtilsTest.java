@@ -3,11 +3,13 @@ package com.g02.btfdao.utils;
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.dao.DaoFactory;
 import com.g02.btfdao.mapper.Mapper;
+import com.g02.btfdao.queries.QueryBuilder;
 import com.g02.btfdao.testentities.Dog;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLFeatureNotSupportedException;
 
 public class PGJDBCUtilsTest {
 
@@ -52,5 +54,19 @@ public class PGJDBCUtilsTest {
                 "Wuff"
         };
         Mapper.construct(Dog.class, objects);
+    }
+
+    @Test
+    void t6() throws ClassNotFoundException, SQLFeatureNotSupportedException, NoSuchFieldException {
+        var queryBuilder = new QueryBuilder();
+        var datebaseSQL = queryBuilder.createDatabaseSQL(new String[]{"com.g02.btfdao.testentities.Dog","com.g02.btfdao.testentities.Cat"});
+        System.out.println(datebaseSQL);
+    }
+
+    @Test
+    void t7() throws ClassNotFoundException {
+        var queryBuilder = new QueryBuilder();
+        var datebaseSQL = queryBuilder.createDropSQL(new String[]{"com.g02.btfdao.testentities.Dog","com.g02.btfdao.testentities.Cat"});
+        System.out.println(datebaseSQL);
     }
 }
