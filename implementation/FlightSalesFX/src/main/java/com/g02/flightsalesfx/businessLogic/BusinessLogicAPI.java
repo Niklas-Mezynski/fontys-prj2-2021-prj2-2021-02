@@ -44,4 +44,6 @@ public interface BusinessLogicAPI {
 
     public boolean createFlightFromUI(SalesOfficer creator, int fNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane);
 
+    public void createAirportFromUI(String name, String city, String country);
+
 }
