@@ -9,6 +9,7 @@ import com.g02.flightsalesfx.gui.RouteTable;
 import com.g02.flightsalesfx.persistence.EmployeeStorageServiceImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -94,7 +95,7 @@ public class SubmitFlightController {
     }
 
     @FXML
-    void saveFlight(ActionEvent event) {
+    void saveFlight(ActionEvent event) throws IOException {
         var price = Double.valueOf(flightPrice.getText());
         var flightNumber = Integer.valueOf(flightNumberTextField.getText());
         var plane = selectedPlane;
@@ -107,6 +108,15 @@ public class SubmitFlightController {
         var arrDateTime = extendedRoute.getArrivalDateWithTime();
 
         var flightCreated = App.businessLogicAPI.createFlightFromUI(creator, flightNumber, depDateTime, arrDateTime,route, plane, price);
+        if(flightCreated) {
+            exit();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error saving flight");
+            alert.setContentText("There was an error while saving the created flight. Try again!");
+            alert.showAndWait();
+        }
     }
 
 }
