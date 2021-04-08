@@ -94,7 +94,6 @@ public class CreateFlightController {
                 }
             }
 
-
             return true;
         });
         if(routeTable != null){
@@ -116,8 +115,10 @@ public class CreateFlightController {
     }
 
     @FXML
-    void nextStep() throws IOException{
+    void nextStep() throws IOException {
+        //"save" latest selections and verify that input is correct (syntax)
         this.extendedRoute = new ExtendedRoute(getStartDate(), getStartTime(), getDurationHours(), getDurationMinutes());
+
         // After "saving" current selections
         setRoot("submitFlight");
     }
@@ -128,23 +129,23 @@ public class CreateFlightController {
     }
 
     //general getters
-    public LocalDate getStartDate() {
+    private LocalDate getStartDate() {
         return startDate.getValue();
     }
 
-    public TextField getStartTime() {
+    private TextField getStartTime() {
         return startTime;
     }
 
-    public TextField getDurationHours() {
+    private TextField getDurationHours() {
         return durationHours;
     }
 
-    public TextField getDurationMinutes() {
+    private TextField getDurationMinutes() {
         return durationMinutes;
     }
 
-    public Route getSelectedRoute() {
+    private Route getSelectedRoute() {
         return selectedRoute;
     }
 
@@ -156,6 +157,10 @@ public class CreateFlightController {
         private LocalDateTime arrivalDateWithTime;
 
         public ExtendedRoute(LocalDate startDate, TextField startTime, TextField durationHours, TextField durationMinutes) {
+            if(getSelectedRoute().equals(null)){
+                //todo: add alert
+            }
+
             this.selectedRoute = getSelectedRoute();
             this.departureDateWithTime = createDepartureInfo(startDate, startTime);
             this.arrivalDateWithTime = createArrivalInfo(durationHours, durationMinutes);
