@@ -3,6 +3,7 @@ package com.g02.flightsalesfx.businessLogic;
 import com.g02.flightsalesfx.CreatePlaneController;
 import com.g02.flightsalesfx.businessEntities.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -40,5 +41,7 @@ public interface BusinessLogicAPI {
     void viewPlane(Plane plane);
 
     public List<Airport> getAllAirports(Predicate<Airport> predicate);
+
+    public boolean createFlightFromUI(SalesOfficer creator, int fNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane);
 
 }
