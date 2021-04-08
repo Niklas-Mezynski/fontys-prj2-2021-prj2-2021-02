@@ -50,6 +50,7 @@ public class CreateFlightController {
 
     private List<Route> selectedRoutes;
     private RouteTable routeTable;
+    private Route selectedRoute = null;
 
     public void initialize() {
         selectedRoutes = App.businessLogicAPI.getAllRoutes(route -> {
@@ -60,27 +61,44 @@ public class CreateFlightController {
                 updateRoutes(newValue);
         }));
 
-        routeTable = new RouteTable(selectedRoutes, (event, row) -> {
-            if (!row.isEmpty()) {
-                Route rowData = row.getItem();
-                if (event.getClickCount() == 2 && event.isControlDown()) {
-                    System.out.println("Ctrl + click on: " + rowData.toString() + rowData.getEnabled());
-                    rowData.toggleEnable();
-                    row.getTableView().refresh();
-                    //Todo save change in PersistanceLayer
-                }
-            }
-        });
+        createRouteTableWithData(selectedRoutes);
 
 
     }
 
-    private void updateRoutes(String term){
-        selectedRoutes = App.businessLogicAPI.getAllRoutes(route -> {
-            return route.getEnabled()&&route.toString().toLowerCase().contains(term.toLowerCase());
+    private void createRouteTableWithData(List<Route> routes){
+        routeTablePane.getChildren().remove(routeTable);
+        routeTable = new RouteTable(routes, (event, row) -> {
+            if (!row.isEmpty()) {
+                Route rowData = row.getItem();
+                if (event.getClickCount() == 1 ) {
+                    System.out.println("Selected Route: " + rowData.toString());
+                    selectedRoute = rowData;
+                    //Todo save change in PersistanceLayer
+                }
+            }
         });
-        if(routeTable != null)
-            routeTable.refresh();
+        routeTablePane.getChildren().add(routeTable);
+
+    }
+
+    private void updateRoutes(String term){
+        String lowerTerm = term.toLowerCase();
+        selectedRoutes = App.businessLogicAPI.getAllRoutes(route -> {
+            String[] terms = lowerTerm.split(" ");
+            for(String s : terms){
+                if(!(route.getEnabled()&&route.toString().toLowerCase().contains(s))){
+                    return false;
+                }
+            }
+
+
+            return true;
+        });
+        if(routeTable != null){
+            createRouteTableWithData(selectedRoutes);
+        }
+
     }
 
     @FXML
