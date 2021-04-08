@@ -118,7 +118,7 @@ public class CreateFlightController {
     void nextStep() throws IOException {
         //"save" latest selections and verify that input is correct (syntax)
         extendedRoute = new ExtendedRoute(getStartDate(), getStartTime(), getDurationHours(), getDurationMinutes());
-
+        extendedRoute.setRoute(getSelectedRoute());
         // After "saving" current selections
         setRoot("submitFlight");
     }
@@ -162,9 +162,12 @@ public class CreateFlightController {
                 System.out.println("ALARM");
             }
 
-            this.selectedRoute = getSelectedRoute();
             this.departureDateWithTime = createDepartureInfo(startDate, startTime);
             this.arrivalDateWithTime = createArrivalInfo(durationHours, durationMinutes);
+        }
+
+        private void setRoute(Route r) {
+            this.selectedRoute = r;
         }
 
         //helper
@@ -204,5 +207,7 @@ public class CreateFlightController {
         public LocalDateTime getArrivalDateWithTime() {
             return arrivalDateWithTime;
         }
+
+
     }
 }
