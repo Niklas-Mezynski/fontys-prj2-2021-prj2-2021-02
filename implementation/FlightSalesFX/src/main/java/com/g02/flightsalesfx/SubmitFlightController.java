@@ -13,7 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
+import java.io.IOException;
 import java.util.List;
+
+import static com.g02.flightsalesfx.App.setRoot;
 
 public class SubmitFlightController {
 
@@ -86,8 +89,8 @@ public class SubmitFlightController {
     }
 
     @FXML
-    void exit(ActionEvent event) {
-
+    void exit() throws IOException {
+        setRoot("home");
     }
 
     @FXML
