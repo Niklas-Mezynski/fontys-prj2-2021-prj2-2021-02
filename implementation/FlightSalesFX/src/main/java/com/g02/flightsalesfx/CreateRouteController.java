@@ -108,6 +108,11 @@ public class CreateRouteController {
      */
     @FXML
     private void exit() throws IOException {
-        setRoot("home");
+        if(App.comesFromCreateFlight){
+            App.comesFromCreateFlight = false;
+            setRoot("createFlight");
+        }else{
+            setRoot("home");
+        }
     }
 }

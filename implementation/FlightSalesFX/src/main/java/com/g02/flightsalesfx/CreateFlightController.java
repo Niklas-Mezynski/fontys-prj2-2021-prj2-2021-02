@@ -104,7 +104,7 @@ public class CreateFlightController {
     @FXML
     private void createRoute() throws IOException {
 
-
+        App.comesFromCreateFlight = true;
         setRoot("createRoute");
     }
 
