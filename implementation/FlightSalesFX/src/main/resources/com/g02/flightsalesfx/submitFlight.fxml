@@ -48,7 +48,7 @@
                <children>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
-                        <ScrollPane prefHeight="281.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+                        <ScrollPane BorderPane.alignment="CENTER">
                            <content>
                               <AnchorPane fx:id="planeTablePane" />
                            </content>
