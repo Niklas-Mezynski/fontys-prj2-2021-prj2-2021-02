@@ -3,7 +3,7 @@ package com.g02.btfdao.dao;
 import com.g02.btfdao.utils.Savable;
 
 import javax.sql.DataSource;
-import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class DaoFactory {
@@ -17,9 +17,8 @@ public class DaoFactory {
         classHashMap = new HashMap<>();
     }
 
-    @SuppressWarnings("unchecked")
-    public <E extends Savable> Dao<E> createDao(Class<E> aClass) {
-        Dao<?> dao = classHashMap.computeIfAbsent(aClass, aClass1 -> {
+    public <E extends Savable> Dao<E> createDao(Class<E> aClass) throws SQLException {
+        /*Dao<?> dao = classHashMap.computeIfAbsent(aClass, aClass1 -> {
             try {
                 Class<?> daoClass = Class.forName(aClass.getName() + "Dao");
                 return (Dao<?>) daoClass.getConstructor().newInstance();
@@ -28,6 +27,7 @@ public class DaoFactory {
             }
             return null;
         });
-        return (Dao<E>) dao;
+        return (Dao<E>) dao;*/
+        return new Dao<>(dataSource.getConnection(), aClass);
     }
 }

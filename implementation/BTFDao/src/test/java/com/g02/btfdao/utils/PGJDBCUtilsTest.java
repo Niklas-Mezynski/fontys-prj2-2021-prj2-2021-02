@@ -16,10 +16,12 @@ import java.sql.SQLFeatureNotSupportedException;
 public class PGJDBCUtilsTest {
 
     @Test
-    void name() {
+    void name() throws SQLException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var daoFactory = new DaoFactory(simpledao);
         var dao = daoFactory.createDao(Dog.class);
+        var wuffy2s = dao.insert(new Dog(1, "Wuffy2"), new Dog(2, "Dogg"));
+        wuffy2s.forEach(System.out::println);
     }
 
     @Test
