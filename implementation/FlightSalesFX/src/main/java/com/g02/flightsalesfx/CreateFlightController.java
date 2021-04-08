@@ -131,12 +131,12 @@ public class CreateFlightController {
         private LocalDateTime arrivalDateWithTime;
 
         public ExtendedRoute(LocalDate startDate, TextField startTime, TextField durationHours, TextField durationMinutes) {
-
+            this.departureDateWithTime = createDepartureInfo(startDate, startTime);
         }
 
         //helper
         private LocalDateTime createDepartureInfo(LocalDate startDate, TextField startTime) {
-            String[] splittedField = startTime.toString().split(":");
+            String[] splittedField = startTime.getText().split(":");
 
             if(splittedField.length == 2) {
                 int hour = Integer.valueOf(splittedField[0]);
@@ -146,6 +146,15 @@ public class CreateFlightController {
             } else {
                 throw new IllegalArgumentException();
             }
+        }
+
+        private LocalDateTime createArrivalInfo(TextField durHour, TextField durMin) {
+            int hours = Integer.valueOf(durHour.getText());
+            int mins = Integer.valueOf(durMin.getText());
+            //todo create arrivalDateTime
+            
+
+            return null;
         }
     }
 }
