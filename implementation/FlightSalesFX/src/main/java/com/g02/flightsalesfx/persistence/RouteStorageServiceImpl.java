@@ -1,7 +1,9 @@
 package com.g02.flightsalesfx.persistence;
 
+import com.g02.flightsalesfx.businessEntities.Airport;
 import com.g02.flightsalesfx.businessEntities.Route;
 import com.g02.flightsalesfx.businessEntities.RouteManager;
+import com.g02.flightsalesfx.businessLogic.AirportImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;

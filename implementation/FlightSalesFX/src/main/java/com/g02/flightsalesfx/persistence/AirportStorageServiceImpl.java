@@ -13,9 +13,6 @@ public class AirportStorageServiceImpl implements AirportStorageService {
 
     public AirportStorageServiceImpl(AirportManager airportManager) {
         airports = new ArrayList<>();
-        airports.add(new AirportImpl("DUS", "Düsseldorf", "Germany"));
-        airports.add(new AirportImpl("BER", "Berlin", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
     }
 
 

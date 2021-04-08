@@ -162,4 +162,10 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
         return flightStorageService.add(flight);
     }
+
+    @Override
+    public void createAirportFromUI(String name, String city, String country){
+        var airport = getAirportManager().createAirport(name, city, country);
+        persistenceAPI.getAirportStorageService(getAirportManager()).add(airport);
+    }
 }

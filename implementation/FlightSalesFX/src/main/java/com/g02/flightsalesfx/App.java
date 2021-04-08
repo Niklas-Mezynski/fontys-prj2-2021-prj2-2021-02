@@ -1,6 +1,7 @@
 package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Employee;
+import com.g02.flightsalesfx.businessLogic.AirportImpl;
 import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
 import com.g02.flightsalesfx.businessLogic.BusinessLogicImplementationProvider;
 import com.g02.flightsalesfx.persistence.PersistenceAPI;
@@ -32,10 +33,36 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         persistenceAPI = PersistenceApiImplementationProvider.getImplementation();
         businessLogicAPI = BusinessLogicImplementationProvider.getImplementation(persistenceAPI);
+        addSamples();
         scene = new Scene(loadFXML("login"), 800, 600);
         stage.setScene(scene);
         stage.setTitle("Flight Ticket Sales");
         stage.show();
+    }
+
+    public void addSamples(){
+        var airportMgr = businessLogicAPI.getAirportManager();
+
+        var routeMgr = businessLogicAPI.getRouteManager();
+
+        businessLogicAPI.createAirportFromUI("BRE","Bremen","Germany");
+        businessLogicAPI.createAirportFromUI("FCN","Cuxhaven","Germany");
+        businessLogicAPI.createAirportFromUI("DRS","Dresden","Germany");
+        businessLogicAPI.createAirportFromUI("HHN","Frankfurt-Hahn","Germany");
+        businessLogicAPI.createAirportFromUI("HAM","Hamburg","Germany");
+        businessLogicAPI.createAirportFromUI("DUS", "Düsseldorf", "Germany");
+        businessLogicAPI.createAirportFromUI("BER", "Berlin", "Germany");
+        businessLogicAPI.createAirportFromUI("FRA", "Frankfurt", "Germany");
+
+        var airports = businessLogicAPI.getAllAirports(ap -> true);
+        for(int i = 0; i < airports.size(); i++){
+            for(int y = 0; y < airports.size(); y++){
+                if(i!=y){
+                    businessLogicAPI.createRouteFromUI(airports.get(i), airports.get(y));
+                }
+            }
+        }
+
     }
 
     static void setRoot(String fxml) throws IOException {

@@ -26,6 +26,7 @@ public class RouteManagerImpl implements RouteManager {
         if(newArr != null){
             toEdit.setArrivalAirport(newArr);
         }
+
     }
 
 
