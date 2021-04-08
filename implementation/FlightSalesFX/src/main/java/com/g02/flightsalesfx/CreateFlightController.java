@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Locale;
 
@@ -174,28 +175,41 @@ public class CreateFlightController {
         private LocalDateTime createDepartureInfo(LocalDate startDate, TextField startTime) {
             String[] splittedField = startTime.getText().split(":");
 
-            if(splittedField.length == 2) {
-                int hour = Integer.valueOf(splittedField[0]);
-                int min = Integer.valueOf(splittedField[1]);
+            if(splittedField.length > 0){
+                if(splittedField.length == 2) {
+                    int hour = Integer.valueOf(splittedField[0].trim());
+                    int min = Integer.valueOf(splittedField[1].trim());
 
-                return startDate.atTime(hour, min);
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Error during registration");
-                alert.setContentText("The entered information regarding the departure are either not filled in or filled in wrongly.");
-                alert.showAndWait();
+                    return startDate.atTime(hour, min);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Error during registration");
+                    alert.setContentText("The entered information regarding the departure are either not filled in or filled in wrongly." +
+                            "Make sure the input looks like 'hh:mm'.");
+                    alert.showAndWait();
+                }
+
             }
-            return null;
+
+            throw new InputMismatchException("Wrong input-syntax. input must look like: 'hh:mm'.");
         }
 
         private LocalDateTime createArrivalInfo(TextField durHour, TextField durMin) {
-            int hours = Integer.valueOf(durHour.getText());
-            int mins = Integer.valueOf(durMin.getText());
+            if(durHour.getText().isEmpty() || durMin.getText().isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error during registration");
+                alert.setContentText("Please make sure that no fields are empty.");
+                alert.showAndWait();
+            }
+            int hours = Integer.valueOf(durHour.getText().trim());
+            int mins = Integer.valueOf(durMin.getText().trim());
 
             return this.departureDateWithTime.plusHours(hours).plusMinutes(mins);
         }
 
+        //getter of inner-class
         public Route getSelectedRoute() {
             return selectedRoute;
         }
