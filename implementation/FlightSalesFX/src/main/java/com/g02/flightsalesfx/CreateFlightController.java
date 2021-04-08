@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import com.g02.flightsalesfx.businessEntities.Route;
 import com.g02.flightsalesfx.gui.RouteTable;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
@@ -17,19 +18,29 @@ public class CreateFlightController {
     private TextField routeSearchBar;
 
     @FXML
+    private AnchorPane routeTablePane;
+
+    @FXML
     private Button createRouteButton;
-
-    @FXML
-    private Button saveFlightButton;
-
-    @FXML
-    private Button exitFlightButton;
 
     @FXML
     private DatePicker startDate;
 
     @FXML
-    private DatePicker endDate;
+    private TextField startTime;
+
+    @FXML
+    private TextField durationHours;
+
+    @FXML
+    private TextField durationMinutes;
+
+    @FXML
+    private Button nextStepButton;
+
+    @FXML
+    private Button exitFlightButton;
+
 
 
 
@@ -74,13 +85,9 @@ public class CreateFlightController {
     }
 
     @FXML
-    void saveFlight() {
-        var flightNumber = 123;
-        var creator = App.employee;
-        var depDate = startDate.getValue();
-        var arrDate = endDate.getValue();
-
-
+    void nextStep() {
+        
     }
+
 
 }

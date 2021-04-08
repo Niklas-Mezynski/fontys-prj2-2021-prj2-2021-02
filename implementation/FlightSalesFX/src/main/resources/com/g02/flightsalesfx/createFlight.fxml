@@ -10,13 +10,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.CreateFlightController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.CreateFlightController">
    <children>
       <BorderPane layoutX="143.0" layoutY="74.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -52,7 +50,7 @@
                      <children>
                         <ScrollPane prefHeight="281.0" prefWidth="300.0">
                           <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="289.0" />
+                            <AnchorPane fx:id="routeTablePane" minHeight="0.0" minWidth="0.0" prefHeight="241.0" prefWidth="290.0" />
                           </content>
                         </ScrollPane>
                         <Button fx:id="createRouteButton" mnemonicParsing="false" onAction="#createRoute" text="Create route">
@@ -64,26 +62,84 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
-                        <Label text="Label" />
-                        <DatePicker fx:id="startDate"/>
-                        <Label text="Label" />
-                        <DatePicker fx:id="endDate"/>
+                        <Label text="Departure Date">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Label>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <DatePicker fx:id="startDate">
+                                 <GridPane.margin>
+                                    <Insets right="5.0" />
+                                 </GridPane.margin>
+                              </DatePicker>
+                              <TextField fx:id="startTime" promptText="00:00" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets right="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                           </children>
+                        </GridPane>
+                        <Label text="Flight Duration">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin></Label>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
-                           <bottom>
-                              <HBox alignment="BOTTOM_LEFT" prefHeight="27.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+                           <top>
+                              <GridPane BorderPane.alignment="CENTER">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
                                  <children>
-                                    <Button fx:id="saveFlightButton" mnemonicParsing="false" onAction="#saveFlight" text="Save flight">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
+                                    <TextField fx:id="durationHours" promptText="Hours">
+                                       <GridPane.margin>
+                                          <Insets right="5.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="durationMinutes" promptText="Minutes" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="5.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                 </children>
+                              </GridPane>
+                           </top>
+                           <bottom>
+                              <GridPane BorderPane.alignment="CENTER">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button fx:id="nextStepButton" mnemonicParsing="false" onAction="#nextStep" text="Next step" GridPane.halignment="RIGHT">
+                                       <GridPane.margin>
+                                          <Insets right="5.0" />
+                                       </GridPane.margin>
                                     </Button>
-                                    <Button fx:id="exitFlightButton" mnemonicParsing="false" onAction="#exit" text="Exit (without saving)">
-                                       <HBox.margin>
-                                          <Insets left="10.0" />
-                                       </HBox.margin>
+                                    <Button fx:id="exitFlightButton" mnemonicParsing="false" onAction="#exit" text="Exit (without saving)" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
                                     </Button>
                                  </children>
-                              </HBox>
+                              </GridPane>
                            </bottom>
                         </BorderPane>
                      </children>
