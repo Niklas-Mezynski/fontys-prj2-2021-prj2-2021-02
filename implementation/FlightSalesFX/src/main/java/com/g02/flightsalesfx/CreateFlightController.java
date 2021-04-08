@@ -176,8 +176,13 @@ public class CreateFlightController {
 
                 return startDate.atTime(hour, min);
             } else {
-                throw new IllegalArgumentException();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error during registration");
+                alert.setContentText("The entered information regarding the departure are either not filled in or filled in wrongly.");
+                alert.showAndWait();
             }
+            return null;
         }
 
         private LocalDateTime createArrivalInfo(TextField durHour, TextField durMin) {
