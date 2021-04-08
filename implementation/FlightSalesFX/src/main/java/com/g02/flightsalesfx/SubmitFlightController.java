@@ -74,18 +74,12 @@ public class SubmitFlightController {
     private void updatePlanes(String term){
         String lowerTerm = term.toLowerCase();
         selectedPlanes = App.businessLogicAPI.getAllPlanes(plane -> {
-            String[] terms = lowerTerm.split(" ");
-            for(String s : terms){
-                if (plane.toString().toLowerCase().contains(s)) {
-                    return true;
-                }
+            if (plane.toString().toLowerCase().contains(lowerTerm)) {
+                return true;
             }
-
-            return true;
+            return false;
         });
-//        if(planeTable != null){
-            createPlaneTableWithData(selectedPlanes);
-//        }
+        createPlaneTableWithData(selectedPlanes);
 
     }
 
@@ -117,6 +111,7 @@ public class SubmitFlightController {
             alert.setContentText("There was an error while saving the created flight. Try again!");
             alert.showAndWait();
         }
+
     }
 
 }
