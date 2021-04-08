@@ -191,5 +191,17 @@ public class CreateFlightController {
 
             return this.departureDateWithTime.plusHours(hours).plusMinutes(mins);
         }
+
+        public Route getSelectedRoute() {
+            return selectedRoute;
+        }
+
+        public LocalDateTime getDepartureDateWithTime() {
+            return departureDateWithTime;
+        }
+
+        public LocalDateTime getArrivalDateWithTime() {
+            return arrivalDateWithTime;
+        }
     }
 }
