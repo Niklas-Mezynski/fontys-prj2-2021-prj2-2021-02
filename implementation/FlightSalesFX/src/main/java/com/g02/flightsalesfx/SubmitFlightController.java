@@ -2,8 +2,11 @@ package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Route;
+import com.g02.flightsalesfx.businessEntities.SalesOfficer;
+import com.g02.flightsalesfx.businessLogic.BusinessLogicAPIImpl;
 import com.g02.flightsalesfx.gui.PlaneTable;
 import com.g02.flightsalesfx.gui.RouteTable;
+import com.g02.flightsalesfx.persistence.EmployeeStorageServiceImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -87,6 +90,15 @@ public class SubmitFlightController {
     @FXML
     void saveFlight(ActionEvent event) {
         var price = Double.valueOf(flightPrice.getText());
+        var flightNumber = 123;                                     // ToDo
+        var plane = selectedPlane;
+        var creator = (SalesOfficer) App.employee;                  // ToDo: verify that only officer can register new flights
+        var extendedRoute = CreateFlightController.getExtendedRoute();
+        var route = extendedRoute.getSelectedRoute();
+        var depDateTime = extendedRoute.getDepartureDateWithTime();
+        var arrDateTime = extendedRoute.getArrivalDateWithTime();
+
+        var flightCreated = App.businessLogicAPI.createFlightFromUI(creator, flightNumber, depDateTime, arrDateTime,route, plane, price);
     }
 
 }

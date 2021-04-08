@@ -52,7 +52,7 @@ public class CreateFlightController {
     private RouteTable routeTable;
     private Route selectedRoute = null;
 
-    private ExtendedRoute extendedRoute;
+    private static ExtendedRoute extendedRoute;
 
     public void initialize() {
         selectedRoutes = App.businessLogicAPI.getAllRoutes(route -> {
@@ -117,15 +117,15 @@ public class CreateFlightController {
     @FXML
     void nextStep() throws IOException {
         //"save" latest selections and verify that input is correct (syntax)
-        this.extendedRoute = new ExtendedRoute(getStartDate(), getStartTime(), getDurationHours(), getDurationMinutes());
+        extendedRoute = new ExtendedRoute(getStartDate(), getStartTime(), getDurationHours(), getDurationMinutes());
 
         // After "saving" current selections
         setRoot("submitFlight");
     }
 
     //getter for extendedRoute that is necessary for further flight-creation
-    public ExtendedRoute getExtendedRoute() {
-        return this.extendedRoute;
+    public static ExtendedRoute getExtendedRoute() {
+        return extendedRoute;
     }
 
     //general getters

@@ -42,6 +42,6 @@ public interface BusinessLogicAPI {
 
     public List<Airport> getAllAirports(Predicate<Airport> predicate);
 
-    public boolean createFlightFromUI(SalesOfficer creator, int fNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane);
+    public boolean createFlightFromUI(SalesOfficer creator, int fNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price);
 
 }
