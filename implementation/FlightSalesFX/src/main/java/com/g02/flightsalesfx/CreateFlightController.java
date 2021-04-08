@@ -72,10 +72,8 @@ public class CreateFlightController {
             if (!row.isEmpty()) {
                 Route rowData = row.getItem();
                 if (event.getClickCount() == 1 ) {
-                    System.out.println("Ctrl + click on: " + rowData.toString() + rowData.getEnabled());
-                    rowData.toggleEnable();
-                    row.getTableView().refresh();
-
+                    System.out.println("Selected Route: " + rowData.toString());
+                    selectedRoute = rowData;
                     //Todo save change in PersistanceLayer
                 }
             }
