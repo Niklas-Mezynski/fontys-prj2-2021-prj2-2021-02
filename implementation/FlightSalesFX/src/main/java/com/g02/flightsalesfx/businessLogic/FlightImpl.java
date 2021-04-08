@@ -36,6 +36,10 @@ public class FlightImpl implements Flight {
      * Starts the Sales process for this Flight
      */
     @Override
+    public String toString(){
+        return flightNumber+", "+ route+", "+plane+" takeoff: "+departure+" arrival: "+arrival;
+    }
+    @Override
     public void startSalesProcess() {
         salesProcessStarted = true;
     }
