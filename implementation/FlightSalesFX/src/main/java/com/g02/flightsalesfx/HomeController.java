@@ -80,5 +80,11 @@ public class HomeController {
         App.inRootTab=1;
         App.setRoot("createRoute");
     }
+
+    @FXML
+    public void goToCreateFlight() throws IOException {
+        App.inRootTab=2;
+        App.setRoot("createFlight");
+    }
     
 }
