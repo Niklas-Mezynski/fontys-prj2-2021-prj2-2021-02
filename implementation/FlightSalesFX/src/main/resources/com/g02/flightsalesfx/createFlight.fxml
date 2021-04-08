@@ -65,9 +65,9 @@
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
                         <Label text="Label" />
-                        <DatePicker />
+                        <DatePicker fx:id="startDate"/>
                         <Label text="Label" />
-                        <DatePicker />
+                        <DatePicker fx:id="endDate"/>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <bottom>
                               <HBox alignment="BOTTOM_LEFT" prefHeight="27.0" prefWidth="300.0" BorderPane.alignment="CENTER">

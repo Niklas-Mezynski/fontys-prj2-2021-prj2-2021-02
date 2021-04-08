@@ -25,6 +25,14 @@ public class CreateFlightController {
     @FXML
     private Button exitFlightButton;
 
+    @FXML
+    private DatePicker startDate;
+
+    @FXML
+    private DatePicker endDate;
+
+
+
     public void initialize() {
         var selectedRoutes = App.businessLogicAPI.getAllRoutes(route -> {
             return route.getEnabled();
@@ -55,6 +63,8 @@ public class CreateFlightController {
 
     @FXML
     private void createRoute() throws IOException {
+
+
         setRoot("createRoute");
     }
 
@@ -66,6 +76,7 @@ public class CreateFlightController {
     @FXML
     void saveFlight() {
         // in progress
+
     }
 
 }
