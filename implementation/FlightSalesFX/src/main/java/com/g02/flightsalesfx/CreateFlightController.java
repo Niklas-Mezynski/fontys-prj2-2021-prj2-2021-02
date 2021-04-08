@@ -7,6 +7,8 @@ import com.g02.flightsalesfx.gui.RouteTable;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -94,9 +96,56 @@ public class CreateFlightController {
     }
 
     @FXML
-    void nextStep() {
-        
+    void nextStep() throws IOException{
+
+
+
+        // After "saving" current selections
+        setRoot("submitPlane"); // todo: select correct fxml
     }
 
+    //getter
 
+
+    public DatePicker getStartDate() {
+        return startDate;
+    }
+
+    public TextField getStartTime() {
+        return startTime;
+    }
+
+    public TextField getDurationHours() {
+        return durationHours;
+    }
+
+    public TextField getDurationMinutes() {
+        return durationMinutes;
+    }
+
+    //to save route + dateinfos for following flight creation
+    public class ExtendedRoute {
+
+        private Route selectedRoute;
+        private LocalDateTime departureDateWithTime;
+        private LocalDateTime arrivalDateWithTime;
+
+        public ExtendedRoute(LocalDate startDate, TextField startTime, TextField durationHours, TextField durationMinutes) {
+
+        }
+
+        //helper
+        private LocalDateTime createDepartureInfo(LocalDate startDate, TextField startTime) {
+            String[] splittedField = startTime.toString().split(":");
+
+            if(splittedField.length == 2) {
+                int hour = Integer.valueOf(splittedField[0]);
+                int min = Integer.valueOf(splittedField[1]);
+
+                return startDate.atTime(hour, min);
+            } else {
+                throw new IllegalArgumentException();
+            }
+        }
+    }
 }
