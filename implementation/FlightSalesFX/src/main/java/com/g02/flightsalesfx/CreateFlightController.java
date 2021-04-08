@@ -6,6 +6,8 @@ import com.g02.flightsalesfx.businessEntities.Route;
 import com.g02.flightsalesfx.gui.RouteTable;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import static com.g02.flightsalesfx.App.setRoot;
 
@@ -33,22 +35,19 @@ public class CreateFlightController {
 
 
 
+    private List<Route> selectedRoutes;
+    private RouteTable routeTable;
+
     public void initialize() {
-        var selectedRoutes = App.businessLogicAPI.getAllRoutes(route -> {
+        selectedRoutes = App.businessLogicAPI.getAllRoutes(route -> {
             return route.getEnabled();
         });
 
         routeSearchBar.textProperty().addListener(((observableValue, oldValue, newValue) -> {
-            if(newValue.length() != 0){
-
-            }else{
-
-            }
+                updateRoutes(newValue);
         }));
 
-
-
-        var routeTable = new RouteTable(selectedRoutes, (event, row) -> {
+        routeTable = new RouteTable(selectedRoutes, (event, row) -> {
             if (!row.isEmpty()) {
                 Route rowData = row.getItem();
                 if (event.getClickCount() == 2 && event.isControlDown()) {
@@ -59,6 +58,16 @@ public class CreateFlightController {
                 }
             }
         });
+
+
+    }
+
+    private void updateRoutes(String term){
+        selectedRoutes = App.businessLogicAPI.getAllRoutes(route -> {
+            return route.getEnabled()&&route.toString().toLowerCase().contains(term.toLowerCase());
+        });
+        if(routeTable != null)
+            routeTable.refresh();
     }
 
     @FXML
