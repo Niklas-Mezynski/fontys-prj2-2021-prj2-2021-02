@@ -1,9 +1,6 @@
 package com.g02.flightsalesfx.persistence;
 
-import com.g02.flightsalesfx.businessEntities.Employee;
-import com.g02.flightsalesfx.businessEntities.EmployeeManager;
-import com.g02.flightsalesfx.businessEntities.SalesEmployee;
-import com.g02.flightsalesfx.businessEntities.SalesOfficer;
+import com.g02.flightsalesfx.businessEntities.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +16,16 @@ public class EmployeeStorageServiceImpl implements EmployeeStorageService {
         employees = new ArrayList<>();
         SalesEmployee salesEmployee = employeeManager.createSalesEmployee("Peter", "peter@gmx.de", "peterIstDerBeste");
         SalesOfficer salesOfficer = employeeManager.createSalesOfficer("Franz", "franz@gmx.de", "franzIstDerBeste");
-        SalesOfficer salesManagerShort = employeeManager.createSalesOfficer("a", "a", "a");
-        SalesOfficer salesOfficerShort = employeeManager.createSalesOfficer("b", "b", "b");
-        SalesOfficer salesEmployeeShort = employeeManager.createSalesOfficer("c", "c", "c");
+        SalesOfficer salesOfficerShort = employeeManager.createSalesOfficer("a", "a", "a");
+        SalesManager salesManagerShort = employeeManager.createSalesManager("b", "b", "b");
+        SalesEmployee salesEmployeeShort = employeeManager.createSalesEmployee("c", "c", "c");
+        SalesOfficer justRet = employeeManager.createSalesOfficer("", "", "");
         employees.add(salesEmployee);
         employees.add(salesOfficer);
         employees.add(salesManagerShort);
         employees.add(salesOfficerShort);
         employees.add(salesEmployeeShort);
+        employees.add(justRet);
     }
 
     @Override

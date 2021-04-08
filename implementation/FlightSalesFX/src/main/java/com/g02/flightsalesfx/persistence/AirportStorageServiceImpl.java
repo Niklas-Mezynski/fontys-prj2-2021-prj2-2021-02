@@ -16,36 +16,6 @@ public class AirportStorageServiceImpl implements AirportStorageService {
         airports.add(new AirportImpl("DUS", "Düsseldorf", "Germany"));
         airports.add(new AirportImpl("BER", "Berlin", "Germany"));
         airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
-        airports.add(new AirportImpl("FRA", "Frankfurt", "Germany"));
     }
 
 
