@@ -167,4 +167,10 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         var airport = getAirportManager().createAirport(name, city, country);
         persistenceAPI.getAirportStorageService(getAirportManager()).add(airport);
     }
+
+    @Override
+    public List<Flight> getAllFlights(Predicate<Flight> predicate) {
+        var all = persistenceAPI.getFlightStorageService(flightManager).getAll();
+        return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
+    }
 }

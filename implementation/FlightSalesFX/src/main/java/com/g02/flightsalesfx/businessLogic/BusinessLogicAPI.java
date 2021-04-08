@@ -46,4 +46,6 @@ public interface BusinessLogicAPI {
 
     public void createAirportFromUI(String name, String city, String country);
 
+    public List<Flight> getAllFlights(Predicate<Flight> predicate);
+
 }

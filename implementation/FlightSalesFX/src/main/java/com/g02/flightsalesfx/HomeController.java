@@ -1,7 +1,9 @@
 package com.g02.flightsalesfx;
 
+import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Route;
+import com.g02.flightsalesfx.gui.FlightTable;
 import com.g02.flightsalesfx.gui.PlaneTable;
 import com.g02.flightsalesfx.gui.RouteTable;
 import javafx.fxml.FXML;
@@ -24,6 +26,9 @@ public class HomeController {
     public AnchorPane routePane;
     @FXML
     public TabPane tabPane;
+
+    @FXML
+    private VBox flightVBox;
 
 
     public void initialize() {
@@ -66,6 +71,17 @@ public class HomeController {
         });
         routeListVBox.getChildren().add(routeTable);
         routeTable.setMinWidth(routePane.getPrefWidth());
+
+        var allFlights = App.businessLogicAPI.getAllFlights(f -> true);
+
+        var flightTable = new FlightTable(allFlights, (event, row) -> {
+            Flight selectedFlight = row.getItem();
+            System.out.println("Clicked on: " + selectedFlight);
+        }) ;
+
+        flightVBox.getChildren().add(flightTable);
+//        flightTable.setMinWidth();
+
     }
 
 
