@@ -1,5 +1,7 @@
 package com.g02.btfdao.dao;
 
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.mapper.Mapper;
 import com.g02.btfdao.queries.QueryBuilder;
 import com.g02.btfdao.queries.QueryExecutor;
 import com.g02.btfdao.utils.Savable;
@@ -29,13 +31,17 @@ public class Dao<E extends Savable> {
     public final List<E> insert(E... e) {
         List<E> list = new ArrayList<>();
         for (E e1 : e) {
-            queryExecutor.doInsert(connection, queryBuilder.createInsertSQL(entityClass), e1).ifPresent(list::add);
+            queryExecutor.doInsert(connection, queryBuilder.createInsertSQL(entityClass), entityClass, e1).ifPresent(list::add);
         }
         return list;
     }
 
     List<E> insert(Collection<E> e) {
-        return null;
+        List<E> list = new ArrayList<>();
+        for (E e1 : e) {
+            queryExecutor.doInsert(connection, queryBuilder.createInsertSQL(entityClass), entityClass, e1).ifPresent(list::add);
+        }
+        return list;
     }
 
     @SafeVarargs
@@ -59,12 +65,28 @@ public class Dao<E extends Savable> {
         return null;
     }
 
+    /**
+     * Getting the object from the Database that has the given keyValues as its primary keys.
+     * @param keyValues The values for the primary keys. Must provide as many as the Class has primary keys
+     * @return
+     */
+    public Optional<E> get(Object... keyValues) {
+        var expectedLength = Mapper.getFields(entityClass, PrimaryKey.class).length;
+        var actualLength = keyValues.length;
+        assert expectedLength == actualLength: "Expecting " + expectedLength + " keyValues, but got only " + actualLength;
+        var getSQL = queryBuilder.createGetSQL(entityClass);
+        var e = queryExecutor.doGet(connection, getSQL, entityClass, keyValues);
+        return e;
+    }
+
     E getFirst(Predicate<E> predicate) {
         return null;
     }
 
-    List<E> getAll() {
-        return get(x -> true);
+    public List<E> getAll() {
+        var getSQL = queryBuilder.createGetAllSQL(entityClass);
+        var e = queryExecutor.doGetAll(connection, getSQL, entityClass);
+        return e;
     }
 
 }

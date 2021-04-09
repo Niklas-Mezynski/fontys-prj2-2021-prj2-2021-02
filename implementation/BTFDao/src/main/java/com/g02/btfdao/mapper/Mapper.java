@@ -40,19 +40,14 @@ public class Mapper {
 
     public static <E extends Savable> List<Pair<String, Object>> deconstruct(E e) {
         var fields = getFields(e.getClass());
-        List<Pair<String, Object>> pairs = new ArrayList<>();
-        for (Field field : fields) {
-            try {
-                var o = field.get(e);
-                pairs.add(new Pair<>(field.getName(), o));
-            } catch (IllegalAccessException illegalAccessException) {
-                illegalAccessException.printStackTrace();
-            }
-        }
-        return pairs;
+        return deconstruct(e, fields);
     }
     public static <E extends Savable> List<Pair<String, Object>> deconstructInsertableFields(E e) {
         var fields = getInsertableFields(e.getClass());
+        return deconstruct(e, fields);
+    }
+
+    public static <E extends Savable> List<Pair<String, Object>> deconstruct(E e, Field[] fields) {
         List<Pair<String, Object>> pairs = new ArrayList<>();
         for (Field field : fields) {
             try {

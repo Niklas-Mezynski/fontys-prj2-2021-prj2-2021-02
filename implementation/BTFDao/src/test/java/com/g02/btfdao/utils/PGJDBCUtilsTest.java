@@ -42,7 +42,7 @@ public class PGJDBCUtilsTest {
 
     @Test
     void t4() {
-        Dog dog = new Dog(1,"Wuffy");
+        Dog dog = new Dog(1, "Wuffy");
         var deconstruct = Mapper.deconstruct(dog);
         deconstruct.forEach(pair -> {
             System.out.println(pair.key() + ": " + pair.value());
@@ -61,30 +61,67 @@ public class PGJDBCUtilsTest {
     @Test
     void t6() throws ClassNotFoundException, SQLFeatureNotSupportedException, NoSuchFieldException {
         var queryBuilder = new QueryBuilder();
-        var datebaseSQL = queryBuilder.createDatabaseSQL(new String[]{"com.g02.btfdao.testentities.Dog","com.g02.btfdao.testentities.Cat"});
+        var datebaseSQL = queryBuilder.createDatabaseSQL(new String[]{"com.g02.btfdao.testentities.Dog", "com.g02.btfdao.testentities.Cat"});
         System.out.println(datebaseSQL);
     }
 
     @Test
     void t7() throws ClassNotFoundException {
         var queryBuilder = new QueryBuilder();
-        var datebaseSQL = queryBuilder.createDropSQL(new String[]{"com.g02.btfdao.testentities.Dog","com.g02.btfdao.testentities.Cat"});
+        var datebaseSQL = queryBuilder.createDropSQL(new String[]{"com.g02.btfdao.testentities.Dog", "com.g02.btfdao.testentities.Cat"});
         System.out.println(datebaseSQL);
     }
+
     @Test
     void t8() throws ClassNotFoundException {
         var queryBuilder = new QueryBuilder();
         var datebaseSQL = queryBuilder.createInsertSQL((Class<? extends Savable>) Class.forName("com.g02.btfdao.testentities.Dog"));
         System.out.println(datebaseSQL);
     }
+
     @Test
     void t9() throws ClassNotFoundException, SQLException {
-        Dog dog = new Dog(1,"Wuffy");
+        Dog dog = new Dog(1, "Wuffy");
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
-        var con=simpledao.getConnection();
+        var con = simpledao.getConnection();
         var queryBuilder = new QueryBuilder();
         var queryExecutor = new QueryExecutor();
-        System.out.println(queryExecutor.doInsert(con, queryBuilder.createInsertSQL(Dog.class), dog).get());
+        System.out.println(queryExecutor.doInsert(con, queryBuilder.createInsertSQL(Dog.class), Dog.class, dog).get());
+    }
 
+    @Test
+    void t10() {
+        var queryBuilder = new QueryBuilder();
+        var datebaseSQL = queryBuilder.createGetSQL(Dog.class);
+        System.out.println(datebaseSQL);
+    }
+
+    @Test
+    void t11() throws SQLException {
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        var con = simpledao.getConnection();
+        var queryBuilder = new QueryBuilder();
+        var queryExecutor = new QueryExecutor();
+        System.out.println(queryExecutor.doGet(con, queryBuilder.createInsertSQL(Dog.class), Dog.class, 11).get());
+    }
+
+    @Test
+    void t12() throws SQLException {
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        var daoFactory = new DaoFactory(simpledao);
+        var dao = daoFactory.createDao(Dog.class);
+        var wuffy2s = dao.get(11);
+//        var wuffy2s = dao.insert(new Dog(1, "Wuffy2"), new Dog(2, "Dogg"));
+        System.out.println(wuffy2s);
+    }
+
+    @Test
+    void t13() throws SQLException {
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        var daoFactory = new DaoFactory(simpledao);
+        var dao = daoFactory.createDao(Dog.class);
+        var wuffy2s = dao.getAll();
+//        var wuffy2s = dao.insert(new Dog(1, "Wuffy2"), new Dog(2, "Dogg"));
+        System.out.println(wuffy2s);
     }
 }

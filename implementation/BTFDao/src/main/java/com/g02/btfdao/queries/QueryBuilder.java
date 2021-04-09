@@ -19,6 +19,12 @@ import static java.lang.String.format;
 
 public class QueryBuilder {
 
+    private static String placeholders(int a) {
+        return IntStream.range(0, a)
+                .mapToObj(b -> "?")
+                .collect(Collectors.joining(","));
+    }
+
     public String createDropSQL(String[] classes) throws ClassNotFoundException {
         StringBuilder stringBuilder = new StringBuilder();
         for (String aClass : classes) {
@@ -228,10 +234,23 @@ public class QueryBuilder {
         );
     }
 
-    private static String placeholders(int a) {
-        return IntStream.range(0, a)
-                .mapToObj(b -> "?")
-                .collect(Collectors.joining(","));
+    public String createGetSQL(Class<? extends Savable> aClass) {
+        var template = "SELECT * FROM %1$s WHERE %2$s";
+        var annotation = aClass.getAnnotation(TableName.class);
+        var tableName = annotation.value();
+        var collect = Arrays.stream(Mapper.getFields(aClass, PrimaryKey.class)).map(this::createSQLWhere).collect(Collectors.joining(" and "));
+        return format(template, tableName, collect);
+    }
+
+    public String createGetAllSQL(Class<? extends Savable> aClass) {
+        var template = "SELECT * FROM %1$s";
+        var annotation = aClass.getAnnotation(TableName.class);
+        var tableName = annotation.value();
+        return format(template, tableName);
+    }
+
+    private String createSQLWhere(Field field) {
+        return format("%1$s = ?", Mapper.getSQLFieldName(field));
     }
 
 
