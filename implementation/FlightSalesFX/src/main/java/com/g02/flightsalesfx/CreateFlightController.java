@@ -187,7 +187,7 @@ public class CreateFlightController {
         }
 
         //helper
-        private LocalDateTime createDepartureInfo(LocalDate startDate, TextField startTime) throws InputMismatchException{
+        private LocalDateTime createDepartureInfo(LocalDate startDate, TextField startTime) throws IllegalArgumentException{
             String[] splittedField = startTime.getText().split(":");
 
             if(splittedField.length > 0){
@@ -198,7 +198,7 @@ public class CreateFlightController {
                     try{
                         hour = Integer.valueOf(splittedField[0].trim());
                         min = Integer.valueOf(splittedField[1].trim());
-                    }catch(Exception e){
+                    } catch(Exception e) {
                         if(e.getClass().equals(NumberFormatException.class)){
                             inputOK = false;
                         }
@@ -215,11 +215,12 @@ public class CreateFlightController {
                     alert.setContentText("The entered information regarding the departure are either not filled in or filled in wrongly." +
                             " Make sure the input looks like 'hh:mm'.");
                     alert.showAndWait();
+                    throw new IllegalArgumentException();
                 }
 
             }
 
-            throw new InputMismatchException("Wrong input-syntax. input must look like: 'hh:mm'.");
+            throw new IllegalArgumentException("Wrong input-syntax. input must look like: 'hh:mm'.");
         }
 
         private LocalDateTime createArrivalInfo(TextField durHour, TextField durMin) throws InputMismatchException{
