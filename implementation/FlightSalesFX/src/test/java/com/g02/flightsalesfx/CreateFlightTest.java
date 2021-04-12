@@ -70,7 +70,6 @@ public class CreateFlightTest {
 
     @BeforeEach
     void goToTab(FxRobot fxRobot) {
-
         var x = fxRobot.lookup("#flightsTab").query();
         fxRobot.clickOn(x);
         fxRobot.clickOn(fxRobot.lookup("#goToCreateFlight").queryAs(Button.class));
@@ -125,6 +124,8 @@ public class CreateFlightTest {
         fxRobot.write("10");
 
         fxRobot.clickOn(fxRobot.lookup("#nextStepButton").queryAs(Button.class));
-        Assertions.assertThat(fxRobot.lookup(".label").queryAs(Label.class)).hasText("Error during registration");
+        fxRobot.press(KeyCode.ENTER);
+        
+        Assertions.assertThat(fxRobot.lookup(".label").queryAs(Label.class)).hasText("Select a Flight route");
     }
 }
