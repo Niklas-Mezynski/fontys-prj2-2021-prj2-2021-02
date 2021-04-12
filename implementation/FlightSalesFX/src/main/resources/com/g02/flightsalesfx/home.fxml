@@ -111,7 +111,7 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab text="Flights">
+            <Tab fx:id="flightsTab" text="Flights">
               <content>
                 <AnchorPane>
                      <children>
@@ -124,7 +124,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <Button mnemonicParsing="false" onAction="#goToCreateFlight" text="Create new flight">
+                                    <Button fx:id="goToCreateFlight" mnemonicParsing="false" onAction="#goToCreateFlight" text="Create new flight">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
