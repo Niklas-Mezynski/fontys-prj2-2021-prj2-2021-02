@@ -5,13 +5,13 @@ import com.g02.flightsalesfx.businessEntities.FlightOption;
 
 public class FlightOptionImpl implements FlightOption {
     private String name;
-    private Flight flight;
     private int maxAvailable;
+    private double price;
 
-    public FlightOptionImpl (String name, Flight flight, int maxAvailable) {
+    public FlightOptionImpl (String name, int maxAvailable, double price) {
         this.name = name;
-        this.flight = flight;
         this.maxAvailable = maxAvailable;
+        this.price = price;
     }
 
     /**
@@ -31,12 +31,9 @@ public class FlightOptionImpl implements FlightOption {
         return maxAvailable;
     }
 
-    /**
-     * @return The Flight that this FlightOption belongs to
-     */
     @Override
-    public Flight getFlight() {
-        return flight;
+    public double getPrice() {
+        return price;
     }
 
     /**
@@ -45,5 +42,10 @@ public class FlightOptionImpl implements FlightOption {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", Max available: " + maxAvailable + ", Price: " + price + "€";
     }
 }

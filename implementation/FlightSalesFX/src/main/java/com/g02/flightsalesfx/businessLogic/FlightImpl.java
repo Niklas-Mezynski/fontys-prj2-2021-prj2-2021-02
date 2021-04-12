@@ -153,10 +153,12 @@ public class FlightImpl implements Flight {
         return optionsList;
     }
 
+    @Override
     public void addFlightOption(FlightOption flightOption) {
         this.optionsList.add(flightOption);
     }
 
+    @Override
     public void addAllFlightOptions(List<? extends FlightOption> options) {
         this.optionsList.addAll(options);
     }

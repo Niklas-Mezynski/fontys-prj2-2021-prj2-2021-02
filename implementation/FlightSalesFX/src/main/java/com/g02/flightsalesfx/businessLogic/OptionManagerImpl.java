@@ -20,8 +20,8 @@ public class OptionManagerImpl implements OptionManager {
     }
 
     @Override
-    public FlightOption createFlightOption(String name, Flight flight, int maxAvailable) {
-        return new FlightOptionImpl(name, flight, maxAvailable);
+    public FlightOption createFlightOption(String name, int maxAvailable, double price) {
+        return new FlightOptionImpl(name, maxAvailable, price);
     }
 
     public void setSeatOptionStorageService(SeatOptionsStorageService planeStorageService) {
