@@ -10,5 +10,6 @@ package com.g02.flightsalesfx.businessEntities;
  * @author anato
  */
 public interface ReoccurringFlightManager {
-    
+
+    ReoccurringFlight createRoccurringFlight(Flight flight, int interval);
 }
