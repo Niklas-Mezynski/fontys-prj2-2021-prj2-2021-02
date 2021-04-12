@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.ref.SoftReference;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,4 +133,21 @@ public class BusinessLogicAPIImplTest {
         });
     }
 
+    @Test
+    void t09Flight() {
+        Airport a1 = api.getAirportManager().createAirport("DUS", "Düsseldorf", "Germany");
+        Airport a2 = api.getAirportManager().createAirport("BER", "Berlin", "Germany");
+        Route route = api.getRouteManager().createRoute(a1, a2);
+
+        Flight f1 = api.getFlightManager().createFlight(new SalesOfficerImpl("Huhn", "huhn@gmail.com", "huhn123"), 123, LocalDateTime.MIN, LocalDateTime.now(), route, new PlaneImpl("D-ABCH", "A380", "Airbus"), 0.70);
+
+        SoftAssertions.assertSoftly( s -> {
+            s.assertThat(f1.getArrival().equals(LocalDateTime.now()));
+            s.assertThat(f1.getCreatedBy().getName().equals("Huhn"));
+            s.assertThat(f1.getFlightNumber() == 123);
+            s.assertThat(f1.getPlane().getName().equals("D-ABCH"));
+            s.assertThat(f1.getPrice() == 0.70);
+            s.assertThat(f1.getRoute().equals(route));
+        });
+    }
 }
