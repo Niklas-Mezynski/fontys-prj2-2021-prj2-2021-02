@@ -174,7 +174,7 @@ public class CreateFlightController {
         }
 
         private void setRoute(Route r) throws IllegalArgumentException{
-            if(r.equals(null)){
+            if(r == null){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Error during registration");
