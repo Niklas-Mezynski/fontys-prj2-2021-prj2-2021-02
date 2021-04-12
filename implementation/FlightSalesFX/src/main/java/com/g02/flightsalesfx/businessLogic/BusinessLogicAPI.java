@@ -31,9 +31,6 @@ public interface BusinessLogicAPI {
 
     public boolean createRouteFromUI(Airport departure, Airport arrival);
 
-    //todo: createFlightFromUI and add params
-    //public boolean createFlightFromUI();
-
     public List<Plane> getAllPlanes(Predicate<Plane> predicate);
 
     public List<Route> getAllRoutes(Predicate<Route> predicate);

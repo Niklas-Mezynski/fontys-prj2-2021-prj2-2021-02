@@ -58,6 +58,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         if (optionManager == null) {
             optionManager = new OptionManagerImpl();
             optionManager.setSeatOptionStorageService(persistenceAPI.getSeatOptionStorageService(optionManager));
+            optionManager.setFlightOptionStorageService(persistenceAPI.getFlightOptionStorageService(optionManager));
         }
         return optionManager;
     }

@@ -15,6 +15,8 @@ public interface PersistenceAPI {
 
     SeatOptionsStorageService getSeatOptionStorageService(OptionManager optionManager);
 
+    FlightOptionStorageService getFlightOptionStorageService(OptionManager optionManager);
+
     AirportStorageService getAirportStorageService(AirportManager airportManager);
 
     RouteStorageService getRouteStorageService(RouteManager routeManager);

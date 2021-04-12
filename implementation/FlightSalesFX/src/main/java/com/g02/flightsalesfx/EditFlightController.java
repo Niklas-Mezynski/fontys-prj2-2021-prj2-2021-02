@@ -54,6 +54,11 @@ public class EditFlightController {
     }
 
     @FXML
+    void editFlightOptions() throws IOException {
+        setRoot("editFlightOptions");
+    }
+
+    @FXML
     void save() throws IOException {
         LocalDateTime newDeparture = createLocalDateTimeFromTextField(DepartureDate.getValue(), DepartureTime.getText());
         LocalDateTime newArrival = createLocalDateTimeFromTextField(ArrivaleDate.getValue(), ArrivaleTime.getText());
