@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.function.Predicate;
 
 public class HomeController {
 
@@ -31,7 +32,10 @@ public class HomeController {
     private VBox flightVBox;
     @FXML
     private AnchorPane flightPane;
+    @FXML
+    private CheckBox showDisabled;
 
+    private RouteTable routeTable;
 
     public void initialize() {
         tabPane.getSelectionModel().select(App.inRootTab);
@@ -55,24 +59,8 @@ public class HomeController {
         planeTable.setMinWidth(planePane.getPrefWidth());
 
         //List all Routes
-        var allRoutes = App.businessLogicAPI.getAllRoutes(route -> true);
+        createOrUpdateRouteTable(v -> true);
 
-        var routeTable = new RouteTable(allRoutes, (event, row) -> {
-            if (!row.isEmpty()) {
-                Route rowData = row.getItem();
-                /*if (event.getClickCount() == 2) {
-                    System.out.println("Double click on: " + rowData.getName());
-                } else */
-                if (event.getClickCount() == 2 && event.isControlDown()) {
-                    System.out.println("Ctrl + click on: " + rowData.toString() + rowData.getEnabled());
-                    rowData.toggleEnable();
-                    row.getTableView().refresh();
-                    //Todo save change in PersistanceLayer
-                }
-            }
-        });
-        routeListVBox.getChildren().add(routeTable);
-        routeTable.setMinWidth(routePane.getPrefWidth());
 
         var allFlights = App.businessLogicAPI.getAllFlights(f -> true);
 
@@ -93,6 +81,40 @@ public class HomeController {
         flightPane.getChildren().add(flightTable);
         flightTable.setMinWidth(flightPane.getPrefWidth());
 
+    }
+
+    public void createOrUpdateRouteTable(Predicate<Route> pr){
+
+            routeListVBox.getChildren().remove(routeTable);
+
+
+        var allRoutes = App.businessLogicAPI.getAllRoutes(pr);
+
+         routeTable = new RouteTable(allRoutes, (event, row) -> {
+            if (!row.isEmpty()) {
+                Route rowData = row.getItem();
+                /*if (event.getClickCount() == 2) {
+                    System.out.println("Double click on: " + rowData.getName());
+                } else */
+                if (event.getClickCount() == 2 && event.isControlDown()) {
+                    System.out.println("Ctrl + click on: " + rowData.toString() + rowData.getEnabled());
+                    rowData.toggleEnable();
+                    row.getTableView().refresh();
+                    //Todo save change in PersistanceLayer
+                }
+            }
+        });
+        routeListVBox.getChildren().add(routeTable);
+        routeTable.setMinWidth(routePane.getPrefWidth());
+    }
+
+    @FXML
+    public void showDisabledUpdated(){
+        if(showDisabled.isSelected()){
+            createOrUpdateRouteTable(r -> true);
+        }else{
+            createOrUpdateRouteTable(r -> r.getEnabled());
+        }
     }
 
 
