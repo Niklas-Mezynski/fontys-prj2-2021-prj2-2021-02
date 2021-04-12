@@ -119,7 +119,7 @@
                            <top>
                               <VBox fx:id="flightVBox" BorderPane.alignment="CENTER">
                                  <children>
-                                    <Label text="Flights">
+                                    <Label text="Flights (double click a flight to edit)">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
