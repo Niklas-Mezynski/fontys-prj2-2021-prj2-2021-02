@@ -6,6 +6,7 @@ import com.g02.btfdao.utils.Pair;
 import com.g02.btfdao.utils.Savable;
 import com.g02.btfdao.utils.TypeMappings;
 
+import java.awt.print.PrinterException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.SQLFeatureNotSupportedException;
@@ -140,26 +141,39 @@ public class QueryBuilder {
         return stringBuilder.toString();
     }
 
-    public String createTableSQL(String tableName, Field[] fields) throws SQLFeatureNotSupportedException {
+    public String createTableSQL(String tableName, Field[] fields) throws SQLFeatureNotSupportedException, ClassNotFoundException {
         var template = "CREATE TABLE %1$s (" +
                 "%2$s" +
                 ");";
         return format(template, tableName, createTableSQLLines(fields));
     }
 
-    public String createTableSQL(Class<? extends Savable> aClass) throws SQLFeatureNotSupportedException {
+    public String createTableSQL(Class<? extends Savable> aClass) throws SQLFeatureNotSupportedException, ClassNotFoundException {
         var annotation = aClass.getAnnotation(TableName.class);
         var fields = Mapper.getFields(aClass, field -> !field.isAnnotationPresent(Ignore.class));
         return createTableSQL(annotation.value(), fields);
     }
 
-    private String createTableSQLLines(Field[] fields) throws SQLFeatureNotSupportedException {
+    private String createTableSQLLines(Field[] fields) throws SQLFeatureNotSupportedException, ClassNotFoundException {
         StringBuilder stringBuilder = new StringBuilder();
         for (Field field : fields) {
             if (field.getType().isArray()) {
                 Class<?> componentType = field.getType().getComponentType();
                 if (TypeMappings.getTypeName(componentType) == null) {
-                    throw new SQLFeatureNotSupportedException("Arrays of type " + componentType.getSimpleName() + " are not allowed");
+                    if(field.isAnnotationPresent(ForeignKey.class)){
+                        String fk=field.getAnnotation(ForeignKey.class).value();
+                        String className=fk.split("#")[0];
+                        Class<?> klasse=Class.forName(className);
+                        if(Arrays.asList(klasse.getInterfaces()).contains(Savable.class)){
+
+                        }
+                        else {
+                            throw new SQLFeatureNotSupportedException("Arrays of type " + componentType.getSimpleName() + " are not Savable");
+                        }
+                    }
+                    else {
+                        throw new SQLFeatureNotSupportedException("Arrays of type " + componentType.getSimpleName() + " are not allowed");
+                    }
                 }
                 continue;
             }
@@ -187,11 +201,11 @@ public class QueryBuilder {
         else return "";
     }
 
-    private String createTableSQLLine(Field field) throws SQLFeatureNotSupportedException {
+    private String createTableSQLLine(Field field) throws SQLFeatureNotSupportedException, ClassNotFoundException {
         return createTableSQLLine(field, false, null);
     }
 
-    private String createTableSQLLine(Field field, boolean ignorePrimaryKey, String overrideName) throws SQLFeatureNotSupportedException {
+    private String createTableSQLLine(Field field, boolean ignorePrimaryKey, String overrideName) throws SQLFeatureNotSupportedException, ClassNotFoundException {
         Class<?> type = field.getType();
         if (type.isArray()) {
             type = type.getComponentType();
@@ -206,8 +220,20 @@ public class QueryBuilder {
                 }
             }
         }
-        if (typeName == null) {
+        if (typeName == null&&!Mapper.isDatabaseType(field)) {
             throw new SQLFeatureNotSupportedException("Could not lookup datatype of " + field.getName() + ": " + field.getType().getSimpleName());
+        }
+        if (typeName == null&&Mapper.isDatabaseType(field)){
+            Class<? extends Savable> classa= (Class<? extends Savable>) Class.forName(field.getAnnotation(ForeignKey.class).value().split("#")[0]);
+            var fields=Mapper.getFields(classa,PrimaryKey.class);
+            String ret="";
+            for (Field field1 : fields) {
+                var oname=field1.isAnnotationPresent(FieldName.class)?field1.getAnnotation(FieldName.class).value():null;
+                var a=createTableSQLLine(field1,true,field.getName()+"_"+field1.getName());
+                System.out.println("--"+a);
+                ret=ret+a+", ";
+            }
+            return ret.substring(0,ret.length()-2);
         }
         var template = "%1$s %2$s";
         var name = overrideName == null ? Mapper.getSQLFieldName(field) : overrideName;
@@ -281,5 +307,6 @@ public class QueryBuilder {
                 );
         return sql;
     }
+
 
 }

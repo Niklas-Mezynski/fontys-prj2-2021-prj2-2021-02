@@ -8,13 +8,13 @@ import com.g02.btfdao.utils.Savable;
 public class Cat implements Savable {
 
     @PrimaryKey(autogen = true)
-    public int id;
-
-    public String name;
+    public int catid;
+    @PrimaryKey(autogen = false)
+    public String catname;
 
     public Cat(int id, String name) {
-        this.id = id;
-        this.name = name;
+        this.catid = id;
+        this.catname = name;
     }
 
     public Cat() {

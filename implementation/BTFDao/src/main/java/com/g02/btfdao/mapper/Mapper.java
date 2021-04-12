@@ -193,5 +193,15 @@ public class Mapper {
         var columnNameReference = tableNameReference + "_" + referenceField.getName();
         return columnNameReference;
     }
-
+    public static boolean isDatabaseType(Field field){
+        var annotation=field.getAnnotation(ForeignKey.class);
+        var className=annotation.value();
+        try {
+            var klasse=Class.forName(className.split("#")[0]);
+            return Arrays.asList(klasse.getInterfaces()).contains(Savable.class);
+        } catch (ClassNotFoundException e) {
+            assert false:"Foreign Key falsch angegeben";
+            return false;
+        }
+    }
 }

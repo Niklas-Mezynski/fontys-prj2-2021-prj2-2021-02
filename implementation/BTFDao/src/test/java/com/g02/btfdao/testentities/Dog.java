@@ -15,8 +15,12 @@ public class Dog implements Savable {
 //    @PrimaryKey
     @FieldName("test")
     public String name;
-    @ForeignKey("com.g02.btfdao.testentities.Cat#id")
+    @ForeignKey("com.g02.btfdao.testentities.Cat#catid")
     public int[] cat;
+    @ForeignKey("com.g02.btfdao.testentities.Cat#catid")
+    public Cat[] RealCats;
+    @ForeignKey("com.g02.btfdao.testentities.Cat#catid")
+    public Cat buddy;
 
     public Dog(int id, String name, String breed) {
         this.id = id;

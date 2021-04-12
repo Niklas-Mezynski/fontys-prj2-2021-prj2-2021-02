@@ -186,7 +186,7 @@ public class PGJDBCUtilsTest {
         var cat3 = new Cat(0, "Cat3");
         var cats = new Cat[]{cat1, cat2, cat3};
         var insert = catDao.insert(cats);
-        dog.cat = insert.stream().mapToInt(cat -> cat.id).toArray();
+        dog.cat = insert.stream().mapToInt(cat -> cat.catid).toArray();
         System.out.println(dog);
         System.out.println(dogDao.insert(dog));
 
@@ -230,7 +230,7 @@ public class PGJDBCUtilsTest {
         var cat3 = new Cat(0, "Cat3");
         var cats = new Cat[]{cat1, cat2, cat3};
         var insert = catDao.insert(cats);
-        wuffy.cat = insert.stream().mapToInt(cat -> cat.id).toArray();
+        wuffy.cat = insert.stream().mapToInt(cat -> cat.catid).toArray();
         System.out.println(wuffy);
         wuffy=dao.insert(wuffy).get(0);
         System.out.println(wuffy);
