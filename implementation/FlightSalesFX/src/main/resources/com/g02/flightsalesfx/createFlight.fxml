@@ -55,7 +55,7 @@
                         </Button>
                      </bottom>
                      <center>
-                        <ScrollPane prefHeight="281.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+                        <ScrollPane fx:id="routeScrollPane" prefHeight="281.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                           <content>
                             <AnchorPane fx:id="routeTablePane" />
                           </content>

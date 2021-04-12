@@ -174,7 +174,7 @@ public class CreateFlightController {
         }
 
         private void setRoute(Route r) throws IllegalArgumentException{
-            if(r == null){
+            if(r.equals(null)){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Error during registration");
@@ -213,7 +213,7 @@ public class CreateFlightController {
                     alert.setTitle("Error");
                     alert.setHeaderText("Error during registration");
                     alert.setContentText("The entered information regarding the departure are either not filled in or filled in wrongly." +
-                            "Make sure the input looks like 'hh:mm'.");
+                            " Make sure the input looks like 'hh:mm'.");
                     alert.showAndWait();
                 }
 
