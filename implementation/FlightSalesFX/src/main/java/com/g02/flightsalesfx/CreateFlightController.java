@@ -165,10 +165,6 @@ public class CreateFlightController {
         private LocalDateTime arrivalDateWithTime;
 
         public ExtendedRoute(LocalDate startDate, TextField startTime, TextField durationHours, TextField durationMinutes) {
-            if ( getSelectedRoute() ==null ) {
-                //todo: add alert
-                System.out.println("ALARM");
-            }
 
                 this.departureDateWithTime = createDepartureInfo(startDate, startTime);
 
