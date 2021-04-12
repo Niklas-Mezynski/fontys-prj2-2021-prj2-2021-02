@@ -118,9 +118,16 @@ public class CreateFlightController {
     @FXML
     void nextStep() throws IOException {
         //"save" latest selections and verify that input is correct (syntax)
-        extendedRoute = new ExtendedRoute(getStartDate(), getStartTime(), getDurationHours(), getDurationMinutes());
-        extendedRoute.setRoute(getSelectedRoute());
+        boolean inputOK = true;
+        try{
+            extendedRoute = new ExtendedRoute(getStartDate(), getStartTime(), getDurationHours(), getDurationMinutes());
+            extendedRoute.setRoute(getSelectedRoute());
+        }catch (Exception e){
+            inputOK = false;
+        }
+
         // After "saving" current selections
+        if(inputOK)
         setRoot("submitFlight");
     }
 
@@ -163,24 +170,48 @@ public class CreateFlightController {
                 System.out.println("ALARM");
             }
 
-            this.departureDateWithTime = createDepartureInfo(startDate, startTime);
-            this.arrivalDateWithTime = createArrivalInfo(durationHours, durationMinutes);
+                this.departureDateWithTime = createDepartureInfo(startDate, startTime);
+
+
+                this.arrivalDateWithTime = createArrivalInfo(durationHours, durationMinutes);
+
         }
 
-        private void setRoute(Route r) {
+        private void setRoute(Route r) throws IllegalArgumentException{
+            if(r == null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error during registration");
+                alert.setContentText("There is no selected Route");
+                alert.showAndWait();
+
+                throw new IllegalArgumentException("setRoute(Route r): r can not be equal to null");
+            }
             this.selectedRoute = r;
         }
 
         //helper
-        private LocalDateTime createDepartureInfo(LocalDate startDate, TextField startTime) {
+        private LocalDateTime createDepartureInfo(LocalDate startDate, TextField startTime) throws InputMismatchException{
             String[] splittedField = startTime.getText().split(":");
 
             if(splittedField.length > 0){
                 if(splittedField.length == 2) {
-                    int hour = Integer.valueOf(splittedField[0].trim());
-                    int min = Integer.valueOf(splittedField[1].trim());
+                    int hour = -1;
+                    int min = -1;
+                    boolean inputOK = true;
+                    try{
+                        hour = Integer.valueOf(splittedField[0].trim());
+                        min = Integer.valueOf(splittedField[1].trim());
+                    }catch(Exception e){
+                        if(e.getClass().equals(NumberFormatException.class)){
+                            inputOK = false;
+                        }
+                    }
 
-                    return startDate.atTime(hour, min);
+                    if(inputOK){
+                        return startDate.atTime(hour, min);
+                    }
+
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
@@ -195,16 +226,25 @@ public class CreateFlightController {
             throw new InputMismatchException("Wrong input-syntax. input must look like: 'hh:mm'.");
         }
 
-        private LocalDateTime createArrivalInfo(TextField durHour, TextField durMin) {
+        private LocalDateTime createArrivalInfo(TextField durHour, TextField durMin) throws InputMismatchException{
+            int hours = -1;
+            int mins = -1;
             if(durHour.getText().isEmpty() || durMin.getText().isEmpty()){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Error during registration");
                 alert.setContentText("Please make sure that no fields are empty.");
                 alert.showAndWait();
+                throw new InputMismatchException("Wrong input-syntax. input must look like: 'hh:mm'.");
+            }else{
+                try{
+                    hours = Integer.valueOf(durHour.getText().trim());
+                    mins = Integer.valueOf(durMin.getText().trim());
+                }catch (Exception e){
+                        throw new InputMismatchException("Wrong input-syntax. input must look like: 'hh:mm'.");
+
+                }
             }
-            int hours = Integer.valueOf(durHour.getText().trim());
-            int mins = Integer.valueOf(durMin.getText().trim());
 
             return this.departureDateWithTime.plusHours(hours).plusMinutes(mins);
         }

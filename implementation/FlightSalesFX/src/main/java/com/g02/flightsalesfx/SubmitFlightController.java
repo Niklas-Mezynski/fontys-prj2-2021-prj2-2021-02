@@ -69,7 +69,6 @@ public class SubmitFlightController {
                 if (event.getClickCount() == 1) {
                     System.out.println("Selected Plane: " + rowData.toString());
                     selectedPlane = rowData;
-                    //Todo save change in PersistanceLayer
                 }
             }
         });
@@ -96,13 +95,23 @@ public class SubmitFlightController {
 
     @FXML
     void saveFlight(ActionEvent event) throws IOException {
-        double price;
-        if (flightPrice.getText().contains(",")) {
-            price = Integer.valueOf(flightPrice.getText().split(",")[0]) + (Double.valueOf(flightPrice.getText().split(",")[1]) / 100);
-        } else {
-            price = Double.valueOf(flightPrice.getText());
+        double price = -1;
+        int flightNumber = -1;
+        boolean conversionOK = true;
+        try{
+            if (flightPrice.getText().contains(",")) {
+                price = Integer.valueOf(flightPrice.getText().split(",")[0]) + (Double.valueOf(flightPrice.getText().split(",")[1]) / 100);
+            } else {
+                price = Double.valueOf(flightPrice.getText());
+            }
+            flightNumber = Integer.valueOf(flightNumberTextField.getText());
+
+        }catch(Exception e){
+            if(e.getClass().equals(NumberFormatException.class)){
+                conversionOK = false;
+            }
         }
-        var flightNumber = Integer.valueOf(flightNumberTextField.getText());
+
         var plane = selectedPlane;
         var creator = (SalesOfficer) App.employee;                  // ToDo: verify that only officer can register new flights
 
@@ -112,16 +121,34 @@ public class SubmitFlightController {
         var depDateTime = extendedRoute.getDepartureDateWithTime();
         var arrDateTime = extendedRoute.getArrivalDateWithTime();
 
-        var flightCreated = App.businessLogicAPI.createFlightFromUI(creator, flightNumber, depDateTime, arrDateTime, route, plane, price);
-        if (flightCreated) {
-            exit();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Error saving flight");
-            alert.setContentText("There was an error while saving the created flight. Try again!");
+        if(creator != null && flightNumber != -1 && depDateTime != null && arrDateTime != null && route != null && plane != null && price != -1 && conversionOK){
+
+            var flightCreated = App.businessLogicAPI.createFlightFromUI(creator, flightNumber, depDateTime, arrDateTime, route, plane, price);
+
+            if (flightCreated) {
+
+                exit();
+
+            } else {
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error saving flight");
+                alert.setContentText("There was an error while saving the created flight. Try again!");
+                alert.showAndWait();
+
+            }
+
+        }else{
+            System.out.println("Alarm");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText("Check your inputs");
+            alert.setContentText("Check, that all inputs have correct values and a plane is selected.");
             alert.showAndWait();
+
         }
+
 
     }
 
