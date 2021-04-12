@@ -119,6 +119,16 @@ public class FlightImpl implements Flight {
         return p;
     }
 
+    @Override
+    public void setArrival(LocalDateTime newArrival) {
+        this.arrival = newArrival;
+    }
+
+    @Override
+    public void setDeparture(LocalDateTime newDeparture) {
+        this.departure = newDeparture;
+    }
+
     /*public boolean removePriceReduction(PriceReduction p) {
         if(reductionList.contains(p)) {
             reductionList.remove(p);

@@ -69,4 +69,8 @@ public interface Flight {
     public List<FlightOption> getFlightOptions();
     
     public PriceReduction applyPriceReduction(PriceReduction p);
+
+    public void setArrival(LocalDateTime newArrival);
+
+    public void setDeparture(LocalDateTime newDeparture);
 }

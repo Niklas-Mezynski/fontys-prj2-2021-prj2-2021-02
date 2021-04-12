@@ -79,6 +79,15 @@ public class HomeController {
         var flightTable = new FlightTable(allFlights, (event, row) -> {
             Flight selectedFlight = row.getItem();
             System.out.println("Clicked on: " + selectedFlight);
+            if (event.getClickCount() == 2) {
+                try {
+                    EditFlightController.selectedFlight = selectedFlight;
+                    App.inRootTab=2;
+                    App.setRoot("editFlight");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }) ;
 
         flightPane.getChildren().add(flightTable);
