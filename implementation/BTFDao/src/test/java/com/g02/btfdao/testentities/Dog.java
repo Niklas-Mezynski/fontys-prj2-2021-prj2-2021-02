@@ -18,10 +18,14 @@ public class Dog implements Savable {
     @ForeignKey("com.g02.btfdao.testentities.Cat#id")
     public int[] cat;
 
-    public Dog(int id, String name) {
+    public Dog(int id, String name, String breed) {
         this.id = id;
         this.name = name;
 //        this.cat=cat;
+    }
+    private Dog(int id,String name){
+        this.id=id;
+        this.name=name;
     }
 
     @Override
@@ -32,4 +36,5 @@ public class Dog implements Savable {
                 .add("cat=" + Arrays.toString(cat))
                 .toString();
     }
+
 }

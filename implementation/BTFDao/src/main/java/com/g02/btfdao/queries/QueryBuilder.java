@@ -68,7 +68,8 @@ public class QueryBuilder {
                     var columnNameThis = tableNameThis + "_" + field.getName();
                     var tableNameReference = Mapper.getTableName(referenceClass);
                     var columnNameReference = tableNameReference + "_" + referenceField.getName();
-                    var tableName = columnNameThis + "_" + columnNameReference;
+//                    var tableName = columnNameThis + "_" + columnNameReference;
+                    var tableName = Mapper.relationTableName(field);
                     var tableSQLLine = createTableSQLLine(field, true, columnNameThis);
                     var tableSQLLine1 = createTableSQLLine(referenceField, true, columnNameReference);
                     var format = format("CREATE TABLE %1$s (%2$s, %3$s);", tableName, tableSQLLine, tableSQLLine1);
@@ -268,6 +269,17 @@ public class QueryBuilder {
         var collectF = Arrays.stream(insertableFields).map(this::createSQLWhere)
                 .collect(Collectors.joining(", "));
         return format(template, aClass.getAnnotation(TableName.class).value(), collectF, collectP);
+    }
+
+    public String createRelationRemoveSQL(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException {
+        var template = "DELETE FROM %1$s where %2$s=%3$s";
+        var tableName = Mapper.relationTableName(field);
+        var sql=format(template,
+                tableName,
+                Mapper.relationColumnLeftName(field),
+                "?"
+                );
+        return sql;
     }
 
 }

@@ -18,11 +18,11 @@ import java.util.List;
 public class PGJDBCUtilsTest {
 
     @Test
-    void name() throws SQLException, IllegalAccessException {
+    void name() throws SQLException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var daoFactory = new DaoFactory(simpledao);
         var dao = daoFactory.createDao(Dog.class);
-        var wuffy2s = dao.insert(new Dog(1, "Wuffy2"), new Dog(2, "Dogg"));
+        var wuffy2s = dao.insert(new Dog(1, "Wuffy2","a"), new Dog(2, "Dogg","a"));
         wuffy2s.forEach(System.out::println);
     }
 
@@ -44,7 +44,7 @@ public class PGJDBCUtilsTest {
 
     @Test
     void t4() {
-        Dog dog = new Dog(1, "Wuffy");
+        Dog dog = new Dog(1, "Wuffy","a");
         var deconstruct = Mapper.deconstruct(dog);
         deconstruct.forEach(pair -> {
             System.out.println(pair.key() + ": " + pair.value());
@@ -90,7 +90,7 @@ public class PGJDBCUtilsTest {
 
     @Test
     void t9() throws ClassNotFoundException, SQLException {
-        Dog dog = new Dog(1, "Wuffy");
+        Dog dog = new Dog(1, "Wuffy","a");
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var con = simpledao.getConnection();
         var queryBuilder = new QueryBuilder();
@@ -162,7 +162,7 @@ public class PGJDBCUtilsTest {
     }
 
     @Test
-    void t17() throws SQLException, IllegalAccessException {
+    void t17() throws SQLException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var con = simpledao.getConnection();
         var daoFactory = new DaoFactory(simpledao);
@@ -175,18 +175,67 @@ public class PGJDBCUtilsTest {
     }
 
     @Test
-    void t18() throws SQLException, IllegalAccessException {
+    void t18() throws SQLException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var daoFactory = new DaoFactory(simpledao);
         var dogDao = daoFactory.createDao(Dog.class);
         var catDao = daoFactory.createDao(Cat.class);
-        var dog = new Dog(0, "Dog");
+        var dog = new Dog(0, "Dog","a");
         var cat1 = new Cat(0, "Cat1");
         var cat2 = new Cat(0, "Cat2");
         var cat3 = new Cat(0, "Cat3");
         var cats = new Cat[]{cat1, cat2, cat3};
         var insert = catDao.insert(cats);
         dog.cat = insert.stream().mapToInt(cat -> cat.id).toArray();
-        dogDao.insert(dog);
+        System.out.println(dog);
+        System.out.println(dogDao.insert(dog));
+
+    }
+
+    @Test
+    void t19() throws SQLException {
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        var con = simpledao.getConnection();
+        var daoFactory = new DaoFactory(simpledao);
+        var queryBuilder = new QueryBuilder();
+        var queryExecutor = new QueryExecutor();
+        var dao = daoFactory.createDao(Dog.class);
+//        var wuffy2s = dao.getAll().get(0);
+//        wuffy2s.name = "JHBACB";
+        System.out.println(dao.get(24));
+    }
+    @Test
+    void t20() throws SQLException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        var con = simpledao.getConnection();
+        var daoFactory = new DaoFactory(simpledao);
+        var queryBuilder = new QueryBuilder();
+        var queryExecutor = new QueryExecutor();
+        var dao = daoFactory.createDao(Dog.class);
+        var wuffy2s = dao.remove(new Dog(24,"", "D"));
+        System.out.println(wuffy2s);
+    }
+    @Test
+    void t21() throws SQLException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        var con = simpledao.getConnection();
+        var daoFactory = new DaoFactory(simpledao);
+        var queryBuilder = new QueryBuilder();
+        var queryExecutor = new QueryExecutor();
+        var dao = daoFactory.createDao(Dog.class);
+        var catDao=daoFactory.createDao(Cat.class);
+        var wuffy = new Dog(0,"Anatol", "LOL");
+        var cat1 = new Cat(0, "Cat1");
+        var cat2 = new Cat(0, "Cat2");
+        var cat3 = new Cat(0, "Cat3");
+        var cats = new Cat[]{cat1, cat2, cat3};
+        var insert = catDao.insert(cats);
+        wuffy.cat = insert.stream().mapToInt(cat -> cat.id).toArray();
+        System.out.println(wuffy);
+        wuffy=dao.insert(wuffy).get(0);
+        System.out.println(wuffy);
+        wuffy.name="Philip";
+        wuffy=dao.update(wuffy);
+        System.out.println(wuffy);
     }
 }

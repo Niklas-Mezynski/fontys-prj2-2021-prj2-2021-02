@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,7 +93,9 @@ public class Mapper {
     public static <E extends Savable> E construct(Class<E> aClass, Object[] objects) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
 //        var fields = getFields(aClass,a->!a.isAnnotationPresent(Ignore.class));
         var fields= getConstructableFields(aClass);
-        var constructor = aClass.getConstructor(Arrays.stream(fields).map(Field::getType).toArray(Class[]::new));
+        var constructor = aClass.getDeclaredConstructor(Arrays.stream(fields).map(Field::getType).toArray(Class[]::new));
+        var b=constructor.trySetAccessible();
+        if(!b)throw new IllegalAccessException("Konnte Konstruktor nicht aufrufbar machen");
         var e = constructor.newInstance(objects);
         return e;
     }
@@ -145,6 +148,50 @@ public class Mapper {
 
     public static boolean isValidDataType(Class<?> aClass) {
         return aClass.isArray() && TypeMappings.getTypeName(aClass.getComponentType()) != null;
+    }
+    public static String relationTableName(Field field1) throws ClassNotFoundException, NoSuchFieldException {
+        var annotation = field1.getAnnotation(ForeignKey.class);
+        var split = annotation.value().split("#");
+        assert split.length == 2 : "ForeignKey reference has the wrong format";
+        var referenceClass = Class.forName(split[0]);
+        var referenceField = referenceClass.getField(split[1]);
+        var tableNameThis = Mapper.getTableName(field1.getDeclaringClass());
+        var columnNameThis = tableNameThis + "_" + field1.getName();
+        var tableNameReference = Mapper.getTableName(referenceClass);
+        var columnNameReference = tableNameReference + "_" + referenceField.getName();
+        return columnNameThis + "_" + columnNameReference;
+    }
+    public static String relationColumnNames(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException {
+        var annotation = field.getAnnotation(ForeignKey.class);
+        var split = annotation.value().split("#");
+        assert split.length == 2 : "ForeignKey reference has the wrong format";
+        var referenceClass = Class.forName(split[0]);
+        var referenceField = referenceClass.getField(split[1]);
+        var tableNameThis = Mapper.getTableName(field.getDeclaringClass());
+        var columnNameThis = tableNameThis + "_" + field.getName();
+        var tableNameReference = Mapper.getTableName(referenceClass);
+        var columnNameReference = tableNameReference + "_" + referenceField.getName();
+        return columnNameThis + ", " + columnNameReference;
+    }
+    public static String relationColumnLeftName(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException {
+        var annotation = field.getAnnotation(ForeignKey.class);
+        var split = annotation.value().split("#");
+        assert split.length == 2 : "ForeignKey reference has the wrong format";
+        var referenceClass = Class.forName(split[0]);
+        var tableNameThis = Mapper.getTableName(field.getDeclaringClass());
+        var columnNameThis = tableNameThis + "_" + field.getName();
+        return columnNameThis;
+    }
+    public static String relationColumnRightName(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException {
+        var annotation = field.getAnnotation(ForeignKey.class);
+        var split = annotation.value().split("#");
+        assert split.length == 2 : "ForeignKey reference has the wrong format";
+        var referenceClass = Class.forName(split[0]);
+        var referenceField = referenceClass.getField(split[1]);
+        var tableNameThis = Mapper.getTableName(field.getDeclaringClass());
+        var tableNameReference = Mapper.getTableName(referenceClass);
+        var columnNameReference = tableNameReference + "_" + referenceField.getName();
+        return columnNameReference;
     }
 
 }
