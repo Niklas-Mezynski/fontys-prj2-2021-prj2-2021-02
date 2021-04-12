@@ -32,6 +32,8 @@ import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.InstanceOfAssertFactories.LOCAL_DATE;
+import static org.assertj.core.api.InstanceOfAssertFactories.LOCAL_DATE_TIME;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(ApplicationExtension.class)
@@ -110,8 +112,9 @@ public class CreateFlightTest {
         //route left out
 
         //select date
-        fxRobot.clickOn(fxRobot.lookup("#startDate").queryAs(DatePicker.class));
-        fxRobot.write("29.04.2021");
+        DatePicker dp=(fxRobot.lookup("#startDate").queryAs(DatePicker.class));
+        dp.setValue(LocalDate.of(2021,4,12));
+//        fxRobot.write("29.04.2021");
         //select time
         fxRobot.clickOn(fxRobot.lookup("#startTime").queryAs(TextField.class));
         fxRobot.write("12:01");
