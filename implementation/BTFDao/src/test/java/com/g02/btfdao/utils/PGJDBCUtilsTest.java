@@ -18,7 +18,7 @@ import java.util.List;
 public class PGJDBCUtilsTest {
 
     @Test
-    void name() throws SQLException {
+    void name() throws SQLException, IllegalAccessException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var daoFactory = new DaoFactory(simpledao);
         var dao = daoFactory.createDao(Dog.class);

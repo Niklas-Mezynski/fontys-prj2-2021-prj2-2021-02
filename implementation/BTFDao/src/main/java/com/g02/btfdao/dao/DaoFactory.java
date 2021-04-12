@@ -28,6 +28,6 @@ public class DaoFactory {
             return null;
         });
         return (Dao<E>) dao;*/
-        return new Dao<>(dataSource.getConnection(), aClass);
+        return new Dao<>(dataSource.getConnection(), aClass, this);
     }
 }

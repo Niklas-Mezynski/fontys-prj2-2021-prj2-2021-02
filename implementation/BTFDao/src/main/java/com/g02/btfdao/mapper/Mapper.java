@@ -143,4 +143,8 @@ public class Mapper {
         }).toArray(Field[]::new);
     }
 
+    public static boolean isValidDataType(Class<?> aClass) {
+        return aClass.isArray() && TypeMappings.getTypeName(aClass.getComponentType()) != null;
+    }
+
 }

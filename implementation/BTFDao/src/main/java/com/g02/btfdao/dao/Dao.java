@@ -1,11 +1,15 @@
 package com.g02.btfdao.dao;
 
+import com.g02.btfdao.annotations.ForeignKey;
 import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
 import com.g02.btfdao.mapper.Mapper;
 import com.g02.btfdao.queries.QueryBuilder;
 import com.g02.btfdao.queries.QueryExecutor;
 import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.utils.TypeMappings;
 
+import java.lang.reflect.Field;
 import java.sql.ClientInfoStatus;
 import java.sql.Connection;
 import java.util.*;
@@ -16,21 +20,32 @@ public class Dao<E extends Savable> {
 
     private final Connection connection;
     private final Class<E> entityClass;
+    private final DaoFactory daoFactory;
     private final QueryExecutor queryExecutor;
     private final QueryBuilder queryBuilder;
 
-    public Dao(Connection connection, Class<E> aClass) {
+    public Dao(Connection connection, Class<E> aClass, DaoFactory daoFactory) {
         this.connection = connection;
         entityClass = aClass;
+        this.daoFactory = daoFactory;
         queryExecutor = new QueryExecutor();
         queryBuilder = new QueryBuilder();
     }
 
     @SafeVarargs
-    public final List<E> insert(E... e) {
+    public final List<E> insert(E... e) throws IllegalAccessException {
         List<E> list = new ArrayList<>();
         for (E e1 : e) {
             queryExecutor.doInsert(connection, queryBuilder.createInsertSQL(entityClass), entityClass, e1).ifPresent(list::add);
+            var fields = Mapper.getFields(entityClass, ForeignKey.class);
+            for (Field field : fields) {
+                if (field.getType().isArray() && TypeMappings.getTypeName(field.getType().getComponentType()) != null) {
+                    var o = field.get(e);
+                    var value = field.getAnnotation(ForeignKey.class).value();
+
+
+                }
+            }
         }
         return list;
     }
