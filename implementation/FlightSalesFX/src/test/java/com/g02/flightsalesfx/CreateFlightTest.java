@@ -90,8 +90,8 @@ public class CreateFlightTest {
         fxRobot.clickOn(fxRobot.lookup("#routeScrollPane").queryAs(ScrollPane.class));
         fxRobot.press(KeyCode.ENTER);
         //select date
-        fxRobot.clickOn(fxRobot.lookup("#startDate").queryAs(DatePicker.class));
-        fxRobot.write(LocalDate.now().toString());
+        DatePicker dp=(fxRobot.lookup("#startDate").queryAs(DatePicker.class));
+        dp.setValue(LocalDate.of(2021,4,12));
         //select time
         fxRobot.clickOn(fxRobot.lookup("#startTime").queryAs(TextField.class));
         fxRobot.write("12:01");
@@ -124,9 +124,7 @@ public class CreateFlightTest {
         fxRobot.clickOn(fxRobot.lookup("#durationMinutes").queryAs(TextField.class));
         fxRobot.write("10");
 
-        assertThatCode(() -> {
-            fxRobot.clickOn(fxRobot.lookup("#nextStepButton").queryAs(Button.class));
-        })
-                .isInstanceOf(IllegalArgumentException.class);
+        fxRobot.clickOn(fxRobot.lookup("#nextStepButton").queryAs(Button.class));
+        Assertions.assertThat(fxRobot.lookup(".label").queryAs(Label.class)).hasText("Select a Flight route");
     }
 }
