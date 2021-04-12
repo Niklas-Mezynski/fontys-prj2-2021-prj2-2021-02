@@ -127,6 +127,6 @@ public class CreateFlightTest {
         assertThatCode(() -> {
             fxRobot.clickOn(fxRobot.lookup("#nextStepButton").queryAs(Button.class));
         })
-                .isInstanceOf(IOException.class);
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }
