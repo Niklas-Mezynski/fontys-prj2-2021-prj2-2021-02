@@ -60,6 +60,16 @@ public class Mapper {
         return pairs;
     }
 
+    public static <E extends Savable> Object[] getPrimaryKeyValues(E e) throws IllegalAccessException {
+        var fields = getFields(e.getClass(), PrimaryKey.class);
+        List<Object> objects = new ArrayList<>();
+        for (Field field : fields) {
+            var o = field.get(e);
+            objects.add(o);
+        }
+        return objects.toArray();
+    }
+
     public static <E extends Savable> E construct(Class<E> aClass, ResultSet resultSet) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         boolean hasNext = true;
         int i = 1;

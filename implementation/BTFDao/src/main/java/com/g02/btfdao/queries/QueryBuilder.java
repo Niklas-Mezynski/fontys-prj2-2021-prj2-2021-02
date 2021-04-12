@@ -253,5 +253,21 @@ public class QueryBuilder {
         return format("%1$s = ?", Mapper.getSQLFieldName(field));
     }
 
+    public String createRemoveSQL(Class<? extends Savable> aClass) {
+        var template = "DELETE FROM %1$s WHERE %2$s returning *";
+        var fields = Mapper.getFields(aClass, PrimaryKey.class);
+        var collect = Arrays.stream(fields).map(this::createSQLWhere).collect(Collectors.joining(" and "));
+        return format(template, aClass.getAnnotation(TableName.class).value(), collect);
+    }
+
+    public String createUpdateSQL(Class<? extends Savable> aClass) {
+        var template = "UPDATE %1$s SET %2$s WHERE %3$s returning *";
+        var primaryKeyFields = Mapper.getFields(aClass, PrimaryKey.class);
+        var collectP = Arrays.stream(primaryKeyFields).map(this::createSQLWhere).collect(Collectors.joining(" and "));
+        var insertableFields = Mapper.getInsertableFields(aClass);
+        var collectF = Arrays.stream(insertableFields).map(this::createSQLWhere)
+                .collect(Collectors.joining(", "));
+        return format(template, aClass.getAnnotation(TableName.class).value(), collectF, collectP);
+    }
 
 }

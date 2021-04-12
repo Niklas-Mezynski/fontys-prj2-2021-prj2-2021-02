@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class QueryExecutor {
     public <E extends Savable> Optional<E> doInsert(Connection connection, String Sql, Class<E> aClass, E e) {
@@ -25,7 +26,6 @@ public class QueryExecutor {
             } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException instantiationException) {
                 instantiationException.printStackTrace();
             }
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -50,6 +50,7 @@ public class QueryExecutor {
     private PreparedStatement fillPreparedStatement(final PreparedStatement preparedStatement, Object... keyValues) throws SQLException {
         for (int i = 0; i < keyValues.length; i++) {
             var obj = keyValues[i];
+            System.out.println(obj);
             if (obj instanceof PGobject) {
                 preparedStatement.setObject(i + 1, obj, 1111);
                 System.out.println("How did I get here?");
@@ -61,7 +62,7 @@ public class QueryExecutor {
     }
 
     private PreparedStatement fillPreparedStatement(final PreparedStatement pst, List<Pair<String, Object>> pairs) throws SQLException {
-        return fillPreparedStatement(pst, pairs.stream().map(Pair::value));
+        return fillPreparedStatement(pst, pairs.stream().map(Pair::value).toArray());
     }
 
     public <E extends Savable> List<E> doGetAll(Connection connection, String getSQL, Class<E> entityClass) {
@@ -81,4 +82,31 @@ public class QueryExecutor {
         }
         return Collections.emptyList();
     }
+
+    public <E extends Savable> Optional<E> doUpdate(Connection connection, String sql, Class<E> aClass, E e) {
+        try (var pst = fillPreparedStatement(connection.prepareStatement(sql), Mapper.deconstructInsertableFields(e)); ResultSet resultSet = pst.executeQuery()) {
+            if (resultSet.next()) {
+                return Optional.of(Mapper.construct(aClass, resultSet));
+            }
+        } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | SQLException instantiationException) {
+            instantiationException.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    public <E extends Savable> Optional<E> doRemove(Connection connection, String sql, Class<E> aClass, Object... keyValues) {
+        try (var pst = fillPreparedStatement(connection.prepareStatement(sql), keyValues)) {
+            try (ResultSet resultSet = pst.executeQuery()) {
+                if (resultSet.next()) {
+                    return Optional.of(Mapper.construct(aClass, resultSet));
+                }
+            } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
 }

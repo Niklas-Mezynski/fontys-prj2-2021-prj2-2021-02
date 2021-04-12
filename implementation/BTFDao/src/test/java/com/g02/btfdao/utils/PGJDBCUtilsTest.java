@@ -5,6 +5,7 @@ import com.g02.btfdao.dao.DaoFactory;
 import com.g02.btfdao.mapper.Mapper;
 import com.g02.btfdao.queries.QueryBuilder;
 import com.g02.btfdao.queries.QueryExecutor;
+import com.g02.btfdao.testentities.Cat;
 import com.g02.btfdao.testentities.Dog;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
+import java.util.List;
 
 public class PGJDBCUtilsTest {
 
@@ -62,6 +64,13 @@ public class PGJDBCUtilsTest {
     void t6() throws ClassNotFoundException, SQLFeatureNotSupportedException, NoSuchFieldException {
         var queryBuilder = new QueryBuilder();
         var datebaseSQL = queryBuilder.createDatabaseSQL(new String[]{"com.g02.btfdao.testentities.Dog", "com.g02.btfdao.testentities.Cat"});
+        System.out.println(datebaseSQL);
+    }
+
+    @Test
+    void t6b() throws ClassNotFoundException, SQLFeatureNotSupportedException, NoSuchFieldException {
+        var queryBuilder = new QueryBuilder();
+        var datebaseSQL = queryBuilder.createDatabaseSQL(new String[]{"com.g02.btfdao.testentities.Test"});
         System.out.println(datebaseSQL);
     }
 
@@ -123,5 +132,61 @@ public class PGJDBCUtilsTest {
         var wuffy2s = dao.getAll();
 //        var wuffy2s = dao.insert(new Dog(1, "Wuffy2"), new Dog(2, "Dogg"));
         System.out.println(wuffy2s);
+    }
+
+    @Test
+    void t14() {
+        var queryBuilder = new QueryBuilder();
+        var removeSQL = queryBuilder.createRemoveSQL(Dog.class);
+        System.out.println(removeSQL);
+    }
+
+    @Test
+    void t15() {
+        var queryBuilder = new QueryBuilder();
+        var removeSQL = queryBuilder.createUpdateSQL(Dog.class);
+        System.out.println(removeSQL);
+    }
+
+    @Test
+    void t16() throws SQLException {
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        var con = simpledao.getConnection();
+        var daoFactory = new DaoFactory(simpledao);
+        var queryBuilder = new QueryBuilder();
+        var queryExecutor = new QueryExecutor();
+        var dao = daoFactory.createDao(Dog.class);
+        var wuffy2s = dao.getAll().get(0);
+        wuffy2s.name = "JHBACB";
+        System.out.println(queryExecutor.doUpdate(con, queryBuilder.createInsertSQL(Dog.class), Dog.class, wuffy2s).get());
+    }
+
+    @Test
+    void t17() throws SQLException, IllegalAccessException {
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        var con = simpledao.getConnection();
+        var daoFactory = new DaoFactory(simpledao);
+        var queryBuilder = new QueryBuilder();
+        var queryExecutor = new QueryExecutor();
+        var dao = daoFactory.createDao(Dog.class);
+        var wuffy2s = dao.get(dog -> dog.id > 6);
+        var remove = dao.remove(wuffy2s);
+        System.out.println(remove);
+    }
+
+    @Test
+    void t18() throws SQLException, IllegalAccessException {
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        var daoFactory = new DaoFactory(simpledao);
+        var dogDao = daoFactory.createDao(Dog.class);
+        var catDao = daoFactory.createDao(Cat.class);
+        var dog = new Dog(0, "Dog");
+        var cat1 = new Cat(0, "Cat1");
+        var cat2 = new Cat(0, "Cat2");
+        var cat3 = new Cat(0, "Cat3");
+        var cats = new Cat[]{cat1, cat2, cat3};
+        var insert = catDao.insert(cats);
+        dog.cat = insert.stream().mapToInt(cat -> cat.id).toArray();
+        dogDao.insert(dog);
     }
 }

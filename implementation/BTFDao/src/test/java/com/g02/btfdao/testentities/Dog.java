@@ -12,6 +12,7 @@ public class Dog implements Savable {
     @PrimaryKey(autogen = true)
     @NotNull
     public int id;
+//    @PrimaryKey
     @FieldName("test")
     public String name;
     @ForeignKey("com.g02.btfdao.testentities.Cat#id")

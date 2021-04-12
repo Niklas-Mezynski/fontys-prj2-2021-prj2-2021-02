@@ -6,12 +6,11 @@ import com.g02.btfdao.queries.QueryBuilder;
 import com.g02.btfdao.queries.QueryExecutor;
 import com.g02.btfdao.utils.Savable;
 
+import java.sql.ClientInfoStatus;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Dao<E extends Savable> {
 
@@ -36,7 +35,7 @@ public class Dao<E extends Savable> {
         return list;
     }
 
-    List<E> insert(Collection<E> e) {
+    public List<E> insert(Collection<E> e) {
         List<E> list = new ArrayList<>();
         for (E e1 : e) {
             queryExecutor.doInsert(connection, queryBuilder.createInsertSQL(entityClass), entityClass, e1).ifPresent(list::add);
@@ -45,24 +44,33 @@ public class Dao<E extends Savable> {
     }
 
     @SafeVarargs
-    final List<E> remove(E... e) {
-        return null;
+    public final List<E> remove(E... e) throws IllegalAccessException {
+        List<E> list = new ArrayList<>();
+        for (E e1 : e) {
+            queryExecutor.doRemove(connection, queryBuilder.createRemoveSQL(entityClass), entityClass, Mapper.getPrimaryKeyValues(e1)).ifPresent(list::add);
+        }
+        return list;
     }
 
-    List<E> remove(Collection<E> e) {
-        return null;
+    public List<E> remove(Collection<E> e) throws IllegalAccessException {
+        List<E> list = new ArrayList<>();
+        for (E e1 : e) {
+            queryExecutor.doRemove(connection, queryBuilder.createRemoveSQL(entityClass), entityClass, Mapper.getPrimaryKeyValues(e1)).ifPresent(list::add);
+        }
+        return list;
     }
 
-    List<E> remove(Predicate<E> predicate) {
-        return null;
+    public List<E> remove(Predicate<E> predicate) throws IllegalAccessException {
+        var list = get(predicate);
+        return remove(list);
     }
 
-    E update(E e) {
-        return null;
+    public E update(E e) throws IllegalAccessException {
+        return queryExecutor.doRemove(connection, queryBuilder.createRemoveSQL(entityClass), entityClass, Mapper.getPrimaryKeyValues(e)).get();
     }
 
-    List<E> get(Predicate<E> predicate) {
-        return null;
+    public List<E> get(Predicate<E> predicate) {
+        return getAll().stream().filter(predicate).collect(Collectors.toUnmodifiableList());
     }
 
     /**
@@ -79,14 +87,14 @@ public class Dao<E extends Savable> {
         return e;
     }
 
-    E getFirst(Predicate<E> predicate) {
-        return null;
+    public Optional<E> getFirst(Predicate<E> predicate) {
+        return getAll().stream().filter(predicate).findFirst();
     }
 
     public List<E> getAll() {
         var getSQL = queryBuilder.createGetAllSQL(entityClass);
         var e = queryExecutor.doGetAll(connection, getSQL, entityClass);
-        return e;
+        return Collections.unmodifiableList(e);
     }
 
 }
