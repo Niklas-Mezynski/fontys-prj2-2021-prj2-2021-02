@@ -88,7 +88,7 @@ public class CreateFlightTest {
     void addFlightDetailsWithoutThrowingAnyException(FxRobot fxRobot) {
         //select route
         fxRobot.clickOn(fxRobot.lookup("#routeScrollPane").queryAs(ScrollPane.class));
-        fxRobot.press(KeyCode.ENTER);
+        fxRobot.press(KeyCode.CONTROL, KeyCode.A);
         //select date
         DatePicker dp=(fxRobot.lookup("#startDate").queryAs(DatePicker.class));
         dp.setValue(LocalDate.of(2021,4,12));
@@ -125,6 +125,6 @@ public class CreateFlightTest {
         fxRobot.write("10");
 
         fxRobot.clickOn(fxRobot.lookup("#nextStepButton").queryAs(Button.class));
-        Assertions.assertThat(fxRobot.lookup(".label").queryAs(Label.class)).hasText("Select a Flight route");
+        Assertions.assertThat(fxRobot.lookup(".label").queryAs(Label.class)).hasText("Error during registration");
     }
 }
