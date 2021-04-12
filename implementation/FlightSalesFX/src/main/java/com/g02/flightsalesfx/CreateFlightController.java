@@ -124,6 +124,7 @@ public class CreateFlightController {
             extendedRoute.setRoute(getSelectedRoute());
         }catch (Exception e){
             inputOK = false;
+            e.printStackTrace();
         }
 
         // After "saving" current selections
