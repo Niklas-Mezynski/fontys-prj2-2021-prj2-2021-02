@@ -1,6 +1,7 @@
 package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Employee;
+import com.g02.flightsalesfx.businessEntities.SalesOfficer;
 import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessLogic.AirportImpl;
 import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
@@ -17,6 +18,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +48,8 @@ public class App extends Application {
 
     public void addSamples(){
         var airportMgr = businessLogicAPI.getAirportManager();
-
         var routeMgr = businessLogicAPI.getRouteManager();
+        var flightMgr = businessLogicAPI.getFlightManager();
 
         businessLogicAPI.createAirportFromUI("BRE","Bremen","Germany");
         businessLogicAPI.createAirportFromUI("FCN","Cuxhaven","Germany");
@@ -67,6 +69,8 @@ public class App extends Application {
             }
         }
 
+
+
         //Sample Planes
         List<Seat> seats = new ArrayList<>();
         seats.add(new SeatImpl(0, 0));
@@ -75,6 +79,14 @@ public class App extends Application {
         businessLogicAPI.createPlaneFromUI("D-ABCH", "A069", "Airbus", seats);
         businessLogicAPI.createPlaneFromUI("B-VRTC", "B420", "QualityPlanes", seats);
 
+        var routes = businessLogicAPI.getAllRoutes(t -> true);
+        var planes = businessLogicAPI.getAllPlanes(t -> true);
+        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4485, LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(5).plusHours(4).plusMinutes(34), routes.get(3), planes.get(0), 99.34 );
+        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4486, LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(5).plusHours(2).plusMinutes(44), routes.get(12), planes.get(1), 45.65 );
+        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4487, LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(7).plusHours(4).plusMinutes(34), routes.get(3), planes.get(0), 78.23 );
+        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4488, LocalDateTime.now().plusDays(8), LocalDateTime.now().plusDays(8).plusHours(2).plusMinutes(44), routes.get(12), planes.get(1), 43.56 );
+        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4489, LocalDateTime.now().plusDays(9), LocalDateTime.now().plusDays(9).plusHours(4).plusMinutes(34), routes.get(3), planes.get(0), 34.86 );
+        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4490, LocalDateTime.now().plusDays(9), LocalDateTime.now().plusDays(9).plusHours(2).plusMinutes(44), routes.get(14), planes.get(1), 67.27 );
     }
 
     static void setRoot(String fxml) throws IOException {
