@@ -1,13 +1,14 @@
 package com.g02.btfdao.queries;
 
 import com.g02.btfdao.annotations.ForeignKey;
+import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.mapper.Mapper;
 import com.g02.btfdao.utils.Pair;
 import com.g02.btfdao.utils.Savable;
 import org.postgresql.util.PGobject;
+import org.postgresql.util.PSQLException;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
@@ -42,6 +43,7 @@ public class QueryExecutor {
                     var construct=Mapper.construct(aClass, resultSet);
                     var fields=Mapper.getFields(construct.getClass(), ForeignKey.class);
                     for (Field field : fields) {
+                        if (Mapper.isDatabaseType(field))continue;
                         String sql2="select %4$s from %1$s where %2$s=%3$s";
                         String sql2f=format(sql2,
                                 Mapper.relationTableName(field),
@@ -70,6 +72,47 @@ public class QueryExecutor {
                             }
                         }
 
+                    }
+                    for (Field field : fields) {
+                        if(!Mapper.isDatabaseType(field))continue;
+                        //Object relation Table
+                        String relationSQLtemplate="SELECT %1$s FROM %2$s WHERE %3$s";
+                        String relationSQL=String.format(relationSQLtemplate,
+                                Arrays.stream(Mapper.getFields(Mapper.getReferencingClass(field), PrimaryKey.class)).map(s->Mapper.getTableName(s.getDeclaringClass())+"_"+Mapper.getSQLFieldName(s)).collect(Collectors.joining(", ")),
+                                Mapper.relationTableName(field),
+                                Arrays.stream(Mapper.getFields(aClass, PrimaryKey.class)).map(s->format("%1$s = ?", Mapper.getTableName(s.getDeclaringClass())+"_"+Mapper.getSQLFieldName(s))).collect(Collectors.joining(" and "))
+                                );
+                        System.out.println(relationSQL);
+                        var pst2=fillPreparedStatement(connection.prepareStatement(relationSQL),keyValues);
+                        ResultSet rst= pst2.executeQuery();
+                        List<Savable> retList=new ArrayList<>();
+                        while (rst.next()) {
+                            List<Object> keyValuesList=new ArrayList<>();
+                            for (int i = 1; true; i++) {
+                                Object key=null;
+                                try {
+                                    key = rst.getObject(i);
+                                }
+                                catch (PSQLException e){
+                                    break;
+                                }
+                                keyValuesList.add(key);
+                            }
+                            var tmp=doGet(connection,new QueryBuilder().createGetSQL(Mapper.getReferencingClass(field)),Mapper.getReferencingClass(field),keyValuesList.toArray()).orElseGet(null);
+                            retList.add(tmp);
+                        }
+                        var type=field.getType();
+                        if(type.isArray()) {
+                            var arraytype = type.getComponentType();
+                            var oldArray = retList.toArray();
+                            var newArray = Array.newInstance(arraytype, oldArray.length);
+                            for (int i = 0; i < oldArray.length; i++) {
+                                Array.set(newArray, i, oldArray[i]);
+                            }
+                            field.set(construct, newArray);
+                        } else {
+                            field.set(construct,retList.get(0)); //Untested
+                        }
                     }
                     var ret = Optional.of(construct);
                     return ret;

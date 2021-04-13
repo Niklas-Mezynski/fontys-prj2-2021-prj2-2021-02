@@ -202,7 +202,7 @@ public class PGJDBCUtilsTest {
         var dao = daoFactory.createDao(Dog.class);
 //        var wuffy2s = dao.getAll().get(0);
 //        wuffy2s.name = "JHBACB";
-        System.out.println(dao.get(24));
+        System.out.println(dao.get(27));
     }
     @Test
     void t20() throws SQLException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
