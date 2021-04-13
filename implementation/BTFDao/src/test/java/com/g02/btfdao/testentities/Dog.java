@@ -32,9 +32,10 @@ public class Dog implements Savable {
         this.name = name;
 //        this.cat=cat;
     }
-    private Dog(int id,String name){
+    private Dog(int id,String name, Cat buddy){
         this.id=id;
         this.name=name;
+        this.buddy = buddy;
     }
 
     @Override

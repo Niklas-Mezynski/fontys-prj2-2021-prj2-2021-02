@@ -49,13 +49,21 @@ public class Dao<E extends Savable> {
         for (Savable savable : e) {
             var e1 = (E) savable;
             System.out.println(e1);
-            var opt=queryExecutor.doInsert(connection, queryBuilder.createInsertSQL(entityClass), entityClass, e1);
-            if (!opt.isPresent()) continue;
-            var e2=opt.get();
             var fields = Mapper.getFields(entityClass, ForeignKey.class);
+            for (Field field : fields) {
+                if (!field.getType().isArray() && Mapper.isDatabaseType(field)) {
+                    var o = (Savable) field.get(savable);
+                    Dao<? extends Savable> dao = daoFactory.createDao((Class<? extends Savable>) o.getClass());
+                    var insert = dao.insert(o).get(0);
+                    field.set(savable, insert);
+                }
+            }
+            var opt = queryExecutor.doInsert(connection, queryBuilder.createInsertSQL(entityClass), entityClass, e1);
+            if (!opt.isPresent()) continue;
+            var e2 = opt.get();
 //            System.out.println(e1);
             for (Field field : fields) {
-                if (field.getType().isArray())
+                if (field.getType().isArray()) {
                     if (TypeMappings.getTypeName(field.getType().getComponentType()) != null) {
                         var o = field.get(e1); //Array
                         assert o.getClass().isArray();
@@ -111,6 +119,7 @@ public class Dao<E extends Savable> {
                         }
                         System.out.println(insertList);
                     }
+                }
             }
             e2.afterConstruction();
             list.add(e2);
@@ -130,13 +139,13 @@ public class Dao<E extends Savable> {
     public List<E> remove(Collection<E> e) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException {
         List<E> list = new ArrayList<>();
         for (E e1 : e) {
-            var a=get(Mapper.getPrimaryKeyValues(e1));
-            if(a.isPresent()){
+            var a = get(Mapper.getPrimaryKeyValues(e1));
+            if (a.isPresent()) {
                 for (Field field : Mapper.getFields(e1.getClass(), ForeignKey.class)) {
-                    var sql=queryBuilder.createRelationRemoveSQL(field);
-                    queryExecutor.doRemove(connection,sql,null,Mapper.getPrimaryKeyValues(a.get())[0]);
+                    var sql = queryBuilder.createRelationRemoveSQL(field);
+                    queryExecutor.doRemove(connection, sql, null, Mapper.getPrimaryKeyValues(a.get())[0]);
                 }
-                var b=queryExecutor.doRemove(connection, queryBuilder.createRemoveSQL(entityClass), entityClass, Mapper.getPrimaryKeyValues(a.get()));
+                var b = queryExecutor.doRemove(connection, queryBuilder.createRemoveSQL(entityClass), entityClass, Mapper.getPrimaryKeyValues(a.get()));
                 if (b.isPresent()) {
                     list.add(a.get());
                 }
@@ -151,28 +160,28 @@ public class Dao<E extends Savable> {
     }
 
     public E update(E e) throws IllegalAccessException, SQLException, NoSuchFieldException, ClassNotFoundException {
-        queryExecutor.doUpdate(connection,queryBuilder.createUpdateSQL(entityClass),entityClass,e);
+        queryExecutor.doUpdate(connection, queryBuilder.createUpdateSQL(entityClass), entityClass, e);
         for (Field field : Mapper.getFields(entityClass, ForeignKey.class)) {
-            var sql=queryBuilder.createRelationRemoveSQL(field);
-            queryExecutor.doRemove(connection,sql,null,Mapper.getPrimaryKeyValues(get(Mapper.getPrimaryKeyValues(e)).get())[0]);
+            var sql = queryBuilder.createRelationRemoveSQL(field);
+            queryExecutor.doRemove(connection, sql, null, Mapper.getPrimaryKeyValues(get(Mapper.getPrimaryKeyValues(e)).get())[0]);
             if (field.getType().isArray() && TypeMappings.getTypeName(field.getType().getComponentType()) != null) {
                 var o = field.get(e); //Array
                 assert o.getClass().isArray();
-                var length=java.lang.reflect.Array.getLength(o);
+                var length = java.lang.reflect.Array.getLength(o);
                 for (int i = 0; i < length; i++) {
-                    var a= Array.get(o,i);
+                    var a = Array.get(o, i);
                     var value = field.getAnnotation(ForeignKey.class).value();
-                    String sql2= format("insert into %1$s (%2$s) values (%3$s, %4$s) returning *",
+                    String sql2 = format("insert into %1$s (%2$s) values (%3$s, %4$s) returning *",
                             Mapper.relationTableName(field),
                             Mapper.relationColumnNames(field),
                             Mapper.getPrimaryKeyValues(e)[0],
                             a
                     );
-                    var pst=connection.prepareStatement(sql2);
+                    var pst = connection.prepareStatement(sql2);
                     pst.execute();
 //                        System.out.println(sql);
                 }
-                field.set(e,o);
+                field.set(e, o);
             }
         }
         return get(Mapper.getPrimaryKeyValues(e)).orElseGet(null);
@@ -184,13 +193,14 @@ public class Dao<E extends Savable> {
 
     /**
      * Getting the object from the Database that has the given keyValues as its primary keys.
+     *
      * @param keyValues The values for the primary keys. Must provide as many as the Class has primary keys
      * @return
      */
     public Optional<E> get(Object... keyValues) {
         var expectedLength = Mapper.getFields(entityClass, PrimaryKey.class).length;
         var actualLength = keyValues.length;
-        assert expectedLength == actualLength: "Expecting " + expectedLength + " keyValues, but got only " + actualLength;
+        assert expectedLength == actualLength : "Expecting " + expectedLength + " keyValues, but got only " + actualLength;
         var getSQL = queryBuilder.createGetSQL(entityClass);
         var e = queryExecutor.doGet(connection, getSQL, entityClass, keyValues);
         e.ifPresent(Savable::afterConstruction);

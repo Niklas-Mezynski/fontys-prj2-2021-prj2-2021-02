@@ -30,7 +30,7 @@ public class QueryExecutor {
             } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException instantiationException) {
                 instantiationException.printStackTrace();
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException | IllegalAccessException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
         }
         return Optional.empty();
@@ -136,6 +136,7 @@ public class QueryExecutor {
             } else {
                 preparedStatement.setObject(i + 1, obj);
             }
+            System.out.println(preparedStatement);
         }
         return preparedStatement;
     }
@@ -163,7 +164,12 @@ public class QueryExecutor {
     }
 
     public <E extends Savable> Optional<E> doUpdate(Connection connection, String sql, Class<E> aClass, E e) {
-        var a=Mapper.deconstructInsertableFields(e);
+        List<Pair<String, Object>> a= null;
+        try {
+            a = Mapper.deconstructInsertableFields(e);
+        } catch (ClassNotFoundException | IllegalAccessException classNotFoundException) {
+            classNotFoundException.printStackTrace();
+        }
         try {
             var b=Mapper.getPrimaryKeyValues(e);
             var la=a.stream().map(Pair::value).collect(Collectors.toList());
@@ -174,12 +180,8 @@ public class QueryExecutor {
                 if (resultSet.next()) {
                     return Optional.of(Mapper.construct(aClass, resultSet));
                 }
-            } catch (NoSuchMethodException noSuchMethodException) {
+            } catch (NoSuchMethodException | InstantiationException | InvocationTargetException noSuchMethodException) {
                 noSuchMethodException.printStackTrace();
-            } catch (InstantiationException instantiationException) {
-                instantiationException.printStackTrace();
-            } catch (InvocationTargetException invocationTargetException) {
-                invocationTargetException.printStackTrace();
             }
         } catch (IllegalAccessException | SQLException illegalAccessException) {
             illegalAccessException.printStackTrace();

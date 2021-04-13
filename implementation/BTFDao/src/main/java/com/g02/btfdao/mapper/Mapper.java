@@ -43,9 +43,25 @@ public class Mapper {
         return deconstruct(e, fields);
     }
 
-    public static <E extends Savable> List<Pair<String, Object>> deconstructInsertableFields(E e) {
+    public static <E extends Savable> List<Pair<String, Object>> deconstructInsertableFields(E e) throws ClassNotFoundException, IllegalAccessException {
         var fields = getInsertableFields(e.getClass());
-        return deconstruct(e, fields);
+        var fields1 = Arrays.stream(fields)
+                .filter(field ->
+                        !(field.isAnnotationPresent(ForeignKey.class) && !field.getType().isArray() && isDatabaseType(field)))
+                .toArray(Field[]::new);
+        var deconstruct = deconstruct(e, fields1);
+        var otherFields = getFields(e.getClass(), field -> field.isAnnotationPresent(ForeignKey.class) && !field.getType().isArray() && isDatabaseType(field));
+        for (Field otherField : otherFields) {
+            var o = otherField.get(e);
+            System.out.println(o);
+            Class<? extends Savable> referencingClass = getReferencingClass(otherField);
+            var refPrimaryKeyFields = getFields(referencingClass, PrimaryKey.class);
+            for (Field refPrimaryKeyField : refPrimaryKeyFields) {
+                var o1 = refPrimaryKeyField.get(o);
+                deconstruct.add(new Pair<>(refPrimaryKeyField.getName(), o1));
+            }
+        }
+        return deconstruct;
     }
 
     public static <E extends Savable> List<Pair<String, Object>> deconstruct(E e, Field[] fields) {
@@ -92,11 +108,27 @@ public class Mapper {
 
     public static <E extends Savable> E construct(Class<E> aClass, Object[] objects) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
 //        var fields = getFields(aClass,a->!a.isAnnotationPresent(Ignore.class));
+        System.out.println(Arrays.toString(objects));
         var fields = getConstructableFields(aClass);
+        int index = 0;
+        List<Object> list = new ArrayList<>();
+        for (Field field : fields) {
+            if (!field.getType().isArray() && field.isAnnotationPresent(ForeignKey.class) && isDatabaseType(field)) {
+                Class<? extends Savable> type = (Class<? extends Savable>) field.getType();
+                var length = getConstructableFields(type).length;
+                list.add(construct(type, Arrays.copyOfRange(objects, index, index + length)));
+                index += length;
+            } else {
+                list.add(objects[index]);
+                index++;
+            }
+        }
+        System.out.println(Arrays.toString(fields));
         var constructor = aClass.getDeclaredConstructor(Arrays.stream(fields).map(Field::getType).toArray(Class[]::new));
         var b = constructor.trySetAccessible();
         if (!b) throw new IllegalAccessException("Konnte Konstruktor nicht aufrufbar machen");
-        var e = constructor.newInstance(objects);
+        var e = constructor.newInstance(list.toArray());
+        System.out.println(e);
         return e;
     }
 
@@ -133,7 +165,7 @@ public class Mapper {
             }
             if (field.isAnnotationPresent(Ignore.class)) return false;
             if (field.getType().isArray()) return false;
-            return TypeMappings.getTypeName(field.getType()) != null;
+            return TypeMappings.getTypeName(field.getType()) != null || isDatabaseType(field);
         }).toArray(Field[]::new);
     }
 
@@ -142,7 +174,7 @@ public class Mapper {
         return Arrays.stream(fields).filter(field -> {
             if (field.getType().isArray()) return false;
             if (field.isAnnotationPresent(Ignore.class)) return false;
-            return TypeMappings.getTypeName(field.getType()) != null;
+            return TypeMappings.getTypeName(field.getType()) != null || isDatabaseType(field);
         }).toArray(Field[]::new);
     }
 

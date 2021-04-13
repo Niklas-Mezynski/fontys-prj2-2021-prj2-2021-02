@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static com.g02.btfdao.mapper.Mapper.*;
 import static java.lang.String.format;
 
 public class QueryBuilder {
@@ -278,10 +279,10 @@ public class QueryBuilder {
                 }
             }
         }
-        if (typeName == null && !Mapper.isDatabaseType(field)) {
+        if (typeName == null && !isDatabaseType(field)) {
             throw new SQLFeatureNotSupportedException("Could not lookup datatype of " + field.getName() + ": " + field.getType().getSimpleName());
         }
-        if (typeName == null && Mapper.isDatabaseType(field)) {
+        if (typeName == null && isDatabaseType(field)) {
             Class<? extends Savable> classa = (Class<? extends Savable>) Class.forName(field.getAnnotation(ForeignKey.class).value().split("#")[0]);
             var fields = Mapper.getFields(classa, PrimaryKey.class);
             String ret = "";
@@ -309,14 +310,31 @@ public class QueryBuilder {
         return sql;
     }
 
-    public String createInsertSQL(Class<? extends Savable> aClass) {
+    public String createInsertSQL(Class<? extends Savable> aClass) throws ClassNotFoundException {
         var template = "INSERT INTO %1$s (%2$s) values (%3$s) returning *;";
         var insertedFields = Mapper.getInsertableFields(aClass);
+        var finalFields = Arrays.stream(insertedFields)
+                .filter(field ->
+                        !field.isAnnotationPresent(ForeignKey.class) || field.getType().isArray() || !isDatabaseType(field))
+                .map(Mapper::getSQLFieldName)
+                .collect(Collectors.toList());
+        var inflate = Arrays.stream(insertedFields)
+                .filter(field ->
+                        field.isAnnotationPresent(ForeignKey.class) && !field.getType().isArray() && isDatabaseType(field))
+                .collect(Collectors.toList());
+        for (Field field : inflate) {
+            Class<? extends Savable> referencingClass = getReferencingClass(field);
+            var fields = getFields(referencingClass, PrimaryKey.class);
+            for (Field field1 : fields) {
+                var s = getSQLFieldName(field) + "_" + field1.getName();
+                finalFields.add(s);
+            }
+        }
         System.out.println(aClass);
         return format(template,
                 Mapper.getTableName(aClass),
-                Arrays.stream(insertedFields).map(Mapper::getSQLFieldName).collect(Collectors.joining(", ")),
-                placeholders(insertedFields.length)
+                String.join(", ", finalFields),
+                placeholders(finalFields.size())
         );
     }
 

@@ -7,6 +7,7 @@ import com.g02.btfdao.queries.QueryBuilder;
 import com.g02.btfdao.queries.QueryExecutor;
 import com.g02.btfdao.testentities.Cat;
 import com.g02.btfdao.testentities.Dog;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -106,7 +107,7 @@ public class PGJDBCUtilsTest {
     }
 
     @Test
-    void t11() throws SQLException {
+    void t11() throws SQLException, ClassNotFoundException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var con = simpledao.getConnection();
         var queryBuilder = new QueryBuilder();
@@ -149,7 +150,7 @@ public class PGJDBCUtilsTest {
     }
 
     @Test
-    void t16() throws SQLException {
+    void t16() throws SQLException, ClassNotFoundException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var con = simpledao.getConnection();
         var daoFactory = new DaoFactory(simpledao);
@@ -186,6 +187,7 @@ public class PGJDBCUtilsTest {
         var cat3 = new Cat(0, "Cat3");
         var cats = new Cat[]{cat1, cat2, cat3};
         dog.RealCats = cats;
+        dog.buddy = new Cat(0, "Buddy");
         var insert = dogDao.insert(dog);
 //        dog.cat = insert.stream().mapToInt(cat -> cat.catid).toArray();
         System.out.println(insert);
