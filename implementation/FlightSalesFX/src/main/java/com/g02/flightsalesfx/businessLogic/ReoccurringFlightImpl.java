@@ -22,6 +22,11 @@ public class ReoccurringFlightImpl implements ReoccurringFlight  {
     }
 
     @Override
+    public void setInterval(int interval) {
+        this.interval = interval;
+    }
+
+    @Override
     public void startSalesProcess() {
         flight.startSalesProcess();
     }

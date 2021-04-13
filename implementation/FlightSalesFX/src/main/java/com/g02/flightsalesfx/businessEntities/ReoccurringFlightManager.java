@@ -5,6 +5,8 @@
  */
 package com.g02.flightsalesfx.businessEntities;
 
+import com.g02.flightsalesfx.persistence.FlightStorageService;
+
 /**
  *
  * @author anato
@@ -12,4 +14,6 @@ package com.g02.flightsalesfx.businessEntities;
 public interface ReoccurringFlightManager {
 
     ReoccurringFlight createRoccurringFlight(Flight flight, int interval);
+
+
 }
