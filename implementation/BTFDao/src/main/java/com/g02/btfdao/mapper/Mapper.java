@@ -9,7 +9,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +42,7 @@ public class Mapper {
         var fields = getFields(e.getClass());
         return deconstruct(e, fields);
     }
+
     public static <E extends Savable> List<Pair<String, Object>> deconstructInsertableFields(E e) {
         var fields = getInsertableFields(e.getClass());
         return deconstruct(e, fields);
@@ -85,17 +85,17 @@ public class Mapper {
             }
             i++;
         }
-        var fields= Arrays.stream(getFields(aClass,ForeignKey.class)).filter(f->f.getType().isArray()).toArray(Field[]::new);
+        var fields = Arrays.stream(getFields(aClass, ForeignKey.class)).filter(f -> f.getType().isArray()).toArray(Field[]::new);
 
         return construct(aClass, objects.toArray());
     }
 
     public static <E extends Savable> E construct(Class<E> aClass, Object[] objects) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
 //        var fields = getFields(aClass,a->!a.isAnnotationPresent(Ignore.class));
-        var fields= getConstructableFields(aClass);
+        var fields = getConstructableFields(aClass);
         var constructor = aClass.getDeclaredConstructor(Arrays.stream(fields).map(Field::getType).toArray(Class[]::new));
-        var b=constructor.trySetAccessible();
-        if(!b)throw new IllegalAccessException("Konnte Konstruktor nicht aufrufbar machen");
+        var b = constructor.trySetAccessible();
+        if (!b) throw new IllegalAccessException("Konnte Konstruktor nicht aufrufbar machen");
         var e = constructor.newInstance(objects);
         return e;
     }
@@ -124,24 +124,24 @@ public class Mapper {
     }
 
     public static Field[] getInsertableFields(Class<? extends Savable> aClass) {
-        var fields=getFields(aClass);
-        return Arrays.stream(fields).filter(field->{
-            if (field.isAnnotationPresent(PrimaryKey.class)){
-                if (field.getAnnotation(PrimaryKey.class).autogen()){
+        var fields = getFields(aClass);
+        return Arrays.stream(fields).filter(field -> {
+            if (field.isAnnotationPresent(PrimaryKey.class)) {
+                if (field.getAnnotation(PrimaryKey.class).autogen()) {
                     return false;
                 }
             }
-            if (field.isAnnotationPresent(Ignore.class))return false;
+            if (field.isAnnotationPresent(Ignore.class)) return false;
             if (field.getType().isArray()) return false;
             return TypeMappings.getTypeName(field.getType()) != null;
         }).toArray(Field[]::new);
     }
 
     public static Field[] getConstructableFields(Class<? extends Savable> aClass) {
-        var fields=getFields(aClass);
-        return Arrays.stream(fields).filter(field->{
+        var fields = getFields(aClass);
+        return Arrays.stream(fields).filter(field -> {
             if (field.getType().isArray()) return false;
-            if (field.isAnnotationPresent(Ignore.class))return false;
+            if (field.isAnnotationPresent(Ignore.class)) return false;
             return TypeMappings.getTypeName(field.getType()) != null;
         }).toArray(Field[]::new);
     }
@@ -149,6 +149,7 @@ public class Mapper {
     public static boolean isValidDataType(Class<?> aClass) {
         return aClass.isArray() && TypeMappings.getTypeName(aClass.getComponentType()) != null;
     }
+
     public static String relationTableName(Field field1) throws ClassNotFoundException, NoSuchFieldException {
         var annotation = field1.getAnnotation(ForeignKey.class);
         var split = annotation.value().split("#");
@@ -160,18 +161,26 @@ public class Mapper {
         var tableNameReference = Mapper.getTableName(referenceClass);
         return columnNameThis + "_" + tableNameReference;
     }
-    public static String relationColumnNames(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException { //TODO: Fix for multiple pks
+
+    public static String relationColumnNames(Field field) throws ClassNotFoundException {
         var annotation = field.getAnnotation(ForeignKey.class);
         var split = annotation.value().split("#");
         assert split.length == 2 : "ForeignKey reference has the wrong format";
-        var referenceClass = Class.forName(split[0]);
-        var referenceField = referenceClass.getField(split[1]);
-        var tableNameThis = Mapper.getTableName(field.getDeclaringClass());
-        var columnNameThis = tableNameThis + "_" + field.getName();
-        var tableNameReference = Mapper.getTableName(referenceClass);
-        var columnNameReference = tableNameReference + "_" + referenceField.getName();
-        return columnNameThis + ", " + columnNameReference;
+        var referenceClass = (Class<? extends Savable>) Class.forName(split[0]);
+
+        var refPrimaryKeys = getFields(referenceClass, PrimaryKey.class);
+        var thisClass = (Class<? extends Savable>) field.getDeclaringClass();
+
+        var thisPrimaryKeys = getFields(thisClass, PrimaryKey.class);
+        var tableNameThis = Mapper.getTableName(thisClass);
+
+        var collect1 = Arrays.stream(thisPrimaryKeys).map(field1 -> tableNameThis + "_" + Mapper.getSQLFieldName(field1)).collect(Collectors.toList());
+        ArrayList<String> allRelationTableFields = new ArrayList<>(collect1);
+        var collect2 = Arrays.stream(refPrimaryKeys).map(field1 -> Mapper.getTableName(referenceClass) + "_" + Mapper.getSQLFieldName(field1)).collect(Collectors.toList());
+        allRelationTableFields.addAll(collect2);
+        return String.join(", ", allRelationTableFields);
     }
+
     public static String relationColumnLeftName(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException { //TODO: Fix for multiple pks
         var annotation = field.getAnnotation(ForeignKey.class);
         var split = annotation.value().split("#");
@@ -181,6 +190,7 @@ public class Mapper {
         var columnNameThis = tableNameThis + "_" + field.getName();
         return columnNameThis;
     }
+
     public static String relationColumnRightName(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException { //TODO: Fix for multiple pks
         var annotation = field.getAnnotation(ForeignKey.class);
         var split = annotation.value().split("#");
@@ -192,19 +202,21 @@ public class Mapper {
         var columnNameReference = tableNameReference + "_" + referenceField.getName();
         return columnNameReference;
     }
-    public static boolean isDatabaseType(Field field){
-        var annotation=field.getAnnotation(ForeignKey.class);
-        var className=annotation.value();
+
+    public static boolean isDatabaseType(Field field) {
+        var annotation = field.getAnnotation(ForeignKey.class);
+        var className = annotation.value();
         try {
-            var klasse=Class.forName(className.split("#")[0]);
+            var klasse = Class.forName(className.split("#")[0]);
             return Arrays.asList(klasse.getInterfaces()).contains(Savable.class);
         } catch (ClassNotFoundException e) {
-            assert false:"Foreign Key falsch angegeben";
+            assert false : "Foreign Key falsch angegeben";
             return false;
         }
     }
+
     public static Class<? extends Savable> getReferencingClass(Field field) throws ClassNotFoundException {
-        var annotation=field.getAnnotation(ForeignKey.class);
+        var annotation = field.getAnnotation(ForeignKey.class);
         return (Class<? extends Savable>) Class.forName(annotation.value().split("#")[0]);
     }
 }

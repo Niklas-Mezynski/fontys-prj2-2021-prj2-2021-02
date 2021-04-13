@@ -83,7 +83,7 @@ public class QueryExecutor {
         return Optional.empty();
     }
 
-    private PreparedStatement fillPreparedStatement(final PreparedStatement preparedStatement, Object... keyValues) throws SQLException {
+    public PreparedStatement fillPreparedStatement(final PreparedStatement preparedStatement, Object... keyValues) throws SQLException {
         for (int i = 0; i < keyValues.length; i++) {
             var obj = keyValues[i];
             System.out.println(obj);

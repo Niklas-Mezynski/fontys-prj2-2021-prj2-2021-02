@@ -17,14 +17,14 @@ import java.util.List;
 
 public class PGJDBCUtilsTest {
 
-    @Test
+    /*@Test
     void name() throws SQLException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var daoFactory = new DaoFactory(simpledao);
         var dao = daoFactory.createDao(Dog.class);
         var wuffy2s = dao.insert(new Dog(1, "Wuffy2","a"), new Dog(2, "Dogg","a"));
         wuffy2s.forEach(System.out::println);
-    }
+    }*/
 
     @Test
     void t2() {
@@ -185,10 +185,10 @@ public class PGJDBCUtilsTest {
         var cat2 = new Cat(0, "Cat2");
         var cat3 = new Cat(0, "Cat3");
         var cats = new Cat[]{cat1, cat2, cat3};
-        var insert = catDao.insert(cats);
-        dog.cat = insert.stream().mapToInt(cat -> cat.catid).toArray();
-        System.out.println(dog);
-        System.out.println(dogDao.insert(dog));
+        dog.RealCats = cats;
+        var insert = dogDao.insert(dog);
+//        dog.cat = insert.stream().mapToInt(cat -> cat.catid).toArray();
+        System.out.println(insert);
 
     }
 
@@ -230,7 +230,7 @@ public class PGJDBCUtilsTest {
         var cat3 = new Cat(0, "Cat3");
         var cats = new Cat[]{cat1, cat2, cat3};
         var insert = catDao.insert(cats);
-        wuffy.cat = insert.stream().mapToInt(cat -> cat.catid).toArray();
+//        wuffy.cat = insert.stream().mapToInt(cat -> cat.catid).toArray();
         System.out.println(wuffy);
         wuffy=dao.insert(wuffy).get(0);
         System.out.println(wuffy);

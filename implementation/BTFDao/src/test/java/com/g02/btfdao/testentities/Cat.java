@@ -19,4 +19,12 @@ public class Cat implements Savable {
 
     public Cat() {
     }
+
+    @Override
+    public String toString() {
+        return "Cat{" +
+                "catid=" + catid +
+                ", catname='" + catname + '\'' +
+                '}';
+    }
 }

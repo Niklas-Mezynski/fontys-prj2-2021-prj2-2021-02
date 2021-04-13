@@ -201,64 +201,6 @@ public class QueryBuilder {
         return stringBuilder.toString();
     }
 
-    private String alterTableAddForeignKeysAlt(Class<? extends Savable> aClass) throws ClassNotFoundException {
-        var foreignKeyFields = Mapper.getFields(aClass, ForeignKey.class);
-        var pairList = Arrays.stream(foreignKeyFields)
-                .filter(field -> TypeMappings.getTypeName(field.getType()) != null)
-                .filter(field -> field.isAnnotationPresent(ForeignKey.class))
-                .map(field -> field.getAnnotation(ForeignKey.class).value().split("#"))
-                .map(strings -> {
-                    try {
-                        return new Pair<>(Mapper.getTableName(strings[0]), strings[1]);
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                })
-                .collect(Collectors.toList());
-        var fieldList = Arrays.stream(foreignKeyFields)
-                .filter(Mapper::isDatabaseType)
-                .filter(field -> !field.getType().isArray())
-                .collect(Collectors.toList());
-        for (Field field : fieldList) {
-//            System.out.println(field);
-            if (!field.getType().isArray() && field.isAnnotationPresent(ForeignKey.class)) {
-                var annotation = field.getAnnotation(ForeignKey.class);
-                Class<? extends Savable> refClass = (Class<? extends Savable>) Class.forName(annotation.value().split("#")[0]);
-                var tableName = Mapper.getTableName(refClass);
-                var name = Mapper.getSQLFieldName(field);
-                var fields = Mapper.getFields(refClass, PrimaryKey.class);
-                var collect = Arrays.stream(fields).map(Mapper::getSQLFieldName).collect(Collectors.joining(", "));
-                var stringStringPair = new Pair<>(tableName, collect);
-                pairList.add(stringStringPair);
-            }
-        }
-        var keys = pairList.stream().map(Pair::key).distinct().collect(Collectors.toList());
-        StringBuilder stringBuilder = new StringBuilder();
-        String tableName = aClass.getAnnotation(TableName.class).value();
-        for (String key : keys) {
-            var collect = pairList.stream().filter(pair -> pair.key().equals(key)).map(Pair::value).collect(Collectors.joining(", "));
-//            System.out.println(collect);
-            stringBuilder.append(
-                    format("ALTER TABLE %1$s ADD %2$s REFERENCES %3$s(%4$s);",
-                            tableName,
-                            generateKeys(
-                                    Mapper.getFields(aClass),
-                                    ForeignKey.class,
-                                    "FOREIGN KEY",
-                                    false
-                            ),
-                            key,
-                            collect
-                    )
-            );
-            stringBuilder.append("\n");
-        }
-        var s = stringBuilder.toString();
-        System.out.println(s);
-        return s;
-    }
-
     public String createTableSQL(String tableName, Field[] fields) throws SQLFeatureNotSupportedException, ClassNotFoundException {
         var template = "CREATE TABLE %1$s (" +
                 "%2$s" +
@@ -370,6 +312,7 @@ public class QueryBuilder {
     public String createInsertSQL(Class<? extends Savable> aClass) {
         var template = "INSERT INTO %1$s (%2$s) values (%3$s) returning *;";
         var insertedFields = Mapper.getInsertableFields(aClass);
+        System.out.println(aClass);
         return format(template,
                 Mapper.getTableName(aClass),
                 Arrays.stream(insertedFields).map(Mapper::getSQLFieldName).collect(Collectors.joining(", ")),

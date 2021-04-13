@@ -2,7 +2,6 @@ package com.g02.btfdao.dao;
 
 import com.g02.btfdao.annotations.ForeignKey;
 import com.g02.btfdao.annotations.PrimaryKey;
-import com.g02.btfdao.annotations.TableName;
 import com.g02.btfdao.mapper.Mapper;
 import com.g02.btfdao.queries.QueryBuilder;
 import com.g02.btfdao.queries.QueryExecutor;
@@ -11,7 +10,6 @@ import com.g02.btfdao.utils.TypeMappings;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.sql.ClientInfoStatus;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
@@ -37,45 +35,92 @@ public class Dao<E extends Savable> {
         queryBuilder = new QueryBuilder();
     }
 
-    @SafeVarargs
-    public final List<E> insert(E... e) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, SQLException {
+    /*public final E insert(E e) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, SQLException {
+//        return insert();
+        return null;
+    }
+//*/
+    public final List<E> insert(Savable... e) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, SQLException {
         return insert(Arrays.stream(e).collect(Collectors.toList()));
     }
 
-    public List<E> insert(Collection<E> e) throws IllegalAccessException, SQLException, NoSuchFieldException, ClassNotFoundException {
+    public List<E> insert(Collection<? extends Savable> e) throws IllegalAccessException, SQLException, NoSuchFieldException, ClassNotFoundException {
         List<E> list = new ArrayList<>();
-        for (E e1 : e) {
+        for (Savable savable : e) {
+            var e1 = (E) savable;
+            System.out.println(e1);
             var opt=queryExecutor.doInsert(connection, queryBuilder.createInsertSQL(entityClass), entityClass, e1);
             if (!opt.isPresent()) continue;
             var e2=opt.get();
             var fields = Mapper.getFields(entityClass, ForeignKey.class);
 //            System.out.println(e1);
             for (Field field : fields) {
-                if (field.getType().isArray() && TypeMappings.getTypeName(field.getType().getComponentType()) != null) {
-                    var o = field.get(e1); //Array
-                    assert o.getClass().isArray();
-                    var length=java.lang.reflect.Array.getLength(o);
-                    for (int i = 0; i < length; i++) {
-                        var a= Array.get(o,i);
-                        var value = field.getAnnotation(ForeignKey.class).value();
-                        String sql= format("insert into %1$s (%2$s) values (%3$s, %4$s) returning *",
-                                Mapper.relationTableName(field),
-                                Mapper.relationColumnNames(field),
-                                Mapper.getPrimaryKeyValues(e2)[0],
-                                a
-                        );
-                        var pst=connection.prepareStatement(sql);
-                        pst.execute();
+                if (field.getType().isArray())
+                    if (TypeMappings.getTypeName(field.getType().getComponentType()) != null) {
+                        var o = field.get(e1); //Array
+                        assert o.getClass().isArray();
+                        var length = Array.getLength(o);
+                        for (int i = 0; i < length; i++) {
+                            var a = Array.get(o, i);
+                            var value = field.getAnnotation(ForeignKey.class).value();
+                            String sql = format("insert into %1$s (%2$s) values (%3$s, %4$s) returning *",
+                                    Mapper.relationTableName(field),
+                                    Mapper.relationColumnNames(field),
+                                    Mapper.getPrimaryKeyValues(e2)[0],
+                                    a
+                            );
+                            var pst = connection.prepareStatement(sql);
+                            pst.execute();
 //                        System.out.println(sql);
+                        }
+                        field.set(e2, o);
+                    } else if (Mapper.isDatabaseType(field)) {
+                        var savables = (Savable[]) field.get(e1);
+                        var insertList = new ArrayList<E>();
+                        for (Savable savable1 : savables) {
+                            Class<? extends Savable> type = savable1.getClass();
+                            Dao<? extends Savable> dao = daoFactory.createDao(type);
+                            System.out.println(savable1);
+                            var ins = dao.insert(savable1);
+                            insertList.addAll((Collection<E>) ins);
+
+                            String sql = format("insert into %1$s (%2$s) values (%3$s, %4$s) returning *;",
+                                    Mapper.relationTableName(field),
+                                    Mapper.relationColumnNames(field),
+                                    Arrays.stream(Mapper.getPrimaryKeyValues(e2)).map(o -> "?").collect(Collectors.joining(", ")),
+                                    Arrays.stream(Mapper.getPrimaryKeyValues(ins.get(0))).map(o -> "?").collect(Collectors.joining(", "))
+                            );
+                            System.out.println(sql);
+
+                            var pst = connection.prepareStatement(sql);
+
+                            var length = Mapper.getPrimaryKeyValues(e2).length;
+                            var length1 = Mapper.getPrimaryKeyValues(ins.get(0)).length;
+                            var lengthNew = length + length1;
+                            var objects = new Object[lengthNew];
+                            for (int i = 0; i < length; i++) {
+                                objects[i] = Mapper.getPrimaryKeyValues(e2)[i];
+                            }
+                            for (int i = 0; i < length1; i++) {
+                                objects[i + length] = Mapper.getPrimaryKeyValues(ins.get(0))[i];
+                            }
+                            queryExecutor.fillPreparedStatement(pst, objects);
+
+                            pst.execute();
+
+                        }
+                        System.out.println(insertList);
                     }
-                    field.set(e2,o);
-                }
             }
             e2.afterConstruction();
             list.add(e2);
         }
         return list;
     }
+
+    /*public List<E> insert(Savable... cast) throws ClassNotFoundException, SQLException, NoSuchFieldException, IllegalAccessException {
+        return insert((Collection<E>) List.of(cast));
+    }*/
 
     @SafeVarargs
     public final List<E> remove(E... e) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException {
