@@ -68,35 +68,19 @@ public class FlightOptionController {
             }
         }));
 
-        optionList.setCellFactory( lv -> {
-            ListCell<FlightOption> cell = new ListCell<>();
 
-            ContextMenu contextMenu = new ContextMenu();
+        ContextMenu contextMenu = new ContextMenu();
 
-            MenuItem deleteItem = new MenuItem();
-            deleteItem.textProperty().bind(Bindings.format("Delete flight option"));
-            //TODO Delete the FlightOption
-            deleteItem.setOnAction(event -> {
-                System.out.println("Trying to delete: " + cell.getItem().toString());
-                selectedFlight.getFlightOptions().remove(cell.getItem());
-                updateListView();
-            });
-            contextMenu.getItems().addAll( deleteItem );
-
-            cell.textProperty().bind(cell.itemProperty().asString());
-
-            cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
-                if (isNowEmpty) {
-                    cell.setContextMenu(null);
-                } else {
-                    cell.setContextMenu(contextMenu);
-                }
-            });
-
-            System.out.println("List size: " + optionList.getItems().size());
-
-            return cell ;
+        MenuItem deleteItem = new MenuItem();
+        deleteItem.textProperty().bind(Bindings.format("Delete flight option"));
+        //TODO Delete the FlightOption
+        deleteItem.setOnAction(event -> {
+            System.out.println("Trying to delete: " + optionList.getSelectionModel().getSelectedItem().toString());
+            selectedFlight.getFlightOptions().remove(optionList.getSelectionModel().getSelectedItem());
+            updateListView();
         });
+        contextMenu.getItems().addAll( deleteItem );
+        optionList.setContextMenu(contextMenu);
 
         updateListView();
 
@@ -166,7 +150,7 @@ public class FlightOptionController {
         }
         try {
             int i = Integer.parseInt(strNum);
-            if (i > 0) {
+            if (i > 0 && i <= selectedFlight.getPlane().getSeatCount()){
                 return true;
             }
         } catch (NumberFormatException nfe) {
