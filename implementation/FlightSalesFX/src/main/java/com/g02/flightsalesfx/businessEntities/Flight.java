@@ -74,4 +74,9 @@ public interface Flight {
     public void setArrival(LocalDateTime newArrival);
 
     public void setDeparture(LocalDateTime newDeparture);
+
+    void addFlightOption (FlightOption flightOption);
+
+    void addAllFlightOptions(List<? extends FlightOption> options);
+
 }

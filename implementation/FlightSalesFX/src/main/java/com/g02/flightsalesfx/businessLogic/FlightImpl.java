@@ -1,6 +1,7 @@
 package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.flightsalesfx.businessEntities.*;
+import com.g02.flightsalesfx.persistence.PersistenceAPIImpl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -154,10 +155,12 @@ public class FlightImpl implements Flight {
         return optionsList;
     }
 
+    @Override
     public void addFlightOption(FlightOption flightOption) {
         this.optionsList.add(flightOption);
     }
 
+    @Override
     public void addAllFlightOptions(List<? extends FlightOption> options) {
         this.optionsList.addAll(options);
     }

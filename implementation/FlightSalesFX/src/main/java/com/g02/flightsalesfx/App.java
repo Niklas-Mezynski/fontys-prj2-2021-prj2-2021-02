@@ -1,12 +1,10 @@
 package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Employee;
+import com.g02.flightsalesfx.businessEntities.FlightOption;
 import com.g02.flightsalesfx.businessEntities.SalesOfficer;
 import com.g02.flightsalesfx.businessEntities.Seat;
-import com.g02.flightsalesfx.businessLogic.AirportImpl;
-import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
-import com.g02.flightsalesfx.businessLogic.BusinessLogicImplementationProvider;
-import com.g02.flightsalesfx.businessLogic.SeatImpl;
+import com.g02.flightsalesfx.businessLogic.*;
 import com.g02.flightsalesfx.persistence.PersistenceAPI;
 import com.g02.flightsalesfx.persistence.PersistenceApiImplementationProvider;
 import javafx.application.Application;
@@ -87,6 +85,11 @@ public class App extends Application {
         businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4488, LocalDateTime.now().plusDays(8), LocalDateTime.now().plusDays(8).plusHours(2).plusMinutes(44), routes.get(12), planes.get(1), 43.56 );
         businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4489, LocalDateTime.now().plusDays(9), LocalDateTime.now().plusDays(9).plusHours(4).plusMinutes(34), routes.get(3), planes.get(0), 34.86 );
         businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4490, LocalDateTime.now().plusDays(9), LocalDateTime.now().plusDays(9).plusHours(2).plusMinutes(44), routes.get(14), planes.get(1), 67.27 );
+        var flights = persistenceAPI.getFlightStorageService(businessLogicAPI.getFlightManager()).getAll();
+        var flightOptions = new ArrayList<FlightOption>();
+        flightOptions.add(new FlightOptionImpl("Currywurst", 2, 5.50));
+        flightOptions.add(new FlightOptionImpl("Tomatensaft",3, 2.20));
+        flights.forEach( flight -> flight.addAllFlightOptions(flightOptions));
     }
 
     static void setRoot(String fxml) throws IOException {

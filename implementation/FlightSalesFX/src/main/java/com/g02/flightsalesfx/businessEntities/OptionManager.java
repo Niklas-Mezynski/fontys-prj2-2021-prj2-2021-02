@@ -16,4 +16,6 @@ public interface OptionManager {
      * @return The newly created SeatOption
      */
     SeatOption createSeatOption(String name);
+
+    FlightOption createFlightOption(String name, int maxAvailable, double price);
 }

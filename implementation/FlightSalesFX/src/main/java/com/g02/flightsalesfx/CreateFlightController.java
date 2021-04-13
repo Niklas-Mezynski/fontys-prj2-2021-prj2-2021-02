@@ -124,6 +124,7 @@ public class CreateFlightController {
             extendedRoute.setRoute(getSelectedRoute());
         }catch (Exception e){
             inputOK = false;
+            e.printStackTrace();
         }
 
         // After "saving" current selections
@@ -181,7 +182,6 @@ public class CreateFlightController {
                 alert.setContentText("There is no selected Route");
                 alert.showAndWait();
 
-                throw new IllegalArgumentException("setRoute(Route r): r can not be equal to null");
             }
             this.selectedRoute = r;
         }

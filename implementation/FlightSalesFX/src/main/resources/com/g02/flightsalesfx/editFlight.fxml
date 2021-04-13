@@ -36,6 +36,7 @@
               <rowConstraints>
                 <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="50.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="-Infinity" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
@@ -67,6 +68,15 @@
                   </TextField>
                   <DatePicker fx:id="DepartureDate" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                   <DatePicker fx:id="ArrivaleDate" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="Edit flight options" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#editFlightOptions" text="Edit flight options" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </center>

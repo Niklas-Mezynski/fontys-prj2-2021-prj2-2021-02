@@ -58,6 +58,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         if (optionManager == null) {
             optionManager = new OptionManagerImpl();
             optionManager.setSeatOptionStorageService(persistenceAPI.getSeatOptionStorageService(optionManager));
+            optionManager.setFlightOptionStorageService(persistenceAPI.getFlightOptionStorageService(optionManager));
         }
         return optionManager;
     }
@@ -173,4 +174,13 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         var all = persistenceAPI.getFlightStorageService(flightManager).getAll();
         return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
     }
+
+    @Override
+    public boolean addFlightOptionFromUI(String name, int maxAvailable, double price, Flight flight) {
+        var flightOption = getOptionManager().createFlightOption(name, maxAvailable, price);
+        flight.addFlightOption(flightOption);
+        return persistenceAPI.getFlightOptionStorageService(getOptionManager()).add(flightOption);
+    }
+
+
 }

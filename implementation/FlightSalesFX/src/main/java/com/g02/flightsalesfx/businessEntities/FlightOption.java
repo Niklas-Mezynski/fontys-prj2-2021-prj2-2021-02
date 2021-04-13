@@ -22,8 +22,7 @@ public interface FlightOption extends Option{
     public int getMaxAvailability();
 
     /**
-     * @return The Flight that this FlightOption belongs to
+     * @return The price that this FlightOption costs
      */
-    public Flight getFlight();
-    
+    public double getPrice();
 }
