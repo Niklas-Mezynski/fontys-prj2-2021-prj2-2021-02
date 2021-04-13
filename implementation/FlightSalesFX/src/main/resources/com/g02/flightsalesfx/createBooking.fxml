@@ -57,15 +57,19 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ScrollPane>
-                          <content>
-                            <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
-                                 <children>
-                                    <HBox fx:id="seatHBox" prefHeight="100.0" prefWidth="200.0" />
-                                 </children>
-                              </AnchorPane>
-                          </content>
-                        </ScrollPane>
+                        <VBox fx:id="filterVBox">
+                           <children>
+                              <ScrollPane>
+                                <content>
+                                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
+                                       <children>
+                                          <HBox fx:id="seatHBox" prefHeight="100.0" prefWidth="200.0" />
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </ScrollPane>
+                           </children>
+                        </VBox>
                      </children></AnchorPane>
               </content>
             </Tab>

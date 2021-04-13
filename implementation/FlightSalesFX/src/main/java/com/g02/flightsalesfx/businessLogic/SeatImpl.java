@@ -47,6 +47,11 @@ public class SeatImpl implements Seat {
     }
 
     @Override
+    public List<SeatOption> getSeatOptions() {
+        return seatOptions;
+    }
+
+    @Override
     public String toString() {
         return "SeatImpl{" +
                 "rowNumber=" + rowNumber +

@@ -1,6 +1,7 @@
 package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Seat;
+import com.g02.flightsalesfx.businessEntities.SeatOption;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -294,6 +295,11 @@ public class CreatePlaneController {
          */
         @Override
         public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) { }
+
+        @Override
+        public List<SeatOption> getSeatOptions() {
+            throw new UnsupportedOperationException("Operation not supported and wont be!");
+        }
     }
 
 }

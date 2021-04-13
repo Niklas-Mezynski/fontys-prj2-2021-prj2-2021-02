@@ -1,14 +1,10 @@
 package com.g02.flightsalesfx;
 
-import com.g02.flightsalesfx.businessEntities.Flight;
-import com.g02.flightsalesfx.businessEntities.Plane;
-import com.g02.flightsalesfx.businessEntities.Seat;
+import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.gui.FlightTable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -56,10 +52,23 @@ public class createBookingController {
     @FXML
     private HBox seatHBox;
 
+    @FXML
+    private VBox filterVBox;
+
 
     private FlightTable flightTable;
 
     private Flight selectedFlight = null;
+
+    private Map<Seat,List<SeatOption>> selectedSeatsForBooking = new HashMap<Seat,List<SeatOption>>();
+
+    private List<SeatBookButton> seatButtons = new ArrayList<SeatBookButton>();
+
+    private List<SeatOption> currentlySelectedSeatOption = new ArrayList<SeatOption>();
+
+    private List<SeatOption> availableSeatOptions = new ArrayList<SeatOption>();
+
+    private VBox filterContainer;
 
     public void initialize(){
 
@@ -95,6 +104,36 @@ public class createBookingController {
 
     }
 
+    public void createOrUpdateOptionFilterBox(){
+        filterVBox.getChildren().remove(filterContainer);
+
+        filterContainer = new VBox();
+        filterContainer.getChildren().add(new Label("Available Seatoptions:"));
+        availableSeatOptions.forEach(seatOption -> {filterContainer.getChildren().add(new optionFilterSelectorBox(seatOption));});
+        filterVBox.getChildren().add(filterContainer);
+    }
+
+    public class optionFilterSelectorBox extends HBox{
+        private final SeatOption seatOption;
+        public optionFilterSelectorBox(SeatOption s){
+            this.seatOption = s;
+            CheckBox c = new CheckBox();
+            c.setOnAction(actionEvent -> {
+                if(c.isSelected()){
+                    if(!currentlySelectedSeatOption.contains(seatOption)){
+                        currentlySelectedSeatOption.add(seatOption);
+                    }
+                }else{
+                    currentlySelectedSeatOption.remove(seatOption);
+                }
+                applyOptionFilterToAll();
+            });
+            Label l = new Label(s.getName());
+            this.getChildren().addAll(c,l);
+        }
+
+    }
+
     public void createOrUpdateRouteTable(Predicate<Flight> pr){
 
         flightVBox.getChildren().remove(flightTable);
@@ -113,7 +152,11 @@ public class createBookingController {
                     selectedFlightText.setText("FlightNo: "+rowData.getFlightNumber()+"; From: "+rowData.getRoute().getDepartureAirport().toString()+"; To: "+rowData.getRoute().getArrivalAirport().toString()+"; On: "+rowData.getDeparture().toString());
                     availableSeatsText.setText(rowData.getPlane().getSeatCount()+"");
                     row.getTableView().refresh();
-                    createSeatMap();
+                    List<Seat> bookedSeats = new ArrayList<Seat>();
+                    App.businessLogicAPI.getAllBookings(booking -> true).stream().filter(booking -> booking.getFlight().equals(this.selectedFlight)).forEach(booking ->{
+                        booking.getTickets().forEach(ticket -> bookedSeats.add(ticket.getSeat()));
+                    });
+                    createSeatMapAndLoadSeatOptions(bookedSeats);
 
                 }
             }
@@ -122,9 +165,11 @@ public class createBookingController {
         flightTable.setMinWidth(flightVBox.getWidth());
     }
 
-    public void createSeatMap(){
+    public void createSeatMapAndLoadSeatOptions(List<Seat> bookedSeats){
         Plane currentPlane = selectedFlight.getPlane();
         List<Seat> seatsOfPlane = currentPlane.getAllSeats();
+        loadSeatOptions(seatsOfPlane);
+        createOrUpdateOptionFilterBox();
         int rows = seatsOfPlane.stream().mapToInt(Seat::getRowNumber).max().orElse(-1) + 1;
         Map<Integer, List<Seat>> seatMap = new HashMap<Integer, List<Seat>>();
 
@@ -135,8 +180,8 @@ public class createBookingController {
             seatMap.put(i, row);
             VBox rowBox = new VBox();
             seatsOfPlane.stream().filter(seat -> seat.getRowNumber()==currentRow).sorted(comparator).forEach(seat -> {
-                var addButton = new SeatBookButton(seat);
-
+                var addButton = new SeatBookButton(seat, bookedSeats);
+                seatButtons.add(addButton);
                 rowBox.getChildren().add(addButton);
             });
 
@@ -146,21 +191,64 @@ public class createBookingController {
 
     }
 
+    public void loadSeatOptions(List<Seat> seatsOfPlane){
+        availableSeatOptions = new ArrayList<SeatOption>();
+        for(Seat s : seatsOfPlane){
+            s.getSeatOptions().forEach(newSeatOption -> {
+                if(!availableSeatOptions.stream().anyMatch(seatOption -> seatOption.equals(newSeatOption))){
+                    availableSeatOptions.add(newSeatOption);
+                }
+            });
+
+
+        }
+    }
+
+    public void applyOptionFilterToAll(){
+        seatButtons.forEach(btn -> btn.optionFilter(this.currentlySelectedSeatOption));
+    }
+
+
     public class SeatBookButton extends Button {
 
         private final Seat s;
         private boolean available = true;
 
-        public SeatBookButton(Seat s) {
+        public SeatBookButton(Seat s, List<Seat> bookedSeats) {
             this.s = s;
             System.out.println(s.toString());
             this.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
             this.setFont(Font.font("Source Code Pro Semibold"));
             setOnAction(actionEvent -> {
-
+                if(selectedSeatsForBooking.containsKey(s)){
+                    System.out.println("removing seat for booking");
+                    this.setStyle("");
+                    selectedSeatsForBooking.remove(s);
+                }else{
+                    System.out.println("adding seat for booking");
+                    this.setStyle("-fx-text-fill: #ff6600; ");
+                    List<SeatOption> bookedOptions = currentlySelectedSeatOption.stream().collect(Collectors.toUnmodifiableList());
+                    selectedSeatsForBooking.put(s, bookedOptions);
+                }
             });
+            if(bookedSeats.contains(this.s)){
+                available = false;
+            }
+            this.setDisable(!available);
             updateText();
-            App.businessLogicAPI.getAllBookings(booking -> true);
+
+        }
+
+        List<SeatOption> getAvailableSeatOptions(){
+            return s.getSeatOptions();
+        }
+
+        void optionFilter(List<SeatOption> selectedOptions){
+            if(!s.getSeatOptions().containsAll(selectedOptions)){
+                this.setDisable(true);
+            }else {
+                this.setDisable(false);
+            }
         }
 
 
@@ -177,12 +265,6 @@ public class createBookingController {
                 s += String.valueOf((char) ((i / 26) + 64));
                 s += String.valueOf((char) (i + 65 - 26));
             }
-//            if (currentSelected != null && options.contains(currentSelected)) {
-//                //s += ": X";
-//                this.setStyle("-fx-text-fill: #007698; ");
-//            } else {
-//                this.setStyle("");
-//            }
             this.setText(s);
         }
 

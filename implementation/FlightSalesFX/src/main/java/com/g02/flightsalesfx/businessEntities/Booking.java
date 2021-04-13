@@ -24,4 +24,8 @@ public interface Booking {
 
     public String getCustomerEmail();
 
+    public Flight getFlight();
+
+    public void addTicket(Ticket t);
+
 }
