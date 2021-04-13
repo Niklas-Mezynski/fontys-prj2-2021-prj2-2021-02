@@ -154,14 +154,13 @@ public class Mapper {
         var split = annotation.value().split("#");
         assert split.length == 2 : "ForeignKey reference has the wrong format";
         var referenceClass = Class.forName(split[0]);
-        var referenceField = referenceClass.getField(split[1]);
+        //var referenceField = referenceClass.getField(split[1]);
         var tableNameThis = Mapper.getTableName(field1.getDeclaringClass());
         var columnNameThis = tableNameThis + "_" + field1.getName();
         var tableNameReference = Mapper.getTableName(referenceClass);
-        var columnNameReference = tableNameReference + "_" + referenceField.getName();
-        return columnNameThis + "_" + columnNameReference;
+        return columnNameThis + "_" + tableNameReference;
     }
-    public static String relationColumnNames(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException {
+    public static String relationColumnNames(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException { //TODO: Fix for multiple pks
         var annotation = field.getAnnotation(ForeignKey.class);
         var split = annotation.value().split("#");
         assert split.length == 2 : "ForeignKey reference has the wrong format";
@@ -173,7 +172,7 @@ public class Mapper {
         var columnNameReference = tableNameReference + "_" + referenceField.getName();
         return columnNameThis + ", " + columnNameReference;
     }
-    public static String relationColumnLeftName(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException {
+    public static String relationColumnLeftName(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException { //TODO: Fix for multiple pks
         var annotation = field.getAnnotation(ForeignKey.class);
         var split = annotation.value().split("#");
         assert split.length == 2 : "ForeignKey reference has the wrong format";
@@ -182,7 +181,7 @@ public class Mapper {
         var columnNameThis = tableNameThis + "_" + field.getName();
         return columnNameThis;
     }
-    public static String relationColumnRightName(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException {
+    public static String relationColumnRightName(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException { //TODO: Fix for multiple pks
         var annotation = field.getAnnotation(ForeignKey.class);
         var split = annotation.value().split("#");
         assert split.length == 2 : "ForeignKey reference has the wrong format";
@@ -203,5 +202,9 @@ public class Mapper {
             assert false:"Foreign Key falsch angegeben";
             return false;
         }
+    }
+    public static Class<? extends Savable> getReferencingClass(Field field) throws ClassNotFoundException {
+        var annotation=field.getAnnotation(ForeignKey.class);
+        return (Class<? extends Savable>) Class.forName(annotation.value().split("#")[0]);
     }
 }
