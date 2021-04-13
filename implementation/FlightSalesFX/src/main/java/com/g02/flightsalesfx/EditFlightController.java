@@ -1,17 +1,18 @@
 package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Flight;
+import com.g02.flightsalesfx.businessLogic.BusinessLogicAPIImpl;
+import com.g02.flightsalesfx.businessLogic.ReoccurringFlightImpl;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 
+import static com.g02.flightsalesfx.App.businessLogicAPI;
 import static com.g02.flightsalesfx.App.setRoot;
 
 public class EditFlightController {
@@ -31,14 +32,38 @@ public class EditFlightController {
     @FXML
     private DatePicker ArrivaleDate;
 
+    @FXML
+    private CheckBox reOccurrCheckBox;
+
+    @FXML
+    private TextField intervalTextField;
 
 
     static Flight selectedFlight;
+    private int cntForReOccurr;     // 1 = reoccurring flight
 
     public void initialize() throws IOException {
+        //numeric textfield
+        intervalTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.matches("\\d*")) return;
+            intervalTextField.setText(newValue.replaceAll("[^\\d]", ""));
+        });
+
+
         if (selectedFlight == null) {
             App.setRoot("home");
             return;
+        }
+
+        cntForReOccurr = 0;
+
+        if(selectedFlight.getClass().equals(ReoccurringFlightImpl.class)) {
+            System.out.println("reOccuring opened");
+            cntForReOccurr = 1;
+            reOccurrCheckBox.setSelected(true);
+            intervalTextField.setDisable(false);
+            ReoccurringFlightImpl f = (ReoccurringFlightImpl) selectedFlight;
+            intervalTextField.setText(String.valueOf(f.getInterval()));
         }
         FlightNumberLabel.setText("Flight number: " + selectedFlight.getFlightNumber());
         DepartureDate.setValue(selectedFlight.getDeparture().toLocalDate());
@@ -59,6 +84,18 @@ public class EditFlightController {
     }
 
     @FXML
+    void enableIntervalInput() {
+        System.out.println("check");
+        if(isCheckBoxSelected()) {
+            intervalTextField.setDisable(false);
+        } else{
+            intervalTextField.setText("");
+            intervalTextField.setDisable(true);
+            //cntForReOccurr = 0;
+        }
+    }
+
+    @FXML
     void save() throws IOException {
         LocalDateTime newDeparture = createLocalDateTimeFromTextField(DepartureDate.getValue(), DepartureTime.getText());
         LocalDateTime newArrival = createLocalDateTimeFromTextField(ArrivaleDate.getValue(), ArrivaleTime.getText());
@@ -72,10 +109,38 @@ public class EditFlightController {
         }
         selectedFlight.setDeparture(newDeparture);
         selectedFlight.setArrival(newArrival);
-        exit();
+
+        //check for change in reoccurr
+        if(!isCheckBoxSelected()) { //not reoccuring
+            //check if selectedFlight WAS a reoccurring one but is not anymore
+            if(cntForReOccurr == 1) {
+                var f = (ReoccurringFlightImpl) selectedFlight;
+                var updatedFlight = f.getFlight();
+
+                if(App.persistenceAPI.getFlightStorageService(businessLogicAPI.getFlightManager()).remove(f)){
+                    System.out.println("removed old");
+                    if(businessLogicAPI.createFlightFromUI(updatedFlight)) {
+                        exit();
+                    }
+                }
+            }
+            //normal flight:
+            exit();
+        } else { // reoccurring is selected
+            if(!intervalTextField.getText().trim().isEmpty()) {
+                var reOccFlight = App.businessLogicAPI.createReoccurringFlightFromUI(selectedFlight, Integer.parseInt(intervalTextField.getText()));
+                if(reOccFlight) {
+                    exit();
+                }
+            }
+        }
     }
 
 
+    //HELPER
+    private boolean isCheckBoxSelected() {
+        return reOccurrCheckBox.isSelected();
+    }
 
     //HELPER
     private String getTimeAsString (LocalDateTime date) {

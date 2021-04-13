@@ -21,9 +21,13 @@ public class ReoccurringFlightImpl implements ReoccurringFlight  {
         return interval;
     }
 
-    @Override
     public void setInterval(int interval) {
         this.interval = interval;
+    }
+
+    @Override
+    public Flight getFlight() {
+        return this.flight;
     }
 
     @Override

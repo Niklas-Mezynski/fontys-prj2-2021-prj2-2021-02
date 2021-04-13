@@ -175,12 +175,23 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
+    public boolean createFlightFromUI(Flight flight) {
+        var f = getFlightManager().createFlight(flight.getCreatedBy(), flight.getFlightNumber(), flight.getDeparture(), flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
+
+        var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
+        return flightStorageService.add(flight);
+    }
+
+    @Override
     public boolean createReoccurringFlightFromUI(Flight flight, int interval) {
         var reOccurFlight = getReoccurringFlightManager().createRoccurringFlight(flight, interval);
         System.out.println(reOccurFlight);
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
-        return flightStorageService.add(reOccurFlight);
+        if(flightStorageService.remove(flight)) {
+            return flightStorageService.add(reOccurFlight);
+        }
+        return false;
     }
 
     @Override

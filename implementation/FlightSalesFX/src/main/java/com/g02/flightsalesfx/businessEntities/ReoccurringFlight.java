@@ -16,5 +16,6 @@ public interface ReoccurringFlight extends Flight{
      */
     public int getInterval();
 
-    public void setInterval(int interval);
+    public Flight getFlight();
+
 }
