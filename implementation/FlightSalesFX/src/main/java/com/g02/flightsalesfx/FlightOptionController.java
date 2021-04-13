@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.g02.flightsalesfx.App.setRoot;
 
@@ -50,22 +51,36 @@ public class FlightOptionController {
         flightNumberLabel.setText("Edit Flight Options for flight number: " + selectedFlight.getFlightNumber());
         planeInfoText.setText("Seats: " + selectedFlight.getPlane().getSeatCount());
 
+
+        optionMaxAvailable.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            if (isIntegerGreater0(optionMaxAvailable.getText())) {
+                optionMaxAvailable.setStyle("-fx-border-color:none;");
+            } else {
+                optionMaxAvailable.setStyle("-fx-border-color:red;");
+            }
+        }));
+
+        optionPrice.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            if (isNumeric(optionPrice.getText())) {
+                optionPrice.setStyle("-fx-border-color:none;");
+            } else {
+                optionPrice.setStyle("-fx-border-color:red;");
+            }
+        }));
+
         optionList.setCellFactory( lv -> {
             ListCell<FlightOption> cell = new ListCell<>();
 
             ContextMenu contextMenu = new ContextMenu();
 
-
-//            MenuItem editItem = new MenuItem();
-//            editItem.textProperty().bind(Bindings.format("Edit \"%s\"", cell.itemProperty()));
-//            editItem.setOnAction(event -> {
-//                String item = cell.getItem();
-//                // code to edit item...
-//            });
             MenuItem deleteItem = new MenuItem();
             deleteItem.textProperty().bind(Bindings.format("Delete flight option"));
             //TODO Delete the FlightOption
-            deleteItem.setOnAction(event -> System.out.println("Trying to delete: " + cell.getItem().toString()));
+            deleteItem.setOnAction(event -> {
+                System.out.println("Trying to delete: " + cell.getItem().toString());
+                selectedFlight.getFlightOptions().remove(cell.getItem());
+                updateListView();
+            });
             contextMenu.getItems().addAll( deleteItem );
 
             cell.textProperty().bind(cell.itemProperty().asString());
@@ -77,9 +92,8 @@ public class FlightOptionController {
                     cell.setContextMenu(contextMenu);
                 }
             });
-            if (cell == null) {
-                System.out.println("huhn");
-            }
+
+            System.out.println("List size: " + optionList.getItems().size());
 
             return cell ;
         });
@@ -126,11 +140,6 @@ public class FlightOptionController {
     void exit() throws IOException {
         selectedFlight = null;
         setRoot("home");
-    }
-
-    @FXML
-    void save() throws IOException {
-        exit();
     }
 
     private void updateListView() {
