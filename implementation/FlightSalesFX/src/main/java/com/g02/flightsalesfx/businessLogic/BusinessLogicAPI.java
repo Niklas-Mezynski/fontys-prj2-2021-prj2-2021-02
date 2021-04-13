@@ -9,6 +9,14 @@ import java.util.function.Predicate;
 
 public interface BusinessLogicAPI {
 
+    public List<Booking> getAllBookings(Predicate<Booking> predicate);
+
+    public List<Ticket> getAllTickets(Predicate<Ticket> predicate);
+
+    public TicketManager getTicketManager();
+
+    public BookingManager getBookingManager();
+
     public EmployeeManager getEmployeeManager();
 
     public PlaneManager getPlaneManager();

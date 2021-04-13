@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
@@ -52,6 +53,22 @@
                      </children></AnchorPane>
             </content>
           </Tab>
+            <Tab fx:id="seatsTab" text="Seat Allocation">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ScrollPane>
+                          <content>
+                            <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
+                                 <children>
+                                    <HBox fx:id="seatHBox" prefHeight="100.0" prefWidth="200.0" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
+                     </children></AnchorPane>
+              </content>
+            </Tab>
           <Tab fx:id="paxTab" text="Passengers">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -69,11 +86,6 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="seatsTab" text="Seat Allocation">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </Tab>
             <Tab fx:id="seatOptionsTab" text="Seat Options">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />

@@ -5,10 +5,14 @@
  */
 package com.g02.flightsalesfx.businessEntities;
 
+import java.util.List;
+
 /**
  *
  * @author anato
  */
 public interface TicketManager {
+
+    public Ticket createTicket(Flight flight, Seat seat, Booking booking, String passengerFName, String passengerLName, List<SeatOption>bookedSeatOptions);
     
 }

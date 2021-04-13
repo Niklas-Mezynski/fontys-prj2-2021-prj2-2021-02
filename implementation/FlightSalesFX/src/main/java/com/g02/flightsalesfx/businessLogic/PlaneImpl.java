@@ -8,6 +8,7 @@ import com.g02.flightsalesfx.persistence.AirportStorageService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class PlaneImpl implements Plane {
 
@@ -26,6 +27,11 @@ public class PlaneImpl implements Plane {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public List<Seat> getAllSeats() {
+        return seatList.stream().collect(Collectors.toUnmodifiableList());
     }
 
     @Override

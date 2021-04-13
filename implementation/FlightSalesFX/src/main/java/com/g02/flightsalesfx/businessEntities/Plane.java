@@ -9,6 +9,8 @@ public interface Plane {
      */
     String getName();
 
+    List<Seat> getAllSeats();
+
     /**
      * @return Manufacturer of the Plane
      */
