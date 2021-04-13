@@ -9,6 +9,7 @@ import com.g02.btfdao.utils.TypeMappings;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.SQLFeatureNotSupportedException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,38 +60,95 @@ public class QueryBuilder {
             var fields = Mapper.getFields(aClass, ForeignKey.class);
             for (Field field : fields) {
                 if (field.getType().isArray() && field.isAnnotationPresent(ForeignKey.class)) {
-                    var annotation = field.getAnnotation(ForeignKey.class);
-                    var split = annotation.value().split("#");
-                    assert split.length == 2 : "ForeignKey reference has the wrong format";
-                    var referenceClass = Class.forName(split[0]);
-                    var referenceField = referenceClass.getField(split[1]);
-                    var tableNameThis = Mapper.getTableName(aClass);
-                    var columnNameThis = tableNameThis + "_" + field.getName();
-                    var tableNameReference = Mapper.getTableName(referenceClass);
-                    var columnNameReference = tableNameReference + "_" + referenceField.getName();
+                    if (TypeMappings.getTypeName(field.getType().getComponentType()) == null) {
+                        var tableName = aClass.getAnnotation(TableName.class).value();
+                        var split = field.getAnnotation(ForeignKey.class).value().split("#");
+                        var refTableName = split[0];
+                        var refClass = (Class<? extends Savable>) Class.forName(refTableName);
+                        var refPrimaryKeys = Mapper.getFields(refClass, PrimaryKey.class);
+                        var refFieldNames = Arrays.stream(refPrimaryKeys).map(Mapper::getSQLFieldName).collect(Collectors.toList());
+
+                        var relationTableName = tableName + "_" + field.getName() + "_" + Mapper.getTableName(refClass);
+
+                        var thisPrimaryKeys = Mapper.getFields(aClass, PrimaryKey.class);
+                        var thisFieldNames = Arrays.stream(thisPrimaryKeys).map(Mapper::getSQLFieldName).collect(Collectors.toList());
+
+
+                        var collect1 = Arrays.stream(thisPrimaryKeys).map(field1 -> {
+                            try {
+                                return createTableSQLLine(field1, true, tableName + "_" + Mapper.getSQLFieldName(field1));
+                            } catch (SQLFeatureNotSupportedException | ClassNotFoundException throwables) {
+                                throwables.printStackTrace();
+                            }
+                            return null;
+                        }).collect(Collectors.toList());
+                        ArrayList<String> allRelationTableFields = new ArrayList<>(collect1);
+                        var collect2 = Arrays.stream(refPrimaryKeys).map(field1 -> {
+                            try {
+                                return createTableSQLLine(field1, true, Mapper.getTableName(refClass) + "_" + Mapper.getSQLFieldName(field1));
+                            } catch (SQLFeatureNotSupportedException | ClassNotFoundException throwables) {
+                                throwables.printStackTrace();
+                            }
+                            return null;
+                        }).collect(Collectors.toList());
+                        allRelationTableFields.addAll(collect2);
+
+                        var format1 = format("CREATE TABLE %s (%s);",
+                                relationTableName,
+                                String.join(", ", allRelationTableFields)
+                        );
+                        stringBuilder.append(format1);
+                        stringBuilder.append("\n");
+
+                        var format2 = format("ALTER TABLE %s ADD FOREIGN KEY (%s) REFERENCES %s(%s);",
+                                relationTableName,
+                                thisFieldNames.stream().map(s -> Mapper.getTableName(aClass) + "_" + s).collect(Collectors.joining(", ")),
+                                Mapper.getTableName(aClass),
+                                String.join(", ", thisFieldNames));
+                        stringBuilder.append(format2);
+                        stringBuilder.append("\n");
+
+                        var format = format("ALTER TABLE %s ADD FOREIGN KEY (%s) REFERENCES %s(%s);",
+                                relationTableName,
+                                refFieldNames.stream().map(s -> Mapper.getTableName(refClass) + "_" + s).collect(Collectors.joining(", ")),
+                                Mapper.getTableName(refTableName),
+                                String.join(", ", refFieldNames));
+                        stringBuilder.append(format);
+
+                    } else {
+                        var annotation = field.getAnnotation(ForeignKey.class);
+                        var split = annotation.value().split("#");
+                        assert split.length == 2 : "ForeignKey reference has the wrong format";
+                        var referenceClass = Class.forName(split[0]);
+                        var referenceField = referenceClass.getField(split[1]);
+                        var tableNameThis = Mapper.getTableName(aClass);
+                        var columnNameThis = tableNameThis + "_" + field.getName();
+                        var tableNameReference = Mapper.getTableName(referenceClass);
+                        var columnNameReference = tableNameReference + "_" + referenceField.getName();
 //                    var tableName = columnNameThis + "_" + columnNameReference;
-                    var tableName = Mapper.relationTableName(field);
-                    var tableSQLLine = createTableSQLLine(field, true, columnNameThis);
-                    var tableSQLLine1 = createTableSQLLine(referenceField, true, columnNameReference);
-                    var format = format("CREATE TABLE %1$s (%2$s, %3$s);", tableName, tableSQLLine, tableSQLLine1);
-                    stringBuilder.append(format);
-                    stringBuilder.append("\n");
-                    var template = "ALTER TABLE %1$s ADD FOREIGN KEY (%2$s) REFERENCES %3$s(%4$s);";
-                    var format1 = format(template,
-                            tableName,
-                            columnNameThis,
-                            tableNameThis,
-                            Mapper.getPrimaryKey(aClass)
-                    );
-                    stringBuilder.append(format1);
-                    stringBuilder.append("\n");
-                    var format2 = format(template,
-                            tableName,
-                            columnNameReference,
-                            tableNameReference,
-                            Mapper.getSQLFieldName(referenceField)
-                    );
-                    stringBuilder.append(format2);
+                        var tableName = Mapper.relationTableName(field);
+                        var tableSQLLine = createTableSQLLine(field, true, columnNameThis);
+                        var tableSQLLine1 = createTableSQLLine(referenceField, true, columnNameReference);
+                        var format = format("CREATE TABLE %1$s (%2$s, %3$s);", tableName, tableSQLLine, tableSQLLine1);
+                        stringBuilder.append(format);
+                        stringBuilder.append("\n");
+                        var template = "ALTER TABLE %1$s ADD FOREIGN KEY (%2$s) REFERENCES %3$s(%4$s);";
+                        var format1 = format(template,
+                                tableName,
+                                columnNameThis,
+                                tableNameThis,
+                                Mapper.getPrimaryKey(aClass)
+                        );
+                        stringBuilder.append(format1);
+                        stringBuilder.append("\n");
+                        var format2 = format(template,
+                                tableName,
+                                columnNameReference,
+                                tableNameReference,
+                                Mapper.getSQLFieldName(referenceField)
+                        );
+                        stringBuilder.append(format2);
+                    }
                     stringBuilder.append("\n");
                 }
             }
@@ -118,7 +176,7 @@ public class QueryBuilder {
             var split = field.getAnnotation(ForeignKey.class).value().split("#");
             var refTableName = split[0];
             var refFieldName = split[1];
-            var format = format("ALTER TABLE %s ADD (%s) REFERENCES %s(%s)",
+            var format = format("ALTER TABLE %s ADD FOREIGN KEY (%s) REFERENCES %s(%s);",
                     tableName,
                     Mapper.getSQLFieldName(field),
                     Mapper.getTableName(refTableName),
@@ -132,12 +190,11 @@ public class QueryBuilder {
             var refClass = (Class<? extends Savable>) Class.forName(refTableName);
             var refPrimaryKeys = Mapper.getFields(refClass, PrimaryKey.class);
             var refFieldNames = Arrays.stream(refPrimaryKeys).map(Mapper::getSQLFieldName).collect(Collectors.toList());
-            var format = format("ALTER TABLE %s ADD (%s) REFERENCES %s(%s)",
+            var format = format("ALTER TABLE %s ADD FOREIGN KEY (%s) REFERENCES %s(%s);",
                     tableName,
                     refFieldNames.stream().map(s -> Mapper.getSQLFieldName(field) + "_" + s).collect(Collectors.joining(", ")),
                     Mapper.getTableName(refTableName),
                     String.join(", ", refFieldNames));
-
             stringBuilder.append(format);
             stringBuilder.append("\n");
         }
@@ -164,7 +221,7 @@ public class QueryBuilder {
                 .filter(field -> !field.getType().isArray())
                 .collect(Collectors.toList());
         for (Field field : fieldList) {
-            System.out.println(field);
+//            System.out.println(field);
             if (!field.getType().isArray() && field.isAnnotationPresent(ForeignKey.class)) {
                 var annotation = field.getAnnotation(ForeignKey.class);
                 Class<? extends Savable> refClass = (Class<? extends Savable>) Class.forName(annotation.value().split("#")[0]);
@@ -181,7 +238,7 @@ public class QueryBuilder {
         String tableName = aClass.getAnnotation(TableName.class).value();
         for (String key : keys) {
             var collect = pairList.stream().filter(pair -> pair.key().equals(key)).map(Pair::value).collect(Collectors.joining(", "));
-            System.out.println(collect);
+//            System.out.println(collect);
             stringBuilder.append(
                     format("ALTER TABLE %1$s ADD %2$s REFERENCES %3$s(%4$s);",
                             tableName,
