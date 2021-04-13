@@ -45,4 +45,6 @@ public interface BusinessLogicAPI {
 
     public List<Flight> getAllFlights(Predicate<Flight> predicate);
 
+    boolean addFlightOptionFromUI(String name, int maxAvailable, double price, Flight flight);
+
 }
