@@ -238,4 +238,9 @@ public class PGJDBCUtilsTest {
         wuffy=dao.update(wuffy);
         System.out.println(wuffy);
     }
+
+    @Test
+    void t22() throws ClassNotFoundException {
+        var s = new QueryBuilder().alterTableAddForeignKeys(Dog.class);
+    }
 }
