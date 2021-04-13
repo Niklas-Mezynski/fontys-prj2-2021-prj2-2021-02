@@ -18,6 +18,7 @@ public interface Flight {
      */
     public void startSalesProcess();
 
+
     /**
      * @return Flight number of this Flight
      */

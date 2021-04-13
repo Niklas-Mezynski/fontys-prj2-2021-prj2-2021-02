@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
         import javafx.scene.control.TextField;
         import javafx.scene.layout.AnchorPane;
 
+import java.io.IOException;
+
 public class cancelBookingController {
 
     @FXML
@@ -18,8 +20,8 @@ public class cancelBookingController {
     private AnchorPane bookingFlightPane;
 
     @FXML
-    void abortButtonPressed(ActionEvent event) {
-
+    void abortButtonPressed(ActionEvent event) throws IOException {
+        App.setRoot("salesEmployeeHome");
     }
 
     @FXML

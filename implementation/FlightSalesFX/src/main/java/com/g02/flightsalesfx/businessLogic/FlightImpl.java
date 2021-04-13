@@ -32,6 +32,7 @@ public class FlightImpl implements Flight {
 
     }
 
+
     /**
      * Starts the Sales process for this Flight
      */
