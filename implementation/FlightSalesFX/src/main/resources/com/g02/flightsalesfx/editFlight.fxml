@@ -38,7 +38,8 @@
                 <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="50.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="-Infinity" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="-Infinity" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="70.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Departure Time">
@@ -86,19 +87,25 @@
                         <Insets left="10.0" />
                      </padding>
                   </Label>
-                  <CheckBox fx:id="reOccurrCheckBox" alignment="CENTER_RIGHT" mnemonicParsing="false" onMouseReleased="#enableIntervalInput" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <CheckBox fx:id="reOccurrCheckBox" alignment="CENTER_RIGHT" mnemonicParsing="false" onMouseReleased="#enableIntervalInput" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                      <GridPane.margin>
-                        <Insets left="10.0" />
+                        <Insets />
                      </GridPane.margin>
-                     <padding>
-                        <Insets left="40.0" />
-                     </padding>
                   </CheckBox>
                   <TextField fx:id="intervalTextField" disable="true" promptText="Enter in days" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </TextField>
+                  <Label text="Add price reductions" GridPane.rowIndex="4">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#goToPriceReductions" text="Price reductions" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
                </children>
             </GridPane>
          </center>

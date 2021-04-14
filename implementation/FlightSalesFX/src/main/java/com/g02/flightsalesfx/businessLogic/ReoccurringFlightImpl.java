@@ -90,6 +90,14 @@ public class ReoccurringFlightImpl implements ReoccurringFlight  {
         flight.addPriceReduction(p);
     }
 
+    /**
+     * @return Current Price of this Flight
+     */
+    @Override
+    public double getPriceWithPriceReductionsApplied() {
+        return flight.getPriceWithPriceReductionsApplied();
+    }
+
     @Override
     public void setArrival(LocalDateTime newArrival) {
         flight.setArrival(newArrival);
