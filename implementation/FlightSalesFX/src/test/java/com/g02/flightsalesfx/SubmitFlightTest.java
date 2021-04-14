@@ -102,4 +102,8 @@ public class SubmitFlightTest {
         fxRobot.clickOn(fxRobot.lookup("#flightNumberTextField").queryAs(TextField.class)).write("10");
         fxRobot.clickOn(fxRobot.lookup("#saveFlightButton").queryButton());
     }
+    @AfterAll
+    static void end(){
+        App.inRootTab=0;
+    }
 }

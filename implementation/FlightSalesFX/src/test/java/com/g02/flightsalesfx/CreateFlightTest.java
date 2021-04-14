@@ -68,6 +68,10 @@ public class CreateFlightTest {
         App.setRoot("home");
         this.stage = stage;
     }
+    @AfterAll
+    static void end(){
+        App.inRootTab=0;
+    }
 
     @BeforeEach
     void goToTab(FxRobot fxRobot) {
