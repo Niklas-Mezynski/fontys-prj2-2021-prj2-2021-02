@@ -59,6 +59,7 @@ public class BusinessLogicAPIImplTest {
         assertThat(Integer.signum(seat1.compareTo(seat2))).isEqualTo(expected);
     }
 
+    @Disabled
     @Test
     void t04PlaneTest() {
         List<Seat> seats = new ArrayList<>();

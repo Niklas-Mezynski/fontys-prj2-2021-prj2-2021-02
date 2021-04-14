@@ -1,24 +1,30 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.btfdao.annotations.ForeignKey;
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Seat;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class PlaneImpl implements Plane {
+@TableName("planes")
+public class PlaneImpl implements Plane, Savable {
 
-    private String name;
-    private String manufacturer;
-    private String type;
-    private List<Seat> seatList;
+    @PrimaryKey
+    public String name;
+    public String manufacturer;
+    public String type;
+    @ForeignKey("com.g02.flightsalesfx.businessLogic.SeatImpl")
+    public SeatImpl[] seatList;
 
     public PlaneImpl(String name, String type, String manufacturer) {
         this.name = name;
         this.manufacturer = manufacturer;
         this.type = type;
-        this.seatList = new ArrayList<>();
+        this.seatList = new SeatImpl[0];
     }
 
     @Override
@@ -38,35 +44,40 @@ public class PlaneImpl implements Plane {
 
     @Override
     public int getSeatCount(){
-        return seatList.size();
+        return seatList.length;
     }
 
     @Override
     public int getRowCount(){
-        return seatList.stream().mapToInt(Seat::getRowNumber).max().orElse(-1) + 1;
+        return Arrays.stream(seatList).mapToInt(Seat::getRowNumber).max().orElse(-1) + 1;
     }
 
     @Override
     public void addSeat(Seat s) {
-        this.seatList.add(s);
+        var collect = Arrays.stream(this.seatList).collect(Collectors.toList());
+        if (!(s instanceof SeatImpl)) return;
+        collect.add((SeatImpl) s);
+        this.seatList = collect.toArray(new SeatImpl[0]);
     }
 
     @Override
     public void addAllSeats(List<? extends Seat> seatList) {
-        this.seatList.addAll(seatList);
+        var collect = Arrays.stream(this.seatList).collect(Collectors.toList());
+        collect.addAll((Collection<? extends SeatImpl>) seatList);
+        this.seatList = collect.toArray(new SeatImpl[0]);
     }
 
     @Override
     public String toString() {
 
 
-        return "Plane " + name + ", ID: " + type + ", Manufacturer: " + manufacturer + ", Seats: " + seatList.size() + " Rows: " + getRows();
+        return "Plane " + name + ", ID: " + type + ", Manufacturer: " + manufacturer + ", Seats: " + seatList.length + " Rows: " + getRows();
     }
 
     public int getRows(){
         int rows = 0;
-        if(seatList.size()!=0){
-            rows = seatList.get(seatList.size() - 1).getRowNumber() + 1;
+        if(seatList.length!=0){
+            rows = seatList[seatList.length - 1].getRowNumber() + 1;
         }
         return rows;
     }
@@ -88,8 +99,8 @@ public class PlaneImpl implements Plane {
     @Override
     public int getRows(){
         int rows = 0;
-        if(seatList.size()!=0){
-            rows = seatList.get(seatList.size() - 1).getRowNumber() + 1;
+        if(seatList.length!=0){
+            rows = seatList.get(seatList.length - 1).getRowNumber() + 1;
         }
         return rows;
     }*/
