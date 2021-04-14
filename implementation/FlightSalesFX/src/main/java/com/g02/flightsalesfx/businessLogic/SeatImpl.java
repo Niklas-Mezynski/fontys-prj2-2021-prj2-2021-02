@@ -98,7 +98,7 @@ public class SeatImpl implements Seat, Savable {
     }
 
     @Override
-    public List<SeatOption> getSeatOptions () {
+    public SeatOptionImpl[] getSeatOptions () {
         return seatOptions;
     }
 }

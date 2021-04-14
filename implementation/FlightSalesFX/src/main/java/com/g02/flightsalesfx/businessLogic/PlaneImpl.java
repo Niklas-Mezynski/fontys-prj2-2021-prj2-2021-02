@@ -1,13 +1,11 @@
 package com.g02.flightsalesfx.businessLogic;
 
-import com.g02.flightsalesfx.businessEntities.Airport;
 import com.g02.btfdao.annotations.ForeignKey;
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
 import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Seat;
-import com.g02.flightsalesfx.persistence.AirportStorageService;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -108,7 +106,7 @@ public class PlaneImpl implements Plane, Savable {
     }*/
 
     @Override
-    public List<Seat> getAllSeats() {
+    public SeatImpl[] getAllSeats() {
         return this.seatList;
     }
 }

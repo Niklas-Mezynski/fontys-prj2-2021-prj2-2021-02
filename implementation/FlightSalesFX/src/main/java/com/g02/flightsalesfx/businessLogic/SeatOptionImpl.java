@@ -13,7 +13,7 @@ public class SeatOptionImpl implements SeatOption, Savable {
     @PrimaryKey(autogen = true)
     public int id;
     public String name;
-    private double price;
+    public double price;
 
     public SeatOptionImpl (String name, Double price) {
         this.name = name;
