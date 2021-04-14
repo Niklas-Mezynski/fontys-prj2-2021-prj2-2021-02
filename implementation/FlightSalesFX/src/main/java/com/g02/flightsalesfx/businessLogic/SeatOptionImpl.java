@@ -1,12 +1,18 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
 
 import java.util.Objects;
 
-public class SeatOptionImpl implements SeatOption {
+@TableName("seatoptions")
+public class SeatOptionImpl implements SeatOption, Savable {
 
-    private String name;
+    @PrimaryKey(autogen = true)
+    public int id;
+    public String name;
     private double price;
 
     public SeatOptionImpl (String name, Double price) {
