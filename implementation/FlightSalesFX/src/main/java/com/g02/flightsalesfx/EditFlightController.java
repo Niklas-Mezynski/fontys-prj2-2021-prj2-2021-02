@@ -124,7 +124,7 @@ public class EditFlightController {
                     }
                 }
             }
-            //normal flight:
+            //normal flight with changes only in timing
             exit();
         } else { // reoccurring is selected
             if(!intervalTextField.getText().trim().isEmpty()) {
