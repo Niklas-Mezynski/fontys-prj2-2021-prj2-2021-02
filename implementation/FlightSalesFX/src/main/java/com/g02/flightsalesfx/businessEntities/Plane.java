@@ -39,4 +39,6 @@ public interface Plane {
      * @return The Number of Rows that this Plane has
      */
     int getRows();
+
+    List<Seat> getAllSeats();
 }

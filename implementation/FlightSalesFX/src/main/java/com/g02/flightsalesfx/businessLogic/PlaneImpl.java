@@ -95,4 +95,9 @@ public class PlaneImpl implements Plane {
         }
         return rows;
     }*/
+
+    @Override
+    public List<Seat> getAllSeats() {
+        return this.seatList;
+    }
 }
