@@ -22,7 +22,9 @@ public enum TypeMappings {
             entry(java.lang.Double.class, "DOUBLE PRECISION"),
             entry(double.class, "DOUBLE PRECISION"),
             entry(java.time.LocalDate.class, "DATE"),
-            entry(java.time.LocalDateTime.class, "TIMESTAMP")
+            entry(java.time.LocalDateTime.class, "TIMESTAMP"),
+            entry(boolean.class, "TIMESTAMP"),
+            entry(java.lang.Boolean.class, "TIMESTAMP")
     );
 
     public static String getTypeName(Class<?> c) {
