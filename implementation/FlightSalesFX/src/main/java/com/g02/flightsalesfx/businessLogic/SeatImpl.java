@@ -31,9 +31,7 @@ public class SeatImpl implements Seat, Savable {
     }
 
     public SeatImpl(int rowNumber, int seatNumber, List<SeatOption> toAdd) {
-        this.rowNumber = rowNumber;
-        this.seatNumber = seatNumber;
-//        this.seatOptions = new ArrayList<>();
+        this(rowNumber, seatNumber);
         addAllSeatOptions(toAdd);
     }
 
@@ -67,20 +65,35 @@ public class SeatImpl implements Seat, Savable {
         return "SeatImpl{" +
                 "rowNumber=" + rowNumber +
                 ", seatNumber=" + seatNumber +
-                ", seatOptions=" + seatOptions +
+                ", seatOptions=" + Arrays.toString(seatOptions) +
                 '}';
     }
+
+   /* @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SeatImpl seat = (SeatImpl) o;
+        return rowNumber == seat.rowNumber && seatNumber == seat.seatNumber && Arrays.equals(seatOptions, seat.seatOptions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rowNumber, seatNumber, seatOptions);
+    }*/
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SeatImpl seat = (SeatImpl) o;
-        return rowNumber == seat.rowNumber && seatNumber == seat.seatNumber && Objects.equals(seatOptions, seat.seatOptions);
+        return id == seat.id && getRowNumber() == seat.getRowNumber() && getSeatNumber() == seat.getSeatNumber() && Arrays.equals(seatOptions, seat.seatOptions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rowNumber, seatNumber, seatOptions);
+        int result = Objects.hash(id, getRowNumber(), getSeatNumber());
+        result = 31 * result + Arrays.hashCode(seatOptions);
+        return result;
     }
 }

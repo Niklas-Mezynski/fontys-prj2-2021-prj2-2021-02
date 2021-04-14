@@ -26,6 +26,7 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
 
     public PersistenceAPIImpl() {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        assert simpledao != null: "No datasource";
         daoFactory = new DaoFactory(simpledao);
     }
 
