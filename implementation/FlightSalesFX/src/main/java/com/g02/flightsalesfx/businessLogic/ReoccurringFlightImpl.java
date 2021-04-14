@@ -86,8 +86,8 @@ public class ReoccurringFlightImpl implements ReoccurringFlight  {
     }
 
     @Override
-    public PriceReduction applyPriceReduction(PriceReduction p) {
-        return flight.applyPriceReduction(p);
+    public void addPriceReduction(PriceReduction p) {
+        flight.addPriceReduction(p);
     }
 
     @Override

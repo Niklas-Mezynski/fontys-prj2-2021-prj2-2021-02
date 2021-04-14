@@ -11,8 +11,7 @@ public class StaticPriceReductionImpl extends PriceReductionImpl {
     private double percentageAsDouble;
 
     public StaticPriceReductionImpl(String name, LocalDate end, double percentage) {
-        this.name = name;
-        this.endDate = end;
+        super(name, end);
         this.percentageAsDouble = percentage;
     }
 
@@ -29,7 +28,8 @@ public class StaticPriceReductionImpl extends PriceReductionImpl {
         return name;
     }
 
-    public double getPercentageAsADouble() {
+    @Override
+    public double getPercentageAsDouble() {
         return percentageAsDouble;
     }
 }
