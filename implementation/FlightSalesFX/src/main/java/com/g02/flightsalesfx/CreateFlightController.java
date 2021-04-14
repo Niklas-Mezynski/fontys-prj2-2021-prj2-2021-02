@@ -122,14 +122,13 @@ public class CreateFlightController {
         try{
             extendedRoute = new ExtendedRoute(getStartDate(), getStartTime(), getDurationHours(), getDurationMinutes());
             extendedRoute.setRoute(getSelectedRoute());
+            setRoot("submitFlight");
         }catch (Exception e){
             inputOK = false;
             e.printStackTrace();
         }
 
         // After "saving" current selections
-        if(inputOK)
-        setRoot("submitFlight");
     }
 
     //getter for extendedRoute that is necessary for further flight-creation
