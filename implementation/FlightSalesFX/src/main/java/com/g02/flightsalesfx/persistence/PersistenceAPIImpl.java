@@ -1,8 +1,15 @@
 package com.g02.flightsalesfx.persistence;
 
+import com.g02.btfdao.dao.Dao;
+import com.g02.btfdao.dao.DaoFactory;
+import com.g02.btfdao.utils.PGJDBCUtils;
 import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.businessLogic.OptionManagerImpl;
+import com.g02.flightsalesfx.businessLogic.PlaneImpl;
 import com.g02.flightsalesfx.businessLogic.SeatManagerImpl;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImplementationProvider {
 
@@ -15,6 +22,13 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     private PriceReductionStorageService priceReductionStorageService;
     private FlightStorageService flightStorageService;
 
+    private DaoFactory daoFactory;
+
+    public PersistenceAPIImpl() {
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        daoFactory = new DaoFactory(simpledao);
+    }
+
     @Override
     public EmployeeStorageService getEmployeeStorageService(EmployeeManager employeeManager) {
         if (employeeStorageService == null)
@@ -25,7 +39,12 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     @Override
     public PlaneStorageService getPlaneStorageService(PlaneManager planeManager) {
         if (planeStorageService == null) {
-            planeStorageService = new PlaneStorageServiceImpl(planeManager);
+            try {
+                var dao = daoFactory.createDao(PlaneImpl.class);
+                planeStorageService = new PlaneStorageServiceImpl(planeManager, dao);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
         return planeStorageService;
     }
