@@ -81,14 +81,9 @@
          <bottom>
             <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" onAction="#save" prefWidth="50.0" text="Save">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Button>
                   <Button mnemonicParsing="false" onAction="#exit" prefWidth="50.0" text="Exit">
                      <HBox.margin>
-                        <Insets left="10.0" />
+                        <Insets />
                      </HBox.margin>
                   </Button>
                </children>

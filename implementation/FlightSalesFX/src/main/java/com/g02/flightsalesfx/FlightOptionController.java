@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.g02.flightsalesfx.App.setRoot;
 
@@ -50,39 +51,36 @@ public class FlightOptionController {
         flightNumberLabel.setText("Edit Flight Options for flight number: " + selectedFlight.getFlightNumber());
         planeInfoText.setText("Seats: " + selectedFlight.getPlane().getSeatCount());
 
-        optionList.setCellFactory( lv -> {
-            ListCell<FlightOption> cell = new ListCell<>();
 
-            ContextMenu contextMenu = new ContextMenu();
-
-
-//            MenuItem editItem = new MenuItem();
-//            editItem.textProperty().bind(Bindings.format("Edit \"%s\"", cell.itemProperty()));
-//            editItem.setOnAction(event -> {
-//                String item = cell.getItem();
-//                // code to edit item...
-//            });
-            MenuItem deleteItem = new MenuItem();
-            deleteItem.textProperty().bind(Bindings.format("Delete flight option"));
-            //TODO Delete the FlightOption
-            deleteItem.setOnAction(event -> System.out.println("Trying to delete: " + cell.getItem().toString()));
-            contextMenu.getItems().addAll( deleteItem );
-
-            cell.textProperty().bind(cell.itemProperty().asString());
-
-            cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
-                if (isNowEmpty) {
-                    cell.setContextMenu(null);
-                } else {
-                    cell.setContextMenu(contextMenu);
-                }
-            });
-            if (cell == null) {
-                System.out.println("huhn");
+        optionMaxAvailable.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            if (isIntegerGreater0(optionMaxAvailable.getText())) {
+                optionMaxAvailable.setStyle("-fx-border-color:none;");
+            } else {
+                optionMaxAvailable.setStyle("-fx-border-color:red;");
             }
+        }));
 
-            return cell ;
+        optionPrice.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            if (isNumeric(optionPrice.getText())) {
+                optionPrice.setStyle("-fx-border-color:none;");
+            } else {
+                optionPrice.setStyle("-fx-border-color:red;");
+            }
+        }));
+
+
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem deleteItem = new MenuItem();
+        deleteItem.textProperty().bind(Bindings.format("Delete flight option"));
+        //TODO Delete the FlightOption
+        deleteItem.setOnAction(event -> {
+            System.out.println("Trying to delete: " + optionList.getSelectionModel().getSelectedItem().toString());
+            selectedFlight.getFlightOptions().remove(optionList.getSelectionModel().getSelectedItem());
+            updateListView();
         });
+        contextMenu.getItems().addAll( deleteItem );
+        optionList.setContextMenu(contextMenu);
 
         updateListView();
 
@@ -128,11 +126,6 @@ public class FlightOptionController {
         setRoot("home");
     }
 
-    @FXML
-    void save() throws IOException {
-        exit();
-    }
-
     private void updateListView() {
         var flightOptions = selectedFlight.getFlightOptions();
         optionList.getItems().clear();
@@ -157,7 +150,7 @@ public class FlightOptionController {
         }
         try {
             int i = Integer.parseInt(strNum);
-            if (i > 0) {
+            if (i > 0 && i <= selectedFlight.getPlane().getSeatCount()){
                 return true;
             }
         } catch (NumberFormatException nfe) {
