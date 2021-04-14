@@ -163,7 +163,7 @@ public class createBookingController {
                 }
                 applyOptionFilterToAll();
             });
-            Label l = new Label(s.getName()+ ", Price: "+ "TODO: createBookingController.OptionFilterSelectorBox");
+            Label l = new Label(s.getName()+ ", Price: "+ s.getPrice());
             this.getChildren().addAll(c,l);
         }
 

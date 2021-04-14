@@ -42,5 +42,4 @@ public interface Plane {
      */
     int getRows();
 
-    List<Seat> getAllSeats();
 }

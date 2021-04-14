@@ -68,8 +68,8 @@ public class App extends Application {
 
 
         //Sample Seats with seatoptions
-        SeatOption firstClass = new SeatOptionImpl("First Class");
-        SeatOption emergencyExitRow = new SeatOptionImpl("More Space");
+        SeatOption firstClass = new SeatOptionImpl("First Class", 20.5);
+        SeatOption emergencyExitRow = new SeatOptionImpl("More Space", 5.5);
         List<Seat> seats2 = new ArrayList<>();
         for(int i = 0; i <=4; i++){
             for(int y = 0; y <=3 ; y++){

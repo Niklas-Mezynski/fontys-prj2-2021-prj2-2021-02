@@ -73,8 +73,4 @@ public class SeatImpl implements Seat {
         return Objects.hash(rowNumber, seatNumber, seatOptions);
     }
 
-    @Override
-    public List<SeatOption> getSeatOptions () {
-        return seatOptions;
-    }
 }
