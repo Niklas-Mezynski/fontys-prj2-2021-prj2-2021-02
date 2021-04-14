@@ -16,8 +16,8 @@ public class SeatOptionsStorageServiceImpl implements SeatOptionsStorageService{
     
     public SeatOptionsStorageServiceImpl(OptionManager optionMgr){
         seatOptions=new ArrayList<>();
-        add(optionMgr.createSeatOption("SeatOption1"));
-        add(optionMgr.createSeatOption("SeatOption2"));
+        add(optionMgr.createSeatOption("SeatOption1", 20.5));
+        add(optionMgr.createSeatOption("SeatOption2", 50));
     }
 
     @Override

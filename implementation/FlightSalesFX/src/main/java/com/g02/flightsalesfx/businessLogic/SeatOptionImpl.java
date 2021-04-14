@@ -7,13 +7,23 @@ import java.util.Objects;
 public class SeatOptionImpl implements SeatOption {
 
     private String name;
+    private double price;
 
-    public SeatOptionImpl (String name) {
+    public SeatOptionImpl (String name, Double price) {
         this.name = name;
+        this.price = price;
     }
 
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * @return The price that this FlightOption costs
+     */
+    @Override
+    public double getPrice() {
+        return price;
     }
 
     @Override

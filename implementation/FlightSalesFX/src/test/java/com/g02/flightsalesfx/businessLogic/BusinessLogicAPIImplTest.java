@@ -20,7 +20,7 @@ public class BusinessLogicAPIImplTest {
 
     @Test
     void t01SeatOptionTest() {
-        SeatOption so = api.getOptionManager().createSeatOption("Business class");
+        SeatOption so = api.getOptionManager().createSeatOption("Business class", 99.99);
         SoftAssertions.assertSoftly(s -> {
             s.assertThat(so.getName()).isEqualTo("Business class");
             s.assertThat(so.toString()).contains("Business class");
@@ -30,8 +30,8 @@ public class BusinessLogicAPIImplTest {
     @Test
     void t02SeatTest() {
         //Test for first Constructor
-        SeatOption so1 = api.getOptionManager().createSeatOption("First class");
-        SeatOption so2 = api.getOptionManager().createSeatOption("Business class");
+        SeatOption so1 = api.getOptionManager().createSeatOption("First class", 150);
+        SeatOption so2 = api.getOptionManager().createSeatOption("Business class", 99.99);
         List<SeatOption> so = new ArrayList<>();
 
         Seat seat = api.getSeatManager().createSeat(1,2, so);
