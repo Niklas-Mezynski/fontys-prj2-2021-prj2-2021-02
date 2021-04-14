@@ -13,17 +13,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.createBookingController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.createBookingController">
    <center>
-      <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="910.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="flightTab" text="Flight Selection">
             <content>
               <AnchorPane>
                      <children>
-                        <VBox fx:id="flightVBox">
+                        <VBox fx:id="flightVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                            <children>
-                              <HBox>
+                              <HBox prefHeight="42.0" prefWidth="800.0">
                                  <children>
                                     <VBox>
                                        <children>
@@ -50,54 +50,91 @@
                               </HBox>
                            </children>
                         </VBox>
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="seatsTab" text="Seat Allocation">
+            <Tab fx:id="seatsTab" onSelectionChanged="#disableFlightSelectionTab" text="Seat Allocation">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane>
                      <children>
                         <VBox fx:id="filterVBox">
                            <children>
-                              <ScrollPane>
-                                <content>
-                                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
-                                       <children>
-                                          <HBox fx:id="seatHBox" prefHeight="100.0" prefWidth="200.0" />
-                                       </children>
-                                    </AnchorPane>
-                                </content>
+                              <ScrollPane prefHeight="280.0" prefWidth="900.0">
+                                 <content>
+                                    <HBox fx:id="seatHBox" />
+                                 </content>
                               </ScrollPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+          <Tab fx:id="paxTab" onSelectionChanged="#disableSeatAllocationTab" text="Passengers">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ScrollPane prefHeight="537.0" prefWidth="424.0">
+                           <content>
+                              <VBox fx:id="paxListVBox" prefHeight="200.0" prefWidth="421.0">
+                                 <children>
+                                    <HBox prefHeight="16.0" prefWidth="421.0">
+                                       <children>
+                                          <Label text="Available Seats:" />
+                                          <Text fx:id="availableSeatsText" strokeType="OUTSIDE" strokeWidth="0.0" text="n/a" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab fx:id="flightOptionsTab" onSelectionChanged="#disablePaxTab" text="Flight Options">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox fx:id="flightOptionsVBox" prefHeight="42.0" prefWidth="346.0">
+                           <children>
+                              <Label text="Available FlightOptions:" />
                            </children>
                         </VBox>
                      </children></AnchorPane>
               </content>
             </Tab>
-          <Tab fx:id="paxTab" text="Passengers">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <Tab fx:id="confirmTab" onSelectionChanged="#disableFlightOptionsTab" text="Confirmation">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <VBox prefHeight="200.0" prefWidth="800.0">
                            <children>
+                              <HBox fx:id="flightOverview" prefHeight="17.0" prefWidth="630.0">
+                                 <children>
+                                    <Label text="Flight: " />
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="flightOptionsOverview" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Flight Options: " />
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="contactEmailOverview" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Contact E-Mail" />
+                                 </children>
+                              </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Available Seats:" />
-                                    <Text fx:id="availableSeatsText" strokeType="OUTSIDE" strokeWidth="0.0" text="n/a" />
+                                    <Label text="Seats: " />
+                                    <VBox fx:id="seatsOverviewVBox" prefHeight="200.0" prefWidth="100.0" />
                                  </children>
                               </HBox>
                            </children>
                         </VBox>
                      </children></AnchorPane>
-            </content>
-          </Tab>
-            <Tab fx:id="seatOptionsTab" text="Seat Options">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </Tab>
-            <Tab fx:id="flightOptionsTab" text="Flight Options">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
         </tabs>
