@@ -262,15 +262,18 @@ public class Mapper {
     }
 
     public static boolean isDatabaseType(Field field) {
-        var annotation = field.getAnnotation(ForeignKey.class);
-        var className = annotation.value();
-        try {
-            var klasse = Class.forName(className.split("#")[0]);
-            return Arrays.asList(klasse.getInterfaces()).contains(Savable.class);
-        } catch (ClassNotFoundException e) {
-            assert false : "Foreign Key falsch angegeben";
-            return false;
+        if (field.isAnnotationPresent(ForeignKey.class)) {
+            var annotation = field.getAnnotation(ForeignKey.class);
+            var className = annotation.value();
+            try {
+                var klasse = Class.forName(className.split("#")[0]);
+                return Arrays.asList(klasse.getInterfaces()).contains(Savable.class);
+            } catch (ClassNotFoundException e) {
+                assert false : "Foreign Key falsch angegeben";
+                return false;
+            }
         }
+        return false;
     }
 
     public static Class<? extends Savable> getReferencingClass(Field field) throws ClassNotFoundException {
