@@ -1,22 +1,33 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.btfdao.annotations.FieldName;
+import com.g02.btfdao.annotations.ForeignKey;
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.Airport;
 import com.g02.flightsalesfx.businessEntities.Route;
 
-public class RouteImpl implements Route {
-    private  Airport departureAirport;
-    private  Airport arrivalAirport;
-    private boolean rteEnabled;
+@TableName("routes")
+public class RouteImpl implements Route, Savable {
 
-    public RouteImpl (Airport departureAirport, Airport arrivalAirport) {
-        this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
+    @PrimaryKey
+    public int id;
+    @ForeignKey("com.g02.flightsalesfx.businessLogic.AirportImpl")
+    public AirportImpl departureAirport;
+    @ForeignKey("com.g02.flightsalesfx.businessLogic.AirportImpl")
+    public AirportImpl arrivalAirport;
+    @FieldName("enabled")
+    public boolean rteEnabled;
+
+    public RouteImpl(Airport departureAirport, Airport arrivalAirport) {
+        this.departureAirport = (AirportImpl) departureAirport;
+        this.arrivalAirport = (AirportImpl) arrivalAirport;
         this.rteEnabled = true;
     }
 
-    public RouteImpl (Airport departureAirport, Airport arrivalAirport, boolean rteEnabled) {
-        this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
+    public RouteImpl(Airport departureAirport, Airport arrivalAirport, boolean rteEnabled) {
+        this(departureAirport, arrivalAirport);
         this.rteEnabled = rteEnabled;
     }
 
@@ -29,6 +40,14 @@ public class RouteImpl implements Route {
     }
 
     /**
+     * @param newAp Airport to be set as Departure Airport
+     */
+    @Override
+    public void setDepartureAirport(Airport newAp) {
+        this.departureAirport = (AirportImpl) newAp;
+    }
+
+    /**
      * @return The Airport that the Plane should arrive at
      */
     @Override
@@ -36,23 +55,12 @@ public class RouteImpl implements Route {
         return arrivalAirport;
     }
 
-
     /**
-     *
      * @param newAp Airport to be set as Arrival Airport
      */
     @Override
     public void setArrivalAirport(Airport newAp) {
-        this.arrivalAirport = newAp;
-    }
-
-    /**
-     *
-     * @param newAp Airport to be set as Departure Airport
-     */
-    @Override
-    public void setDepartureAirport(Airport newAp) {
-        this.departureAirport = newAp;
+        this.arrivalAirport = (AirportImpl) newAp;
     }
 
     @Override
@@ -72,17 +80,19 @@ public class RouteImpl implements Route {
 
     @Override
     public void toggleEnable() {
-        if(this.rteEnabled){
-            disableRoute();;
-        }else{
+        if (this.rteEnabled) {
+            disableRoute();
+            ;
+        } else {
             enableRoute();
-        };
+        }
+        ;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
 
-        return "Route from: "+ departureAirport.toString() +" -> "+ arrivalAirport.toString();
+        return "Route from: " + departureAirport.toString() + " -> " + arrivalAirport.toString();
     }
 
     @Override
