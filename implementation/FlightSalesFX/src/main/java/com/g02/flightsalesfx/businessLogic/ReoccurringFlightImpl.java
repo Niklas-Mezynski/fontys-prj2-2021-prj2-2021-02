@@ -117,4 +117,22 @@ public class ReoccurringFlightImpl implements ReoccurringFlight  {
     public void addAllFlightOptions(List<? extends FlightOption> options) {
         flight.addAllFlightOptions(options);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ReoccurringFlightImpl that = (ReoccurringFlightImpl) o;
+
+        if (getInterval() != that.getInterval()) return false;
+        return getFlight().equals(that.getFlight());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getFlight().hashCode();
+        result = 31 * result + getInterval();
+        return result;
+    }
 }
