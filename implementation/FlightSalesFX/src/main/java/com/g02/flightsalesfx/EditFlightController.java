@@ -132,6 +132,12 @@ public class EditFlightController {
                 if(reOccFlight) {
                     exit();
                 }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error while saving");
+                alert.setContentText("If the selected flight is declared as a 'Reoccurring Flight', it is necessary to determine the interval of reoccurring!");
+                alert.showAndWait();
             }
         }
     }

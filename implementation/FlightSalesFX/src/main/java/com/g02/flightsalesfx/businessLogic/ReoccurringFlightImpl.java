@@ -99,4 +99,14 @@ public class ReoccurringFlightImpl implements ReoccurringFlight  {
     public void setDeparture(LocalDateTime newDeparture) {
         flight.setDeparture(newDeparture);
     }
+
+    @Override
+    public void addFlightOption(FlightOption flightOption) {
+        //todo
+    }
+
+    @Override
+    public void addAllFlightOptions(List<? extends FlightOption> options) {
+        //todo
+    }
 }
