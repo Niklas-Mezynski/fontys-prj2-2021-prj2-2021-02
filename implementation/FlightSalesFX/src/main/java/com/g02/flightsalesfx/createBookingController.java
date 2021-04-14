@@ -144,13 +144,13 @@ public class createBookingController {
 
         filterContainer = new VBox();
         filterContainer.getChildren().add(new Label("Available Seatoptions:"));
-        availableSeatOptions.forEach(seatOption -> {filterContainer.getChildren().add(new optionFilterSelectorBox(seatOption));});
+        availableSeatOptions.forEach(seatOption -> {filterContainer.getChildren().add(new OptionFilterSelectorBox(seatOption));});
         filterVBox.getChildren().add(filterContainer);
     }
 
-    public class optionFilterSelectorBox extends HBox{
+    public class OptionFilterSelectorBox extends HBox{
         private final SeatOption seatOption;
-        public optionFilterSelectorBox(SeatOption s){
+        public OptionFilterSelectorBox(SeatOption s){
             this.seatOption = s;
             CheckBox c = new CheckBox();
             c.setOnAction(actionEvent -> {
@@ -163,7 +163,7 @@ public class createBookingController {
                 }
                 applyOptionFilterToAll();
             });
-            Label l = new Label(s.getName());
+            Label l = new Label(s.getName()+ ", Price: "+ "TODO: createBookingController.OptionFilterSelectorBox");
             this.getChildren().addAll(c,l);
         }
 
@@ -197,7 +197,6 @@ public class createBookingController {
             }
         });
         flightVBox.getChildren().add(flightTable);
-        //flightTable.setMinWidth(flightVBox.getWidth());
     }
 
     public void createSeatMapAndLoadSeatOptions(List<Seat> bookedSeats){
