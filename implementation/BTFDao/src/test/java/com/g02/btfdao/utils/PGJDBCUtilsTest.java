@@ -8,6 +8,7 @@ import com.g02.btfdao.queries.QueryExecutor;
 import com.g02.btfdao.testentities.Cat;
 import com.g02.btfdao.testentities.Dog;
 import org.checkerframework.checker.units.qual.C;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -45,13 +46,14 @@ public class PGJDBCUtilsTest {
 
     @Test
     void t4() {
-        Dog dog = new Dog(1, "Wuffy","a");
+        Dog dog = new Dog(1, "Wuffy", "a");
         var deconstruct = Mapper.deconstruct(dog);
         deconstruct.forEach(pair -> {
             System.out.println(pair.key() + ": " + pair.value());
         });
     }
 
+    @Disabled
     @Test
     void t5() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Object[] objects = new Object[]{
@@ -89,9 +91,10 @@ public class PGJDBCUtilsTest {
         System.out.println(datebaseSQL);
     }
 
+    @Disabled
     @Test
     void t9() throws ClassNotFoundException, SQLException {
-        Dog dog = new Dog(1, "Wuffy","a");
+        Dog dog = new Dog(0, "Wuffy", "a");
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var con = simpledao.getConnection();
         var queryBuilder = new QueryBuilder();
@@ -106,6 +109,7 @@ public class PGJDBCUtilsTest {
         System.out.println(datebaseSQL);
     }
 
+    @Disabled
     @Test
     void t11() throws SQLException, ClassNotFoundException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
@@ -120,7 +124,7 @@ public class PGJDBCUtilsTest {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var daoFactory = new DaoFactory(simpledao);
         var dao = daoFactory.createDao(Dog.class);
-        var wuffy2s = dao.get(11);
+        var wuffy2s = dao.get(11, "Hallo");
 //        var wuffy2s = dao.insert(new Dog(1, "Wuffy2"), new Dog(2, "Dogg"));
         System.out.println(wuffy2s);
     }
@@ -149,6 +153,7 @@ public class PGJDBCUtilsTest {
         System.out.println(removeSQL);
     }
 
+    @Disabled
     @Test
     void t16() throws SQLException, ClassNotFoundException, IllegalAccessException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
@@ -181,7 +186,7 @@ public class PGJDBCUtilsTest {
         var daoFactory = new DaoFactory(simpledao);
         var dogDao = daoFactory.createDao(Dog.class);
         var catDao = daoFactory.createDao(Cat.class);
-        var dog = new Dog(0, "Dog","a");
+        var dog = new Dog(0, "Dog", "a");
         var cat1 = new Cat(0, "Cat1");
         var cat2 = new Cat(0, "Cat2");
         var cat3 = new Cat(0, "Cat3");
@@ -210,6 +215,7 @@ public class PGJDBCUtilsTest {
 //        wuffy2s.name = "JHBACB";
         System.out.println(dao.getAll());
     }
+
     @Test
     void t20() throws SQLException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
@@ -218,9 +224,10 @@ public class PGJDBCUtilsTest {
         var queryBuilder = new QueryBuilder();
         var queryExecutor = new QueryExecutor();
         var dao = daoFactory.createDao(Dog.class);
-        var wuffy2s = dao.remove(new Dog(24,"", "D"));
+        var wuffy2s = dao.remove(new Dog(24, "", "D"));
         System.out.println(wuffy2s);
     }
+
     @Test
     void t21() throws SQLException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
@@ -229,19 +236,25 @@ public class PGJDBCUtilsTest {
         var queryBuilder = new QueryBuilder();
         var queryExecutor = new QueryExecutor();
         var dao = daoFactory.createDao(Dog.class);
-        var catDao=daoFactory.createDao(Cat.class);
-        var wuffy = new Dog(0,"Anatol", "LOL");
+        var catDao = daoFactory.createDao(Cat.class);
+        var wuffy = new Dog(0, "Anatol", "LOL");
         var cat1 = new Cat(0, "Cat1");
         var cat2 = new Cat(0, "Cat2");
         var cat3 = new Cat(0, "Cat3");
         var cats = new Cat[]{cat1, cat2, cat3};
+        var buddy = new Cat(0, "Test");
         var insert = catDao.insert(cats);
+        buddy = catDao.insert(buddy).get(0);
+        System.out.println("buddy: " + buddy);
+        wuffy.buddy = buddy;
+        System.out.println("ins " + insert);
+        wuffy.RealCats = insert.toArray(Cat[]::new);
 //        wuffy.cat = insert.stream().mapToInt(cat -> cat.catid).toArray();
         System.out.println(wuffy);
-        wuffy=dao.insert(wuffy).get(0);
+        wuffy = dao.insert(wuffy).get(0);
         System.out.println(wuffy);
-        wuffy.name="Philip";
-        wuffy=dao.update(wuffy).get();
+//        wuffy.name="Philip";
+        wuffy = dao.update(wuffy).get();
         System.out.println(wuffy);
     }
 
@@ -250,6 +263,7 @@ public class PGJDBCUtilsTest {
         var s = new QueryBuilder().alterTableAddForeignKeys(Dog.class);
     }
 
+    @Disabled("Needs dog to exist in DB")
     @Test
     void t23() throws SQLException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");

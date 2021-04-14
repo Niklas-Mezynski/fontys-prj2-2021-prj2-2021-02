@@ -16,7 +16,7 @@ public class Dog implements Savable {
     @PrimaryKey
     @FieldName("test")
     public String name;
-//    @ForeignKey("com.g02.btfdao.testentities.Cat#catid")
+    //    @ForeignKey("com.g02.btfdao.testentities.Cat#catid")
 //    public int[] cat;
 //    @ForeignKey("com.g02.btfdao.testentities.Cat#catid")
 //    public int cat2;
@@ -32,9 +32,10 @@ public class Dog implements Savable {
         this.name = name;
 //        this.cat=cat;
     }
-    private Dog(int id,String name, Cat buddy){
-        this.id=id;
-        this.name=name;
+
+    private Dog(int id, String name, Cat buddy) {
+        this.id = id;
+        this.name = name;
         this.buddy = buddy;
     }
 

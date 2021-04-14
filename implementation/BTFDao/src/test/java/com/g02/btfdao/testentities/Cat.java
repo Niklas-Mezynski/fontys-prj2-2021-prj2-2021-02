@@ -9,7 +9,7 @@ public class Cat implements Savable {
 
     @PrimaryKey(autogen = true)
     public int catid;
-//    @PrimaryKey(autogen = false)
+    //    @PrimaryKey(autogen = false)
     public String catname;
 
     public Cat(int id, String name) {

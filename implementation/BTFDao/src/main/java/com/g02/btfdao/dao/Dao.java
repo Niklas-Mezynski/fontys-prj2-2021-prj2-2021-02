@@ -55,13 +55,23 @@ public class Dao<E extends Savable> {
                     var o = (Savable) field.get(savable);
                     Dao<? extends Savable> dao = daoFactory.createDao((Class<? extends Savable>) o.getClass());
                     var insert = dao.insert(o).get(0);
+                    System.out.println("inserted1: " + insert);
                     field.set(savable, insert);
                 }
             }
             var opt = queryExecutor.doInsert(connection, queryBuilder.createInsertSQL(entityClass), entityClass, e1);
             if (!opt.isPresent()) continue;
             var e2 = opt.get();
-//            System.out.println(e1);
+            System.out.println("e2: " + e2);
+            for (Field field : fields) {
+                if (!field.getType().isArray() && Mapper.isDatabaseType(field)) {
+                    var o = (Savable) field.get(savable);
+                    Dao<? extends Savable> dao = daoFactory.createDao((Class<? extends Savable>) o.getClass());
+                    var insert = dao.insert(o).get(0);
+                    System.out.println("inserted1: " + insert);
+                    field.set(e2, insert);
+                }
+            }
             for (Field field : fields) {
                 if (field.getType().isArray()) {
                     if (TypeMappings.getTypeName(field.getType().getComponentType()) != null) {
@@ -85,6 +95,7 @@ public class Dao<E extends Savable> {
                     } else if (Mapper.isDatabaseType(field)) {
                         var savables = (Savable[]) field.get(e1);
                         var insertList = new ArrayList<E>();
+                        System.out.println("sav: " + savables);
                         for (Savable savable1 : savables) {
                             Class<? extends Savable> type = savable1.getClass();
                             Dao<? extends Savable> dao = daoFactory.createDao(type);
@@ -190,8 +201,7 @@ public class Dao<E extends Savable> {
 //                        System.out.println(sql);
                 }
                 field.set(e, o);
-            }
-            else if (Mapper.isDatabaseType(field) && !field.getType().isArray()) {
+            } else if (Mapper.isDatabaseType(field) && !field.getType().isArray()) {
                 var typeS = (Class<? extends Savable>) type;
                 Dao<? extends Savable> dao = daoFactory.createDao(typeS);
                 Optional<? extends Savable> update = dao.update((Savable) field.get(e));
