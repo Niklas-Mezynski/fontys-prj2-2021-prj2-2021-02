@@ -2,7 +2,6 @@ package com.g02.btfdao.queries;
 
 import com.g02.btfdao.annotations.*;
 import com.g02.btfdao.mapper.Mapper;
-import com.g02.btfdao.utils.Pair;
 import com.g02.btfdao.utils.Savable;
 import com.g02.btfdao.utils.TypeMappings;
 
@@ -364,23 +363,38 @@ public class QueryBuilder {
         return format(template, aClass.getAnnotation(TableName.class).value(), collect);
     }
 
-    public String createUpdateSQL(Class<? extends Savable> aClass) {
+    public String createUpdateSQL(Class<? extends Savable> aClass) throws ClassNotFoundException {
         var template = "UPDATE %1$s SET %2$s WHERE %3$s returning *";
         var primaryKeyFields = Mapper.getFields(aClass, PrimaryKey.class);
         var collectP = Arrays.stream(primaryKeyFields).map(this::createSQLWhere).collect(Collectors.joining(" and "));
-        var insertableFields = Mapper.getInsertableFields(aClass);
-        var collectF = Arrays.stream(insertableFields).map(this::createSQLWhere)
-                .collect(Collectors.joining(", "));
-        return format(template, aClass.getAnnotation(TableName.class).value(), collectF, collectP);
+        var insertedFields = Mapper.getInsertableFields(aClass);
+        var finalFields = Arrays.stream(insertedFields)
+                .filter(field ->
+                        !field.isAnnotationPresent(ForeignKey.class) || field.getType().isArray() || !isDatabaseType(field))
+                .map(Mapper::getSQLFieldName)
+                .collect(Collectors.toList());
+        var inflate = Arrays.stream(insertedFields)
+                .filter(field ->
+                        field.isAnnotationPresent(ForeignKey.class) && !field.getType().isArray() && isDatabaseType(field))
+                .collect(Collectors.toList());
+        for (Field field : inflate) {
+            Class<? extends Savable> referencingClass = getReferencingClass(field);
+            var fields = getFields(referencingClass, PrimaryKey.class);
+            for (Field field1 : fields) {
+                var s = getSQLFieldName(field) + "_" + field1.getName();
+                finalFields.add(s);
+            }
+        }
+
+        return format(template, aClass.getAnnotation(TableName.class).value(), finalFields.stream().map(s -> s + " = ?").collect(Collectors.joining(", ")), collectP);
     }
 
     public String createRelationRemoveSQL(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException {
-        var template = "DELETE FROM %1$s where %2$s=%3$s";
+        var template = "DELETE FROM %1$s where %2$s;";
         var tableName = Mapper.relationTableName(field);
         var sql = format(template,
                 tableName,
-                Mapper.relationColumnLeftName(field),
-                "?"
+                Mapper.relationColumnLeftName(field, " = ? and ") + " = ?"
         );
         return sql;
     }

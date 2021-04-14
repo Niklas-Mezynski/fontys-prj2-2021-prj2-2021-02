@@ -108,7 +108,7 @@ public class Mapper {
 
     public static <E extends Savable> E construct(Class<E> aClass, Object[] objects) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
 //        var fields = getFields(aClass,a->!a.isAnnotationPresent(Ignore.class));
-        System.out.println(Arrays.toString(objects));
+        System.out.println("Construct Objects: " + Arrays.toString(objects));
         var fields = getConstructableFields(aClass);
         int index = 0;
         List<Object> list = new ArrayList<>();
@@ -213,26 +213,52 @@ public class Mapper {
         return String.join(", ", allRelationTableFields);
     }
 
-    public static String relationColumnLeftName(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException { //TODO: Fix for multiple pks
-        var annotation = field.getAnnotation(ForeignKey.class);
-        var split = annotation.value().split("#");
-        assert split.length == 2 : "ForeignKey reference has the wrong format";
-        var referenceClass = Class.forName(split[0]);
-        var tableNameThis = Mapper.getTableName(field.getDeclaringClass());
-        var columnNameThis = tableNameThis + "_" + field.getName();
-        return columnNameThis;
+    public static String relationColumnLeftName(Field field) throws SQLFeatureNotSupportedException, NoSuchFieldException, ClassNotFoundException {
+        return relationColumnLeftName(field, ", ");
     }
 
-    public static String relationColumnRightName(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException { //TODO: Fix for multiple pks
+    public static String relationColumnLeftName(Field field, String replace) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException { //TODO: Fix for multiple pks
         var annotation = field.getAnnotation(ForeignKey.class);
         var split = annotation.value().split("#");
         assert split.length == 2 : "ForeignKey reference has the wrong format";
-        var referenceClass = Class.forName(split[0]);
-        var referenceField = referenceClass.getField(split[1]);
-        var tableNameThis = Mapper.getTableName(field.getDeclaringClass());
-        var tableNameReference = Mapper.getTableName(referenceClass);
-        var columnNameReference = tableNameReference + "_" + referenceField.getName();
-        return columnNameReference;
+        var referenceClass = (Class<? extends Savable>) Class.forName(split[0]);
+
+        var refPrimaryKeys = getFields(referenceClass, PrimaryKey.class);
+        var thisClass = (Class<? extends Savable>) field.getDeclaringClass();
+
+        var thisPrimaryKeys = getFields(thisClass, PrimaryKey.class);
+        var tableNameThis = Mapper.getTableName(thisClass);
+
+        var collect1 = Arrays.stream(thisPrimaryKeys).map(field1 -> tableNameThis + "_" + Mapper.getSQLFieldName(field1)).collect(Collectors.toList());
+        ArrayList<String> allRelationTableFields = new ArrayList<>(collect1);
+        /*var collect2 = Arrays.stream(refPrimaryKeys).map(field1 -> Mapper.getTableName(referenceClass) + "_" + Mapper.getSQLFieldName(field1)).collect(Collectors.toList());
+        allRelationTableFields.addAll(collect2);*/
+        return String.join(replace, allRelationTableFields);
+    }
+
+    public static String relationColumnRightName(Field field) throws SQLFeatureNotSupportedException, NoSuchFieldException, ClassNotFoundException {
+        return relationColumnRightName(field, ", ");
+    }
+
+    public static String relationColumnRightName(Field field, String replace) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException { //TODO: Fix for multiple pks
+        var annotation = field.getAnnotation(ForeignKey.class);
+        var split = annotation.value().split("#");
+        assert split.length == 2 : "ForeignKey reference has the wrong format";
+        var referenceClass = (Class<? extends Savable>) Class.forName(split[0]);
+
+        var refPrimaryKeys = getFields(referenceClass, PrimaryKey.class);
+        var thisClass = (Class<? extends Savable>) field.getDeclaringClass();
+
+        var thisPrimaryKeys = getFields(thisClass, PrimaryKey.class);
+        var tableNameThis = Mapper.getTableName(thisClass);
+
+//        var collect1 = Arrays.stream(thisPrimaryKeys).map(field1 -> tableNameThis + "_" + Mapper.getSQLFieldName(field1)).collect(Collectors.toList());
+        var collect2 = Arrays.stream(refPrimaryKeys)
+                .map(field1 -> Mapper.getTableName(referenceClass) + "_" + Mapper.getSQLFieldName(field1))
+                .collect(Collectors.toList());
+        ArrayList<String> allRelationTableFields = new ArrayList<>(collect2);
+//        allRelationTableFields.addAll(collect2);
+        return String.join(replace, allRelationTableFields);
     }
 
     public static boolean isDatabaseType(Field field) {

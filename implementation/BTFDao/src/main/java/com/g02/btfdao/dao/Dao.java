@@ -117,7 +117,12 @@ public class Dao<E extends Savable> {
                             pst.execute();
 
                         }
-                        System.out.println(insertList);
+                        System.out.println("InsertedList: " + insertList);
+                        var o = Array.newInstance(field.getType().getComponentType(), insertList.size());
+                        for (int i = 0; i < insertList.size(); i++) {
+                            Array.set(o, i, insertList.get(i));
+                        }
+                        field.set(e2, o);
                     }
                 }
             }
@@ -142,8 +147,10 @@ public class Dao<E extends Savable> {
             var a = get(Mapper.getPrimaryKeyValues(e1));
             if (a.isPresent()) {
                 for (Field field : Mapper.getFields(e1.getClass(), ForeignKey.class)) {
-                    var sql = queryBuilder.createRelationRemoveSQL(field);
-                    queryExecutor.doRemove(connection, sql, null, Mapper.getPrimaryKeyValues(a.get())[0]);
+                    if (field.getType().isArray()) {
+                        var sql = queryBuilder.createRelationRemoveSQL(field);
+                        queryExecutor.doRemove(connection, sql, null, Mapper.getPrimaryKeyValues(a.get()));
+                    }
                 }
                 var b = queryExecutor.doRemove(connection, queryBuilder.createRemoveSQL(entityClass), entityClass, Mapper.getPrimaryKeyValues(a.get()));
                 if (b.isPresent()) {
@@ -159,12 +166,13 @@ public class Dao<E extends Savable> {
         return remove(list);
     }
 
-    public E update(E e) throws IllegalAccessException, SQLException, NoSuchFieldException, ClassNotFoundException {
-        queryExecutor.doUpdate(connection, queryBuilder.createUpdateSQL(entityClass), entityClass, e);
+    public Optional<E> update(Savable e) throws IllegalAccessException, SQLException, NoSuchFieldException, ClassNotFoundException {
         for (Field field : Mapper.getFields(entityClass, ForeignKey.class)) {
-            var sql = queryBuilder.createRelationRemoveSQL(field);
-            queryExecutor.doRemove(connection, sql, null, Mapper.getPrimaryKeyValues(get(Mapper.getPrimaryKeyValues(e)).get())[0]);
-            if (field.getType().isArray() && TypeMappings.getTypeName(field.getType().getComponentType()) != null) {
+            var type = field.getType();
+            if (type.isArray() && TypeMappings.getTypeName(type.getComponentType()) != null) {
+                var sql = queryBuilder.createRelationRemoveSQL(field);
+                System.out.println(sql);
+                queryExecutor.doRemove(connection, sql, null, Mapper.getPrimaryKeyValues(e));
                 var o = field.get(e); //Array
                 assert o.getClass().isArray();
                 var length = java.lang.reflect.Array.getLength(o);
@@ -183,11 +191,20 @@ public class Dao<E extends Savable> {
                 }
                 field.set(e, o);
             }
+            else if (Mapper.isDatabaseType(field) && !field.getType().isArray()) {
+                var typeS = (Class<? extends Savable>) type;
+                Dao<? extends Savable> dao = daoFactory.createDao(typeS);
+                Optional<? extends Savable> update = dao.update((Savable) field.get(e));
+                System.out.println("Updated: " + update);
+            }
         }
-        return get(Mapper.getPrimaryKeyValues(e)).orElseGet(null);
+        var e1 = (E) e;
+        System.out.println(e);
+        queryExecutor.doUpdate(connection, queryBuilder.createUpdateSQL(entityClass), entityClass, e1);
+        return get(Mapper.getPrimaryKeyValues(e));
     }
 
-    public List<E> get(Predicate<E> predicate) {
+    public List<E> get(Predicate<E> predicate) throws IllegalAccessException {
         return getAll().stream().filter(predicate).collect(Collectors.toUnmodifiableList());
     }
 
@@ -207,17 +224,18 @@ public class Dao<E extends Savable> {
         return e;
     }
 
-    public Optional<E> getFirst(Predicate<E> predicate) {
+    public Optional<E> getFirst(Predicate<E> predicate) throws IllegalAccessException {
         return getAll().stream().filter(predicate).findFirst();
     }
 
-    public List<E> getAll() {
+    public List<E> getAll() throws IllegalAccessException {
         var getSQL = queryBuilder.createGetAllSQL(entityClass);
         var e = queryExecutor.doGetAll(connection, getSQL, entityClass);
+        var returnList = new ArrayList<E>();
         for (E e1 : e) {
-            e1.afterConstruction();
+            get(Mapper.getPrimaryKeyValues(e1)).ifPresent(returnList::add);
         }
-        return Collections.unmodifiableList(e);
+        return Collections.unmodifiableList(returnList);
     }
 
 }

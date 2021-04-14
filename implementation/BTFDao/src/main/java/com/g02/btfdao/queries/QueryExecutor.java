@@ -38,12 +38,13 @@ public class QueryExecutor {
 
     public <E extends Savable> Optional<E> doGet(Connection connection, String sql, Class<E> aClass, Object... keyValues) {
         try (var pst = fillPreparedStatement(connection.prepareStatement(sql), keyValues)) {
+            System.out.println("PST: " + pst);
             try (ResultSet resultSet = pst.executeQuery()) {
                 if (resultSet.next()) {
                     var construct=Mapper.construct(aClass, resultSet);
                     var fields=Mapper.getFields(construct.getClass(), ForeignKey.class);
                     for (Field field : fields) {
-                        if (Mapper.isDatabaseType(field))continue;
+                        if (Mapper.isDatabaseType(field) || !field.getType().isArray())continue;
                         String sql2="select %4$s from %1$s where %2$s=%3$s";
                         String sql2f=format(sql2,
                                 Mapper.relationTableName(field),
@@ -74,7 +75,7 @@ public class QueryExecutor {
 
                     }
                     for (Field field : fields) {
-                        if(!Mapper.isDatabaseType(field))continue;
+                        if(!Mapper.isDatabaseType(field) || !field.getType().isArray())continue;
                         //Object relation Table
                         String relationSQLtemplate="SELECT %1$s FROM %2$s WHERE %3$s";
                         String relationSQL=String.format(relationSQLtemplate,
@@ -89,7 +90,7 @@ public class QueryExecutor {
                         while (rst.next()) {
                             List<Object> keyValuesList=new ArrayList<>();
                             for (int i = 1; true; i++) {
-                                Object key=null;
+                                Object key;
                                 try {
                                     key = rst.getObject(i);
                                 }

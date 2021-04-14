@@ -44,6 +44,7 @@ public class Dog implements Savable {
                 .add("id=" + id)
                 .add("name='" + name + "'")
                 .add("cat=" + Arrays.toString(RealCats))
+                .add("buddy=" + buddy)
                 .toString();
     }
 

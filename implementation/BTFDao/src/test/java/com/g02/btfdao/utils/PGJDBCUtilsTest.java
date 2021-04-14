@@ -126,7 +126,7 @@ public class PGJDBCUtilsTest {
     }
 
     @Test
-    void t13() throws SQLException {
+    void t13() throws SQLException, IllegalAccessException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var daoFactory = new DaoFactory(simpledao);
         var dao = daoFactory.createDao(Dog.class);
@@ -143,14 +143,14 @@ public class PGJDBCUtilsTest {
     }
 
     @Test
-    void t15() {
+    void t15() throws ClassNotFoundException {
         var queryBuilder = new QueryBuilder();
         var removeSQL = queryBuilder.createUpdateSQL(Dog.class);
         System.out.println(removeSQL);
     }
 
     @Test
-    void t16() throws SQLException, ClassNotFoundException {
+    void t16() throws SQLException, ClassNotFoundException, IllegalAccessException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var con = simpledao.getConnection();
         var daoFactory = new DaoFactory(simpledao);
@@ -188,14 +188,18 @@ public class PGJDBCUtilsTest {
         var cats = new Cat[]{cat1, cat2, cat3};
         dog.RealCats = cats;
         dog.buddy = new Cat(0, "Buddy");
-        var insert = dogDao.insert(dog);
+        var insert = dogDao.insert(dog).get(0);
 //        dog.cat = insert.stream().mapToInt(cat -> cat.catid).toArray();
         System.out.println(insert);
+//        insert.name = "Test";
+        System.out.println("Inserted: " + insert);
+        insert.buddy.catname = "Buddy2";
+        dogDao.update(insert);
 
     }
 
     @Test
-    void t19() throws SQLException {
+    void t19() throws SQLException, IllegalAccessException {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         var con = simpledao.getConnection();
         var daoFactory = new DaoFactory(simpledao);
@@ -204,7 +208,7 @@ public class PGJDBCUtilsTest {
         var dao = daoFactory.createDao(Dog.class);
 //        var wuffy2s = dao.getAll().get(0);
 //        wuffy2s.name = "JHBACB";
-        System.out.println(dao.get(27));
+        System.out.println(dao.getAll());
     }
     @Test
     void t20() throws SQLException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
@@ -237,12 +241,25 @@ public class PGJDBCUtilsTest {
         wuffy=dao.insert(wuffy).get(0);
         System.out.println(wuffy);
         wuffy.name="Philip";
-        wuffy=dao.update(wuffy);
+        wuffy=dao.update(wuffy).get();
         System.out.println(wuffy);
     }
 
     @Test
     void t22() throws ClassNotFoundException {
         var s = new QueryBuilder().alterTableAddForeignKeys(Dog.class);
+    }
+
+    @Test
+    void t23() throws SQLException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        var con = simpledao.getConnection();
+        var daoFactory = new DaoFactory(simpledao);
+        var queryBuilder = new QueryBuilder();
+        var queryExecutor = new QueryExecutor();
+        var dao = daoFactory.createDao(Dog.class);
+//        var wuffy2s = dao.getAll().get(0);
+//        wuffy2s.name = "JHBACB";
+        System.out.println(dao.remove(dao.get(2, "Dog").get()));
     }
 }
