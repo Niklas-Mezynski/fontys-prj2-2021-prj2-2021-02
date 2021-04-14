@@ -13,7 +13,9 @@ public class CreateDB {
         var datebaseSQL = queryBuilder.createDatabaseSQL(new String[]{
                 "com.g02.flightsalesfx.businessLogic.PlaneImpl",
                 "com.g02.flightsalesfx.businessLogic.SeatImpl",
-                "com.g02.flightsalesfx.businessLogic.SeatOptionImpl"
+                "com.g02.flightsalesfx.businessLogic.SeatOptionImpl",
+                "com.g02.flightsalesfx.businessLogic.AirportImpl",
+                "com.g02.flightsalesfx.businessLogic.RouteImpl",
         });
         System.out.println(datebaseSQL);
     }
