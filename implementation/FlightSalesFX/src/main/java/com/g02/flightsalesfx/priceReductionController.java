@@ -13,8 +13,9 @@ public class priceReductionController {
 
     private Flight selectedFlight;
 
-    void initialize() {
+    public void initialize() {
         this.selectedFlight = EditFlightController.selectedFlight;
+        FlightNumberLabel.setText("Edit price reductions for Flight: " + selectedFlight.getFlightNumber());
     }
 
     @FXML
