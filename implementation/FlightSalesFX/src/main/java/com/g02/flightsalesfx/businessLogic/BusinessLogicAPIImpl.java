@@ -23,6 +23,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     private FlightManagerImpl flightManager;
     private TicketManagerImpl ticketManager;
     private BookingManagerImpl bookingManager;
+    private ReoccurringFlightManagerImpl reoccurringFlightManager;
 
     public BusinessLogicAPIImpl(PersistenceAPI persistenceAPI) {
         this.persistenceAPI = persistenceAPI;
@@ -133,6 +134,16 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
+    public ReoccurringFlightManager getReoccurringFlightManager() {
+        //todo: review to verify consistency
+        if(reoccurringFlightManager == null) {
+            reoccurringFlightManager = new ReoccurringFlightManagerImpl();
+            reoccurringFlightManager.setReoccurringFlightStorageService(flightManager);
+        }
+        return reoccurringFlightManager;
+    }
+
+    @Override
     public Employee login(String email, String password) {
         var employeeStorageService = persistenceAPI.getEmployeeStorageService(getEmployeeManager());
         var first = employeeStorageService.getAll().stream().filter(employee -> employee.getEmail().equals(email) && employee.getPassword().equals(password)).findFirst();
@@ -191,6 +202,26 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
         return flightStorageService.add(flight);
+    }
+
+    @Override
+    public boolean createFlightFromUI(Flight flight) {
+        var f = getFlightManager().createFlight(flight.getCreatedBy(), flight.getFlightNumber(), flight.getDeparture(), flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
+
+        var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
+        return flightStorageService.add(flight);
+    }
+
+    @Override
+    public boolean createReoccurringFlightFromUI(Flight flight, int interval) {
+        var reOccurFlight = getReoccurringFlightManager().createRoccurringFlight(flight, interval);
+        System.out.println(reOccurFlight);
+
+        var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
+        if(flightStorageService.remove(flight)) {
+            return flightStorageService.add(reOccurFlight);
+        }
+        return false;
     }
 
     @Override

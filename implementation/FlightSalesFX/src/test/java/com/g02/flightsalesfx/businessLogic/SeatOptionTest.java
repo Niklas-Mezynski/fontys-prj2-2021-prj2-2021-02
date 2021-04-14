@@ -7,9 +7,10 @@ public class SeatOptionTest {
 
     @Test
     void testEquals() {
-        SeatOptionImpl ref = new SeatOptionImpl("Peter");
-        SeatOptionImpl eql = new SeatOptionImpl("Peter");
-        SeatOptionImpl uneql1 = new SeatOptionImpl("Frant");
-        TestUtil.verifyEqualsHasCode(ref, eql, uneql1);
+        SeatOptionImpl ref = new SeatOptionImpl("Peter", 100.0);
+        SeatOptionImpl eql = new SeatOptionImpl("Peter", 100.0);
+        SeatOptionImpl uneql1 = new SeatOptionImpl("Franz", 100.0);
+        SeatOptionImpl uneql2 = new SeatOptionImpl("Peter", 99.0);
+        TestUtil.verifyEqualsHasCode(ref, eql, uneql1, uneql2);
     }
 }

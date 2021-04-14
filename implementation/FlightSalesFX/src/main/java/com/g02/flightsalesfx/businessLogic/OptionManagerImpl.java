@@ -15,8 +15,8 @@ public class OptionManagerImpl implements OptionManager {
     private FlightOptionStorageService flightOptionStorageService;
 
     @Override
-    public SeatOption createSeatOption(String name) {
-        return new SeatOptionImpl(name);
+    public SeatOption createSeatOption(String name, double price) {
+        return new SeatOptionImpl(name, price);
     }
 
     @Override

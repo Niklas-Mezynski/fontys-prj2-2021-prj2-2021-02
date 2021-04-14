@@ -13,9 +13,8 @@ public class DynamicPriceReductionImpl extends PriceReductionImpl {
 
     // todo: implement source
     public DynamicPriceReductionImpl(String name, String source, LocalDate end) {
-        this.name = name;
+        super(name, end);
         this.source = source;
-        this.endDate = end;
     }
     /**
      * @return The LocalDate that this PriceReduction expires on
@@ -30,4 +29,9 @@ public class DynamicPriceReductionImpl extends PriceReductionImpl {
         return name;
     }
 
+    @Override
+    public double getPercentageAsDouble() {
+        //TODO Calculate the PriceReduction depending on the @Source
+        return 0;
+    }
 }

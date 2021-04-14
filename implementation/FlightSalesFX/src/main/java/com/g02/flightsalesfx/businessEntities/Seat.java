@@ -37,6 +37,6 @@ public interface Seat extends Comparable<Seat> {
         return this.getRowNumber()-o.getRowNumber();
     }
 
-    List<SeatOption> getSeatOptions();
+    public List<SeatOption> getSeatOptions();
 
 }

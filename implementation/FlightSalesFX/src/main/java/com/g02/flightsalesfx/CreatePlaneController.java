@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.g02.flightsalesfx.App.businessLogicAPI;
 import static com.g02.flightsalesfx.App.setRoot;
 
 public class CreatePlaneController {
@@ -163,7 +164,7 @@ public class CreatePlaneController {
      * Inner class that represents a SeatOption on the UI.
      * Extends HBox and has a Button, TextField and Spinner
      */
-    public class SeatOptionBox extends HBox {
+    public class SeatOptionBox extends HBox implements SeatOption {
         String optionName = "";
         // Button to toggle which SeatOption will be applied to the Seats if they are selected
         ToggleButton chooseButton;
@@ -196,6 +197,21 @@ public class CreatePlaneController {
             });
         }
 
+        /**
+         * @return The Name of this Option
+         */
+        @Override
+        public String getName() {
+            return changeNameTextField.getText();
+        }
+
+        /**
+         * @return The price that this FlightOption costs
+         */
+        @Override
+        public double getPrice() {
+            return changeAvailableSpinner.getValue();
+        }
     }
 
     /**
@@ -294,11 +310,18 @@ public class CreatePlaneController {
          * @param seatOptionList The List of SeatOptions to add
          */
         @Override
-        public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) { }
+
+        public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) {
+
+        }
 
         @Override
         public List<SeatOption> getSeatOptions() {
-            throw new UnsupportedOperationException("Operation not supported and wont be!");
+            List<SeatOption> seatOptions = this.options.stream()
+                    .map(seatOptionBox -> businessLogicAPI.getOptionManager().createSeatOption(seatOptionBox.getName(), seatOptionBox.getPrice()))
+                    .collect(Collectors.toList());
+            return seatOptions;
+
         }
     }
 

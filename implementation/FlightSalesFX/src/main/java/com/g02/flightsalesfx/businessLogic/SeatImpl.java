@@ -72,4 +72,9 @@ public class SeatImpl implements Seat {
     public int hashCode() {
         return Objects.hash(rowNumber, seatNumber, seatOptions);
     }
+
+    @Override
+    public List<SeatOption> getSeatOptions () {
+        return seatOptions;
+    }
 }

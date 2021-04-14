@@ -7,4 +7,9 @@ public interface Option {
      */
     String getName();
 
+    /**
+     * @return The price that this FlightOption costs
+     */
+    double getPrice();
+
 }

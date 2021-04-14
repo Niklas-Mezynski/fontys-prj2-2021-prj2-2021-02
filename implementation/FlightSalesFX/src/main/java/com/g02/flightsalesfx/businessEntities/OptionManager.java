@@ -15,7 +15,7 @@ public interface OptionManager {
      * @param name The Name of the SeatOption that should be created
      * @return The newly created SeatOption
      */
-    SeatOption createSeatOption(String name);
+    SeatOption createSeatOption(String name, double price);
 
     FlightOption createFlightOption(String name, int maxAvailable, double price);
 }

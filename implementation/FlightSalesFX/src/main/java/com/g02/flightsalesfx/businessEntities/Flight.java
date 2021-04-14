@@ -25,7 +25,7 @@ public interface Flight {
     public int getFlightNumber();
 
     /**
-     * @return Current Price of this Flight
+     * @return Base Price of this Flight
      */
     public double getPrice();
 
@@ -68,8 +68,16 @@ public interface Flight {
      * @return The List of FlightOptions that are available on this Flight
      */
     public List<FlightOption> getFlightOptions();
-    
-    public PriceReduction applyPriceReduction(PriceReduction p);
+
+    /**
+     * @param p The price reduction you want to add;
+     */
+    public void addPriceReduction(PriceReduction p);
+
+    /**
+     * @return Current Price of this Flight
+     */
+    public double getPriceWithPriceReductionsApplied();
 
     public void setArrival(LocalDateTime newArrival);
 

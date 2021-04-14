@@ -3,6 +3,7 @@ package com.g02.flightsalesfx.businessLogic;
 import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.persistence.PersistenceAPIImpl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,9 +117,24 @@ public class FlightImpl implements Flight {
     }
 
     @Override
-    public PriceReduction applyPriceReduction(PriceReduction p) {
+    public void addPriceReduction(PriceReduction p) {
         reductionList.add(p);
-        return p;
+    }
+
+    /**
+     * @return Current Price of this Flight
+     */
+    @Override
+    public double getPriceWithPriceReductionsApplied() {
+        List<PriceReduction> availablePriceReductions = this.reductionList.stream()
+                .filter(priceReduction -> priceReduction.getEndDate().isAfter(LocalDate.now()))
+                .sorted()
+                .collect(Collectors.toList());
+        double newPrice = this.price;
+        for (PriceReduction pr: availablePriceReductions) {
+            newPrice = newPrice - (newPrice * pr.getPercentageAsDouble());
+        }
+        return newPrice;
     }
 
     @Override
