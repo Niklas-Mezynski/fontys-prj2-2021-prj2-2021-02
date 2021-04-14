@@ -123,13 +123,13 @@
                               </HBox>
                               <HBox fx:id="contactEmailOverview" prefWidth="200.0">
                                  <children>
-                                    <Label text="Contact E-Mail" />
+                                    <Label text="Contact E-Mail: " />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
                                     <Label text="Seats: " />
-                                    <VBox fx:id="seatsOverviewVBox" prefHeight="200.0" prefWidth="100.0" />
+                                    <VBox fx:id="seatsOverviewVBox" prefHeight="100.0" prefWidth="766.0" />
                                  </children>
                               </HBox>
                            </children>

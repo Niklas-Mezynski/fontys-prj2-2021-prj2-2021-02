@@ -11,6 +11,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.*;
@@ -73,12 +74,7 @@ public class createBookingController {
     @FXML
     private Text selectedFlightText;
 
-    public void generateOverview(){
-        flightOverview.getChildren().add(new Label("FlightNo: "+selectedFlight.getFlightNumber()+"; From: "+selectedFlight.getRoute().getDepartureAirport().toString()+"; To: "+selectedFlight.getRoute().getArrivalAirport().toString()+"; On: "+selectedFlight.getDeparture().toString()));
 
-        flightOptionsOverview.getChildren().add(new Label(selectedFlightOptions.toString()));
-        contactEmailOverview.getChildren().add(new Label(contactEmailField.getText()));
-    }
 
 
     private FlightTable flightTable;
@@ -103,7 +99,11 @@ public class createBookingController {
 
     private List<FlightOptionSelector> flightOptionSelectors;
 
-    private List<FlightOption> selectedFlightOptions = new ArrayList<>();
+    private Map<FlightOption, Integer> selectedFlightOptions = new HashMap<>();
+
+    private Map<Seat, Pair<String, String>> personNameSeatComb;
+
+    private String contactEmail = "";
 
     public void initialize(){
 
@@ -350,13 +350,13 @@ public class createBookingController {
     }
 
     public void updateSelectedFlightOptions(){
-        selectedFlightOptions = new ArrayList<>();
         for(FlightOptionSelector fos : flightOptionSelectors){
 
-            for(int i = 0; i < fos.getSelected(); i++){
+
                 System.out.println("Adding FlightOption: "+ fos.getFlightOption());
-                selectedFlightOptions.add(fos.getFlightOption());
-            }
+                int qty = fos.getSelected();
+                selectedFlightOptions.put(fos.getFlightOption(), qty);
+
         }
         System.out.println(availableFlightOptions+"     Selected:"+selectedFlightOptions);
     }
@@ -399,21 +399,65 @@ public class createBookingController {
     }
     public void checkPaxInfoStatus(){
         if(paxInfoBoxes != null && !paxInfoBoxes.isEmpty() && contactEmailField != null){
+            personNameSeatComb = new HashMap<>();
             boolean infoMissing = false;
             for(PaxInfoBox p : paxInfoBoxes){
-                System.out.println("Name: "+p.getFirstName()+ " " +p.getLastName());
                 if(p.getFirstName().equals("") || p.getLastName().equals("")){
                     infoMissing = true;
+                }else{
+                    personNameSeatComb.put(p.getSeat(), new Pair<String,String>(p.getFirstName(), p.getLastName()));
                 }
             }
             if(contactEmailField.getText().equals("")){
                 infoMissing = true;
             }
-            if(infoMissing)
+            if(infoMissing) {
                 flightOptionsTab.setDisable(true);
-            else
+            }else
                 flightOptionsTab.setDisable(false);
+                 contactEmail = contactEmailField.getText();
         }
+    }
+
+    public void generateOverview(){
+        flightOverview.getChildren().add(new Label("FlightNo: "+selectedFlight.getFlightNumber()+"; From: "+selectedFlight.getRoute().getDepartureAirport().toString()+"; To: "+selectedFlight.getRoute().getArrivalAirport().toString()+"; On: "+selectedFlight.getDeparture().toString()));
+
+        contactEmailOverview.getChildren().add(new Label(contactEmail));
+
+        VBox flightOptions = new VBox();
+        for(FlightOption fo : selectedFlightOptions.keySet()){
+            String overviewString = selectedFlightOptions.get(fo)+"x : "+fo.getName()+ " : +"+fo.getPrice();
+            flightOptions.getChildren().add(new Label(overviewString));
+        }
+        flightOptionsOverview.getChildren().add(flightOptions);
+
+        //seatsOverviewVBox
+        //selectedSeatsForBooking
+        for(Seat s : selectedSeatsForBooking.keySet()){
+            HBox seatBox = new HBox();
+            Pair<String,String> namePair = personNameSeatComb.get(s);
+            String seatInfoString = seatToText(s)+ ": "+ namePair.getValue()+", "+namePair.getKey();
+            seatBox.getChildren().add(new Label(seatInfoString));
+
+            VBox seatOptionsBox = new VBox();
+            selectedSeatsForBooking.get(s).forEach(so -> seatOptionsBox.getChildren().add(new Label(so.getName()+": "+so.getPrice()+"€")));
+            seatBox.getChildren().add(seatOptionsBox);
+            seatsOverviewVBox.getChildren().add(seatBox);
+        }
+
+    }
+
+    String seatToText(Seat seat) {
+        var i = seat.getSeatNumber();
+        var i1 = seat.getRowNumber() + 1;
+        String s = String.format("%02d", i1);
+        if (i < 26) {
+            s += String.valueOf((char) (i + 65));
+        } else {
+            s += String.valueOf((char) ((i / 26) + 64));
+            s += String.valueOf((char) (i + 65 - 26));
+        }
+        return s;
     }
 
     public class PaxInfoBox extends HBox{
@@ -429,7 +473,7 @@ public class createBookingController {
             lastName = new TextField();
             lastName.setPromptText("Last Name");
             lastName.textProperty().addListener((observableValue, oldValue, newValue) -> checkPaxInfoStatus());
-            this.getChildren().addAll(new Label("Passenger for Seat "+ seatToText()), firstName, lastName);
+            this.getChildren().addAll(new Label("Passenger for Seat "+ seatToText(seat)), firstName, lastName);
         }
 
         String getFirstName(){
@@ -442,18 +486,7 @@ public class createBookingController {
             return seat;
         }
 
-        String seatToText() {
-            var i = seat.getSeatNumber();
-            var i1 = seat.getRowNumber() + 1;
-            String s = String.format("%02d", i1);
-            if (i < 26) {
-                s += String.valueOf((char) (i + 65));
-            } else {
-                s += String.valueOf((char) ((i / 26) + 64));
-                s += String.valueOf((char) (i + 65 - 26));
-            }
-            return s;
-        }
+
     }
 
 }
