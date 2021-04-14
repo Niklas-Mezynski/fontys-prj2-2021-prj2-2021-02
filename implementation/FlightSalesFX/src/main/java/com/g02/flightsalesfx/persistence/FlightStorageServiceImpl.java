@@ -17,8 +17,12 @@ public class FlightStorageServiceImpl implements FlightStorageService{
 
     @Override
     public boolean add(Flight flight) {
-        flightList.add(flight);
-        return true;
+        return flightList.add(flight);
+    }
+
+    @Override
+    public boolean remove(Flight flight) {
+        return this.flightList.remove(flight);
     }
 
     @Override

@@ -96,4 +96,9 @@ public class SeatImpl implements Seat, Savable {
         result = 31 * result + Arrays.hashCode(seatOptions);
         return result;
     }
+
+    @Override
+    public SeatOptionImpl[] getSeatOptions () {
+        return seatOptions;
+    }
 }

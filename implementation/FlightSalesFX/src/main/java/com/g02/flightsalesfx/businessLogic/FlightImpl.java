@@ -1,7 +1,9 @@
 package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.flightsalesfx.businessEntities.*;
+import com.g02.flightsalesfx.persistence.PersistenceAPIImpl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,10 @@ public class FlightImpl implements Flight {
     /**
      * Starts the Sales process for this Flight
      */
+    @Override
+    public String toString(){
+        return "ID: "+flightNumber+"; "+ route+"; "+plane+"; takeoff: "+departure+", arrival: "+arrival+"; Price:"+price+"; sale started:"+salesProcessStarted;
+    }
     @Override
     public void startSalesProcess() {
         salesProcessStarted = true;
@@ -110,9 +116,34 @@ public class FlightImpl implements Flight {
     }
 
     @Override
-    public PriceReduction applyPriceReduction(PriceReduction p) {
+    public void addPriceReduction(PriceReduction p) {
         reductionList.add(p);
-        return p;
+    }
+
+    /**
+     * @return Current Price of this Flight
+     */
+    @Override
+    public double getPriceWithPriceReductionsApplied() {
+        List<PriceReduction> availablePriceReductions = this.reductionList.stream()
+                .filter(priceReduction -> priceReduction.getEndDate().isAfter(LocalDate.now()))
+                .sorted()
+                .collect(Collectors.toList());
+        double newPrice = this.price;
+        for (PriceReduction pr: availablePriceReductions) {
+            newPrice = newPrice - (newPrice * pr.getPercentageAsDouble());
+        }
+        return newPrice;
+    }
+
+    @Override
+    public void setArrival(LocalDateTime newArrival) {
+        this.arrival = newArrival;
+    }
+
+    @Override
+    public void setDeparture(LocalDateTime newDeparture) {
+        this.departure = newDeparture;
     }
 
     /*public boolean removePriceReduction(PriceReduction p) {
@@ -139,10 +170,12 @@ public class FlightImpl implements Flight {
         return optionsList;
     }
 
+    @Override
     public void addFlightOption(FlightOption flightOption) {
         this.optionsList.add(flightOption);
     }
 
+    @Override
     public void addAllFlightOptions(List<? extends FlightOption> options) {
         this.optionsList.addAll(options);
     }

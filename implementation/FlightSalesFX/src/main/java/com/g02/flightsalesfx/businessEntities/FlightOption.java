@@ -21,9 +21,4 @@ public interface FlightOption extends Option{
      */
     public int getMaxAvailability();
 
-    /**
-     * @return The Flight that this FlightOption belongs to
-     */
-    public Flight getFlight();
-    
 }

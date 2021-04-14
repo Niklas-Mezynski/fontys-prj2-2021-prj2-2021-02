@@ -17,6 +17,7 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     private PlaneStorageService planeStorageService;
     private SeatStorageService seatStorageService;
     private SeatOptionsStorageServiceImpl seatOptionStorageService;
+    private FlightOptionStorageServiceImpl flightOptionStorageService;
     private AirportStorageService airportStorageService;
     private RouteStorageService routeStorageService;
     private PriceReductionStorageService priceReductionStorageService;
@@ -64,6 +65,14 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
             seatOptionStorageService = new SeatOptionsStorageServiceImpl(optionManager);
         }
         return seatOptionStorageService;
+    }
+
+    @Override
+    public FlightOptionStorageService getFlightOptionStorageService(OptionManager optionManager) {
+        if (flightOptionStorageService == null) {
+            flightOptionStorageService = new FlightOptionStorageServiceImpl(optionManager);
+        }
+        return flightOptionStorageService;
     }
 
     @Override

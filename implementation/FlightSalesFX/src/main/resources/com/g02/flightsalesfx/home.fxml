@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.HomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.HomeController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -101,6 +91,7 @@
                                                 </VBox>
                                              </children>
                                           </HBox>
+                                          <CheckBox fx:id="showDisabled" mnemonicParsing="false" onAction="#showDisabledUpdated" text="Show Disabled Routes" />
                                           <Button fx:id="goToCreateRoute" mnemonicParsing="false" onAction="#goToCreateRoute" text="Add Route" />
                                        </children>
                                     </VBox>
@@ -111,6 +102,45 @@
                      </children></AnchorPane>
             </content>
           </Tab>
+            <Tab fx:id="flightsTab" text="Flights">
+              <content>
+                <AnchorPane>
+                     <children>
+                        <BorderPane prefHeight="527.2" prefWidth="910.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <top>
+                              <VBox fx:id="flightVBox" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Label text="Flights (double click a flight to edit)">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="goToCreateFlight" mnemonicParsing="false" onAction="#goToCreateFlight" text="Create new flight">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </top>
+                           <center>
+                              <ScrollPane BorderPane.alignment="CENTER">
+                                 <content>
+                                    <AnchorPane fx:id="flightPane" />
+                                 </content>
+                                 <BorderPane.margin>
+                                    <Insets top="5.0" />
+                                 </BorderPane.margin>
+                              </ScrollPane>
+                           </center>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
         </tabs>
       </TabPane>
    </center>

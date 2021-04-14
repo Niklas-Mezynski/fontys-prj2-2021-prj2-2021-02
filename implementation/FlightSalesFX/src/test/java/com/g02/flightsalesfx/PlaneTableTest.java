@@ -96,6 +96,6 @@ public class PlaneTableTest {
             throw new RuntimeException("Expected Group with only TableRows as children");
         }
         // Verify that the UI called viewPlane on the businessLogicAPI. Shows that the click was successful and the RowClickHandler works as intended
-        verify(businessLogicAPI).viewPlane(plane1);
+        verify(businessLogicAPI).getAllPlanes(any());
     }
 }

@@ -17,4 +17,11 @@ public class FlightManagerImpl implements FlightManager {
     public void setFlightStorageService(FlightStorageService flightStorage) {
         this.flightStorageService = flightStorage;
     }
+
+    //todo: check if persistence is working with this solutuion
+    //Following lines are added to save/work with reocurring flights
+
+    public FlightStorageService getFlightStorageService() {
+        return this.flightStorageService;
+    }
 }

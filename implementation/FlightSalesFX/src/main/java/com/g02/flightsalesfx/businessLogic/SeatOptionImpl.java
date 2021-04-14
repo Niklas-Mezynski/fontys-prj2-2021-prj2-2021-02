@@ -13,13 +13,23 @@ public class SeatOptionImpl implements SeatOption, Savable {
     @PrimaryKey(autogen = true)
     public int id;
     public String name;
+    public double price;
 
-    public SeatOptionImpl (String name) {
+    public SeatOptionImpl (String name, Double price) {
         this.name = name;
+        this.price = price;
     }
 
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * @return The price that this FlightOption costs
+     */
+    @Override
+    public double getPrice() {
+        return price;
     }
 
     @Override
@@ -33,12 +43,20 @@ public class SeatOptionImpl implements SeatOption, Savable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         SeatOptionImpl that = (SeatOptionImpl) o;
-        return Objects.equals(name, that.name);
+
+        if (Double.compare(that.getPrice(), getPrice()) != 0) return false;
+        return getName() != null ? getName().equals(that.getName()) : that.getName() == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        int result;
+        long temp;
+        result = getName() != null ? getName().hashCode() : 0;
+        temp = Double.doubleToLongBits(getPrice());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }

@@ -104,4 +104,9 @@ public class PlaneImpl implements Plane, Savable {
         }
         return rows;
     }*/
+
+    @Override
+    public SeatImpl[] getAllSeats() {
+        return this.seatList;
+    }
 }

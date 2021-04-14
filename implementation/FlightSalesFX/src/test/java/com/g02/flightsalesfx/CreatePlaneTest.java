@@ -7,6 +7,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -28,7 +30,7 @@ import static org.testfx.assertions.api.Assertions.assertThat;
 /**
  * Add "--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED" to you launch arguments if this produces errors
  */
-
+//@Disabled
 @ExtendWith(ApplicationExtension.class)
 public class CreatePlaneTest {
     static {

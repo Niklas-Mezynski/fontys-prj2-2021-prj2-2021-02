@@ -4,6 +4,7 @@ import com.g02.flightsalesfx.businessEntities.Employee;
 import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
 import com.g02.flightsalesfx.businessLogic.BusinessLogicAPIImpl;
 import com.g02.flightsalesfx.businessLogic.SalesEmployeeImpl;
+import com.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -33,7 +34,7 @@ public class LoginTest {
             System.setProperty("prism.text", "t2k");
         }
     }
-    
+
     private Stage stage;
 
     @Mock
@@ -58,7 +59,7 @@ public class LoginTest {
         fxRobot.write(username);
         var password = "peterIstDerBeste";
         fxRobot.lookup("#password").queryAs(TextField.class).setText(password);
-        Employee employee = new SalesEmployeeImpl("Peter", "peter@gmx.de", "peterIstDerBeste");
+        var employee = new SalesOfficerImpl("Peter", "peter@gmx.de", "peterIstDerBeste");
         Mockito.when(businessLogicAPI.login(any(), any())).thenReturn(employee);
         fxRobot.clickOn(fxRobot.lookup("#loginButton").queryButton());
         Mockito.verify(businessLogicAPI).login(any(), any());

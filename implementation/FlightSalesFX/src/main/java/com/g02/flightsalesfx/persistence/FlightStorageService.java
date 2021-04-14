@@ -9,4 +9,7 @@ public interface FlightStorageService {
     public boolean add(Flight flight);
 
     public List<Flight> getAll();
+
+    public boolean remove(Flight flight);
+
 }

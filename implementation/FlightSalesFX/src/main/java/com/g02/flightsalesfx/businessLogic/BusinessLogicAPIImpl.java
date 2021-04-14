@@ -4,6 +4,7 @@ import com.g02.flightsalesfx.CreatePlaneController;
 import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.persistence.PersistenceAPI;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     private RouteManagerImpl routeManager;
     private PriceReductionManagerImpl priceReductionManager;
     private FlightManagerImpl flightManager;
+    private ReoccurringFlightManagerImpl reoccurringFlightManager;
 
     public BusinessLogicAPIImpl(PersistenceAPI persistenceAPI) {
         this.persistenceAPI = persistenceAPI;
@@ -57,6 +59,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         if (optionManager == null) {
             optionManager = new OptionManagerImpl();
             optionManager.setSeatOptionStorageService(persistenceAPI.getSeatOptionStorageService(optionManager));
+            optionManager.setFlightOptionStorageService(persistenceAPI.getFlightOptionStorageService(optionManager));
         }
         return optionManager;
     }
@@ -98,6 +101,16 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
             flightManager.setFlightStorageService(persistenceAPI.getFlightStorageService(flightManager));
         }
         return flightManager;
+    }
+
+    @Override
+    public ReoccurringFlightManager getReoccurringFlightManager() {
+        //todo: review to verify consistency
+        if(reoccurringFlightManager == null) {
+            reoccurringFlightManager = new ReoccurringFlightManagerImpl();
+            reoccurringFlightManager.setReoccurringFlightStorageService(flightManager);
+        }
+        return reoccurringFlightManager;
     }
 
     @Override
@@ -151,5 +164,54 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         var all = persistenceAPI.getRouteStorageService(routeManager).getAll();
         return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
     }
+
+    @Override
+    public boolean createFlightFromUI(SalesOfficer creator, int fNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
+        var flight = getFlightManager().createFlight(creator, fNumber, dep, arr, route, plane, price);
+        System.out.println(flight);
+
+        var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
+        return flightStorageService.add(flight);
+    }
+
+    @Override
+    public boolean createFlightFromUI(Flight flight) {
+        var f = getFlightManager().createFlight(flight.getCreatedBy(), flight.getFlightNumber(), flight.getDeparture(), flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
+
+        var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
+        return flightStorageService.add(flight);
+    }
+
+    @Override
+    public boolean createReoccurringFlightFromUI(Flight flight, int interval) {
+        var reOccurFlight = getReoccurringFlightManager().createRoccurringFlight(flight, interval);
+        System.out.println(reOccurFlight);
+
+        var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
+        if(flightStorageService.remove(flight)) {
+            return flightStorageService.add(reOccurFlight);
+        }
+        return false;
+    }
+
+    @Override
+    public void createAirportFromUI(String name, String city, String country){
+        var airport = getAirportManager().createAirport(name, city, country);
+        persistenceAPI.getAirportStorageService(getAirportManager()).add(airport);
+    }
+
+    @Override
+    public List<Flight> getAllFlights(Predicate<Flight> predicate) {
+        var all = persistenceAPI.getFlightStorageService(flightManager).getAll();
+        return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public boolean addFlightOptionFromUI(String name, int maxAvailable, double price, Flight flight) {
+        var flightOption = getOptionManager().createFlightOption(name, maxAvailable, price);
+        flight.addFlightOption(flightOption);
+        return persistenceAPI.getFlightOptionStorageService(getOptionManager()).add(flightOption);
+    }
+
 
 }

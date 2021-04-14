@@ -1,5 +1,7 @@
 package com.g02.flightsalesfx.businessEntities;
 
+import com.g02.flightsalesfx.businessLogic.SeatImpl;
+
 import java.util.List;
 
 public interface Plane {
@@ -39,4 +41,6 @@ public interface Plane {
      * @return The Number of Rows that this Plane has
      */
     int getRows();
+
+    SeatImpl[] getAllSeats();
 }

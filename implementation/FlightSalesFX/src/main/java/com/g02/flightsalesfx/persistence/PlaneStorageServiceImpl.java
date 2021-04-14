@@ -23,14 +23,13 @@ public class PlaneStorageServiceImpl implements PlaneStorageService {
 
     @Override
     public boolean add(Plane plane) {
-        if (!(plane instanceof PlaneImpl)) return false;
-        try {
-            dao.insert((PlaneImpl)plane);
+        return plane instanceof PlaneImpl;
+        /*try {
+//            dao.insert((PlaneImpl)plane);
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return false;
-        }
-        return true;
+        }*/
     }
 
     @Override

@@ -15,5 +15,7 @@ public interface ReoccurringFlight extends Flight{
      * @return the Interval at which this Flight should be renewed
      */
     public int getInterval();
-    
+
+    public Flight getFlight();
+
 }
