@@ -1,13 +1,19 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.SalesOfficer;
 
 import java.util.Objects;
 
-public class SalesOfficerImpl implements SalesOfficer {
-    private final String name;
-    private final String email;
-    private final String password;
+@TableName("salesofficers")
+public class SalesOfficerImpl implements SalesOfficer, Savable {
+    @PrimaryKey
+    public final String name;
+    @PrimaryKey
+    public final String email;
+    public final String password;
 
     public SalesOfficerImpl(String name, String email, String password) {
         this.name = name;
