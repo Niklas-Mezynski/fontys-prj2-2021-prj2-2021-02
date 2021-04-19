@@ -2,12 +2,13 @@ package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.SalesEmployee;
 
 import java.util.Objects;
 
 @TableName("salesemployees")
-public class SalesEmployeeImpl implements SalesEmployee {
+public class SalesEmployeeImpl implements SalesEmployee, Savable {
     @PrimaryKey
     public final String name;
     @PrimaryKey

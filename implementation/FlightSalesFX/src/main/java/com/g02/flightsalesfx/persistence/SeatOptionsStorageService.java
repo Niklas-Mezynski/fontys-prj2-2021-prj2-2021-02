@@ -8,7 +8,7 @@ import java.util.List;
  * @author anato
  */
 public interface SeatOptionsStorageService {
-    void add(SeatOption s);
+    SeatOption add(SeatOption s);
     
     List<SeatOption> getAll();
 }

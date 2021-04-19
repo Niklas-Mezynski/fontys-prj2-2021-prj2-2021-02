@@ -2,6 +2,7 @@ package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
+import com.g02.flightsalesfx.businessLogic.SeatImpl;
 import com.g02.flightsalesfx.businessLogic.SeatOptionImpl;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -134,7 +135,7 @@ public class CreatePlaneController {
         var type = planeType.getText();
         var manufacturer = planeManufacturer.getText();
         // Map all internal used SeatButtons to Seat
-        var collect = seats.stream().map(seatButton -> (Seat) seatButton).collect(Collectors.toList());
+        var collect = seats.stream().map(seatButton ->(Seat) new SeatImpl(seatButton.row(), seatButton.column())).collect(Collectors.toList());
         // Create the plane using the businessLogicAPI
         var planeCreated = App.businessLogicAPI.createPlaneFromUI(name, type, manufacturer, collect);
         if (planeCreated) { // If the plane was saved successfully exit and return to the previous scene
@@ -218,7 +219,7 @@ public class CreatePlaneController {
     /**
      * Inner class SeatButton represents a Seat as a Button on the UI
      */
-    public class SeatButton extends Button implements Seat {
+    public class SeatButton extends Button {
         private final VBox box;
         List<SeatOptionBox> options = new ArrayList<>();
 
@@ -287,41 +288,41 @@ public class CreatePlaneController {
          * get the row of the seat
          * @return Integer
          */
-        @Override
-        public int getRowNumber() {
-            return row();
-        }
-
-        /**
-         * get the seat number of the seat
-         * @return Integer
-         */
-        @Override
-        public int getSeatNumber() {
-            return column();
-        }
-
-        /**
-         * @param so The SeatOption to add to this Seat
-         */
-        @Override
-        public void addSeatOption(com.g02.flightsalesfx.businessEntities.SeatOption so) { }
-
-        /**
-         * @param seatOptionList The List of SeatOptions to add
-         */
-        @Override
-        public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) {
-
-        }
-
-        @Override
-        public SeatOptionImpl[] getSeatOptions() {
-            SeatOptionImpl[] seatOptions = this.options.stream()
-                    .map(seatOptionBox -> businessLogicAPI.getOptionManager().createSeatOption(seatOptionBox.getName(), seatOptionBox.getPrice()))
-                    .toArray(SeatOptionImpl[]::new);
-            return seatOptions;
-        }
+//        @Override
+//        public int getRowNumber() {
+//            return row();
+//        }
+//
+//        /**
+//         * get the seat number of the seat
+//         * @return Integer
+//         */
+//        @Override
+//        public int getSeatNumber() {
+//            return column();
+//        }
+//
+//        /**
+//         * @param so The SeatOption to add to this Seat
+//         */
+//        @Override
+//        public void addSeatOption(com.g02.flightsalesfx.businessEntities.SeatOption so) { }
+//
+//        /**
+//         * @param seatOptionList The List of SeatOptions to add
+//         */
+//        @Override
+//        public void addAllSeatOptions(List<? extends com.g02.flightsalesfx.businessEntities.SeatOption> seatOptionList) {
+//
+//        }
+//
+//        @Override
+//        public SeatOptionImpl[] getSeatOptions() {
+//            SeatOptionImpl[] seatOptions = this.options.stream()
+//                    .map(seatOptionBox -> businessLogicAPI.getOptionManager().createSeatOption(seatOptionBox.getName(), seatOptionBox.getPrice()))
+//                    .toArray(SeatOptionImpl[]::new);
+//            return seatOptions;
+//        }
     }
 
 }
