@@ -106,6 +106,8 @@ public class App extends Application {
         businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4489, LocalDateTime.now().plusDays(9), LocalDateTime.now().plusDays(9).plusHours(4).plusMinutes(34), routes.get(3), planes.get(0), 34.86 );
         businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4490, LocalDateTime.now().plusDays(9), LocalDateTime.now().plusDays(9).plusHours(2).plusMinutes(44), routes.get(14), planes.get(2), 67.27 );
         var flights = persistenceAPI.getFlightStorageService(businessLogicAPI.getFlightManager()).getAll();
+        flights.get(5).startSalesProcess();
+        flights.get(4).startSalesProcess();
         var flightOptions = new ArrayList<FlightOption>();
         flightOptions.add(new FlightOptionImpl("Currywurst", 2, 5.50));
         flightOptions.add(new FlightOptionImpl("Tomatensaft",3, 2.20));
