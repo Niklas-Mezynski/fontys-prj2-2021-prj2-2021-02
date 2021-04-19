@@ -59,7 +59,8 @@ public class Dao<E extends Savable> {
                     field.set(savable, insert);
                 }
             }
-            var opt = queryExecutor.doInsert(connection, queryBuilder.createInsertSQL(entityClass), entityClass, e1);
+            var opt=get(Mapper.getPrimaryKeyValues(e1));
+            opt = opt.isPresent()?opt:queryExecutor.doInsert(connection, queryBuilder.createInsertSQL(entityClass), entityClass, e1);
             if (!opt.isPresent()) continue;
             var e2 = opt.get();
             System.out.println("e2: " + e2);
