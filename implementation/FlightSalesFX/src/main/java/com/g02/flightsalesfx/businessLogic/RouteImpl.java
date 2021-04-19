@@ -26,8 +26,9 @@ public class RouteImpl implements Route, Savable {
         this.rteEnabled = true;
     }
 
-    public RouteImpl(Airport departureAirport, Airport arrivalAirport, boolean rteEnabled) {
+    public RouteImpl(int id,Airport departureAirport, Airport arrivalAirport, boolean rteEnabled) {
         this(departureAirport, arrivalAirport);
+        this.id=id;
         this.rteEnabled = rteEnabled;
     }
 

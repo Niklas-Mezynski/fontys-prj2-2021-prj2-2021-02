@@ -332,7 +332,7 @@ public class QueryBuilder {
     }
 
     public String createInsertSQL(Class<? extends Savable> aClass) throws ClassNotFoundException {
-        var template = "INSERT INTO %1$s (%2$s) values (%3$s) on conflict (%2$s) do update returning *;";
+        var template = "INSERT INTO %1$s (%2$s) values (%3$s) returning *;";
         var insertedFields = Mapper.getInsertableFields(aClass);
         var finalFields = Arrays.stream(insertedFields)
                 .filter(field ->

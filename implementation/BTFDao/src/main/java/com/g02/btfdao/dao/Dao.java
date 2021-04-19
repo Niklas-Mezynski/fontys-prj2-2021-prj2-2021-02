@@ -85,7 +85,7 @@ public class Dao<E extends Savable> {
                         for (int i = 0; i < length; i++) {
                             var a = Array.get(o, i);
                             var value = field.getAnnotation(ForeignKey.class).value();
-                            String sql = format("insert into %1$s (%2$s) values (%3$s, %4$s) on conflict (*) do update returning *",
+                            String sql = format("insert into %1$s (%2$s) values (%3$s, %4$s) returning *",
                                     Mapper.relationTableName(field),
                                     Mapper.relationColumnNames(field),
                                     Mapper.getPrimaryKeyValues(e2)[0],
