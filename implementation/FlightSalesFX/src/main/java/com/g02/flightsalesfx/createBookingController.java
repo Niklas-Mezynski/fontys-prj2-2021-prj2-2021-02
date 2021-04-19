@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -107,7 +108,7 @@ public class createBookingController {
 
     public void initialize(){
 
-        createOrUpdateRouteTable(v -> true);
+        createOrUpdateRouteTable(v -> v.getSalesProcessStatus() == true && v.getDeparture().isAfter(LocalDateTime.now()));
         createSearchFunctionality();
 
         paxTab.setDisable(true);
