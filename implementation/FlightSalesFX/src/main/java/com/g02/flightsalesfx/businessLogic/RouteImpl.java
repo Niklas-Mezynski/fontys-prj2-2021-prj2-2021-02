@@ -1,9 +1,6 @@
 package com.g02.flightsalesfx.businessLogic;
 
-import com.g02.btfdao.annotations.FieldName;
-import com.g02.btfdao.annotations.ForeignKey;
-import com.g02.btfdao.annotations.PrimaryKey;
-import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.annotations.*;
 import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.Airport;
 import com.g02.flightsalesfx.businessEntities.Route;
@@ -14,9 +11,11 @@ public class RouteImpl implements Route, Savable {
     @PrimaryKey
     public int id;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.AirportImpl")
-    public AirportImpl departureAirport;
-    @ForeignKey("com.g02.flightsalesfx.businessLogic.AirportImpl")
-    public AirportImpl arrivalAirport;
+    public AirportImpl[] airports;
+    @Ignore
+    private Airport arrivalAirport;
+    @Ignore
+    private Airport departureAirport;
     @FieldName("enabled")
     public boolean rteEnabled;
 
@@ -30,6 +29,10 @@ public class RouteImpl implements Route, Savable {
         this(departureAirport, arrivalAirport);
         this.id=id;
         this.rteEnabled = rteEnabled;
+    }
+    private RouteImpl(int id, boolean rteEnabled){
+        this.id=id;
+        this.rteEnabled=rteEnabled;
     }
 
     /**
@@ -115,5 +118,11 @@ public class RouteImpl implements Route, Savable {
         result = 31 * result + (arrivalAirport != null ? arrivalAirport.hashCode() : 0);
         result = 31 * result + (rteEnabled ? 1 : 0);
         return result;
+    }
+
+    @Override
+    public void afterConstruction() {
+        arrivalAirport=airports[0];
+        departureAirport=airports[1];
     }
 }

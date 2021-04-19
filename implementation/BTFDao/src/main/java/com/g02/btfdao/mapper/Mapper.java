@@ -127,6 +127,8 @@ public class Mapper {
         var constructor = aClass.getDeclaredConstructor(Arrays.stream(fields).map(Field::getType).toArray(Class[]::new));
         var b = constructor.trySetAccessible();
         if (!b) throw new IllegalAccessException("Konnte Konstruktor nicht aufrufbar machen");
+        System.out.println("constructor:"+constructor);
+        System.out.println("arguments:"+list);
         var e = constructor.newInstance(list.toArray());
         System.out.println(e);
         return e;
