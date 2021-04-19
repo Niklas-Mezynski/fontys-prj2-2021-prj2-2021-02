@@ -8,9 +8,7 @@ import com.g02.btfdao.utils.TypeMappings;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.SQLFeatureNotSupportedException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -251,9 +249,33 @@ public class QueryBuilder {
     }
 
     private String generateKeys(Field[] fields, Class<? extends Annotation> aClass, String prefix, boolean withNext) {
-        var primaryKeys = Arrays.stream(fields)
+        var names = Arrays.stream(fields)
                 .filter(field -> field.isAnnotationPresent(aClass))
-                .map(Mapper::getSQLFieldName).collect(Collectors.joining(", ", prefix + " (", ")" + (withNext ? ", " : "")));
+                .filter(field -> !field.isAnnotationPresent(ForeignKey.class))
+                .map(Mapper::getSQLFieldName)
+                .collect(Collectors.toList());
+        var collect = Arrays.stream(fields)
+                .filter(field -> field.isAnnotationPresent(ForeignKey.class))
+                .filter(field -> field.isAnnotationPresent(PrimaryKey.class))
+                .map(field -> {
+                    Class<? extends Savable> classa = null;
+                    try {
+                        classa = (Class<? extends Savable>) Class.forName(field.getAnnotation(ForeignKey.class).value().split("#")[0]);
+                        var fields2 = getFields(classa, PrimaryKey.class);
+                        return Arrays.stream(fields2)
+                                .map(field1 -> field.getName() + "_" + field1.getName())
+                                .collect(Collectors.toList());
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        names.addAll(collect);
+        var primaryKeys = names.stream()
+                .collect(Collectors.joining(", ", prefix + " (", ")" + (withNext ? ", " : "")));
         if (!primaryKeys.startsWith(prefix + " ()"))
             return primaryKeys;
         else return "";
