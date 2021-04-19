@@ -3,17 +3,18 @@ package com.g02.flightsalesfx.businessLogic;
 import com.g02.flightsalesfx.businessEntities.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BookingImpl implements Booking {
 
     private SalesEmployee se;
     private Flight flight;
-    private List<Ticket> tickets = new ArrayList<Ticket>();
-    private List<FlightOption> flightOptions;
+    private Ticket[] tickets;
+    private FlightOption[] flightOptions;
 
 
-    public BookingImpl(SalesEmployee se, Flight flight, List<FlightOption> bookedFlightOptions){
+    public BookingImpl(SalesEmployee se, Flight flight, FlightOption[] bookedFlightOptions){
         this.se = se;
         this.flight = flight;
         this.flightOptions = bookedFlightOptions;
@@ -46,6 +47,8 @@ public class BookingImpl implements Booking {
 
     @Override
     public void addTicket(Ticket t) {
-        tickets.add(t);
+        List<Ticket> ticketList = Arrays.asList();
+        ticketList.add(t);
+        tickets = (Ticket[])ticketList.toArray();
     }
 }

@@ -2,6 +2,7 @@ package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.flightsalesfx.businessEntities.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class TicketImpl implements Ticket {
@@ -9,11 +10,11 @@ public class TicketImpl implements Ticket {
     private Flight flight;
     private Booking booking;
     private Seat seat;
-    private List<SeatOption> seatOptions;
+    private SeatOption[] seatOptions;
     private String paxFName;
     private String paxLName;
 
-    public TicketImpl(Flight flight, Seat seat, Booking booking, String firstName, String lastName, List<SeatOption> seatOptions){
+    public TicketImpl(Flight flight, Seat seat, Booking booking, String firstName, String lastName, SeatOption[] seatOptions){
         this.flight = flight;
         this.booking = booking;
         this.seat = seat;
@@ -40,7 +41,7 @@ public class TicketImpl implements Ticket {
 
     @Override
     public List<SeatOption> getBookedSeatOption() {
-        return seatOptions;
+        return Arrays.asList(seatOptions.clone());
     }
 
     @Override

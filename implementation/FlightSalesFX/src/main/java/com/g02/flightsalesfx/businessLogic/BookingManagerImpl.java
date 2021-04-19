@@ -10,7 +10,7 @@ public class BookingManagerImpl implements BookingManager {
     private BookingStorageService bookingStorageService;
 
     @Override
-    public Booking createBooking(SalesEmployee se, Flight flight, List<FlightOption> bookedFlightOptions) {
+    public Booking createBooking(SalesEmployee se, Flight flight, FlightOption[] bookedFlightOptions) {
         return new BookingImpl(se, flight, bookedFlightOptions);
     }
 

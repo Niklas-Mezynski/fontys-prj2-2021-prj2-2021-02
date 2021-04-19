@@ -9,7 +9,7 @@ public class TicketManagerImpl implements TicketManager {
     private TicketStorageService ticketStorageService;
 
     @Override
-    public Ticket createTicket(Flight flight, Seat seat, Booking booking, String passengerFName, String passengerLName, List<SeatOption> bookedSeatOptions) {
+    public Ticket createTicket(Flight flight, Seat seat, Booking booking, String passengerFName, String passengerLName, SeatOption[] bookedSeatOptions) {
         return new TicketImpl(flight, seat, booking, passengerFName, passengerLName, bookedSeatOptions);
     }
 
