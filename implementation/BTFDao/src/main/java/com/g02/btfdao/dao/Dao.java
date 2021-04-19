@@ -67,6 +67,9 @@ public class Dao<E extends Savable> {
                 if (!field.getType().isArray() && Mapper.isDatabaseType(field)) {
                     var o = (Savable) field.get(savable);
                     Dao<? extends Savable> dao = daoFactory.createDao((Class<? extends Savable>) o.getClass());
+                    /*if (dao.get(Mapper.getPrimaryKeyValues(o)).isPresent()) {
+                        continue;
+                    }*/
                     var insert = dao.insert(o).get(0);
                     System.out.println("inserted1: " + insert);
                     field.set(e2, insert);
@@ -81,7 +84,7 @@ public class Dao<E extends Savable> {
                         for (int i = 0; i < length; i++) {
                             var a = Array.get(o, i);
                             var value = field.getAnnotation(ForeignKey.class).value();
-                            String sql = format("insert into %1$s (%2$s) values (%3$s, %4$s) returning *",
+                            String sql = format("insert into %1$s (%2$s) values (%3$s, %4$s) on conflict (*) do update returning *",
                                     Mapper.relationTableName(field),
                                     Mapper.relationColumnNames(field),
                                     Mapper.getPrimaryKeyValues(e2)[0],
