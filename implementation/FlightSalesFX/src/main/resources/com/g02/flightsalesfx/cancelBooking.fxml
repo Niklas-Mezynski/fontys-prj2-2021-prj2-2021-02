@@ -17,7 +17,7 @@
             <VBox prefHeight="200.0">
                <children>
                   <Label text="Flight Number" />
-                  <TextField fx:id="flightNumberTextField" />
+                  <TextField fx:id="flightNumberTextField" onAction="#searchFieldInputDetected" />
                </children>
                <HBox.margin>
                   <Insets left="5.0" />
@@ -25,8 +25,8 @@
             </VBox>
             <VBox prefHeight="200.0">
                <children>
-                  <Label text="Last Name" />
-                  <TextField fx:id="lastNameTextField" />
+                  <Label text="E-Mail" />
+                  <TextField fx:id="eMailTextField" onAction="#searchFieldInputDetected" />
                </children>
                <HBox.margin>
                   <Insets left="5.0" />

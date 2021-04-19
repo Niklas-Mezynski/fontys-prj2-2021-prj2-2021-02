@@ -10,4 +10,6 @@ public interface TicketStorageService {
     boolean add(Ticket ticket);
 
     List<Ticket> getAll();
+
+    void remove(Ticket ticket);
 }
