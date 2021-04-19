@@ -182,7 +182,7 @@ public class createBookingController {
                 Flight rowData = row.getItem();
 
                 if (event.getClickCount() == 1) {
-                    System.out.println("Selected FLight: " + rowData.toString());
+                    System.out.println("Selected Flight: " + rowData.toString());
                     selectedFlight = rowData;
                     seatsTab.setDisable(false);
                     selectedFlightText.setText("FlightNo: "+rowData.getFlightNumber()+"; From: "+rowData.getRoute().getDepartureAirport().toString()+"; To: "+rowData.getRoute().getArrivalAirport().toString()+"; On: "+rowData.getDeparture().toString());

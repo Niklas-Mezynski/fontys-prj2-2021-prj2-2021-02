@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.AfterAll;
@@ -67,6 +68,10 @@ public class CreateFlightTest {
         App.setRoot("home");
         this.stage = stage;
     }
+    @AfterAll
+    static void end(){
+        App.inRootTab=0;
+    }
 
     @BeforeEach
     void goToTab(FxRobot fxRobot) {
@@ -86,8 +91,8 @@ public class CreateFlightTest {
     @Test
     void addFlightDetailsWithoutThrowingAnyException(FxRobot fxRobot) throws InterruptedException {
         //select route
-        fxRobot.clickOn(fxRobot.lookup("#routeScrollPane").queryAs(ScrollPane.class));
-        fxRobot.press(KeyCode.CONTROL, KeyCode.A);
+        var v=fxRobot.lookup(node -> ((Text)node).getText().contains("BER")).query();
+        fxRobot.clickOn(v);
         //select date
         DatePicker dp=(fxRobot.lookup("#startDate").queryAs(DatePicker.class));
         dp.setValue(LocalDate.of(2021,4,12));
@@ -126,7 +131,7 @@ public class CreateFlightTest {
 
         fxRobot.clickOn(fxRobot.lookup("#nextStepButton").queryAs(Button.class));
         fxRobot.press(KeyCode.ENTER);
-        
+
 //        Assertions.assertThat(fxRobot.lookup(".label").queryAs(Label.class)).hasText("Select a Flight route");
     }
 }
