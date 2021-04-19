@@ -30,6 +30,12 @@ public class SeatImpl implements Seat, Savable {
         this.seatOptions = new SeatOptionImpl[0];
     }
 
+    private SeatImpl(int id, int rowNumber, int seatNumber) {
+        this.id = id;
+        this.rowNumber = rowNumber;
+        this.seatNumber = seatNumber;
+    }
+
     public SeatImpl(int rowNumber, int seatNumber, List<SeatOption> toAdd) {
         this(rowNumber, seatNumber);
         addAllSeatOptions(toAdd);

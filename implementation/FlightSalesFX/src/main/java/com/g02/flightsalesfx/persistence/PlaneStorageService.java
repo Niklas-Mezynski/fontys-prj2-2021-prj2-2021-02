@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PlaneStorageService {
 
-    public boolean add(Plane plane);
+    public Plane add(Plane plane);
 
     public List<Plane> getAll();
 

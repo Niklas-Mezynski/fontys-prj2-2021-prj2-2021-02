@@ -64,6 +64,7 @@ public class PlaneImpl implements Plane, Savable {
     public void addAllSeats(List<? extends Seat> seatList) {
         var collect = Arrays.stream(this.seatList).collect(Collectors.toList());
         collect.addAll((Collection<? extends SeatImpl>) seatList);
+        System.out.println(Arrays.deepToString(collect.toArray()));
         this.seatList = collect.toArray(new SeatImpl[0]);
     }
 
