@@ -14,11 +14,9 @@ import static java.util.Collections.unmodifiableList;
 public class PlaneStorageServiceImpl implements PlaneStorageService {
 
     private final Dao<PlaneImpl> dao;
-    private List<Plane> planes;
 
     public PlaneStorageServiceImpl(PlaneManager planeManager, Dao<PlaneImpl> dao) {
         this.dao = dao;
-        planes = new ArrayList<>();
     }
 
     @Override
@@ -36,6 +34,12 @@ public class PlaneStorageServiceImpl implements PlaneStorageService {
 
     @Override
     public List<Plane> getAll() {
-        return unmodifiableList(planes);
+        try {
+            var all = dao.getAll();
+            return new ArrayList<>(all);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return List.of();
     }
 }

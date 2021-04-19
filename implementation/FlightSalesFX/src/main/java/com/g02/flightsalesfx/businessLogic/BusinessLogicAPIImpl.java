@@ -136,6 +136,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     @Override
     public List<Plane> getAllPlanes(Predicate<Plane> predicate) {
         var all = persistenceAPI.getPlaneStorageService(planeManager).getAll();
+        System.out.println(all);
         var planeStream = all.stream().filter(predicate);
         return planeStream.collect(Collectors.toUnmodifiableList());
     }
@@ -151,7 +152,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         System.out.println(route);
 
         var routeStorageService = persistenceAPI.getRouteStorageService(getRouteManager());
-        return routeStorageService.add(route);
+        return routeStorageService.add(route)!=null;
     }
 
     @Override
