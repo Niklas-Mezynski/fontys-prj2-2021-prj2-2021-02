@@ -9,4 +9,6 @@ public interface BookingStorageService {
     boolean add(Booking booking);
 
     List<Booking> getAll();
+
+    void remove(Booking selectedBooking);
 }

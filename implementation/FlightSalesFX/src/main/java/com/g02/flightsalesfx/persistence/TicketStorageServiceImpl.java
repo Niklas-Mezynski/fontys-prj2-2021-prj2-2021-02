@@ -25,4 +25,9 @@ public class TicketStorageServiceImpl implements TicketStorageService{
     public List<Ticket> getAll() {
         return tickets.stream().collect(Collectors.toUnmodifiableList());
     }
+
+    @Override
+    public void remove(Ticket ticket) {
+        tickets.remove(ticket);
+    }
 }

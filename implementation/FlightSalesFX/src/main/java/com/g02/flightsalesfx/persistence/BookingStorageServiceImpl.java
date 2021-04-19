@@ -24,4 +24,9 @@ public class BookingStorageServiceImpl implements BookingStorageService{
     public List<Booking> getAll() {
         return bookings.stream().collect(Collectors.toUnmodifiableList());
     }
+
+    @Override
+    public void remove(Booking selectedBooking) {
+        bookings.remove(selectedBooking);
+    }
 }

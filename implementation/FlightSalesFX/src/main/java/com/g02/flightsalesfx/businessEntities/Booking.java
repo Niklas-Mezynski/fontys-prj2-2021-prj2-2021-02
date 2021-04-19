@@ -28,4 +28,5 @@ public interface Booking {
 
     public void addTicket(Ticket t);
 
+    void removeTicket(Ticket ticket);
 }

@@ -53,4 +53,11 @@ public class BookingImpl implements Booking {
         ticketList.add(t);
         tickets = ticketList.toArray(Ticket[]::new);
     }
+
+    @Override
+    public void removeTicket(Ticket ticket) {
+        List<Ticket> ticketList = new ArrayList<>(Arrays.asList(tickets));
+        ticketList.remove(ticket);
+        tickets = ticketList.toArray(Ticket[]::new);
+    }
 }
