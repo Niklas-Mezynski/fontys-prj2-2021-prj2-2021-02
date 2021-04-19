@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PriceReductionStorageService {
 
-    boolean add(PriceReduction priceReduction);
+    PriceReduction add(PriceReduction priceReduction);
 
     List<PriceReduction> getAll();
 }

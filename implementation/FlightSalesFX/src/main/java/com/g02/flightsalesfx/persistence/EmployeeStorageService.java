@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface EmployeeStorageService {
 
-    void add(Employee employee);
+    Employee add(Employee employee);
 
     List<Employee> getAll();
 
