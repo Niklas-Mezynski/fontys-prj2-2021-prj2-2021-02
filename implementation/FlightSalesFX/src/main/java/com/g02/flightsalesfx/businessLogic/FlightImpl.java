@@ -3,17 +3,19 @@ package com.g02.flightsalesfx.businessLogic;
 import com.g02.btfdao.annotations.ForeignKey;
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @TableName("flights")
-public class FlightImpl implements Flight {
+public class FlightImpl implements Flight, Savable {
 
     @PrimaryKey
     public int flightNumber;
@@ -32,8 +34,8 @@ public class FlightImpl implements Flight {
     public StaticPriceReductionImpl[] staticPriceReductions = new StaticPriceReductionImpl[0];
     @ForeignKey("com.g02.flightsalesfx.businessLogic.DynamicPriceReductionImpl")
     public DynamicPriceReductionImpl[] dynamicPriceReductions = new DynamicPriceReductionImpl[0];
-    @ForeignKey("com.g02.flightsalesfx.businessLogic.SalesOfficerImpl")
-    public FlightOption[] optionsList = new FlightOption[0];
+    @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightOptionImpl")
+    public FlightOptionImpl[] optionsList = new FlightOptionImpl[0];
 
     public FlightImpl(SalesOfficerImpl creator, int fNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
         this.creator = creator;
@@ -201,57 +203,21 @@ public class FlightImpl implements Flight {
 
     @Override
     public void addFlightOption(FlightOption flightOption) {
-        var flightOptions = Arrays.asList(optionsList);
-        flightOptions.add(flightOption);
-        optionsList = flightOptions.toArray(new FlightOption[0]);
+        if (flightOption instanceof FlightOptionImpl) {
+            var flightOptions = Arrays.asList(optionsList);
+            flightOptions.add((FlightOptionImpl) flightOption);
+            optionsList = flightOptions.toArray(new FlightOptionImpl[0]);
+        }
     }
 
     @Override
     public void addAllFlightOptions(List<? extends FlightOption> options) {
+        var b = options.stream().anyMatch(flightOption -> !(flightOption instanceof FlightOptionImpl));
+        if (b) return;
         var flightOptions = Arrays.asList(optionsList);
-        flightOptions.addAll(options);
-        optionsList = flightOptions.toArray(new FlightOption[0]);
+        flightOptions.addAll((Collection<? extends FlightOptionImpl>) options);
+        optionsList = flightOptions.toArray(new FlightOptionImpl[0]);
     }
-
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        FlightImpl flight = (FlightImpl) o;
-
-        if (getFlightNumber() != flight.getFlightNumber()) return false;
-        if (Double.compare(flight.getPrice(), getPrice()) != 0) return false;
-        if (salesProcessStarted != flight.salesProcessStarted) return false;
-        if (getDeparture() != null ? !getDeparture().equals(flight.getDeparture()) : flight.getDeparture() != null)
-            return false;
-        if (getArrival() != null ? !getArrival().equals(flight.getArrival()) : flight.getArrival() != null)
-            return false;
-        if (getRoute() != null ? !getRoute().equals(flight.getRoute()) : flight.getRoute() != null) return false;
-        if (getPlane() != null ? !getPlane().equals(flight.getPlane()) : flight.getPlane() != null) return false;
-        if (!Objects.equals(creator, flight.creator)) return false;
-        if (reductionList != null ? !reductionList.equals(flight.reductionList) : flight.reductionList != null)
-            return false;
-        return optionsList != null ? optionsList.equals(flight.optionsList) : flight.optionsList == null;
-    }*/
-
-    /*@Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = getFlightNumber();
-        result = 31 * result + (getDeparture() != null ? getDeparture().hashCode() : 0);
-        result = 31 * result + (getArrival() != null ? getArrival().hashCode() : 0);
-        result = 31 * result + (getRoute() != null ? getRoute().hashCode() : 0);
-        result = 31 * result + (getPlane() != null ? getPlane().hashCode() : 0);
-        temp = Double.doubleToLongBits(getPrice());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (salesProcessStarted ? 1 : 0);
-        result = 31 * result + (creator != null ? creator.hashCode() : 0);
-        result = 31 * result + (reductionList != null ? reductionList.hashCode() : 0);
-        result = 31 * result + (optionsList != null ? optionsList.hashCode() : 0);
-        return result;
-    }*/
 
     @Override
     public boolean equals(Object o) {

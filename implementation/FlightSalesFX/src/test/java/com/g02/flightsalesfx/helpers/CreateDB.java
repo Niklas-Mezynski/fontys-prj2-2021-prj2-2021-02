@@ -19,7 +19,10 @@ public class CreateDB {
                 "com.g02.flightsalesfx.businessLogic.StaticPriceReductionImpl",
                 "com.g02.flightsalesfx.businessLogic.SalesOfficerImpl",
                 "com.g02.flightsalesfx.businessLogic.SalesManagerImpl",
+                "com.g02.flightsalesfx.businessLogic.SalesEmployeeImpl",
                 "com.g02.flightsalesfx.businessLogic.FlightImpl",
+                "com.g02.flightsalesfx.businessLogic.ReoccurringFlightImpl",
+                "com.g02.flightsalesfx.businessLogic.FlightOptionImpl",
         });
         System.out.println(datebaseSQL);
     }

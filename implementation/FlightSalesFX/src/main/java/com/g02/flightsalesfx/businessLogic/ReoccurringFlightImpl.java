@@ -1,28 +1,46 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.btfdao.annotations.*;
+import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.*;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
-public class ReoccurringFlightImpl implements ReoccurringFlight  {
+import static java.time.temporal.ChronoUnit.SECONDS;
 
-    private Flight flight;
-    private int interval;
+@TableName("reoccuringflights")
+public class ReoccurringFlightImpl implements ReoccurringFlight, Savable {
 
-    public ReoccurringFlightImpl(Flight flight, int interval) {
+    @PrimaryKey
+    @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightImpl")
+    public Flight flight;
+    @FieldName("interval")
+    public long intervalDB;
+    @Ignore
+    public Duration interval;
+
+    public ReoccurringFlightImpl(Flight flight, Duration interval) {
         this.flight = flight;
         this.interval = interval;
     }
 
+    @Override
+    public void afterConstruction() {
+        interval = Duration.of(intervalDB, SECONDS);
+    }
+
     // Amount of days until this flight reoccurrs;
     @Override
-    public int getInterval() {
+    public Duration getInterval() {
         return interval;
     }
 
-    public void setInterval(int interval) {
+    public void setInterval(Duration interval) {
         this.interval = interval;
+        intervalDB = interval.get(SECONDS);
     }
 
     @Override
@@ -61,8 +79,18 @@ public class ReoccurringFlightImpl implements ReoccurringFlight  {
     }
 
     @Override
+    public void setArrival(LocalDateTime newArrival) {
+        flight.setArrival(newArrival);
+    }
+
+    @Override
     public LocalDateTime getDeparture() {
         return flight.getDeparture();
+    }
+
+    @Override
+    public void setDeparture(LocalDateTime newDeparture) {
+        flight.setDeparture(newDeparture);
     }
 
     @Override
@@ -99,16 +127,6 @@ public class ReoccurringFlightImpl implements ReoccurringFlight  {
     }
 
     @Override
-    public void setArrival(LocalDateTime newArrival) {
-        flight.setArrival(newArrival);
-    }
-
-    @Override
-    public void setDeparture(LocalDateTime newDeparture) {
-        flight.setDeparture(newDeparture);
-    }
-
-    @Override
     public void addFlightOption(FlightOption flightOption) {
         flight.addFlightOption(flightOption);
     }
@@ -122,17 +140,12 @@ public class ReoccurringFlightImpl implements ReoccurringFlight  {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ReoccurringFlightImpl that = (ReoccurringFlightImpl) o;
-
-        if (getInterval() != that.getInterval()) return false;
-        return getFlight().equals(that.getFlight());
+        return Objects.equals(getFlight(), that.getFlight()) && Objects.equals(getInterval(), that.getInterval());
     }
 
     @Override
     public int hashCode() {
-        int result = getFlight().hashCode();
-        result = 31 * result + getInterval();
-        return result;
+        return Objects.hash(getFlight(), getInterval());
     }
 }

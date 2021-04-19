@@ -4,6 +4,7 @@ import com.g02.flightsalesfx.CreatePlaneController;
 import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.persistence.PersistenceAPI;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
@@ -183,7 +184,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
-    public boolean createReoccurringFlightFromUI(Flight flight, int interval) {
+    public boolean createReoccurringFlightFromUI(Flight flight, Duration interval) {
         var reOccurFlight = getReoccurringFlightManager().createRoccurringFlight(flight, interval);
         System.out.println(reOccurFlight);
 

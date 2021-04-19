@@ -8,8 +8,10 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.InputMismatchException;
 
 import static com.g02.flightsalesfx.App.businessLogicAPI;
@@ -133,7 +135,7 @@ public class EditFlightController {
             exit();
         } else { // reoccurring is selected
             if(!intervalTextField.getText().trim().isEmpty()) {
-                var reOccFlight = App.businessLogicAPI.createReoccurringFlightFromUI(selectedFlight, Integer.parseInt(intervalTextField.getText()));
+                var reOccFlight = App.businessLogicAPI.createReoccurringFlightFromUI(selectedFlight, Duration.of(Integer.parseInt(intervalTextField.getText()), ChronoUnit.DAYS));
                 if(reOccFlight) {
                     exit();
                 }

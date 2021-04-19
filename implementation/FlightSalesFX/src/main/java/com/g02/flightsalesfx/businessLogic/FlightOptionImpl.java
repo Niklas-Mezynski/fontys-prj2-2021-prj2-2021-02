@@ -1,12 +1,18 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.FlightOption;
 
-public class FlightOptionImpl implements FlightOption {
-    private String name;
-    private int maxAvailable;
-    private double price;
+@TableName("flightoptions")
+public class FlightOptionImpl implements FlightOption, Savable {
+    @PrimaryKey
+    public int id;
+    public String name;
+    public int maxAvailable;
+    public double price;
 
     public FlightOptionImpl (String name, int maxAvailable, double price) {
         this.name = name;
