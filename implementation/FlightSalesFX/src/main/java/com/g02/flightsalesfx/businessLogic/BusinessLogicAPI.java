@@ -61,4 +61,8 @@ public interface BusinessLogicAPI {
 
     boolean addFlightOptionFromUI(String name, int maxAvailable, double price, Flight flight);
 
+    boolean addBookingFromUI(Booking b);
+
+    boolean addTicketFromUI(Ticket ticket);
+
 }

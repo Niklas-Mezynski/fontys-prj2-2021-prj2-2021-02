@@ -16,8 +16,9 @@ public class TicketStorageServiceImpl implements TicketStorageService{
     }
 
     @Override
-    public void add(Ticket ticket) {
+    public boolean add(Ticket ticket) {
         tickets.add(ticket);
+        return tickets.contains(ticket);
     }
 
     @Override

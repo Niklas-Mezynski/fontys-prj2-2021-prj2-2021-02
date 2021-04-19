@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BookingStorageService {
 
-    void add(Booking booking);
+    boolean add(Booking booking);
 
     List<Booking> getAll();
 }

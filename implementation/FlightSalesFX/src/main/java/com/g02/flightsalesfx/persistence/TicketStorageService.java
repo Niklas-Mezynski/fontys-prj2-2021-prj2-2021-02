@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TicketStorageService {
 
-    void add(Ticket ticket);
+    boolean add(Ticket ticket);
 
     List<Ticket> getAll();
 }

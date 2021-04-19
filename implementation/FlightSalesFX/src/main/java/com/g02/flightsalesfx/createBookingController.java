@@ -279,7 +279,7 @@ public class createBookingController {
 
 
         void optionFilter(List<SeatOption> selectedOptions){
-            if(!s.getSeatOptions().containsAll(selectedOptions)){
+            if(!s.getSeatOptions().containsAll(selectedOptions) || available == false){
                 this.setDisable(true);
             }else {
                 this.setDisable(false);
@@ -444,6 +444,53 @@ public class createBookingController {
             seatBox.getChildren().add(seatOptionsBox);
             seatsOverviewVBox.getChildren().add(seatBox);
         }
+
+    }
+
+    @FXML
+    void createBooking(ActionEvent event) {
+        BookingManager bm = App.businessLogicAPI.getBookingManager();
+        TicketManager tm = App.businessLogicAPI.getTicketManager();
+        List<FlightOption> flightOptions = new ArrayList<FlightOption>();
+
+        for(FlightOption fo : selectedFlightOptions.keySet()){
+            String overviewString = selectedFlightOptions.get(fo)+"x : "+fo.getName()+ " : +"+fo.getPrice();
+            for(int i = 0; i < selectedFlightOptions.get(fo); i++){
+                flightOptions.add(fo);
+            }
+        }
+
+
+        Booking booking = bm.createBooking((SalesEmployee) App.employee, this.selectedFlight,  flightOptions.toArray(FlightOption[]::new), contactEmail);
+
+
+
+        List<Ticket> tickets = new ArrayList<>();
+
+        for(Seat s : selectedSeatsForBooking.keySet()){
+            Pair<String,String> namePair = personNameSeatComb.get(s);
+            SeatOption[] seatOptions = selectedSeatsForBooking.get(s).toArray(SeatOption[]::new);
+            Ticket t = tm.createTicket(this.selectedFlight, s, booking, namePair.getKey(), namePair.getValue(), seatOptions);
+            booking.addTicket(t);
+            tickets.add(t);
+        }
+        boolean saveComplete = true;
+        if(!App.businessLogicAPI.addBookingFromUI(booking)){
+            saveComplete = false;
+        } else {
+            for(Ticket t : tickets){
+                if(!App.businessLogicAPI.addTicketFromUI(t))
+                    saveComplete = false;
+            }
+        }
+
+        if(!saveComplete){
+            System.out.println("Speichern des Booking fehlgeschlagen!");
+        }else{
+            System.out.println("Speicher des Booking erfolgreich");
+        }
+
+
 
     }
 

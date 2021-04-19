@@ -10,7 +10,7 @@ public class BookingImpl implements Booking {
 
     private SalesEmployee se;
     private Flight flight;
-    private Ticket[] tickets;
+    private Ticket[] tickets = new Ticket[0];
     private FlightOption[] flightOptions;
     private String eMail;
 
@@ -49,8 +49,8 @@ public class BookingImpl implements Booking {
 
     @Override
     public void addTicket(Ticket t) {
-        List<Ticket> ticketList = Arrays.asList();
+        List<Ticket> ticketList = new ArrayList<>(Arrays.asList(tickets));
         ticketList.add(t);
-        tickets = (Ticket[])ticketList.toArray();
+        tickets = ticketList.toArray(Ticket[]::new);
     }
 }

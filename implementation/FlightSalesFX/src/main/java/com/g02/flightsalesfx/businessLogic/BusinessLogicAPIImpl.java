@@ -243,5 +243,15 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         return persistenceAPI.getFlightOptionStorageService(getOptionManager()).add(flightOption);
     }
 
+    @Override
+    public boolean addBookingFromUI(Booking booking){
+        return persistenceAPI.getBookingStorageService(getBookingManager()).add(booking);
+    }
+
+    @Override
+    public boolean addTicketFromUI(Ticket t){
+        return  persistenceAPI.getTicketStorageService(getTicketManager()).add(t);
+    }
+
 
 }

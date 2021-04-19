@@ -15,8 +15,9 @@ public class BookingStorageServiceImpl implements BookingStorageService{
     }
 
     @Override
-    public void add(Booking booking) {
+    public boolean add(Booking booking) {
         bookings.add(booking);
+        return bookings.contains(booking);
     }
 
     @Override
