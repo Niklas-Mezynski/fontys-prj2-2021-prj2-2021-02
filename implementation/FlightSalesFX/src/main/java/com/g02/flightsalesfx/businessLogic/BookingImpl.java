@@ -12,32 +12,34 @@ public class BookingImpl implements Booking {
     private Flight flight;
     private Ticket[] tickets;
     private FlightOption[] flightOptions;
+    private String eMail;
 
 
-    public BookingImpl(SalesEmployee se, Flight flight, FlightOption[] bookedFlightOptions){
+    public BookingImpl(SalesEmployee se, Flight flight, FlightOption[] bookedFlightOptions, String eMail){
         this.se = se;
         this.flight = flight;
         this.flightOptions = bookedFlightOptions;
+        this.eMail = eMail;
     }
 
     @Override
     public SalesEmployee getSalesEmployee() {
-        return null;
+        return se;
     }
 
     @Override
     public List<Ticket> getTickets() {
-        return null;
+        return Arrays.asList(tickets);
     }
 
     @Override
     public List<FlightOption> getBookedFlightOptions() {
-        return null;
+        return Arrays.asList(flightOptions);
     }
 
     @Override
     public String getCustomerEmail() {
-        return null;
+        return eMail;
     }
 
     @Override
