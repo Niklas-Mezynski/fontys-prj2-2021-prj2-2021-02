@@ -1,15 +1,12 @@
 package com.g02.flightsalesfx.persistence;
 
-import com.g02.btfdao.dao.Dao;
 import com.g02.btfdao.dao.DaoFactory;
 import com.g02.btfdao.utils.PGJDBCUtils;
 import com.g02.flightsalesfx.businessEntities.*;
-import com.g02.flightsalesfx.businessLogic.OptionManagerImpl;
 import com.g02.flightsalesfx.businessLogic.PlaneImpl;
-import com.g02.flightsalesfx.businessLogic.SeatManagerImpl;
+import com.g02.flightsalesfx.businessLogic.RouteImpl;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImplementationProvider {
 
@@ -87,7 +84,11 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     @Override
     public RouteStorageService getRouteStorageService(RouteManager routeManager) {
         if (routeStorageService == null) {
-            routeStorageService = new RouteStorageServiceImpl(routeManager);
+            try {
+                routeStorageService = new RouteStorageServiceImpl(routeManager, daoFactory.createDao(RouteImpl.class));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
         return routeStorageService;
     }
