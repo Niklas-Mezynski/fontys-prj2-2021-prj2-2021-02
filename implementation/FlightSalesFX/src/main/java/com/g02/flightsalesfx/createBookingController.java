@@ -448,7 +448,7 @@ public class createBookingController {
     }
 
     @FXML
-    void createBooking(ActionEvent event) {
+    void createBooking(ActionEvent event) throws IOException {
         BookingManager bm = App.businessLogicAPI.getBookingManager();
         TicketManager tm = App.businessLogicAPI.getTicketManager();
         List<FlightOption> flightOptions = new ArrayList<FlightOption>();
@@ -486,8 +486,18 @@ public class createBookingController {
 
         if(!saveComplete){
             System.out.println("Speichern des Booking fehlgeschlagen!");
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error saving booking");
+            alert.setContentText("There was an error while saving the created booking. Try again!");
+            alert.showAndWait();
+
+            App.setRoot("salesEmployeeHome");
+
         }else{
-            System.out.println("Speicher des Booking erfolgreich");
+            System.out.println("Speichern des Booking erfolgreich");
+            App.setRoot("salesEmployeeHome");
         }
 
 
