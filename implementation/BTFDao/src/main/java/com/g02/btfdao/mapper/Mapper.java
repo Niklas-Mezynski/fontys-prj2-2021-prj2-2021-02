@@ -130,7 +130,7 @@ public class Mapper {
         System.out.println("constructor:"+constructor);
         System.out.println("arguments:"+list);
         var e = constructor.newInstance(list.toArray());
-        System.out.println(e);
+//        System.out.println(e);
         return e;
     }
 
