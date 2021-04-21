@@ -37,7 +37,7 @@ public class PlaneImpl implements Plane, Savable {
 
     @Override
     public List<Seat> getAllSeats() {
-        return seatList.stream().collect(Collectors.toUnmodifiableList());
+        return Arrays.stream(seatList).collect(Collectors.toUnmodifiableList());
     }
 
     @Override
@@ -114,8 +114,4 @@ public class PlaneImpl implements Plane, Savable {
         return rows;
     }*/
 
-    @Override
-    public SeatImpl[] getAllSeats() {
-        return this.seatList;
-    }
 }

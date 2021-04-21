@@ -44,5 +44,4 @@ public interface Plane {
      */
     int getRows();
 
-    SeatImpl[] getAllSeats();
 }

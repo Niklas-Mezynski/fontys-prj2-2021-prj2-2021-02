@@ -7,7 +7,9 @@ import com.g02.flightsalesfx.gui.FlightTable;
 import com.g02.flightsalesfx.gui.PlaneTable;
 import com.g02.flightsalesfx.gui.RouteTable;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -45,10 +47,10 @@ public class HomeController {
         var planeTable = new PlaneTable(all, (event, row) -> {
             if (!row.isEmpty()) {
                 Plane rowData = row.getItem();
-                /*if (event.getClickCount() == 2) {
+                if (event.getClickCount() == 2) {
                     System.out.println("Double click on: " + rowData.getName());
-                } else */
-                if (event.getClickCount() == 1) {
+                    App.setRoot("createPlane");
+                } else if (event.getClickCount() == 1) {
                     System.out.println("Normal click on: " + rowData.getName());
                     App.businessLogicAPI.viewPlane(rowData);
                 }
@@ -68,29 +70,25 @@ public class HomeController {
             Flight selectedFlight = row.getItem();
             System.out.println("Clicked on: " + selectedFlight);
             if (event.getClickCount() == 2) {
-                try {
-                    EditFlightController.selectedFlight = selectedFlight;
-                    App.inRootTab=2;
-                    App.setRoot("editFlight");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                EditFlightController.selectedFlight = selectedFlight;
+                App.inRootTab = 2;
+                App.setRoot("editFlight");
             }
-        }) ;
+        });
 
         flightPane.getChildren().add(flightTable);
         flightTable.setMinWidth(flightPane.getPrefWidth());
 
     }
 
-    public void createOrUpdateRouteTable(Predicate<Route> pr){
+    public void createOrUpdateRouteTable(Predicate<Route> pr) {
 
-            routeListVBox.getChildren().remove(routeTable);
+        routeListVBox.getChildren().remove(routeTable);
 
 
         var allRoutes = App.businessLogicAPI.getAllRoutes(pr);
 
-         routeTable = new RouteTable(allRoutes, (event, row) -> {
+        routeTable = new RouteTable(allRoutes, (event, row) -> {
             if (!row.isEmpty()) {
                 Route rowData = row.getItem();
                 /*if (event.getClickCount() == 2) {
@@ -109,10 +107,10 @@ public class HomeController {
     }
 
     @FXML
-    public void showDisabledUpdated(){
-        if(showDisabled.isSelected()){
+    public void showDisabledUpdated() {
+        if (showDisabled.isSelected()) {
             createOrUpdateRouteTable(r -> true);
-        }else{
+        } else {
             createOrUpdateRouteTable(r -> r.getEnabled());
         }
     }
@@ -120,20 +118,20 @@ public class HomeController {
 
     @FXML
     public void gotoCreatePlane() throws IOException {
-        App.inRootTab=0;
+        App.inRootTab = 0;
         App.setRoot("createPlane");
     }
 
     @FXML
     public void goToCreateRoute() throws IOException {
-        App.inRootTab=1;
+        App.inRootTab = 1;
         App.setRoot("createRoute");
     }
 
     @FXML
     public void goToCreateFlight() throws IOException {
-        App.inRootTab=2;
+        App.inRootTab = 2;
         App.setRoot("createFlight");
     }
-    
+
 }

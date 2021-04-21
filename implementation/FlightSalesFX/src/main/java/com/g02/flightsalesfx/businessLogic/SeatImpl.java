@@ -68,7 +68,7 @@ public class SeatImpl implements Seat, Savable {
 
     @Override
     public List<SeatOption> getSeatOptions() {
-        return seatOptions;
+        return Arrays.stream(seatOptions).collect(Collectors.toUnmodifiableList());
     }
 
     @Override
@@ -108,8 +108,8 @@ public class SeatImpl implements Seat, Savable {
         return result;
     }
 
-    @Override
-    public SeatOptionImpl[] getSeatOptions () {
+    /*@Override
+    public SeatOptionImpl[] getSeatOptions() {
         return seatOptions;
-    }
+    }*/
 }
