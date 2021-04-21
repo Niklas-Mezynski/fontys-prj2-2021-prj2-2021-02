@@ -25,7 +25,7 @@ public class SeatOptionsStorageServiceImpl implements SeatOptionsStorageService{
     @Override
     public SeatOption add(SeatOption s) {
         try {
-            var ret= dao.insert((SeatOptionImpl)s);
+            var ret= dao.insert(SeatOptionImpl.of(s));
             return ret.size()>0?ret.get(0):null;
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();

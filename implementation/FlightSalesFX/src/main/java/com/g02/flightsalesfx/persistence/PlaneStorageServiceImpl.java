@@ -21,11 +21,10 @@ public class PlaneStorageServiceImpl implements PlaneStorageService {
 
     @Override
     public Plane add(Plane plane) {
-        if (!(plane instanceof PlaneImpl)) {
-            return null;
-        }
+        var planeImpl=new PlaneImpl(plane.getName(), plane.getType(), plane.getManufacturer());
         try {
-            return dao.insert((PlaneImpl)plane).get(0);
+            var a = dao.insert(planeImpl);
+            return a.size()>0?a.get(0):null;
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return null;

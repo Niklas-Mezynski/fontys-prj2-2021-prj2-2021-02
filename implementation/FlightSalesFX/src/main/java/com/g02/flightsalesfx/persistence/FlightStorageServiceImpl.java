@@ -5,6 +5,7 @@ import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.FlightManager;
 import com.g02.flightsalesfx.businessLogic.AirportImpl;
 import com.g02.flightsalesfx.businessLogic.FlightImpl;
+import com.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,8 +22,10 @@ public class FlightStorageServiceImpl implements FlightStorageService{
 
     @Override
     public Flight add(Flight flight) {
+        var createdby=new SalesOfficerImpl(flight.getCreatedBy().getName(),flight.getCreatedBy().getEmail(),flight.getCreatedBy().getPassword());
+        var flightImpl=new FlightImpl(createdby,flight.getFlightNumber(),flight.getDeparture(),flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
         try {
-            var ret= dao.insert((FlightImpl)flight);
+            var ret= dao.insert(flightImpl);
             return ret.size()>0?ret.get(0):null;
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -32,8 +35,10 @@ public class FlightStorageServiceImpl implements FlightStorageService{
 
     @Override
     public Flight remove(Flight flight) {
+        var createdby=new SalesOfficerImpl(flight.getCreatedBy().getName(),flight.getCreatedBy().getEmail(),flight.getCreatedBy().getPassword());
+        var flightImpl=new FlightImpl(createdby,flight.getFlightNumber(),flight.getDeparture(),flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
         try {
-            var ret= dao.remove((FlightImpl)flight);
+            var ret= dao.remove(flightImpl);
             return ret.size()>0?ret.get(0):null;
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();

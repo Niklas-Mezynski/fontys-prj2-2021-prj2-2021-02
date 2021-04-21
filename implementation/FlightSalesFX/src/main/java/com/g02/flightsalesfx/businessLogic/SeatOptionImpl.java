@@ -59,4 +59,7 @@ public class SeatOptionImpl implements SeatOption, Savable {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
+    public static SeatOptionImpl of(SeatOption s){
+        return new SeatOptionImpl(s.getName(),s.getPrice());
+    }
 }

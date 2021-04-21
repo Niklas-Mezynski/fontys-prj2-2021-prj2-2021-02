@@ -27,8 +27,13 @@ public class PriceReductionStorageServiceImpl implements PriceReductionStorageSe
     @Override
     public PriceReduction add(PriceReduction priceReduction) {
         var dao=(Dao<? extends PriceReduction>)sdao;
-        if(priceReduction instanceof StaticPriceReductionImpl)dao=sdao;
-        if(priceReduction instanceof DynamicPriceReductionImpl)dao=ddao;
+        if(priceReduction instanceof StaticPriceReductionImpl) {
+            dao=sdao;
+        }else if(priceReduction instanceof DynamicPriceReductionImpl) {
+            dao=ddao;
+        }else {
+            priceReduction=new StaticPriceReductionImpl(priceReduction.getName(),priceReduction.getEndDate() , priceReduction.getPercentageAsDouble()); //Default if not Impl already
+        }
         try {
             var ret= dao.insert((Savable) priceReduction);
             return ret.size()>0?ret.get(0):null;

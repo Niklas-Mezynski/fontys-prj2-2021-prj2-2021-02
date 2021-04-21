@@ -21,7 +21,7 @@ public class FlightOptionStorageServiceImpl implements FlightOptionStorageServic
     @Override
     public FlightOption add(FlightOption flightOption) {
         try {
-            var ret = dao.insert((FlightOptionImpl) flightOption);
+            var ret = dao.insert(new FlightOptionImpl(flightOption.getName(), flightOption.getMaxAvailability(), flightOption.getPrice()));
             return ret.size()>0?ret.get(0):null;
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();

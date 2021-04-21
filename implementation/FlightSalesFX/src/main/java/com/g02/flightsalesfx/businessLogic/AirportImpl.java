@@ -69,4 +69,7 @@ public class AirportImpl implements Airport, Savable {
         result = 31 * result + (getCountry() != null ? getCountry().hashCode() : 0);
         return result;
     }
+    public static AirportImpl of(Airport a){
+        return new AirportImpl(a.getName(), a.getCity(), a.getCountry());
+    }
 }

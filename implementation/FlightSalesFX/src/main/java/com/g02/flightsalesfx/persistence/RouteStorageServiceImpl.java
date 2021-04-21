@@ -4,6 +4,7 @@ import com.g02.btfdao.dao.Dao;
 import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.Route;
 import com.g02.flightsalesfx.businessEntities.RouteManager;
+import com.g02.flightsalesfx.businessLogic.AirportImpl;
 import com.g02.flightsalesfx.businessLogic.RouteImpl;
 
 import java.sql.SQLException;
@@ -23,8 +24,9 @@ public class RouteStorageServiceImpl implements RouteStorageService {
 
     @Override
     public Route add(Route route) {
+        var routeImpl=new RouteImpl(AirportImpl.of(route.getDepartureAirport()), AirportImpl.of(route.getArrivalAirport()));
         try {
-            var ret = dao.insert((RouteImpl) route);
+            var ret = dao.insert(routeImpl);
             return ret.size() > 0 ? ret.get(0) : null;
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();

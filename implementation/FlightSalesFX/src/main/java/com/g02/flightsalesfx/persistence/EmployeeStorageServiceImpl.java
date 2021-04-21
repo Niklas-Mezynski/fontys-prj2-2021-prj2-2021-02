@@ -30,9 +30,19 @@ public class EmployeeStorageServiceImpl implements EmployeeStorageService {
     @Override
     public Employee add(Employee employee) {
         Dao<? extends Employee> dao=sedao;
-        if (employee instanceof SalesEmployeeImpl) dao=sedao;
-        if (employee instanceof SalesOfficerImpl) dao=sodao;
-        if (employee instanceof SalesManagerImpl) dao=smdao;
+        if (employee instanceof SalesEmployee) {
+            dao=sedao;
+            employee=new SalesEmployeeImpl(employee.getName(), employee.getEmail(), employee.getPassword());
+        }
+        else if (employee instanceof SalesOfficer) {
+            dao=sodao;
+            employee=new SalesOfficerImpl(employee.getName(), employee.getEmail(), employee.getPassword());
+        }
+        else if (employee instanceof SalesManager) {
+            dao=smdao;
+            employee=new SalesManagerImpl(employee.getName(), employee.getEmail(), employee.getPassword());
+        }
+        else return null; //Invalid Employee Type
         try {
             var ret= dao.insert((Savable) employee);
             return ret.size()>0?ret.get(0):null;

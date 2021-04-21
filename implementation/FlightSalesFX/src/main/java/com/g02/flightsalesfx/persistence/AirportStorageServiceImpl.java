@@ -23,7 +23,7 @@ public class AirportStorageServiceImpl implements AirportStorageService {
     @Override
     public Airport add(Airport airport) {
         try {
-            var ret= dao.insert((AirportImpl)airport);
+            var ret= dao.insert(new AirportImpl(airport.getName(), airport.getCity(), airport.getCountry()));
             return ret.size()>0?ret.get(0):null;
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
