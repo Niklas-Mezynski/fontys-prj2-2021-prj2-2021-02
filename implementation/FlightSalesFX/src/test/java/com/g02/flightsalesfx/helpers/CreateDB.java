@@ -1,8 +1,11 @@
 package com.g02.flightsalesfx.helpers;
 
 import com.g02.btfdao.queries.QueryBuilder;
+import com.g02.flightsalesfx.businessLogic.AirportImpl;
+import com.g02.flightsalesfx.businessLogic.AirportManagerImpl;
 import com.g02.flightsalesfx.businessLogic.EmployeeManagerImpl;
 import com.g02.flightsalesfx.businessLogic.SalesEmployeeImpl;
+import com.g02.flightsalesfx.persistence.AirportStorageService;
 import com.g02.flightsalesfx.persistence.EmployeeStorageService;
 import com.g02.flightsalesfx.persistence.PersistenceAPIImpl;
 import org.junit.jupiter.api.Disabled;
@@ -39,5 +42,19 @@ public class CreateDB {
         var employeeStorageService = persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl());
         System.out.println(employeeStorageService.add(new SalesEmployeeImpl("Nils","b","b")));
         System.out.println(employeeStorageService.add(new SalesEmployeeImpl("","","")));
+    }
+
+    @Test
+    void insertAirports() {
+        var persistenceAPI = new PersistenceAPIImpl();
+        var airportStorageService = persistenceAPI.getAirportStorageService(new AirportManagerImpl());
+        System.out.println(airportStorageService.add(new AirportImpl("BRE","Bremen","Germany")));
+        System.out.println(airportStorageService.add(new AirportImpl("FCN","Cuxhaven","Germany")));
+        System.out.println(airportStorageService.add(new AirportImpl("DRS","Dresden","Germany")));
+        System.out.println(airportStorageService.add(new AirportImpl("HHN","Frankfurt-Hahn","Germany")));
+        System.out.println(airportStorageService.add(new AirportImpl("HAM","Hamburg","Germany")));
+        System.out.println(airportStorageService.add(new AirportImpl("DUS", "Düsseldorf", "Germany")));
+        System.out.println(airportStorageService.add(new AirportImpl("BER", "Berlin", "Germany")));
+        System.out.println(airportStorageService.add(new AirportImpl("FRA", "Frankfurt", "Germany")));
     }
 }

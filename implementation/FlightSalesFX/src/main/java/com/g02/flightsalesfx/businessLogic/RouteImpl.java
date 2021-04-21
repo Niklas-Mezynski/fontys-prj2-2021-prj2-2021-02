@@ -53,6 +53,7 @@ public class RouteImpl implements Route, Savable {
     @Override
     public void setDepartureAirport(Airport newAp) {
         this.departureAirport = (AirportImpl) newAp;
+        this.airports[0] = (AirportImpl) newAp;
     }
 
     /**
@@ -69,6 +70,7 @@ public class RouteImpl implements Route, Savable {
     @Override
     public void setArrivalAirport(Airport newAp) {
         this.arrivalAirport = (AirportImpl) newAp;
+        this.airports[1] = (AirportImpl) newAp;
     }
 
     @Override
