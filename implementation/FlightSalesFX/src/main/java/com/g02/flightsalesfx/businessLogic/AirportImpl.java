@@ -1,14 +1,19 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.Airport;
 
 import java.util.Objects;
 
-public class AirportImpl implements Airport {
+@TableName("airports")
+public class AirportImpl implements Airport, Savable {
 
-    private final String name;
-    private final String city;
-    private final String country;
+    @PrimaryKey
+    public final String name;
+    public final String city;
+    public final String country;
 
     public AirportImpl(String name, String city, String country) {
         this.name = name;
@@ -63,5 +68,8 @@ public class AirportImpl implements Airport {
         result = 31 * result + (getCity() != null ? getCity().hashCode() : 0);
         result = 31 * result + (getCountry() != null ? getCountry().hashCode() : 0);
         return result;
+    }
+    public static AirportImpl of(Airport a){
+        return new AirportImpl(a.getName(), a.getCity(), a.getCountry());
     }
 }

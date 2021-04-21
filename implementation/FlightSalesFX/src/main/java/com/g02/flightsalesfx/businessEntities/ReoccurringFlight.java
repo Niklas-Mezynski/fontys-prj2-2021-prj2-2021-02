@@ -5,6 +5,8 @@
  */
 package com.g02.flightsalesfx.businessEntities;
 
+import java.time.Duration;
+
 /**
  *
  * @author anato
@@ -14,7 +16,7 @@ public interface ReoccurringFlight extends Flight{
     /**
      * @return the Interval at which this Flight should be renewed
      */
-    public int getInterval();
+    public Duration getInterval();
 
     public Flight getFlight();
 

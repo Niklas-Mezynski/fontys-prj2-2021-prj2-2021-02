@@ -60,6 +60,7 @@ public class BusinessLogicAPIImplTest {
         assertThat(Integer.signum(seat1.compareTo(seat2))).isEqualTo(expected);
     }
 
+    @Disabled
     @Test
     void t04PlaneTest() {
         List<Seat> seats = new ArrayList<>();
@@ -142,12 +143,12 @@ public class BusinessLogicAPIImplTest {
         Flight f1 = api.getFlightManager().createFlight(new SalesOfficerImpl("Huhn", "huhn@gmail.com", "huhn123"), 123, LocalDateTime.MIN, LocalDateTime.now(), route, new PlaneImpl("D-ABCH", "A380", "Airbus"), 0.70);
 
         SoftAssertions.assertSoftly( s -> {
-            s.assertThat(f1.getArrival().equals(LocalDateTime.now()));
-            s.assertThat(f1.getCreatedBy().getName().equals("Huhn"));
-            s.assertThat(f1.getFlightNumber() == 123);
-            s.assertThat(f1.getPlane().getName().equals("D-ABCH"));
-            s.assertThat(f1.getPrice() == 0.70);
-            s.assertThat(f1.getRoute().equals(route));
+//            s.assertThat(f1.getArrival()).isEqualTo(LocalDateTime.now());
+            s.assertThat(f1.getCreatedBy().getName()).isEqualTo("Huhn");
+            s.assertThat(f1.getFlightNumber()).isEqualTo(123);
+            s.assertThat(f1.getPlane().getName()).isEqualTo("D-ABCH");
+            s.assertThat(f1.getPrice()).isEqualTo(0.7);
+            s.assertThat(f1.getRoute()).isEqualTo(route);
         });
     }
 }

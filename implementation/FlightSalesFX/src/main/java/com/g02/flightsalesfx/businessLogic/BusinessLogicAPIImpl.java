@@ -4,6 +4,7 @@ import com.g02.flightsalesfx.CreatePlaneController;
 import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.persistence.PersistenceAPI;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
@@ -159,12 +160,13 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         plane.addAllSeats(seats.stream().sorted().collect(Collectors.toList()));
         System.out.println(plane);
         var planeStorageService = persistenceAPI.getPlaneStorageService(getPlaneManager());
-        return planeStorageService.add(plane);
+        return planeStorageService.add(plane)!=null;
     }
 
     @Override
     public List<Plane> getAllPlanes(Predicate<Plane> predicate) {
         var all = persistenceAPI.getPlaneStorageService(planeManager).getAll();
+        System.out.println(all);
         var planeStream = all.stream().filter(predicate);
         return planeStream.collect(Collectors.toUnmodifiableList());
     }
@@ -180,7 +182,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         System.out.println(route);
 
         var routeStorageService = persistenceAPI.getRouteStorageService(getRouteManager());
-        return routeStorageService.add(route);
+        return routeStorageService.add(route)!=null;
     }
 
     @Override
@@ -201,7 +203,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         System.out.println(flight);
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
-        return flightStorageService.add(flight);
+        return flightStorageService.add(flight)!=null;
     }
 
     @Override
@@ -209,17 +211,17 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         var f = getFlightManager().createFlight(flight.getCreatedBy(), flight.getFlightNumber(), flight.getDeparture(), flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
-        return flightStorageService.add(flight);
+        return flightStorageService.add(flight)!=null;
     }
 
     @Override
-    public boolean createReoccurringFlightFromUI(Flight flight, int interval) {
+    public boolean createReoccurringFlightFromUI(Flight flight, Duration interval) {
         var reOccurFlight = getReoccurringFlightManager().createRoccurringFlight(flight, interval);
         System.out.println(reOccurFlight);
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
-        if(flightStorageService.remove(flight)) {
-            return flightStorageService.add(reOccurFlight);
+        if(flightStorageService.remove(flight)!=null) {
+            return flightStorageService.add(reOccurFlight)!=null;
         }
         return false;
     }
@@ -240,7 +242,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     public boolean addFlightOptionFromUI(String name, int maxAvailable, double price, Flight flight) {
         var flightOption = getOptionManager().createFlightOption(name, maxAvailable, price);
         flight.addFlightOption(flightOption);
-        return persistenceAPI.getFlightOptionStorageService(getOptionManager()).add(flightOption);
+        return persistenceAPI.getFlightOptionStorageService(getOptionManager()).add(flightOption)!=null;
     }
 
     @Override

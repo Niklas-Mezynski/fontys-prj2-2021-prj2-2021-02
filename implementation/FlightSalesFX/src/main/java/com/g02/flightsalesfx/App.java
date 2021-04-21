@@ -34,7 +34,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         persistenceAPI = PersistenceApiImplementationProvider.getImplementation();
         businessLogicAPI = BusinessLogicImplementationProvider.getImplementation(persistenceAPI);
-        addSamples();
+//        addSamples();
         scene = new Scene(loadFXML("login"), 800, 600);
         stage.setScene(scene);
         stage.setTitle("Flight Ticket Sales");
@@ -66,7 +66,6 @@ public class App extends Application {
 
 
 
-
         //Sample Seats with seatoptions
         SeatOption firstClass = new SeatOptionImpl("First Class", 20.5);
         SeatOption emergencyExitRow = new SeatOptionImpl("More Space", 5.5);
@@ -88,23 +87,29 @@ public class App extends Application {
 
             }
         }
+/*
         //Sample Planes
         List<Seat> seats = new ArrayList<>();
         seats.add(new SeatImpl(0, 0));
         seats.add(new SeatImpl(0, 1));
         seats.add(new SeatImpl(1, 0));
         businessLogicAPI.createPlaneFromUI("D-ABCH", "A069", "Airbus", seats);
+
         businessLogicAPI.createPlaneFromUI("B-VRTC", "B420", "QualityPlanes", seats);
         businessLogicAPI.createPlaneFromUI("D-SLKD", "B738", "Boeing", seats2);
+
+        businessLogicAPI.createPlaneFromUI("B-VRTC", "B420", "QualityPlanes", seats);*/
+
 
         var routes = businessLogicAPI.getAllRoutes(t -> true);
         var planes = businessLogicAPI.getAllPlanes(t -> true);
         businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4485, LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(5).plusHours(4).plusMinutes(34), routes.get(3), planes.get(0), 99.34 );
-        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4486, LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(5).plusHours(2).plusMinutes(44), routes.get(12), planes.get(1), 45.65 );
-        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4487, LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(7).plusHours(4).plusMinutes(34), routes.get(3), planes.get(0), 78.23 );
-        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4488, LocalDateTime.now().plusDays(8), LocalDateTime.now().plusDays(8).plusHours(2).plusMinutes(44), routes.get(12), planes.get(1), 43.56 );
-        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4489, LocalDateTime.now().plusDays(9), LocalDateTime.now().plusDays(9).plusHours(4).plusMinutes(34), routes.get(3), planes.get(0), 34.86 );
-        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4490, LocalDateTime.now().plusDays(9), LocalDateTime.now().plusDays(9).plusHours(2).plusMinutes(44), routes.get(14), planes.get(2), 67.27 );
+//        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4486, LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(5).plusHours(2).plusMinutes(44), routes.get(12), planes.get(1), 45.65 );
+//        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4487, LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(7).plusHours(4).plusMinutes(34), routes.get(3), planes.get(0), 78.23 );
+//        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4488, LocalDateTime.now().plusDays(8), LocalDateTime.now().plusDays(8).plusHours(2).plusMinutes(44), routes.get(12), planes.get(1), 43.56 );
+//        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4489, LocalDateTime.now().plusDays(9), LocalDateTime.now().plusDays(9).plusHours(4).plusMinutes(34), routes.get(3), planes.get(0), 34.86 );
+//        businessLogicAPI.createFlightFromUI((SalesOfficer) App.employee, 4490, LocalDateTime.now().plusDays(9), LocalDateTime.now().plusDays(9).plusHours(2).plusMinutes(44), routes.get(14), planes.get(1), 67.27 );
+
         var flights = persistenceAPI.getFlightStorageService(businessLogicAPI.getFlightManager()).getAll();
         flights.get(5).startSalesProcess();
         flights.get(4).startSalesProcess();

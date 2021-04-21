@@ -1,14 +1,20 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
+
 import java.time.LocalDate;
 
-public class StaticPriceReductionImpl extends PriceReductionImpl {
+@TableName("staticpriceredutions")
+public class StaticPriceReductionImpl extends PriceReductionImpl implements Savable {
 
-    private String name;
-    private LocalDate endDate;
+    @PrimaryKey
+    public String name;
+    public LocalDate endDate;
 
     // as 0.10 / 0.09 ...
-    private double percentageAsDouble;
+    public double percentageAsDouble;
 
     public StaticPriceReductionImpl(String name, LocalDate end, double percentage) {
         super(name, end);

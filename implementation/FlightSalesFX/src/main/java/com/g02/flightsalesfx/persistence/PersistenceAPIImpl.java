@@ -1,8 +1,13 @@
 package com.g02.flightsalesfx.persistence;
 
+import com.g02.btfdao.dao.DaoFactory;
+import com.g02.btfdao.utils.PGJDBCUtils;
 import com.g02.flightsalesfx.businessEntities.*;
-import com.g02.flightsalesfx.businessLogic.OptionManagerImpl;
-import com.g02.flightsalesfx.businessLogic.SeatManagerImpl;
+import com.g02.flightsalesfx.businessLogic.PlaneImpl;
+import com.g02.flightsalesfx.businessLogic.RouteImpl;
+import com.g02.flightsalesfx.businessLogic.*;
+
+import java.sql.SQLException;
 
 public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImplementationProvider {
 
@@ -33,17 +38,35 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
         return bookingStorageService;
     }
 
+    private DaoFactory daoFactory;
+
+    public PersistenceAPIImpl() {
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        assert simpledao != null: "No datasource";
+        daoFactory = new DaoFactory(simpledao);
+    }
+
     @Override
     public EmployeeStorageService getEmployeeStorageService(EmployeeManager employeeManager) {
-        if (employeeStorageService == null)
-            employeeStorageService = new EmployeeStorageServiceImpl(employeeManager);
+        if (employeeStorageService == null) {
+            try {
+                employeeStorageService = new EmployeeStorageServiceImpl(employeeManager, daoFactory.createDao(SalesEmployeeImpl.class), daoFactory.createDao(SalesOfficerImpl.class), daoFactory.createDao(SalesManagerImpl.class));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
         return employeeStorageService;
     }
 
     @Override
     public PlaneStorageService getPlaneStorageService(PlaneManager planeManager) {
         if (planeStorageService == null) {
-            planeStorageService = new PlaneStorageServiceImpl(planeManager);
+            try {
+                var dao = daoFactory.createDao(PlaneImpl.class);
+                planeStorageService = new PlaneStorageServiceImpl(planeManager, dao);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
         return planeStorageService;
     }
@@ -59,7 +82,11 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     @Override
     public SeatOptionsStorageService getSeatOptionStorageService(OptionManager optionManager) {
         if (seatOptionStorageService == null) {
-            seatOptionStorageService = new SeatOptionsStorageServiceImpl(optionManager);
+            try {
+                seatOptionStorageService = new SeatOptionsStorageServiceImpl(optionManager, daoFactory.createDao(SeatOptionImpl.class));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
         return seatOptionStorageService;
     }
@@ -67,7 +94,11 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     @Override
     public FlightOptionStorageService getFlightOptionStorageService(OptionManager optionManager) {
         if (flightOptionStorageService == null) {
-            flightOptionStorageService = new FlightOptionStorageServiceImpl(optionManager);
+            try {
+                flightOptionStorageService = new FlightOptionStorageServiceImpl(optionManager, daoFactory.createDao(FlightOptionImpl.class));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
         return flightOptionStorageService;
     }
@@ -75,7 +106,11 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     @Override
     public AirportStorageService getAirportStorageService(AirportManager airportManager) {
         if(airportStorageService == null) {
-            airportStorageService = new AirportStorageServiceImpl(airportManager);
+            try {
+                airportStorageService = new AirportStorageServiceImpl(airportManager, daoFactory.createDao(AirportImpl.class));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
 
         return airportStorageService;
@@ -84,7 +119,11 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     @Override
     public RouteStorageService getRouteStorageService(RouteManager routeManager) {
         if (routeStorageService == null) {
-            routeStorageService = new RouteStorageServiceImpl(routeManager);
+            try {
+                routeStorageService = new RouteStorageServiceImpl(routeManager, daoFactory.createDao(RouteImpl.class));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
         return routeStorageService;
     }
@@ -92,7 +131,11 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     @Override
     public PriceReductionStorageService getPriceReductionStorageService(PriceReductionManager priceReductionManager) {
         if(priceReductionStorageService == null) {
-            priceReductionStorageService = new PriceReductionStorageServiceImpl(priceReductionManager);
+            try {
+                priceReductionStorageService = new PriceReductionStorageServiceImpl(priceReductionManager, daoFactory.createDao(StaticPriceReductionImpl.class), daoFactory.createDao(DynamicPriceReductionImpl.class));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
         return priceReductionStorageService;
     }
@@ -100,7 +143,11 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     @Override
     public FlightStorageService getFlightStorageService(FlightManager flightManager) {
         if(flightStorageService == null) {
-            flightStorageService = new FlightStorageServiceImpl(flightManager);
+            try {
+                flightStorageService = new FlightStorageServiceImpl(flightManager, daoFactory.createDao(FlightImpl.class));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
         return flightStorageService;
     }

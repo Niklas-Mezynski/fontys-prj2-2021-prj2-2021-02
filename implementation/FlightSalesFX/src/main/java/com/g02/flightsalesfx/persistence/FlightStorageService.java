@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface FlightStorageService {
 
-    public boolean add(Flight flight);
+    public Flight add(Flight flight);
 
     public List<Flight> getAll();
 
-    public boolean remove(Flight flight);
+    public Flight remove(Flight flight);
 
 }

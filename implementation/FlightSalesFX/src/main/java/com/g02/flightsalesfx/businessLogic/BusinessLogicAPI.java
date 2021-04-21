@@ -3,6 +3,7 @@ package com.g02.flightsalesfx.businessLogic;
 import com.g02.flightsalesfx.CreatePlaneController;
 import com.g02.flightsalesfx.businessEntities.*;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
@@ -53,7 +54,7 @@ public interface BusinessLogicAPI {
 
     public boolean createFlightFromUI(Flight flight);
 
-    public boolean createReoccurringFlightFromUI(Flight flight, int interval);
+    public boolean createReoccurringFlightFromUI(Flight flight, Duration interval);
 
     public void createAirportFromUI(String name, String city, String country);
 

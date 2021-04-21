@@ -122,14 +122,13 @@ public class CreateFlightController {
         try{
             extendedRoute = new ExtendedRoute(getStartDate(), getStartTime(), getDurationHours(), getDurationMinutes());
             extendedRoute.setRoute(getSelectedRoute());
+            setRoot("submitFlight");
         }catch (Exception e){
             inputOK = false;
             e.printStackTrace();
         }
 
         // After "saving" current selections
-        if(inputOK)
-        setRoot("submitFlight");
     }
 
     //getter for extendedRoute that is necessary for further flight-creation
@@ -215,7 +214,7 @@ public class CreateFlightController {
                     alert.setContentText("The entered information regarding the departure are either not filled in or filled in wrongly." +
                             " Make sure the input looks like 'hh:mm'.");
                     alert.showAndWait();
-                    throw new IllegalArgumentException();
+                    new IllegalArgumentException().printStackTrace();
                 }
 
             }

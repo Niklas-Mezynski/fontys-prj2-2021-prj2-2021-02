@@ -11,7 +11,8 @@ public class FlightManagerImpl implements FlightManager {
 
     @Override
     public Flight createFlight(SalesOfficer creator, int fNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
-        return new FlightImpl(creator, fNumber, dep, arr, route, plane, price);
+        if (!(creator instanceof SalesOfficerImpl)) return null;
+        return new FlightImpl((SalesOfficerImpl) creator, fNumber, dep, arr, route, plane, price);
     }
 
     public void setFlightStorageService(FlightStorageService flightStorage) {

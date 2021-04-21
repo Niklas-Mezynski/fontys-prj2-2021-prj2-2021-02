@@ -1,13 +1,19 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
 
 import java.util.Objects;
 
-public class SeatOptionImpl implements SeatOption {
+@TableName("seatoptions")
+public class SeatOptionImpl implements SeatOption, Savable {
 
-    private String name;
-    private double price;
+    @PrimaryKey(autogen = true)
+    public int id;
+    public String name;
+    public double price;
 
     public SeatOptionImpl (String name, Double price) {
         this.name = name;
@@ -52,5 +58,8 @@ public class SeatOptionImpl implements SeatOption {
         temp = Double.doubleToLongBits(getPrice());
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+    public static SeatOptionImpl of(SeatOption s){
+        return new SeatOptionImpl(s.getName(),s.getPrice());
     }
 }

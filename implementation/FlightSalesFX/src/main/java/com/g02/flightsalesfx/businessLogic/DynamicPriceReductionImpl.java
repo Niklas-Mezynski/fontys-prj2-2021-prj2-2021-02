@@ -1,12 +1,18 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
+
 import java.time.LocalDate;
 
-public class DynamicPriceReductionImpl extends PriceReductionImpl {
+@TableName("dynamicpriceredutions")
+public class DynamicPriceReductionImpl extends PriceReductionImpl implements Savable {
 
-    private String name;
-    private String source;
-    private LocalDate endDate;
+    @PrimaryKey
+    public String name;
+    public String source;
+    public LocalDate endDate;
 
     // external source that determines the characteristics of this dynamic price-reduction
     //private var source;

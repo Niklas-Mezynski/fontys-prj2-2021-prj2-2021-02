@@ -1,29 +1,44 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.btfdao.annotations.ForeignKey;
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
+
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-public class SeatImpl implements Seat {
+@TableName("seats")
+public class SeatImpl implements Seat, Savable {
 
-    private int rowNumber;
-    private int seatNumber;
-    private List<SeatOption> seatOptions;
+    @PrimaryKey(autogen = true)
+    public int id;
+    public int rowNumber;
+    public int seatNumber;
+    @ForeignKey("com.g02.flightsalesfx.businessLogic.SeatOptionImpl")
+    public SeatOptionImpl[] seatOptions;
 
-//    Useless constructor because cant be accessed from SeatManagerImpl
+    //    Useless constructor because cant be accessed from SeatManagerImpl
     public SeatImpl(int rowNumber, int seatNumber) {
         this.rowNumber = rowNumber;
         this.seatNumber = seatNumber;
-        this.seatOptions = new ArrayList<>();
+        this.seatOptions = new SeatOptionImpl[0];
+    }
+
+    private SeatImpl(int id, int rowNumber, int seatNumber) {
+        this.id = id;
+        this.rowNumber = rowNumber;
+        this.seatNumber = seatNumber;
     }
 
     public SeatImpl(int rowNumber, int seatNumber, List<SeatOption> toAdd) {
-        this.rowNumber = rowNumber;
-        this.seatNumber = seatNumber;
-        this.seatOptions = new ArrayList<>();
-        this.seatOptions.addAll(toAdd);
+        this(rowNumber, seatNumber);
+        addAllSeatOptions(toAdd);
     }
 
     @Override
@@ -38,12 +53,17 @@ public class SeatImpl implements Seat {
 
     @Override
     public void addSeatOption(SeatOption so) {
-        this.seatOptions.add(so);
+        var collect = Arrays.stream(this.seatOptions).collect(Collectors.toList());
+        if (!(so instanceof SeatOptionImpl)) return;
+        collect.add((SeatOptionImpl) so);
+        this.seatOptions = collect.toArray(new SeatOptionImpl[0]);
     }
 
     @Override
     public void addAllSeatOptions(List<? extends SeatOption> seatOptionList) {
-        this.seatOptions.addAll(seatOptionList);
+        var collect = Arrays.stream(this.seatOptions).collect(Collectors.toList());
+        collect.addAll((Collection<? extends SeatOptionImpl>) seatOptionList);
+        this.seatOptions = collect.toArray(new SeatOptionImpl[0]);
     }
 
     @Override
@@ -56,21 +76,40 @@ public class SeatImpl implements Seat {
         return "SeatImpl{" +
                 "rowNumber=" + rowNumber +
                 ", seatNumber=" + seatNumber +
-                ", seatOptions=" + seatOptions +
+                ", seatOptions=" + Arrays.toString(seatOptions) +
                 '}';
     }
+
+   /* @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SeatImpl seat = (SeatImpl) o;
+        return rowNumber == seat.rowNumber && seatNumber == seat.seatNumber && Arrays.equals(seatOptions, seat.seatOptions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rowNumber, seatNumber, seatOptions);
+    }*/
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SeatImpl seat = (SeatImpl) o;
-        return rowNumber == seat.rowNumber && seatNumber == seat.seatNumber && Objects.equals(seatOptions, seat.seatOptions);
+        return id == seat.id && getRowNumber() == seat.getRowNumber() && getSeatNumber() == seat.getSeatNumber() && Arrays.equals(seatOptions, seat.seatOptions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rowNumber, seatNumber, seatOptions);
+        int result = Objects.hash(id, getRowNumber(), getSeatNumber());
+        result = 31 * result + Arrays.hashCode(seatOptions);
+        return result;
     }
 
+    @Override
+    public SeatOptionImpl[] getSeatOptions () {
+        return seatOptions;
+    }
 }

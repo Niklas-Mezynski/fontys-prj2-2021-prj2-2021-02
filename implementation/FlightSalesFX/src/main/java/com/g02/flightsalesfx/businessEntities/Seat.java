@@ -1,5 +1,7 @@
 package com.g02.flightsalesfx.businessEntities;
 
+import com.g02.flightsalesfx.businessLogic.SeatOptionImpl;
+
 import java.util.List;
 
 public interface Seat extends Comparable<Seat> {
@@ -37,6 +39,6 @@ public interface Seat extends Comparable<Seat> {
         return this.getRowNumber()-o.getRowNumber();
     }
 
-    public List<SeatOption> getSeatOptions();
+    public SeatOptionImpl[] getSeatOptions();
 
 }

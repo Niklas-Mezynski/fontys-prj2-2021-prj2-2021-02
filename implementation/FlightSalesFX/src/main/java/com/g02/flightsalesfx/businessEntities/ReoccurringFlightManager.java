@@ -7,13 +7,15 @@ package com.g02.flightsalesfx.businessEntities;
 
 import com.g02.flightsalesfx.persistence.FlightStorageService;
 
+import java.time.Duration;
+
 /**
  *
  * @author anato
  */
 public interface ReoccurringFlightManager {
 
-    ReoccurringFlight createRoccurringFlight(Flight flight, int interval);
+    ReoccurringFlight createRoccurringFlight(Flight flight, Duration interval);
 
 
 }

@@ -6,12 +6,14 @@ import com.g02.flightsalesfx.businessEntities.ReoccurringFlight;
 import com.g02.flightsalesfx.businessEntities.ReoccurringFlightManager;
 import com.g02.flightsalesfx.persistence.FlightStorageService;
 
+import java.time.Duration;
+
 public class ReoccurringFlightManagerImpl implements ReoccurringFlightManager {
 
     private FlightStorageService reoccurringFlightStorageService;
 
     @Override
-    public ReoccurringFlight createRoccurringFlight(Flight flight, int interval) {
+    public ReoccurringFlight createRoccurringFlight(Flight flight, Duration interval) {
         return new ReoccurringFlightImpl(flight, interval);
     }
 
