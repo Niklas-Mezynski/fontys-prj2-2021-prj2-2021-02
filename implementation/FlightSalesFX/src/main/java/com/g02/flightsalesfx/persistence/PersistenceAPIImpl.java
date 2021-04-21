@@ -20,6 +20,23 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     private RouteStorageService routeStorageService;
     private PriceReductionStorageService priceReductionStorageService;
     private FlightStorageService flightStorageService;
+    private TicketStorageService ticketStorageService;
+    private BookingStorageService bookingStorageService;
+
+
+    @Override
+    public TicketStorageService getTicketStorageService(TicketManager ticketManager) {
+        if(ticketStorageService == null)
+            ticketStorageService = new TicketStorageServiceImpl(ticketManager);
+        return ticketStorageService;
+    }
+
+    @Override
+    public BookingStorageService getBookingStorageService(BookingManager bookingManager) {
+        if(bookingStorageService == null)
+            bookingStorageService = new BookingStorageServiceImpl(bookingManager);
+        return bookingStorageService;
+    }
 
     private DaoFactory daoFactory;
 

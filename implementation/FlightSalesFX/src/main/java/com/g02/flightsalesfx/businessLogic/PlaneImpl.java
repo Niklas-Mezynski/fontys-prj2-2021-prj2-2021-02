@@ -7,6 +7,9 @@ import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Seat;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,6 +33,11 @@ public class PlaneImpl implements Plane, Savable {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public List<Seat> getAllSeats() {
+        return seatList.stream().collect(Collectors.toUnmodifiableList());
     }
 
     @Override

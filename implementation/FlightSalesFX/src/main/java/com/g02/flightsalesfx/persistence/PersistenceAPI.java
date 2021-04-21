@@ -7,6 +7,10 @@ import com.g02.flightsalesfx.businessLogic.SeatManagerImpl;
 
 public interface PersistenceAPI {
 
+    TicketStorageService getTicketStorageService(TicketManager ticketManager);
+
+    BookingStorageService getBookingStorageService(BookingManager bookingManager);
+
     EmployeeStorageService getEmployeeStorageService(EmployeeManager employeeManager);
 
     PlaneStorageService getPlaneStorageService(PlaneManager planeManager);

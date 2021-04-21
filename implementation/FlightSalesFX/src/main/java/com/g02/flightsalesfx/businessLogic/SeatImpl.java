@@ -67,6 +67,11 @@ public class SeatImpl implements Seat, Savable {
     }
 
     @Override
+    public List<SeatOption> getSeatOptions() {
+        return seatOptions;
+    }
+
+    @Override
     public String toString() {
         return "SeatImpl{" +
                 "rowNumber=" + rowNumber +

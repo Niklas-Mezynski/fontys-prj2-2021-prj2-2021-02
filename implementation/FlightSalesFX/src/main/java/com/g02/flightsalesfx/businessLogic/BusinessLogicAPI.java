@@ -10,6 +10,14 @@ import java.util.function.Predicate;
 
 public interface BusinessLogicAPI {
 
+    public List<Booking> getAllBookings(Predicate<Booking> predicate);
+
+    public List<Ticket> getAllTickets(Predicate<Ticket> predicate);
+
+    public TicketManager getTicketManager();
+
+    public BookingManager getBookingManager();
+
     public EmployeeManager getEmployeeManager();
 
     public PlaneManager getPlaneManager();
@@ -53,5 +61,9 @@ public interface BusinessLogicAPI {
     public List<Flight> getAllFlights(Predicate<Flight> predicate);
 
     boolean addFlightOptionFromUI(String name, int maxAvailable, double price, Flight flight);
+
+    boolean addBookingFromUI(Booking b);
+
+    boolean addTicketFromUI(Ticket ticket);
 
 }

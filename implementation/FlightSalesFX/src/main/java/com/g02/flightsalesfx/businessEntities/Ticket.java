@@ -5,6 +5,8 @@
  */
 package com.g02.flightsalesfx.businessEntities;
 
+import java.util.List;
+
 /**
  *
  * @author anato
@@ -13,5 +15,16 @@ public interface Ticket {
     /**
      * @return The Flight that this Ticket belongs to
      */
+
     public Flight getFlight();
+
+    public Booking getBooking();
+
+    public Seat getSeat();
+
+    public List<SeatOption> getBookedSeatOption();
+
+    public String getFirstName();
+
+    public String getLastName();
 }

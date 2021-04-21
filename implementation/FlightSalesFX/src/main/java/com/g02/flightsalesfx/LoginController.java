@@ -1,5 +1,9 @@
 package com.g02.flightsalesfx;
 
+import com.g02.flightsalesfx.businessEntities.SalesManager;
+import com.g02.flightsalesfx.businessLogic.SalesEmployeeImpl;
+import com.g02.flightsalesfx.businessLogic.SalesManagerImpl;
+import com.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -44,7 +48,20 @@ public class LoginController{
         var employee = App.businessLogicAPI.login(username.getText(), password.getText());
         if (employee != null) {
             App.employee = employee;
-            App.setRoot("home");
+
+
+            if(App.employee.getClass().equals(SalesOfficerImpl.class)){//username & password :"a"
+                System.out.println("SalesOfficer");
+                App.setRoot("home");
+            }
+            if(App.employee.getClass().equals(SalesEmployeeImpl.class)){//username & password :"c"
+                System.out.println("SalesEmployee");
+                App.setRoot("salesEmployeeHome");
+            }
+            if(App.employee.getClass().equals(SalesManagerImpl.class)){//username & password :"b"
+                System.out.println("SalesManager");
+                App.setRoot("home");//todo change to SalesManagerHome
+            }
         }
     }
 

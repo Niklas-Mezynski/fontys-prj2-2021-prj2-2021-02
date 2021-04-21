@@ -48,6 +48,7 @@ public class FlightImpl implements Flight, Savable {
 
     }
 
+
     /**
      * Starts the Sales process for this Flight
      */

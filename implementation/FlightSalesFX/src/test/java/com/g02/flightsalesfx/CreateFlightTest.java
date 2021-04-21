@@ -91,7 +91,8 @@ public class CreateFlightTest {
     @Test
     void addFlightDetailsWithoutThrowingAnyException(FxRobot fxRobot) throws InterruptedException {
         //select route
-        var v7=fxRobot.lookup(node -> ((Text)node).getText().contains("BER")).query();
+        var v=fxRobot.lookup(node -> ((Text)node).getText().contains("BER")).query();
+        fxRobot.clickOn(v);
         //select date
         DatePicker dp=(fxRobot.lookup("#startDate").queryAs(DatePicker.class));
         dp.setValue(LocalDate.of(2021,4,12));
@@ -130,7 +131,7 @@ public class CreateFlightTest {
 
         fxRobot.clickOn(fxRobot.lookup("#nextStepButton").queryAs(Button.class));
         fxRobot.press(KeyCode.ENTER);
-        
+
 //        Assertions.assertThat(fxRobot.lookup(".label").queryAs(Label.class)).hasText("Select a Flight route");
     }
 }

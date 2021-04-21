@@ -22,10 +22,40 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     private RouteManagerImpl routeManager;
     private PriceReductionManagerImpl priceReductionManager;
     private FlightManagerImpl flightManager;
+    private TicketManagerImpl ticketManager;
+    private BookingManagerImpl bookingManager;
     private ReoccurringFlightManagerImpl reoccurringFlightManager;
 
     public BusinessLogicAPIImpl(PersistenceAPI persistenceAPI) {
         this.persistenceAPI = persistenceAPI;
+    }
+
+    @Override
+    public List<Booking> getAllBookings(Predicate<Booking> predicate) {
+        return persistenceAPI.getBookingStorageService(bookingManager).getAll().stream().filter(predicate).collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public List<Ticket> getAllTickets(Predicate<Ticket> predicate) {
+        return persistenceAPI.getTicketStorageService(ticketManager).getAll().stream().filter(predicate).collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public TicketManager getTicketManager() {
+        if(ticketManager == null){
+            ticketManager = new TicketManagerImpl();
+            ticketManager.setTicketStorageService(persistenceAPI.getTicketStorageService(ticketManager));
+        }
+        return ticketManager;
+    }
+
+    @Override
+    public BookingManager getBookingManager() {
+        if(bookingManager == null){
+            bookingManager = new BookingManagerImpl();
+            bookingManager.setBookingStorageService(persistenceAPI.getBookingStorageService(bookingManager));
+        }
+        return bookingManager;
     }
 
     @Override
@@ -213,6 +243,16 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         var flightOption = getOptionManager().createFlightOption(name, maxAvailable, price);
         flight.addFlightOption(flightOption);
         return persistenceAPI.getFlightOptionStorageService(getOptionManager()).add(flightOption)!=null;
+    }
+
+    @Override
+    public boolean addBookingFromUI(Booking booking){
+        return persistenceAPI.getBookingStorageService(getBookingManager()).add(booking);
+    }
+
+    @Override
+    public boolean addTicketFromUI(Ticket t){
+        return  persistenceAPI.getTicketStorageService(getTicketManager()).add(t);
     }
 
 
