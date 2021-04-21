@@ -6,6 +6,8 @@ import com.g02.flightsalesfx.businessLogic.AirportManagerImpl;
 import com.g02.flightsalesfx.businessLogic.EmployeeManagerImpl;
 import com.g02.flightsalesfx.businessLogic.SalesEmployeeImpl;
 import com.g02.flightsalesfx.persistence.AirportStorageService;
+import com.g02.flightsalesfx.businessLogic.SalesManagerImpl;
+import com.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
 import com.g02.flightsalesfx.persistence.EmployeeStorageService;
 import com.g02.flightsalesfx.persistence.PersistenceAPIImpl;
 import org.junit.jupiter.api.Disabled;
@@ -42,6 +44,9 @@ public class CreateDB {
         var employeeStorageService = persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl());
         System.out.println(employeeStorageService.add(new SalesEmployeeImpl("Nils","b","b")));
         System.out.println(employeeStorageService.add(new SalesEmployeeImpl("","","")));
+        System.out.println(employeeStorageService.add(new SalesEmployeeImpl("SalesEmployee","e","")));
+        System.out.println(employeeStorageService.add(new SalesOfficerImpl("SalesOfficer","o","")));
+        System.out.println(employeeStorageService.add(new SalesManagerImpl("SalesManager","m","")));
     }
 
     @Test
