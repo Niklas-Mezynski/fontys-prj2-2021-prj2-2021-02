@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @TableName("flights")
 public class FlightImpl implements Flight, Savable {
 
-    @PrimaryKey
+    @PrimaryKey(autogen = true)
     public int flightNumber;
     public LocalDateTime departure;
     public LocalDateTime arrival;
