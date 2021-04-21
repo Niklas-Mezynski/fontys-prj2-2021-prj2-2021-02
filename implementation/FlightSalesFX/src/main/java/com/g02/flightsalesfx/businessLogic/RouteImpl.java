@@ -5,13 +5,15 @@ import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.Airport;
 import com.g02.flightsalesfx.businessEntities.Route;
 
+import java.util.Objects;
+
 @TableName("routes")
 public class RouteImpl implements Route, Savable {
 
     @PrimaryKey
     public int id;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.AirportImpl")
-    public AirportImpl[] airports;
+    public AirportImpl[] airports = new AirportImpl[2];
     @Ignore
     private Airport arrivalAirport;
     @Ignore
@@ -20,8 +22,10 @@ public class RouteImpl implements Route, Savable {
     public boolean rteEnabled;
 
     public RouteImpl(Airport departureAirport, Airport arrivalAirport) {
-        this.departureAirport = (AirportImpl) departureAirport;
-        this.arrivalAirport = (AirportImpl) arrivalAirport;
+        this.departureAirport = departureAirport;
+        this.airports[0] = (AirportImpl) departureAirport;
+        this.arrivalAirport = arrivalAirport;
+        this.airports[1] = (AirportImpl) arrivalAirport;
         this.rteEnabled = true;
     }
 
@@ -107,9 +111,9 @@ public class RouteImpl implements Route, Savable {
         RouteImpl route = (RouteImpl) o;
 
         if (rteEnabled != route.rteEnabled) return false;
-        if (departureAirport != null ? !departureAirport.equals(route.departureAirport) : route.departureAirport != null)
+        if (!Objects.equals(departureAirport, route.departureAirport))
             return false;
-        return arrivalAirport != null ? arrivalAirport.equals(route.arrivalAirport) : route.arrivalAirport == null;
+        return Objects.equals(arrivalAirport, route.arrivalAirport);
     }
 
     @Override
