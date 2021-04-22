@@ -4,6 +4,7 @@ import com.g02.btfdao.annotations.ForeignKey;
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
 import com.g02.btfdao.utils.Savable;
+import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
 
@@ -112,4 +113,8 @@ public class SeatImpl implements Seat, Savable {
     public SeatOptionImpl[] getSeatOptions() {
         return seatOptions;
     }*/
+
+    public static SeatImpl of(Seat s){
+        return new SeatImpl(s.getRowNumber(), s.getSeatNumber());
+    }
 }

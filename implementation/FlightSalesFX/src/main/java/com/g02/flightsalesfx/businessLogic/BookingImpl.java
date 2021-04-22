@@ -16,22 +16,26 @@ public class BookingImpl implements Booking, Savable {
     @PrimaryKey(autogen = true)
     public int id;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.SalesEmployeeImpl")
-    public SalesEmployee se;
+    public SalesEmployeeImpl se;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightImpl")
-    public Flight flight;
+    public FlightImpl flight;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.TicketImpl")
-    public Ticket[] tickets = new Ticket[0];
+    public TicketImpl[] tickets = new TicketImpl[0];
     @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightOptionImpl")
-    public FlightOption[] flightOptions;
+    public FlightOptionImpl[] flightOptions;
     public String eMail;
 
 
     public BookingImpl(SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail){
-        this.se = se;
-        this.flight = flight;
-        this.tickets = tickets;
-        this.flightOptions = bookedFlightOptions;
+        this.se = SalesEmployeeImpl.of(se);
+        this.flight = FlightImpl.of(flight);
+        this.tickets = Arrays.asList(tickets).stream().map(ticket -> TicketImpl.of(ticket)).toArray(TicketImpl[]::new);
+        this.flightOptions = Arrays.asList(bookedFlightOptions).stream().map(bfo -> FlightOptionImpl.of(bfo)).toArray(FlightOptionImpl[]::new);
         this.eMail = eMail;
+    }
+    public static BookingImpl of(Booking b){
+
+        return new BookingImpl(SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), b.getTickets().toArray(Ticket[]::new), b.getBookedFlightOptions().toArray(FlightOption[]::new), b.getCustomerEmail());
     }
 
     @Override
@@ -61,15 +65,15 @@ public class BookingImpl implements Booking, Savable {
 
     @Override
     public void addTicket(Ticket t) {
-        List<Ticket> ticketList = new ArrayList<>(Arrays.asList(tickets));
-        ticketList.add(t);
-        tickets = ticketList.toArray(Ticket[]::new);
+        List<TicketImpl> ticketList = new ArrayList<>(Arrays.asList(tickets));
+        ticketList.add(TicketImpl.of(t));
+        tickets = ticketList.toArray(TicketImpl[]::new);
     }
 
     @Override
     public void removeTicket(Ticket ticket) {
-        List<Ticket> ticketList = new ArrayList<>(Arrays.asList(tickets));
-        ticketList.remove(ticket);
-        tickets = ticketList.toArray(Ticket[]::new);
+        List<TicketImpl> ticketList = new ArrayList<>(Arrays.asList(tickets));
+        ticketList.remove(TicketImpl.of(ticket));
+        tickets = ticketList.toArray(TicketImpl[]::new);
     }
 }

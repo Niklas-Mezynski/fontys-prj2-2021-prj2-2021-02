@@ -15,9 +15,9 @@ public class TicketImpl implements Ticket, Savable {
     @PrimaryKey(autogen = true)
     public int id;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightImpl")
-    public Flight flight;
+    public FlightImpl flight;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.SeatImpl")
-    public Seat seat;
+    public SeatImpl seat;
 
 
 
@@ -28,12 +28,16 @@ public class TicketImpl implements Ticket, Savable {
 
 
     public TicketImpl(Flight flight, Seat seat,  String firstName, String lastName, SeatOption[] seatOptions){
-        this.flight = flight;
-        this.seat = seat;
+        this.flight = FlightImpl.of(flight);
+        this.seat = SeatImpl.of(seat);
         this.seatOptions = seatOptions;
         this.paxFName = firstName;
         this.paxLName = lastName;
 
+    }
+    public static TicketImpl of(Ticket t){
+
+        return new TicketImpl(t.getFlight(), t.getSeat(), t.getFirstName(), t.getLastName(), t.getSeatOptions());
     }
 
     @Override
