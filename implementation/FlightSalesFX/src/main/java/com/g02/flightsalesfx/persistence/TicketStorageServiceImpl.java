@@ -19,14 +19,18 @@ public class TicketStorageServiceImpl implements TicketStorageService{
     }
 
     @Override
-    public boolean add(Ticket ticket) {
+    public TicketImpl add(Ticket ticket) {
         List<TicketImpl> tickets = null;
         try {
             tickets = dao.insert(new TicketImpl(ticket.getFlight(), ticket.getSeat(), ticket.getFirstName(), ticket.getLastName(), ticket.getSeatOptions() ));
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-        return tickets.size() == 1;
+        if(tickets.size() == 1){
+            return tickets.get(0);
+        }else{
+            return null;
+        }
     }
 
     @Override

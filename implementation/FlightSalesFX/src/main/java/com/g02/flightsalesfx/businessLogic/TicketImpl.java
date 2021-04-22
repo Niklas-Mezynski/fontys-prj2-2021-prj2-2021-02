@@ -12,10 +12,10 @@ import java.util.List;
 @TableName("tickets")
 public class TicketImpl implements Ticket, Savable {
 
-    @PrimaryKey
+    @PrimaryKey(autogen = true)
+    public int id;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightImpl")
     public Flight flight;
-    @PrimaryKey
     @ForeignKey("com.g02.flightsalesfx.businessLogic.SeatImpl")
     public Seat seat;
 

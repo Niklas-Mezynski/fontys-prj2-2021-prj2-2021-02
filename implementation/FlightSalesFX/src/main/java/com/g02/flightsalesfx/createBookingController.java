@@ -481,8 +481,6 @@ public class createBookingController {
         boolean saveComplete = true;
         if(!App.businessLogicAPI.addBookingFromUI(booking)){
             saveComplete = false;
-        } else {
-
         }
 
         if(!saveComplete){

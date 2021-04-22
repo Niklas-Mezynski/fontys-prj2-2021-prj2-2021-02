@@ -1,6 +1,5 @@
 package com.g02.flightsalesfx.businessLogic;
 
-import com.g02.flightsalesfx.CreatePlaneController;
 import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.persistence.PersistenceAPI;
 
@@ -9,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
@@ -247,12 +245,14 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public boolean addBookingFromUI(Booking booking){
-        return persistenceAPI.getBookingStorageService(getBookingManager()).add(booking);
+        BookingImpl b = persistenceAPI.getBookingStorageService(getBookingManager()).add(booking);
+        return b != null;
     }
 
     @Override
     public boolean addTicketFromUI(Ticket t){
-        return  persistenceAPI.getTicketStorageService(getTicketManager()).add(t);
+        TicketImpl tr = persistenceAPI.getTicketStorageService(getTicketManager()).add(t);
+        return tr != null ;
     }
 
 

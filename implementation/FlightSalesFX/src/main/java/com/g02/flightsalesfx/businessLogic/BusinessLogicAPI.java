@@ -1,6 +1,5 @@
 package com.g02.flightsalesfx.businessLogic;
 
-import com.g02.flightsalesfx.CreatePlaneController;
 import com.g02.flightsalesfx.businessEntities.*;
 
 import java.time.Duration;

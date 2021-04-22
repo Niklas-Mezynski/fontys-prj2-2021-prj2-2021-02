@@ -20,14 +20,18 @@ public class BookingStorageServiceImpl implements BookingStorageService{
     }
 
     @Override
-    public boolean add(Booking booking) {
+    public BookingImpl add(Booking booking) {
         List<BookingImpl> bookings = null;
         try {
             bookings = dao.insert(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail() ));
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-        return bookings.size() == 1;
+        if(bookings.size() == 1){
+            return bookings.get(0);
+        }else{
+            return null;
+        }
     }
 
     @Override
