@@ -2,9 +2,10 @@ package com.g02.flightsalesfx.businessEntities;
 
 import com.g02.flightsalesfx.businessLogic.SeatImpl;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface Plane {
+public interface Plane extends Serializable {
 
     /**
      * @return Name of the Plane

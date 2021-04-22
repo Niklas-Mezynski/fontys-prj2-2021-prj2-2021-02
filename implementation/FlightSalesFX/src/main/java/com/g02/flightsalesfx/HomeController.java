@@ -6,6 +6,7 @@ import com.g02.flightsalesfx.businessEntities.Route;
 import com.g02.flightsalesfx.gui.FlightTable;
 import com.g02.flightsalesfx.gui.PlaneTable;
 import com.g02.flightsalesfx.gui.RouteTable;
+import com.g02.flightsalesfx.helpers.Bundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
@@ -49,7 +50,10 @@ public class HomeController {
                 Plane rowData = row.getItem();
                 if (event.getClickCount() == 2) {
                     System.out.println("Double click on: " + rowData.getName());
-                    App.setRoot("createPlane");
+                    var bundle = new Bundle();
+                    bundle.add("edit", true);
+                    bundle.add("plane", rowData);
+                    App.setRoot("createPlane", bundle);
                 } else if (event.getClickCount() == 1) {
                     System.out.println("Normal click on: " + rowData.getName());
                     App.businessLogicAPI.viewPlane(rowData);
@@ -65,7 +69,7 @@ public class HomeController {
 
 
         var allFlights = App.businessLogicAPI.getAllFlights(f -> true);
-
+        System.out.println(allFlights);
         var flightTable = new FlightTable(allFlights, (event, row) -> {
             Flight selectedFlight = row.getItem();
             System.out.println("Clicked on: " + selectedFlight);

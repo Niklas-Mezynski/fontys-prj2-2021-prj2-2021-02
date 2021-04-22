@@ -4,6 +4,8 @@ import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
 import com.g02.flightsalesfx.businessLogic.SeatImpl;
 import com.g02.flightsalesfx.businessLogic.SeatOptionImpl;
+import com.g02.flightsalesfx.helpers.Bundle;
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
 import static com.g02.flightsalesfx.App.businessLogicAPI;
 import static com.g02.flightsalesfx.App.setRoot;
 
-public class CreatePlaneController {
+public class CreatePlaneController implements Controller {
 
     private final ToggleGroup toggleGroupSeatOptions = new ToggleGroup();
 
@@ -160,6 +162,13 @@ public class CreatePlaneController {
 
     private void updateSeatText() {
         seats.forEach(SeatButton::updateText);
+    }
+
+    @Override
+    public void init(Bundle bundle) {
+        if (bundle.getBoolean("edit", false)) {
+            System.out.println(bundle.get("plane"));
+        }
     }
 
     /**
