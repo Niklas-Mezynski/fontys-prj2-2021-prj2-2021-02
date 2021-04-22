@@ -132,6 +132,7 @@ public class RouteImpl implements Route, Savable {
         departureAirport=airports[1];
     }
     public static RouteImpl of(Route r){
-        return new RouteImpl(r.getDepartureAirport(), r.getArrivalAirport());
+
+        return r==null?null:new RouteImpl(r.getDepartureAirport(), r.getArrivalAirport());
     }
 }

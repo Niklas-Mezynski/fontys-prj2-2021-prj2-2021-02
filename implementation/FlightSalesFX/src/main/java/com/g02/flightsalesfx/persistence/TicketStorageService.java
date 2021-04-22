@@ -11,5 +11,5 @@ public interface TicketStorageService {
 
     List<Ticket> getAll();
 
-    void remove(Ticket ticket);
+    boolean remove(Ticket ticket);
 }

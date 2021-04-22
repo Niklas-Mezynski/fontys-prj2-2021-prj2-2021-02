@@ -462,7 +462,7 @@ public class createBookingController {
         }
 
 
-        Booking booking = bm.createBooking((SalesEmployee) App.employee, this.selectedFlight,  flightOptions.toArray(FlightOption[]::new), contactEmail);
+
 
 
 
@@ -471,18 +471,18 @@ public class createBookingController {
         for(Seat s : selectedSeatsForBooking.keySet()){
             Pair<String,String> namePair = personNameSeatComb.get(s);
             SeatOption[] seatOptions = selectedSeatsForBooking.get(s).toArray(SeatOption[]::new);
-            Ticket t = tm.createTicket(this.selectedFlight, s, booking, namePair.getKey(), namePair.getValue(), seatOptions);
-            booking.addTicket(t);
+            Ticket t = tm.createTicket(this.selectedFlight, s, namePair.getKey(), namePair.getValue(), seatOptions);
             tickets.add(t);
         }
+
+        Ticket[] ticketsForBooking = tickets.toArray(Ticket[]::new);
+        Booking booking = bm.createBooking((SalesEmployee) App.employee, this.selectedFlight, ticketsForBooking, flightOptions.toArray(FlightOption[]::new), contactEmail);
+
         boolean saveComplete = true;
         if(!App.businessLogicAPI.addBookingFromUI(booking)){
             saveComplete = false;
         } else {
-            for(Ticket t : tickets){
-                if(!App.businessLogicAPI.addTicketFromUI(t))
-                    saveComplete = false;
-            }
+
         }
 
         if(!saveComplete){

@@ -18,8 +18,6 @@ public interface Ticket {
 
     public Flight getFlight();
 
-    public Booking getBooking();
-
     public Seat getSeat();
 
     public List<SeatOption> getBookedSeatOption();
@@ -27,4 +25,6 @@ public interface Ticket {
     public String getFirstName();
 
     public String getLastName();
+
+    public SeatOption[] getSeatOptions();
 }

@@ -1,23 +1,35 @@
 package com.g02.flightsalesfx.businessLogic;
 
+import com.g02.btfdao.annotations.ForeignKey;
+import com.g02.btfdao.annotations.PrimaryKey;
+import com.g02.btfdao.annotations.TableName;
+import com.g02.btfdao.utils.Savable;
 import com.g02.flightsalesfx.businessEntities.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BookingImpl implements Booking {
+@TableName("bookings")
+public class BookingImpl implements Booking, Savable {
 
-    private SalesEmployee se;
-    private Flight flight;
-    private Ticket[] tickets = new Ticket[0];
-    private FlightOption[] flightOptions;
-    private String eMail;
+    @PrimaryKey(autogen = true)
+    public int id;
+    @ForeignKey("com.g02.flightsalesfx.businessLogic.SalesEmployeeImpl")
+    public SalesEmployee se;
+    @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightImpl")
+    public Flight flight;
+    @ForeignKey("com.g02.flightsalesfx.businessLogic.TicketImpl")
+    public Ticket[] tickets = new Ticket[0];
+    @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightOptionImpl")
+    public FlightOption[] flightOptions;
+    public String eMail;
 
 
-    public BookingImpl(SalesEmployee se, Flight flight, FlightOption[] bookedFlightOptions, String eMail){
+    public BookingImpl(SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail){
         this.se = se;
         this.flight = flight;
+        this.tickets = tickets;
         this.flightOptions = bookedFlightOptions;
         this.eMail = eMail;
     }

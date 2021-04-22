@@ -26,15 +26,25 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
 
     @Override
     public TicketStorageService getTicketStorageService(TicketManager ticketManager) {
-        if(ticketStorageService == null)
-            ticketStorageService = new TicketStorageServiceImpl(ticketManager);
+        if(ticketStorageService == null) {
+            try {
+                ticketStorageService = new TicketStorageServiceImpl(ticketManager, daoFactory.createDao(TicketImpl.class));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
         return ticketStorageService;
     }
 
     @Override
     public BookingStorageService getBookingStorageService(BookingManager bookingManager) {
-        if(bookingStorageService == null)
-            bookingStorageService = new BookingStorageServiceImpl(bookingManager);
+        if(bookingStorageService == null) {
+            try {
+                bookingStorageService = new BookingStorageServiceImpl(bookingManager, daoFactory.createDao(BookingImpl.class));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
         return bookingStorageService;
     }
 
