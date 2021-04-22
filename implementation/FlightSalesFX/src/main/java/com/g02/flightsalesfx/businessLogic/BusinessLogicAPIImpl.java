@@ -1,6 +1,5 @@
 package com.g02.flightsalesfx.businessLogic;
 
-import com.g02.flightsalesfx.CreatePlaneController;
 import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.persistence.PersistenceAPI;
 
@@ -9,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
@@ -155,12 +153,12 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
-    public boolean createPlaneFromUI(String name, String type, String manufacturer, List<Seat> seats) {
+    public Plane createPlaneFromUI(String name, String type, String manufacturer, List<Seat> seats) {
         var plane = getPlaneManager().createPlane(name, manufacturer, type);
         plane.addAllSeats(seats.stream().sorted().collect(Collectors.toList()));
         System.out.println(plane);
         var planeStorageService = persistenceAPI.getPlaneStorageService(getPlaneManager());
-        return planeStorageService.add(plane)!=null;
+        return planeStorageService.add(plane);
     }
 
     @Override
@@ -255,5 +253,15 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         return  persistenceAPI.getTicketStorageService(getTicketManager()).add(t);
     }
 
+    @Override
+    public Plane deletePlane(PlaneImpl oldPlane) {
+        return persistenceAPI.getPlaneStorageService(getPlaneManager()).delete(oldPlane);
+    }
 
+    @Override
+    public Plane updatePlane(PlaneImpl oldPlane, String name, String type, String manufacturer, List<Seat> collect) {
+        var plane = new PlaneImpl(oldPlane.getId(), name, type, manufacturer);
+        plane.addAllSeats(collect);
+        return persistenceAPI.getPlaneStorageService(getPlaneManager()).update(plane);
+    }
 }

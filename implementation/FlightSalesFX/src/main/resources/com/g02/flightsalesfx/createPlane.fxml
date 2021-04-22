@@ -122,6 +122,7 @@
                         </HBox>
                         <Button fx:id="savePlaneButton" mnemonicParsing="false" onAction="#savePlane" text="Save and Exit" />
                         <Button layoutX="10.0" layoutY="40.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
+                        <Button fx:id="deleteButton" onAction="#delete" layoutX="10.0" layoutY="82.0" mnemonicParsing="false" text="Delete" />
                      </children>
                   </VBox>
                </children>
