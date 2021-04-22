@@ -10,7 +10,7 @@ import java.util.Objects;
 @TableName("routes")
 public class RouteImpl implements Route, Savable {
 
-    @PrimaryKey
+    @PrimaryKey(autogen = true)
     public int id;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.AirportImpl")
     public AirportImpl[] airports = new AirportImpl[2];
