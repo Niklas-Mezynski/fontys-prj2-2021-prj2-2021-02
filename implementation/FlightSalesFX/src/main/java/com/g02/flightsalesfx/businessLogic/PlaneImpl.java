@@ -114,4 +114,8 @@ public class PlaneImpl implements Plane, Savable {
         return rows;
     }*/
 
+    public static PlaneImpl of(Plane plane){
+        return new PlaneImpl(plane.getName(), plane.getType(), plane.getManufacturer());
+    }
+
 }
