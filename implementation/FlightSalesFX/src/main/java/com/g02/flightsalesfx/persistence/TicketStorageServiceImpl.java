@@ -1,33 +1,53 @@
 package com.g02.flightsalesfx.persistence;
 
+import com.g02.btfdao.dao.Dao;
 import com.g02.flightsalesfx.businessEntities.Ticket;
 import com.g02.flightsalesfx.businessEntities.TicketManager;
+import com.g02.flightsalesfx.businessLogic.TicketImpl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class TicketStorageServiceImpl implements TicketStorageService{
 
-    private List<Ticket> tickets;
+    private final Dao<TicketImpl> dao;
 
-    public TicketStorageServiceImpl(TicketManager ticketManager) {
-        tickets = new ArrayList<Ticket>();
+    public TicketStorageServiceImpl(TicketManager ticketManager, Dao<TicketImpl> dao) {
+        this.dao = dao;
     }
 
     @Override
     public boolean add(Ticket ticket) {
-        tickets.add(ticket);
-        return tickets.contains(ticket);
+        List<TicketImpl> tickets = null;
+        try {
+            tickets = dao.insert(new TicketImpl(ticket.getFlight(), ticket.getSeat(), ticket.getFirstName(), ticket.getLastName(), ticket.getSeatOptions() ));
+        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return tickets.size() == 1;
     }
 
     @Override
     public List<Ticket> getAll() {
-        return tickets.stream().collect(Collectors.toUnmodifiableList());
+        try {
+            var all = dao.getAll();
+            return new ArrayList<>(all);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return List.of();
     }
 
     @Override
-    public void remove(Ticket ticket) {
-        tickets.remove(ticket);
+    public boolean remove(Ticket ticket) {
+        List<TicketImpl> tickets = null;
+        try {
+            tickets = dao.remove(new TicketImpl(ticket.getFlight(), ticket.getSeat(), ticket.getFirstName(), ticket.getLastName(), ticket.getSeatOptions() ));
+        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return tickets.size() == 1;
     }
 }

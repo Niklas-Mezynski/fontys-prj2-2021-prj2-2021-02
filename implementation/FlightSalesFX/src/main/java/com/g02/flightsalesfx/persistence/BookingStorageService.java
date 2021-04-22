@@ -10,5 +10,5 @@ public interface BookingStorageService {
 
     List<Booking> getAll();
 
-    void remove(Booking selectedBooking);
+    boolean remove(Booking selectedBooking);
 }
