@@ -17,14 +17,14 @@ import java.util.stream.Collectors;
 @TableName("flights")
 public class FlightImpl implements Flight, Savable {
 
-    @PrimaryKey
+    @PrimaryKey(autogen = true)
     public int flightNumber;
     public LocalDateTime departure;
     public LocalDateTime arrival;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.RouteImpl")
-    public Route route;
+    public RouteImpl route;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.PlaneImpl")
-    public Plane plane;
+    public PlaneImpl plane;
     public double price;
     public boolean salesProcessStarted = false;
 
@@ -42,8 +42,8 @@ public class FlightImpl implements Flight, Savable {
         flightNumber = fNumber;
         departure = dep;
         arrival = arr;
-        this.route = route;
-        this.plane = plane;
+        this.route = RouteImpl.of(route);
+        this.plane = PlaneImpl.of(plane);
         this.price = price;
 
     }

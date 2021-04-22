@@ -54,16 +54,28 @@ public class Dao<E extends Savable> {
                 if (!field.getType().isArray() && Mapper.isDatabaseType(field)) {
                     var o = (Savable) field.get(savable);
                     Dao<? extends Savable> dao = daoFactory.createDao((Class<? extends Savable>) o.getClass());
+                    var dbobject=dao.get(Mapper.getPrimaryKeyValues(o));
+                    if (dbobject.isPresent()){
+                        field.set(savable, dbobject.get());
+                        System.out.println("insered_skipped: "+ dbobject.get());
+                        continue;
+                    }
                     var insert = dao.insert(o).get(0);
                     System.out.println("inserted1: " + insert);
                     field.set(savable, insert);
                 }
             }
+            System.out.println("e1: "+e1);
+            System.out.println("e1pks: "+ Arrays.toString(Mapper.getPrimaryKeyValues(e1)));
             var opt=get(Mapper.getPrimaryKeyValues(e1));
             opt = opt.isPresent()?opt:queryExecutor.doInsert(connection, queryBuilder.createInsertSQL(entityClass), entityClass, e1);
             if (!opt.isPresent()) continue;
             var e2 = opt.get();
-//            System.out.println("e2: " + e2);
+            try {
+                System.out.println("e2: " + e2);
+            }catch (Exception ignored){
+                System.out.println(e2.getClass().getName());
+            }
             for (Field field : fields) {
                 if (!field.getType().isArray() && Mapper.isDatabaseType(field)) {
                     var o = (Savable) field.get(savable);
