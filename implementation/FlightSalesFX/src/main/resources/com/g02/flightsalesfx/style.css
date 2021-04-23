@@ -2,6 +2,7 @@ Button {
     /*-fx-max-width: MAX_VALUE;*/
     -fx-background-color: #0034d2;
     -fx-text-fill: #fff;
+    -fx-font-size: 14px;
 }
 
 .tab {
