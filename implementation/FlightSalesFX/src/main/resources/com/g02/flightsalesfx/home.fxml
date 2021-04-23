@@ -1,147 +1,170 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.HomeController">
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-                  <Menu mnemonicParsing="false" text="Create">
-                    <items>
-                      <MenuItem fx:id="createPlane" mnemonicParsing="false" onAction="#gotoCreatePlane" text="Plane" />
-                    </items>
-                  </Menu>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
-   <center>
-      <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-        <tabs>
-          <Tab fx:id="planesTab" text="Planes">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0">
-                     <children>
-                        <ScrollPane prefHeight="529.0" prefWidth="910.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <content>
-                            <AnchorPane fx:id="planePane">
-                                 <children>
-                                    <VBox fx:id="planesListVBox" layoutY="26.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <children>
-                                          <HBox>
-                                             <children>
-                                                <Label text="All Planes" textAlignment="CENTER">
-                                                   <font>
-                                                      <Font size="24.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                          <Button fx:id="goToCreatePlane" mnemonicParsing="false" onAction="#gotoCreatePlane" text="Create Plane" />
-                                       </children>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.HomeController">
+    <!--<top>
+       <MenuBar BorderPane.alignment="CENTER">
+         <menus>
+           <Menu mnemonicParsing="false" text="File">
+             <items>
+                   <Menu mnemonicParsing="false" text="Create">
+                     <items>
+                       <MenuItem fx:id="createPlane" mnemonicParsing="false" onAction="#gotoCreatePlane" text="Plane" />
+                     </items>
+                   </Menu>
+               <MenuItem mnemonicParsing="false" text="Close" />
+             </items>
+           </Menu>
+           <Menu mnemonicParsing="false" text="Edit">
+             <items>
+               <MenuItem mnemonicParsing="false" text="Delete" />
+             </items>
+           </Menu>
+           <Menu mnemonicParsing="false" text="Help">
+             <items>
+               <MenuItem mnemonicParsing="false" text="About" />
+             </items>
+           </Menu>
+         </menus>
+       </MenuBar>
+    </top>-->
+    <center>
+        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <tabs>
+                <Tab fx:id="planesTab" styleClass="tab" text="Planes">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0">
+                            <children>
+                                <ScrollPane vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <content>
+                                        <AnchorPane fx:id="planePane">
+                                            <children>
+                                    <BorderPane prefHeight="562.0" prefWidth="783.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <center>
+                                                      <VBox fx:id="planesListVBox" spacing="10.0" BorderPane.alignment="CENTER">
+                                                          <children>
+                                                              <HBox>
+                                                                  <children>
+                                                                      <Label styleClass="title" text="All Planes" textAlignment="CENTER">
+                                                                          <font>
+                                                                              <Font size="24.0" />
+                                                                          </font>
+                                                                      </Label>
+                                                                  </children>
+                                                              </HBox>
+                                                              <Button fx:id="goToCreatePlane" mnemonicParsing="false" onAction="#gotoCreatePlane" text="Create Plane" />
+                                                          </children>
+                                                      </VBox>
+                                       </center>
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding></VBox>
+                                       </padding>
+                                    </BorderPane>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="routesTab" text="Routes">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="600.0">
+                            <children>
+                                <ScrollPane minHeight="0.0" minWidth="0.0" prefHeight="529.0" prefWidth="910.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <content>
+                                        <AnchorPane fx:id="routePane">
+                                            <children>
+                                    <BorderPane prefHeight="563.0" prefWidth="783.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <center>
+                                                      <VBox fx:id="routeListVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" BorderPane.alignment="CENTER">
+                                                          <children>
+                                                              <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                                                                  <children>
+                                                                      <VBox prefHeight="49.0" prefWidth="243.0">
+                                                                          <children>
+                                                                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="title" text="All Routes">
+                                                                                  <font>
+                                                                                      <Font size="22.0" />
+                                                                                  </font>
+                                                                              </Label>
+                                                                              <Label prefHeight="17.0" prefWidth="223.0" text="Ctrl + 2xLeftClick to Toggle Route-Enable" />
+                                                                          </children>
+                                                                      </VBox>
+                                                                  </children>
+                                                              </HBox>
+                                                              <CheckBox fx:id="showDisabled" mnemonicParsing="false" onAction="#showDisabledUpdated" text="Show Disabled Routes" />
+                                                              <Button fx:id="goToCreateRoute" mnemonicParsing="false" onAction="#goToCreateRoute" text="Add Route" />
+                                                          </children>
+                                                      </VBox>
+                                       </center>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </BorderPane>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="flightsTab" text="Flights">
+                    <content>
+                        <AnchorPane>
+                            <children>
+                                  <ScrollPane vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <content>
+                                          <AnchorPane fx:id="flightPane">
+                                 <children>
+                                    <BorderPane prefHeight="562.0" prefWidth="782.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <center>
+                                                    <VBox fx:id="flightVBox" spacing="10.0" BorderPane.alignment="CENTER">
+                                                        <children>
+                                                            <Label styleClass="title" text="Flights">
+                                                                <font>
+                                                                    <Font size="18.0" />
+                                                                </font>
+                                                            </Label>
+                                                <Label text="Double click a flight to edit" />
+                                                            <Button fx:id="goToCreateFlight" mnemonicParsing="false" onAction="#goToCreateFlight" text="Create new flight">
+                                                                <font>
+                                                                    <Font size="14.0" />
+                                                                </font>
+                                                                <VBox.margin>
+                                                                    <Insets top="5.0" />
+                                                                </VBox.margin>
+                                                            </Button>
+                                                        </children>
+                                                    </VBox>
+                                       </center>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </BorderPane>
                                  </children>
                               </AnchorPane>
-                          </content>
-                        </ScrollPane>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab fx:id="routesTab" text="Routes">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="600.0">
-                     <children>
-                        <ScrollPane minHeight="0.0" minWidth="0.0" prefHeight="529.0" prefWidth="910.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <content>
-                            <AnchorPane fx:id="routePane">
-                                 <children>
-                                    <VBox fx:id="routeListVBox" fillWidth="false" layoutX="6.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                       <children>
-                                          <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
-                                             <children>
-                                                <VBox prefHeight="49.0" prefWidth="243.0">
-                                                   <children>
-                                                      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="All Routes">
-                                                         <font>
-                                                            <Font size="22.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Label prefHeight="17.0" prefWidth="223.0" text="Ctrl + 2xLeftClick to Toggle Route-Enable" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </HBox>
-                                          <CheckBox fx:id="showDisabled" mnemonicParsing="false" onAction="#showDisabledUpdated" text="Show Disabled Routes" />
-                                          <Button fx:id="goToCreateRoute" mnemonicParsing="false" onAction="#goToCreateRoute" text="Add Route" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </AnchorPane>
-                          </content>
-                        </ScrollPane>
-                     </children></AnchorPane>
-            </content>
-          </Tab>
-            <Tab fx:id="flightsTab" text="Flights">
-              <content>
-                <AnchorPane>
-                     <children>
-                        <BorderPane prefHeight="527.2" prefWidth="910.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <top>
-                              <VBox fx:id="flightVBox" BorderPane.alignment="CENTER">
-                                 <children>
-                                    <Label text="Flights (double click a flight to edit)">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Label>
-                                    <Button fx:id="goToCreateFlight" mnemonicParsing="false" onAction="#goToCreateFlight" text="Create new flight">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="5.0" />
-                                       </VBox.margin>
-                                    </Button>
-                                 </children>
-                              </VBox>
-                           </top>
-                           <center>
-                              <ScrollPane BorderPane.alignment="CENTER">
-                                 <content>
-                                    <AnchorPane fx:id="flightPane" />
-                                 </content>
-                                 <BorderPane.margin>
-                                    <Insets top="5.0" />
-                                 </BorderPane.margin>
-                              </ScrollPane>
-                           </center>
-                        </BorderPane>
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
-        </tabs>
-      </TabPane>
-   </center>
+                                      </content>
+                                  </ScrollPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
 </BorderPane>

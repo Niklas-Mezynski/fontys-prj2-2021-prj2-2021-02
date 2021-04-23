@@ -1,5 +1,31 @@
 Button {
-    -fx-max-width: 200px;
+    /*-fx-max-width: MAX_VALUE;*/
+    -fx-background-color: #0034d2;
+    -fx-text-fill: #fff;
+    -fx-font-size: 14px;
+}
+
+.tab {
+    -fx-padding: 5px 15px;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab:selected {
+    -fx-background-color: #0034d2;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: #fff;
+}
+
+.title {
+    -fx-font-size: 28px;
+}
+
+.sub-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
 }
 
 .menu-row {
@@ -10,9 +36,9 @@ Button {
     -fx-spacing: 10;
 }
 
-.menu-row Label {
+/*.menu-row Label {
     -fx-font-size: 14;
-}
+}*/
 
 Button.add-seat {
     -fx-start-margin: 30;
@@ -22,7 +48,7 @@ HBox.plane {
     -fx-spacing: 5;
 }
 
-HBox.plane>VBox {
+HBox.plane > VBox {
     -fx-spacing: 5;
 }
 

@@ -16,18 +16,29 @@ import java.util.stream.Collectors;
 @TableName("planes")
 public class PlaneImpl implements Plane, Savable {
 
-    @PrimaryKey
+    @PrimaryKey(autogen = true)
+    public int id;
     public String name;
     public String manufacturer;
     public String type;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.SeatImpl")
     public SeatImpl[] seatList;
 
+    public PlaneImpl(int id, String name, String manufacturer, String type) {
+        this(name, manufacturer, type);
+        this.id = id;
+    }
+
     public PlaneImpl(String name, String type, String manufacturer) {
         this.name = name;
         this.manufacturer = manufacturer;
         this.type = type;
         this.seatList = new SeatImpl[0];
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     @Override
@@ -78,8 +89,6 @@ public class PlaneImpl implements Plane, Savable {
 
     @Override
     public String toString() {
-
-
         return "Plane " + name + ", ID: " + type + ", Manufacturer: " + manufacturer + ", Seats: " + seatList.length + " Rows: " + getRows();
     }
 

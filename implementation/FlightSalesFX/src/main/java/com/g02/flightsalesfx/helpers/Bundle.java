@@ -16,6 +16,14 @@ public class Bundle {
         return stringObjectMap.getOrDefault(key, null);
     }
 
+    public <E extends Serializable> E get(String key, Class<E> aClass) {
+        var o = get(key);
+        if (aClass.isInstance(o)) {
+            return (E) o;
+        }
+        return null;
+    }
+
     public boolean getBoolean(String key, boolean defaultValue) {
         var o = get(key);
         if (o == null) return defaultValue;
