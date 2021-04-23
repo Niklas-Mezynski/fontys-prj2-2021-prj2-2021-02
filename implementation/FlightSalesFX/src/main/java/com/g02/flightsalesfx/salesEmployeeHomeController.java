@@ -4,6 +4,7 @@ import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.Route;
 import com.g02.flightsalesfx.gui.FlightTable;
 import com.g02.flightsalesfx.gui.RouteTable;
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.function.Predicate;
 
-public class salesEmployeeHomeController {
+public class salesEmployeeHomeController implements Controller {
 
 
 
