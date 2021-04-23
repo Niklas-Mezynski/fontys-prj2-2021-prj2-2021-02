@@ -6,6 +6,7 @@ import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessEntities.Ticket;
 import com.g02.flightsalesfx.gui.BookingTable;
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class cancelBookingController {
+public class cancelBookingController implements Controller {
 
     @FXML
     private TextField flightNumberTextField;

@@ -83,7 +83,7 @@ public class HomeController implements Controller {
             }
         });
 
-        flightPane.getChildren().add(flightTable);
+        flightVBox.getChildren().add(flightTable);
         flightTable.setMinWidth(flightPane.getPrefWidth());
 
     }

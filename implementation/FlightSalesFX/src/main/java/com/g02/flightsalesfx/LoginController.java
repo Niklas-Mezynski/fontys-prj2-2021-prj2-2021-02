@@ -4,13 +4,14 @@ import com.g02.flightsalesfx.businessEntities.SalesManager;
 import com.g02.flightsalesfx.businessLogic.SalesEmployeeImpl;
 import com.g02.flightsalesfx.businessLogic.SalesManagerImpl;
 import com.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
-public class LoginController{
+public class LoginController implements Controller {
 
     @FXML
     private TextField username;

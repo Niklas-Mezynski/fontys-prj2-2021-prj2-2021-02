@@ -149,7 +149,7 @@ public class CreatePlaneTest {
     @Test
     void savePlaneErrorAlertDialog(FxRobot fxRobot) {
         fxRobot.clickOn(fxRobot.lookup("#goToCreatePlane").queryAs(Button.class));
-        Mockito.when(businessLogicAPI.createPlaneFromUI(any(), any(), any(), any())).thenReturn(new PlaneImpl("D-AGVD", "A380", "Airbus"));
+        Mockito.when(businessLogicAPI.createPlaneFromUI(any(), any(), any(), any())).thenReturn(null);
         fxRobot.clickOn(fxRobot.lookup("#savePlaneButton").queryButton());
         Node dialogPane = fxRobot.lookup(".dialog-pane").queryAs(DialogPane.class);
         var are_you_sure = fxRobot.from(dialogPane).lookup((Text t) -> t.getText().startsWith("There was an error while saving the created plane. Try again!"));

@@ -7,6 +7,7 @@ import com.g02.flightsalesfx.businessEntities.SalesOfficer;
 import com.g02.flightsalesfx.businessLogic.BusinessLogicAPIImpl;
 import com.g02.flightsalesfx.gui.PlaneTable;
 import com.g02.flightsalesfx.gui.RouteTable;
+import com.g02.flightsalesfx.helpers.Controller;
 import com.g02.flightsalesfx.persistence.EmployeeStorageServiceImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 
 import static com.g02.flightsalesfx.App.setRoot;
 
-public class SubmitFlightController {
+public class SubmitFlightController implements Controller {
 
     @FXML
     private TextField planeSearchBar;
