@@ -9,6 +9,7 @@ import com.g02.flightsalesfx.gui.RouteTable;
 import com.g02.flightsalesfx.helpers.Bundle;
 import com.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
@@ -26,6 +27,9 @@ public class HomeController implements Controller {
     public AnchorPane planePane;
     public MenuItem createPlane;
     @FXML
+    private Button enableSalesprocess;
+
+    @FXML
     public VBox routeListVBox;
     @FXML
     public AnchorPane routePane;
@@ -40,8 +44,10 @@ public class HomeController implements Controller {
     private CheckBox showDisabled;
 
     private RouteTable routeTable;
+    private Flight selectedFlight;
 
     public void initialize() {
+        enableSalesprocess.setDisable(true);
         tabPane.getSelectionModel().select(App.inRootTab);
         var all = App.businessLogicAPI.getAllPlanes(plane -> true);
 //        all.forEach(plane -> planesListVBox.getChildren().add(getLabel(plane)));
@@ -74,8 +80,11 @@ public class HomeController implements Controller {
         var allFlights = App.businessLogicAPI.getAllFlights(f -> true);
         System.out.println(allFlights);
         var flightTable = new FlightTable(allFlights, (event, row) -> {
-            Flight selectedFlight = row.getItem();
+            selectedFlight = row.getItem();
             System.out.println("Clicked on: " + selectedFlight);
+            if(event.getClickCount() == 1) {
+                enableSalesprocess.setDisable(false);
+            }
             if (event.getClickCount() == 2) {
                 EditFlightController.selectedFlight = selectedFlight;
                 App.inRootTab = 2;
@@ -144,5 +153,10 @@ public class HomeController implements Controller {
     @Override
     public void init(Bundle bundle) {
 
+    }
+
+    @FXML
+    public void enableSalesprocess() throws IOException{
+        
     }
 }
