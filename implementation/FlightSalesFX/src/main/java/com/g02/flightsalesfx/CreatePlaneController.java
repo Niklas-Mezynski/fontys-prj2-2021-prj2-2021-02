@@ -177,8 +177,12 @@ public class CreatePlaneController {
 
         public SeatOptionBox() {
             chooseButton = new ToggleButton();
+            chooseButton.setPrefWidth(25);
+            chooseButton.setPrefHeight(25);
             changeNameTextField = new TextField();
+            changeNameTextField.setPrefHeight(25);
             changeAvailableSpinner = new Spinner<>();
+            changeAvailableSpinner.setPrefWidth(75);
             changeAvailableSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0D, Double.MAX_VALUE, 0, 0.01));
             changeAvailableSpinner.setEditable(true);
             this.setSpacing(10);

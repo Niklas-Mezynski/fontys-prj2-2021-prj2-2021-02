@@ -3,6 +3,7 @@ package com.g02.flightsalesfx;
 import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Route;
+import com.g02.flightsalesfx.businessLogic.PlaneImpl;
 import com.g02.flightsalesfx.gui.FlightTable;
 import com.g02.flightsalesfx.gui.PlaneTable;
 import com.g02.flightsalesfx.gui.RouteTable;
@@ -14,6 +15,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class HomeController {
@@ -41,7 +44,8 @@ public class HomeController {
 
     public void initialize() {
         tabPane.getSelectionModel().select(App.inRootTab);
-        var all = App.businessLogicAPI.getAllPlanes(plane -> true);
+//        var all = App.businessLogicAPI.getAllPlanes();
+        List<Plane> all=new ArrayList<>();
 //        all.forEach(plane -> planesListVBox.getChildren().add(getLabel(plane)));
 //        planesListVBox.getChildren().add();
         var planeTable = new PlaneTable(all, (event, row) -> {
@@ -132,6 +136,12 @@ public class HomeController {
     public void goToCreateFlight() throws IOException {
         App.inRootTab = 2;
         App.setRoot("createFlight");
+    }
+
+    @FXML
+    public void goToPriceReductions() throws IOException {
+        App.inRootTab = 3;
+        App.setRoot("CreatePriceReductions");
     }
 
 }

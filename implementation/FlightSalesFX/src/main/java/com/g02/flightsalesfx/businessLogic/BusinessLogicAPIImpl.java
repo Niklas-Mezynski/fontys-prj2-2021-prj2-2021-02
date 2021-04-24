@@ -172,6 +172,11 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
+    public List<Plane> getAllPlanes() {
+        return getAllPlanes(s->true);
+    }
+
+    @Override
     public void viewPlane(Plane plane) {
         // Todo
     }
@@ -235,6 +240,23 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     @Override
     public List<Flight> getAllFlights(Predicate<Flight> predicate) {
         var all = persistenceAPI.getFlightStorageService(flightManager).getAll();
+        return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public List<Flight> getAllFlights() {
+        return getAllFlights(a->true);
+    }
+
+
+    @Override
+    public List<PriceReduction> getAllPriceReductions(){
+        return getAllPriceReductions(a->true);
+    }
+
+    @Override
+    public List<PriceReduction> getAllPriceReductions(Predicate<PriceReduction> predicate){
+        var all = persistenceAPI.getPriceReductionStorageService(priceReductionManager).getAll();
         return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
     }
 

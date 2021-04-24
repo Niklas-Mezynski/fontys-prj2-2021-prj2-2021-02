@@ -1,35 +1,167 @@
-Button {
-    -fx-max-width: 200px;
+.background{
+    -fx-background-color:#212121;
+    -fx-background: #212121 ;
 }
 
-.menu-row {
-    -fx-spacing: 10;
+.loginBackground{
+    -fx-background-image: url("loginBackground.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 250 250;
+    -fx-background-position: left top;
+    -fx-background-color:#212121;
+    -fx-effect: dropshadow(three-pass-box, black, 10, 0.5, 0, 0);
 }
 
-.menu-row HBox {
-    -fx-spacing: 10;
+.menu-bar {
+    -fx-background-color:#1A1A1A;
+    -fx-border-width: 2.0;
 }
 
-.menu-row Label {
-    -fx-font-size: 14;
+.menu-bar .label {
+    -fx-text-fill: #FFFFFF;
 }
 
-Button.add-seat {
-    -fx-start-margin: 30;
+.menu-bar .menu-button:hover, .menu-bar .menu-button:focused, .menu-bar .menu-button:showing {
+    -fx-background: #1A1A1A ;
+    -fx-text-fill: white;
 }
 
-HBox.plane {
-    -fx-spacing: 5;
+.menu-item {
+    -fx-text-fill: #FFFFFF;
+    -fx-background: #212121 ;
+    -fx-background-color:#212121;
 }
 
-HBox.plane>VBox {
-    -fx-spacing: 5;
+.menu-item .label{
+    -fx-background-color:#212121;
+    -fx-text-fill: #FFFFFF;
 }
 
-ToggleButton.selectSeatOption {
-    -fx-min-width: 30;
+.context-menu {
+    -fx-background: #212121 ;
+    -fx-background-color:#212121;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-width: 0.2px;
+    -fx-border-color: #212121;
 }
 
-.selected-seat {
-    -fx-border-color: red;
+.menu-item:hover{
+    -fx-background-color:#1A1A1A;
+}
+
+.menu-item:hover .label{
+    -fx-background-color:#1A1A1A;
+}
+
+.textLabel{
+    -fx-text-fill:#FFFFFF;
+    -fx-background-color:#212121;
+}
+
+.inputField{
+    -fx-background-color:#1A1A1A;
+    -fx-text-fill:#FFFFFF;
+}
+.text-field{
+     -fx-background-color:#1A1A1A;
+     -fx-text-fill:#FFFFFF;
+     -fx-margin: 0;
+ }
+ .toggle-button{
+    -fx-background-color:#1C1C1C;
+     -fx-margin: 0;
+ }
+ .toggle-button:selected{
+     -fx-background-color:#1A1A1A;
+     -fx-background:#FFFFFF;
+     -fx-text-fill:#FFFFFF;
+  }
+
+.button{
+    -fx-background-color:#1A1A1A;
+    -fx-background:#FFFFFF;
+    -fx-text-fill:#FFFFFF;
+}
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+
+.tab-pane
+{
+    -fx-background-color:#1A1A1A;
+    -fx-tab-min-width:90px;
+    -fx-focus-color: transparent;
+}
+
+.tab{
+    -fx-background-insets: 0 1 0 1,0,0;
+    -fx-focus-color: transparent;
+}
+.tab-pane .tab
+{
+    -fx-background-color: #383838;
+
+}
+
+.tab-pane .tab:selected
+{
+    -fx-background-color: #212121;
+}
+
+.tab .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: #FFFFFF;
+    -fx-focus-color: transparent;
+}
+
+.tab:selected .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: #FFFFFF;
+}
+.tab-pane:top *.tab-header-area {
+    -fx-background-insets: 0, 0 0 1 0;
+ /* -fx-padding: 0.416667em 0.166667em 0.0em 0.833em; /* 5 2 0 10 */
+    -fx-padding: 0.416667em 0.166667em 0.0em 0.0em; /* overridden as 5 2 0 0 */
+}
+
+.button:hover{
+    -fx-background-color:#292929;
+}
+
+
+
+ /*
+ * Empty Stylesheet file.
+ */
+
+
+.table-view{
+   -fx-background-color: #1A1A1A;
+    -fx-background-color: #4A4A4A;
+}
+
+.table-view:focused{
+    -fx-background-color: #4A4A4A;
+}
+
+/* Spaltenköpfe
+    Struktur column-header-background -> column-header */
+
+.table-view .column-header-background{
+    -fx-background-color: #383838;
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: #383838;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: #383838;
+}
+
+.table-view .table-cell{
+    -fx-text-fill: white;
+    -fx-background-color: #4A4A4A;
+    -fx-border-color: #383838;
 }

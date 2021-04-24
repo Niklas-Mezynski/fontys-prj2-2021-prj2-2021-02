@@ -5,26 +5,26 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.HomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="910.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.HomeController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" styleClass="textLabel" text="File">
             <items>
-                  <Menu mnemonicParsing="false" text="Create">
+                  <Menu mnemonicParsing="false" styleClass="textLabel" text="Create">
                     <items>
-                      <MenuItem fx:id="createPlane" mnemonicParsing="false" onAction="#gotoCreatePlane" text="Plane" />
+                      <MenuItem fx:id="createPlane" mnemonicParsing="false" onAction="#gotoCreatePlane" styleClass="textLabel" text="Plane" />
                     </items>
                   </Menu>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" styleClass="textLabel" text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" styleClass="textLabel" text="Edit">
             <items>
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu mnemonicParsing="false" styleClass="textLabel" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
             </items>
@@ -33,21 +33,21 @@
       </MenuBar>
    </top>
    <center>
-      <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="tabPane" styleClass="background" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab fx:id="planesTab" text="Planes">
+          <Tab fx:id="planesTab" styleClass="buttons" text="Planes">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <ScrollPane prefHeight="529.0" prefWidth="910.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <ScrollPane prefHeight="529.0" prefWidth="910.0" styleClass="background" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <content>
-                            <AnchorPane fx:id="planePane">
+                            <AnchorPane fx:id="planePane" styleClass="background">
                                  <children>
                                     <VBox fx:id="planesListVBox" layoutY="26.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <HBox>
                                              <children>
-                                                <Label text="All Planes" textAlignment="CENTER">
+                                                <Label styleClass="textLabel" text="All Planes" textAlignment="CENTER">
                                                    <font>
                                                       <Font size="24.0" />
                                                    </font>
@@ -67,32 +67,48 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab fx:id="routesTab" text="Routes">
+          <Tab fx:id="routesTab" styleClass="buttons" text="Routes">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="600.0">
                      <children>
-                        <ScrollPane minHeight="0.0" minWidth="0.0" prefHeight="529.0" prefWidth="910.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <ScrollPane minHeight="0.0" minWidth="0.0" prefHeight="529.0" prefWidth="910.0" styleClass="background" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <content>
                             <AnchorPane fx:id="routePane">
                                  <children>
-                                    <VBox fx:id="routeListVBox" fillWidth="false" layoutX="6.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                    <VBox fx:id="routeListVBox" fillWidth="false" layoutX="6.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background">
                                        <children>
                                           <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                                              <children>
                                                 <VBox prefHeight="49.0" prefWidth="243.0">
                                                    <children>
-                                                      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="All Routes">
+                                                      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textLabel" text="All Routes">
                                                          <font>
                                                             <Font size="22.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label prefHeight="17.0" prefWidth="223.0" text="Ctrl + 2xLeftClick to Toggle Route-Enable" />
+                                                      <Label prefHeight="17.0" prefWidth="223.0" styleClass="textLabel" text="Ctrl + 2xLeftClick to Toggle Route-Enable" />
                                                    </children>
                                                 </VBox>
                                              </children>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
                                           </HBox>
-                                          <CheckBox fx:id="showDisabled" mnemonicParsing="false" onAction="#showDisabledUpdated" text="Show Disabled Routes" />
-                                          <Button fx:id="goToCreateRoute" mnemonicParsing="false" onAction="#goToCreateRoute" text="Add Route" />
+                                          <HBox>
+                                             <children>
+                                                <Button fx:id="goToCreateRoute" mnemonicParsing="false" onAction="#goToCreateRoute" text="Add Route">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin></Button>
+                                                <CheckBox fx:id="showDisabled" mnemonicParsing="false" onAction="#showDisabledUpdated" styleClass="buttons" text="Show Disabled Routes">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </HBox.margin></CheckBox>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" top="10.0" />
+                                             </padding>
+                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children>
@@ -102,13 +118,13 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="flightsTab" text="Flights">
+            <Tab fx:id="flightsTab" styleClass="buttons" text="Flights">
               <content>
                 <AnchorPane>
                      <children>
-                        <BorderPane prefHeight="527.2" prefWidth="910.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <BorderPane prefHeight="527.2" prefWidth="910.4" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <top>
-                              <VBox fx:id="flightVBox" BorderPane.alignment="CENTER">
+                              <VBox fx:id="flightVBox" styleClass="background" BorderPane.alignment="CENTER">
                                  <children>
                                     <Label text="Flights (double click a flight to edit)">
                                        <font>
@@ -140,6 +156,45 @@
                      </children>
                   </AnchorPane>
               </content>
+            </Tab>
+            <Tab fx:id="priceRedTab" styleClass="buttons" text="Price Reduction">
+                <content>
+                    <AnchorPane styleClass="background">
+                        <children>
+                            <BorderPane prefHeight="527.2" prefWidth="910.4" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <top>
+                                    <VBox fx:id="priceRedVBox" styleClass="background" BorderPane.alignment="CENTER">
+                                        <children>
+                                            <Label text="Price Reductions">
+                                                <font>
+                                                    <Font size="18.0" />
+                                                </font>
+                                            </Label>
+                                            <Button fx:id="goToPriceReductions" mnemonicParsing="false" onAction="#goToPriceReductions" text="Manage Price Reductions">
+                                                <font>
+                                                    <Font size="14.0" />
+                                                </font>
+                                                <VBox.margin>
+                                                    <Insets top="5.0" />
+                                                </VBox.margin>
+                                            </Button>
+                                        </children>
+                                    </VBox>
+                                </top>
+                                <center>
+                                    <ScrollPane BorderPane.alignment="CENTER">
+                                        <content>
+                                            <AnchorPane fx:id="priceRedPane" />
+                                        </content>
+                                        <BorderPane.margin>
+                                            <Insets top="5.0" />
+                                        </BorderPane.margin>
+                                    </ScrollPane>
+                                </center>
+                            </BorderPane>
+                        </children>
+                    </AnchorPane>
+                </content>
             </Tab>
         </tabs>
       </TabPane>
