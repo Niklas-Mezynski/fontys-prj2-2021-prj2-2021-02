@@ -1,6 +1,7 @@
 package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
+import com.g02.flightsalesfx.businessLogic.PlaneImpl;
 import javafx.geometry.VerticalDirection;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -17,6 +18,7 @@ import org.testfx.api.FxRobot;
 import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+import org.testfx.service.query.NodeQuery;
 
 import java.io.IOException;
 import java.util.List;
@@ -135,7 +137,7 @@ public class CreatePlaneTest {
         var planeManufacturer = fxRobot.lookup("#planeManufacturer").queryAs(TextField.class);
         fxRobot.clickOn(planeManufacturer);
         fxRobot.write("Airbus");
-        Mockito.when(businessLogicAPI.createPlaneFromUI(any(), any(), any(), any())).thenReturn(true);
+        Mockito.when(businessLogicAPI.createPlaneFromUI(any(), any(), any(), any())).thenReturn(new PlaneImpl("D-AGVD", "A380", "Airbus"));
         fxRobot.clickOn(fxRobot.lookup("#savePlaneButton").queryButton());
         Mockito.verify(businessLogicAPI, Mockito.times(1)).createPlaneFromUI(any(), any(), any(), any());
     }
@@ -147,7 +149,7 @@ public class CreatePlaneTest {
     @Test
     void savePlaneErrorAlertDialog(FxRobot fxRobot) {
         fxRobot.clickOn(fxRobot.lookup("#goToCreatePlane").queryAs(Button.class));
-        Mockito.when(businessLogicAPI.createPlaneFromUI(any(), any(), any(), any())).thenReturn(false);
+        Mockito.when(businessLogicAPI.createPlaneFromUI(any(), any(), any(), any())).thenReturn(null);
         fxRobot.clickOn(fxRobot.lookup("#savePlaneButton").queryButton());
         Node dialogPane = fxRobot.lookup(".dialog-pane").queryAs(DialogPane.class);
         var are_you_sure = fxRobot.from(dialogPane).lookup((Text t) -> t.getText().startsWith("There was an error while saving the created plane. Try again!"));
@@ -328,6 +330,12 @@ public class CreatePlaneTest {
         assertThat(seatButton.getTextFill()).isEqualTo(p);
         fxRobot.clickOn(seatOptionButtons);
         assertThat(seatButton.getTextFill()).isNotEqualTo(p);
+    }
+
+    @Test
+    void testPlaneInTable(FxRobot fxRobot) {
+        var lookup = fxRobot.lookup("#planeTable");
+        System.out.println(lookup);
     }
 
     List<Button> helperGetButtonByName(String buttonText, FxRobot test) {

@@ -7,7 +7,6 @@ import com.g02.flightsalesfx.businessEntities.SalesOfficer;
 import com.g02.flightsalesfx.businessLogic.BusinessLogicAPIImpl;
 import com.g02.flightsalesfx.gui.PlaneTable;
 import com.g02.flightsalesfx.gui.RouteTable;
-import com.g02.flightsalesfx.helpers.Bundle;
 import com.g02.flightsalesfx.helpers.Controller;
 import com.g02.flightsalesfx.persistence.EmployeeStorageServiceImpl;
 import javafx.event.ActionEvent;

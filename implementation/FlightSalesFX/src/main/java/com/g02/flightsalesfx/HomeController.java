@@ -62,7 +62,9 @@ public class HomeController implements Controller {
             }
         });
 //        tabPane.getSelectionModel().select(App.homeControllerTab);
+        planeTable.setId("planeTable");
         planesListVBox.getChildren().add(planeTable);
+        System.out.println("planeTable inserted");
         planeTable.setMinWidth(planePane.getPrefWidth());
 
         //List all Routes
@@ -81,7 +83,7 @@ public class HomeController implements Controller {
             }
         });
 
-        flightPane.getChildren().add(flightTable);
+        flightVBox.getChildren().add(flightTable);
         flightTable.setMinWidth(flightPane.getPrefWidth());
 
     }

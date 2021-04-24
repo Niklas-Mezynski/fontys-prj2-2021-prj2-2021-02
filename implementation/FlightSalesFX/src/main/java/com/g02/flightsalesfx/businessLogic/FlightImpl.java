@@ -8,10 +8,7 @@ import com.g02.flightsalesfx.businessEntities.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @TableName("flights")
@@ -215,8 +212,10 @@ public class FlightImpl implements Flight, Savable {
     public void addAllFlightOptions(List<? extends FlightOption> options) {
         var b = options.stream().anyMatch(flightOption -> !(flightOption instanceof FlightOptionImpl));
         if (b) return;
-        var flightOptions = Arrays.asList(optionsList);
-        flightOptions.addAll((Collection<? extends FlightOptionImpl>) options);
+        var flightOptions = new ArrayList<>(Arrays.asList(optionsList));
+        for (FlightOption option : options) {
+            flightOptions.add((FlightOptionImpl) option);
+        }
         optionsList = flightOptions.toArray(new FlightOptionImpl[0]);
     }
 

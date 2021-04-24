@@ -2,6 +2,7 @@ package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.gui.FlightTable;
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -19,7 +20,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class createBookingController {
+public class createBookingController implements Controller {
 
     @FXML
     private Tab flightTab;

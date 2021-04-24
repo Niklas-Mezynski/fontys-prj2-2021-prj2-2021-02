@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface Plane extends Serializable {
 
+    int getId();
+
     /**
      * @return Name of the Plane
      */

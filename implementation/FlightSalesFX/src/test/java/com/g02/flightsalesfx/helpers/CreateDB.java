@@ -1,6 +1,8 @@
 package com.g02.flightsalesfx.helpers;
 
 import com.g02.btfdao.queries.QueryBuilder;
+import com.g02.btfdao.queries.QueryExecutor;
+import com.g02.btfdao.utils.PGJDBCUtils;
 import com.g02.flightsalesfx.businessLogic.AirportImpl;
 import com.g02.flightsalesfx.businessLogic.AirportManagerImpl;
 import com.g02.flightsalesfx.businessLogic.EmployeeManagerImpl;
@@ -13,6 +15,7 @@ import com.g02.flightsalesfx.persistence.PersistenceAPIImpl;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 
 public class CreateDB {
@@ -20,7 +23,7 @@ public class CreateDB {
     @Test
     void name() throws NoSuchFieldException, SQLFeatureNotSupportedException, ClassNotFoundException {
         var queryBuilder = new QueryBuilder();
-        var datebaseSQL = queryBuilder.createDatabaseSQL(new String[]{
+        var databaseSQL = queryBuilder.createDatabaseSQL(new String[]{
                 "com.g02.flightsalesfx.businessLogic.AirportImpl",
                 "com.g02.flightsalesfx.businessLogic.DynamicPriceReductionImpl",
                 "com.g02.flightsalesfx.businessLogic.FlightImpl",
@@ -35,7 +38,15 @@ public class CreateDB {
                 "com.g02.flightsalesfx.businessLogic.SeatOptionImpl",
                 "com.g02.flightsalesfx.businessLogic.SeatImpl",
         });
-        System.out.println(datebaseSQL);
+        var simpledao = PGJDBCUtils.getDataSource("simpledao");
+        assert simpledao != null: "No datasource";
+        var queryExecutor = new QueryExecutor();
+        try {
+            queryExecutor.doDDO(simpledao.getConnection(), databaseSQL);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        System.out.println(databaseSQL);
     }
     @Disabled
     @Test

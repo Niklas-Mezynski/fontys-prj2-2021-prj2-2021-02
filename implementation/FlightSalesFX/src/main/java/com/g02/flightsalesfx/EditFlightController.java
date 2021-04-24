@@ -3,7 +3,6 @@ package com.g02.flightsalesfx;
 import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessLogic.BusinessLogicAPIImpl;
 import com.g02.flightsalesfx.businessLogic.ReoccurringFlightImpl;
-import com.g02.flightsalesfx.helpers.Bundle;
 import com.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

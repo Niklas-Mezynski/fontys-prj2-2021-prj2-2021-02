@@ -221,4 +221,14 @@ public class QueryExecutor {
         return Optional.empty();
     }
 
+    public ResultSet doDDO(Connection connection, String sql) {
+        try {
+            var preparedStatement = connection.prepareStatement(sql);
+            return preparedStatement.executeQuery();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
 }

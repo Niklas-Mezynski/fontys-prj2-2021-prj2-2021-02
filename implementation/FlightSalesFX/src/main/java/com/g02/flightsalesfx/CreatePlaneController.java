@@ -1,7 +1,9 @@
 package com.g02.flightsalesfx;
 
+import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
+import com.g02.flightsalesfx.businessLogic.PlaneImpl;
 import com.g02.flightsalesfx.businessLogic.SeatImpl;
 import com.g02.flightsalesfx.businessLogic.SeatOptionImpl;
 import com.g02.flightsalesfx.helpers.Bundle;
@@ -42,7 +44,11 @@ public class CreatePlaneController implements Controller {
     public TextField planeType;
     @FXML
     public TextField planeManufacturer;
+    @FXML
+    public Button deleteButton;
     private SeatOptionBox currentSelected = null;
+    private boolean editMode;
+    private PlaneImpl oldPlane;
 
     /**
      * Creates a new SeatRow and adds the corresponding VBox to the container
@@ -139,8 +145,14 @@ public class CreatePlaneController implements Controller {
         // Map all internal used SeatButtons to Seat
         var collect = seats.stream().map(seatButton ->(Seat) new SeatImpl(seatButton.row(), seatButton.column())).collect(Collectors.toList());
         // Create the plane using the businessLogicAPI
-        var planeCreated = App.businessLogicAPI.createPlaneFromUI(name, type, manufacturer, collect);
-        if (planeCreated) { // If the plane was saved successfully exit and return to the previous scene
+        Plane updatedPlane;
+        if (editMode) {
+            updatedPlane = businessLogicAPI.updatePlane(oldPlane, name, type, manufacturer, collect);
+        } else {
+            updatedPlane = App.businessLogicAPI.createPlaneFromUI(name, type, manufacturer, collect);
+        }
+
+        if (updatedPlane != null) { // If the plane was saved successfully exit and return to the previous scene
             exit();
         } else { // If there was an error, create and show and alert dialog to notify the user of this error
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -160,6 +172,22 @@ public class CreatePlaneController implements Controller {
         setRoot("home");
     }
 
+    /**
+     * If view in edit mode delete the plane that is currently being edited
+     */
+    @FXML
+    private void delete() {
+        if (editMode) {
+            var plane = businessLogicAPI.deletePlane(oldPlane);
+            System.out.println(plane);
+            if (plane != null) {
+                setRoot("home");
+            } else {
+                System.out.println("Error deleting plane");
+            }
+        }
+    }
+
     private void updateSeatText() {
         seats.forEach(SeatButton::updateText);
     }
@@ -167,7 +195,25 @@ public class CreatePlaneController implements Controller {
     @Override
     public void init(Bundle bundle) {
         if (bundle.getBoolean("edit", false)) {
-            System.out.println(bundle.get("plane"));
+            this.editMode = true;
+            var plane = bundle.get("plane", PlaneImpl.class);
+            this.oldPlane = plane;
+            planeName.setText(oldPlane.getName());
+            planeType.setText(oldPlane.getType());
+            planeManufacturer.setText(oldPlane.getManufacturer());
+            System.out.println(plane);
+            int lastRowNum = -1;
+            VBox lastRow = null;
+            for (SeatImpl seat : plane.seatList) {
+                if (seat.getRowNumber() > lastRowNum) {
+                    lastRowNum++;
+                    lastRow = createRow();
+                    seatContainer.getChildren().add(lastRow);
+                }
+                createSeat(lastRow);
+            }
+        } else {
+            deleteButton.setVisible(false);
         }
     }
 
