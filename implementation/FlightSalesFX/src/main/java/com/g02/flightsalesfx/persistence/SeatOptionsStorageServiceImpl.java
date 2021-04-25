@@ -26,8 +26,8 @@ public class SeatOptionsStorageServiceImpl implements SeatOptionsStorageService{
     public SeatOption add(SeatOption s) {
         try {
             var ret= dao.insert(SeatOptionImpl.of(s));
-            return ret.size()>0?ret.get(0):null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            return ret.isPresent()?ret.get():null;
+        } catch ( SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -38,7 +38,7 @@ public class SeatOptionsStorageServiceImpl implements SeatOptionsStorageService{
         try {
             var all = dao.getAll();
             return new ArrayList<>(all);
-        } catch (IllegalAccessException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return List.of();

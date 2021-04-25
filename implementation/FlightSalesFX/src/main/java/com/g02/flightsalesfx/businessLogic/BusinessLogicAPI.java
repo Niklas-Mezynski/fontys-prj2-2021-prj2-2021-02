@@ -65,7 +65,7 @@ public interface BusinessLogicAPI {
 
     boolean addTicketFromUI(Ticket ticket);
 
-    Plane deletePlane(PlaneImpl oldPlane);
+    boolean deletePlane(PlaneImpl oldPlane);
 
     Plane updatePlane(PlaneImpl oldPlane, String name, String type, String manufacturer, List<Seat> collect);
 }

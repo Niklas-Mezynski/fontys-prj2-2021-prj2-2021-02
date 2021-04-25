@@ -1,7 +1,7 @@
 package com.g02.flightsalesfx.persistence;
 
 import com.g02.btfdao.dao.Dao;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.Employee;
 import com.g02.flightsalesfx.businessEntities.PriceReduction;
 import com.g02.flightsalesfx.businessEntities.PriceReductionManager;
@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class PriceReductionStorageServiceImpl implements PriceReductionStorageService{
 
@@ -27,20 +28,20 @@ public class PriceReductionStorageServiceImpl implements PriceReductionStorageSe
     @Override
     public PriceReduction add(PriceReduction priceReduction) {
         var dao=(Dao<? extends PriceReduction>)sdao;
-        if(priceReduction instanceof StaticPriceReductionImpl) {
-            dao=sdao;
-        }else if(priceReduction instanceof DynamicPriceReductionImpl) {
-            dao=ddao;
-        }else {
-            priceReduction=new StaticPriceReductionImpl(priceReduction.getName(),priceReduction.getEndDate() , priceReduction.getPercentageAsDouble()); //Default if not Impl already
-        }
+        Optional<? extends PriceReduction> ret= Optional.empty();
         try {
-            var ret= dao.insert((Savable) priceReduction);
-            return ret.size()>0?ret.get(0):null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            if (priceReduction instanceof StaticPriceReductionImpl) {
+                ret = sdao.insert((StaticPriceReductionImpl) priceReduction);
+            } else if (priceReduction instanceof DynamicPriceReductionImpl) {
+                ret = ddao.insert((DynamicPriceReductionImpl) priceReduction);
+            } else {
+                priceReduction = new StaticPriceReductionImpl(priceReduction.getName(), priceReduction.getEndDate(), priceReduction.getPercentageAsDouble()); //Default if not Impl already
+                ret = sdao.insert((StaticPriceReductionImpl) priceReduction);
+            }
+        } catch (SQLException e){
             e.printStackTrace();
         }
-        return null;
+        return ret.isPresent()?ret.get():null;
     }
 
     @Override
@@ -49,7 +50,7 @@ public class PriceReductionStorageServiceImpl implements PriceReductionStorageSe
         try {
             ret.addAll(sdao.getAll());
             ret.addAll(ddao.getAll());
-        } catch (IllegalAccessException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return ret;

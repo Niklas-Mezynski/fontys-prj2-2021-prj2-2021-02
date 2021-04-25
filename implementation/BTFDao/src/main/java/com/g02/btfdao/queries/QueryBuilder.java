@@ -1,425 +1,226 @@
 package com.g02.btfdao.queries;
 
-import com.g02.btfdao.annotations.*;
-import com.g02.btfdao.mapper.Mapper;
-import com.g02.btfdao.utils.Savable;
-import com.g02.btfdao.utils.TypeMappings;
+import com.g02.btfdao.utils.Mapper;
+import com.g02.btfdao.utils.SQLField;
+import com.g02.btfdao.dao.Savable;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.sql.SQLFeatureNotSupportedException;
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static com.g02.btfdao.mapper.Mapper.*;
-import static java.lang.String.format;
 
 public class QueryBuilder {
+    public static boolean createDropStatements = false;
 
-    private static String placeholders(int a) {
-        return IntStream.range(0, a)
-                .mapToObj(b -> "?")
-                .collect(Collectors.joining(","));
-    }
-
-    public String createDropSQL(String[] classes) throws ClassNotFoundException {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String aClass : classes) {
-            var tableName = Mapper.getTableName(aClass);
-            var format = format("DROP TABLE %1$s CASCADE;", tableName);
-            stringBuilder.append(format);
-        }
-        return stringBuilder.toString();
-    }
-
-    public String createDatabaseSQL(String[] classes) throws ClassNotFoundException, SQLFeatureNotSupportedException, NoSuchFieldException {
-        StringBuilder stringBuilder = new StringBuilder();
-        Stream<Class<? extends Savable>> classStream = Arrays.stream(classes).map(s -> {
-            try {
-                return (Class<? extends Savable>) Class.forName(s);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                return null;
-            }
-        });
-        List<Class<? extends Savable>> collect = classStream.collect(Collectors.toList());
-        for (Class<? extends Savable> aClass : collect) {
-            var tableSQL = createTableSQL(aClass);
-            stringBuilder.append(tableSQL);
-            stringBuilder.append("\n");
-        }
-        for (Class<? extends Savable> aClass : collect) {
-            stringBuilder.append(alterTableAddForeignKeys(aClass));
-            stringBuilder.append("\n");
-        }
-        for (Class<? extends Savable> aClass : collect) {
-            var fields = Mapper.getFields(aClass, ForeignKey.class);
-            for (Field field : fields) {
-                if (field.getType().isArray() && field.isAnnotationPresent(ForeignKey.class)) {
-                    if (TypeMappings.getTypeName(field.getType().getComponentType()) == null) {
-                        var tableName = aClass.getAnnotation(TableName.class).value();
-                        var split = field.getAnnotation(ForeignKey.class).value().split("#");
-                        var refTableName = split[0];
-                        var refClass = (Class<? extends Savable>) Class.forName(refTableName);
-                        var refPrimaryKeys = Mapper.getFields(refClass, PrimaryKey.class);
-                        var refFieldNames = Arrays.stream(refPrimaryKeys).map(Mapper::getSQLFieldName).collect(Collectors.toList());
-
-                        var relationTableName = tableName + "_" + field.getName() + "_" + Mapper.getTableName(refClass);
-
-                        var thisPrimaryKeys = Mapper.getFields(aClass, PrimaryKey.class);
-                        var thisFieldNames = Arrays.stream(thisPrimaryKeys).map(Mapper::getSQLFieldName).collect(Collectors.toList());
-
-
-                        var collect1 = Arrays.stream(thisPrimaryKeys).map(field1 -> {
-                            try {
-                                return createTableSQLLine(field1, true, tableName + "_" + Mapper.getSQLFieldName(field1));
-                            } catch (SQLFeatureNotSupportedException | ClassNotFoundException throwables) {
-                                throwables.printStackTrace();
-                            }
-                            return null;
-                        }).collect(Collectors.toList());
-                        ArrayList<String> allRelationTableFields = new ArrayList<>(collect1);
-                        var collect2 = Arrays.stream(refPrimaryKeys).map(field1 -> {
-                            try {
-                                return createTableSQLLine(field1, true, Mapper.getTableName(refClass) + "_" + Mapper.getSQLFieldName(field1));
-                            } catch (SQLFeatureNotSupportedException | ClassNotFoundException throwables) {
-                                throwables.printStackTrace();
-                            }
-                            return null;
-                        }).collect(Collectors.toList());
-                        allRelationTableFields.addAll(collect2);
-
-                        var format1 = format("CREATE TABLE %s (%s);",
-                                relationTableName,
-                                String.join(", ", allRelationTableFields)
-                        );
-                        stringBuilder.append(format1);
-                        stringBuilder.append("\n");
-
-                        var format2 = format("ALTER TABLE %s ADD FOREIGN KEY (%s) REFERENCES %s(%s);",
-                                relationTableName,
-                                thisFieldNames.stream().map(s -> Mapper.getTableName(aClass) + "_" + s).collect(Collectors.joining(", ")),
-                                Mapper.getTableName(aClass),
-                                String.join(", ", thisFieldNames));
-                        stringBuilder.append(format2);
-                        stringBuilder.append("\n");
-
-                        var format = format("ALTER TABLE %s ADD FOREIGN KEY (%s) REFERENCES %s(%s);",
-                                relationTableName,
-                                refFieldNames.stream().map(s -> Mapper.getTableName(refClass) + "_" + s).collect(Collectors.joining(", ")),
-                                Mapper.getTableName(refTableName),
-                                String.join(", ", refFieldNames));
-                        stringBuilder.append(format);
-
-                    } else {
-                        var annotation = field.getAnnotation(ForeignKey.class);
-                        var split = annotation.value().split("#");
-                        assert split.length == 2 : "ForeignKey reference has the wrong format";
-                        var referenceClass = Class.forName(split[0]);
-                        var referenceField = referenceClass.getField(split[1]);
-                        var tableNameThis = Mapper.getTableName(aClass);
-                        var columnNameThis = tableNameThis + "_" + field.getName();
-                        var tableNameReference = Mapper.getTableName(referenceClass);
-                        var columnNameReference = tableNameReference + "_" + referenceField.getName();
-//                    var tableName = columnNameThis + "_" + columnNameReference;
-                        var tableName = Mapper.relationTableName(field);
-                        var tableSQLLine = createTableSQLLine(field, true, columnNameThis);
-                        var tableSQLLine1 = createTableSQLLine(referenceField, true, columnNameReference);
-                        var format = format("CREATE TABLE %1$s (%2$s, %3$s);", tableName, tableSQLLine, tableSQLLine1);
-                        stringBuilder.append(format);
-                        stringBuilder.append("\n");
-                        var template = "ALTER TABLE %1$s ADD FOREIGN KEY (%2$s) REFERENCES %3$s(%4$s);";
-                        var format1 = format(template,
-                                tableName,
-                                columnNameThis,
-                                tableNameThis,
-                                Mapper.getPrimaryKey(aClass)
-                        );
-                        stringBuilder.append(format1);
-                        stringBuilder.append("\n");
-                        var format2 = format(template,
-                                tableName,
-                                columnNameReference,
-                                tableNameReference,
-                                Mapper.getSQLFieldName(referenceField)
-                        );
-                        stringBuilder.append(format2);
-                    }
-                    stringBuilder.append("\n");
-                }
-            }
-        }
-        return stringBuilder.toString();
-    }
-
-    private String capitalize(String s) {
-        return s.substring(0, 1).toUpperCase() + s.substring(1);
-    }
-
-    public String alterTableAddForeignKeys(Class<? extends Savable> aClass) throws ClassNotFoundException {
-        var foreignKeyFields = Mapper.getFields(aClass, ForeignKey.class);
-        var fieldsSQLDataType = Arrays.stream(foreignKeyFields)
-                .filter(field -> TypeMappings.getTypeName(field.getType()) != null)
-                .collect(Collectors.toList());
-        var fieldsDataType = Arrays.stream(foreignKeyFields)
-                .filter(field -> TypeMappings.getTypeName(field.getType()) == null)
-                .filter(Mapper::isDatabaseType)
-                .filter(field -> !field.getType().isArray())
-                .collect(Collectors.toList());
-        var tableName = aClass.getAnnotation(TableName.class).value();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Field field : fieldsSQLDataType) {
-            var split = field.getAnnotation(ForeignKey.class).value().split("#");
-            var refTableName = split[0];
-            var refFieldName = split[1];
-            var format = format("ALTER TABLE %s ADD FOREIGN KEY (%s) REFERENCES %s(%s);",
-                    tableName,
-                    Mapper.getSQLFieldName(field),
-                    Mapper.getTableName(refTableName),
-                    refFieldName);
-            stringBuilder.append(format);
-            stringBuilder.append("\n");
-        }
-        for (Field field : fieldsDataType) {
-            var split = field.getAnnotation(ForeignKey.class).value().split("#");
-            var refTableName = split[0];
-            var refClass = (Class<? extends Savable>) Class.forName(refTableName);
-            var refPrimaryKeys = Mapper.getFields(refClass, PrimaryKey.class);
-            var refFieldNames = Arrays.stream(refPrimaryKeys).map(Mapper::getSQLFieldName).collect(Collectors.toList());
-            var format = format("ALTER TABLE %s ADD FOREIGN KEY (%s) REFERENCES %s(%s);",
-                    tableName,
-                    refFieldNames.stream().map(s -> Mapper.getSQLFieldName(field) + "_" + s).collect(Collectors.joining(", ")),
-                    Mapper.getTableName(refTableName),
-                    String.join(", ", refFieldNames));
-            stringBuilder.append(format);
-            stringBuilder.append("\n");
-        }
-        return stringBuilder.toString();
-    }
-
-    public String createTableSQL(String tableName, Field[] fields) throws SQLFeatureNotSupportedException, ClassNotFoundException {
-        var template = "CREATE TABLE %1$s (" +
-                "%2$s" +
-                ");";
-        return format(template, tableName, createTableSQLLines(fields));
-    }
-
-    public String createTableSQL(Class<? extends Savable> aClass) throws SQLFeatureNotSupportedException, ClassNotFoundException {
-        var annotation = aClass.getAnnotation(TableName.class);
-        var fields = Mapper.getFields(aClass, field -> !field.isAnnotationPresent(Ignore.class));
-        return createTableSQL(annotation.value(), fields);
-    }
-
-    private String createTableSQLLines(Field[] fields) throws SQLFeatureNotSupportedException, ClassNotFoundException {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Field field : fields) {
-            if (field.getType().isArray()) {
-                Class<?> componentType = field.getType().getComponentType();
-                if (TypeMappings.getTypeName(componentType) == null) {
-                    if (field.isAnnotationPresent(ForeignKey.class)) {
-                        String fk = field.getAnnotation(ForeignKey.class).value();
-                        String className = fk.split("#")[0];
-                        Class<?> klasse = Class.forName(className);
-                        if (Arrays.asList(klasse.getInterfaces()).contains(Savable.class)) {
-
-                        } else {
-                            throw new SQLFeatureNotSupportedException("Arrays of type " + componentType.getSimpleName() + " are not Savable");
-                        }
-                    } else {
-                        throw new SQLFeatureNotSupportedException("Arrays of type " + componentType.getSimpleName() + " are not allowed");
-                    }
-                }
-                continue;
-            }
-            var tableSQLLine = createTableSQLLine(field);
-            stringBuilder.append(tableSQLLine);
-            stringBuilder.append(", ");
-        }
-        stringBuilder.append(generateKeys(fields, PrimaryKey.class, "PRIMARY KEY"));
-        if (stringBuilder.length() > 0) {
-            stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), "");
-        }
-        return stringBuilder.toString();
-    }
-
-    private String generateKeys(Field[] fields, Class<? extends Annotation> aClass, String prefix) {
-        return generateKeys(fields, aClass, prefix, true);
-    }
-
-    private String generateKeys(Field[] fields, Class<? extends Annotation> aClass, String prefix, boolean withNext) {
-        var names = Arrays.stream(fields)
-                .filter(field -> field.isAnnotationPresent(aClass))
-                .filter(field -> !field.isAnnotationPresent(ForeignKey.class))
-                .map(Mapper::getSQLFieldName)
-                .collect(Collectors.toList());
-        var collect = Arrays.stream(fields)
-                .filter(field -> field.isAnnotationPresent(ForeignKey.class))
-                .filter(field -> field.isAnnotationPresent(PrimaryKey.class))
-                .map(field -> {
-                    Class<? extends Savable> classa = null;
-                    try {
-                        classa = (Class<? extends Savable>) Class.forName(field.getAnnotation(ForeignKey.class).value().split("#")[0]);
-                        var fields2 = getFields(classa, PrimaryKey.class);
-                        return Arrays.stream(fields2)
-                                .map(field1 -> field.getName() + "_" + field1.getName())
-                                .collect(Collectors.toList());
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                })
-                .filter(Objects::nonNull)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-        names.addAll(collect);
-        var primaryKeys = names.stream()
-                .collect(Collectors.joining(", ", prefix + " (", ")" + (withNext ? ", " : "")));
-        if (!primaryKeys.startsWith(prefix + " ()"))
-            return primaryKeys;
-        else return "";
-    }
-
-    private String createTableSQLLine(Field field) throws SQLFeatureNotSupportedException, ClassNotFoundException {
-        return createTableSQLLine(field, false, null);
-    }
-
-    private String createTableSQLLine(Field field, boolean ignorePrimaryKey, String overrideName) throws SQLFeatureNotSupportedException, ClassNotFoundException {
-        Class<?> type = field.getType();
-        if (type.isArray()) {
-            type = type.getComponentType();
-        }
-        var typeName = TypeMappings.getTypeName(type);
-        if (field.isAnnotationPresent(PrimaryKey.class) && !ignorePrimaryKey) {
-            if (field.getAnnotation(PrimaryKey.class).autogen()) {
-                if (typeName.equals("BIGINT")) {
-                    typeName = "BIGSERIAL";
-                } else if (typeName.equals("INTEGER") || typeName.equals("SMALLINT")) {
-                    typeName = "SERIAL";
-                }
-            }
-        }
-        if (typeName == null && !isDatabaseType(field)) {
-            throw new SQLFeatureNotSupportedException("Could not lookup datatype of " + field.getName() + ": " + field.getType().getSimpleName());
-        }
-        if (typeName == null && isDatabaseType(field)) {
-            Class<? extends Savable> classa = (Class<? extends Savable>) Class.forName(field.getAnnotation(ForeignKey.class).value().split("#")[0]);
-            var fields = Mapper.getFields(classa, PrimaryKey.class);
-            String ret = "";
-            for (Field field1 : fields) {
-                var oname = field1.isAnnotationPresent(FieldName.class) ? field1.getAnnotation(FieldName.class).value() : null;
-                var a = createTableSQLLine(field1, true, field.getName() + "_" + field1.getName());
-                System.out.println("--" + a);
-                ret = ret + a + ", ";
-            }
-            return ret.substring(0, ret.length() - 2);
-        }
-        var template = "%1$s %2$s";
-        var name = overrideName == null ? Mapper.getSQLFieldName(field) : overrideName;
-        var sql = format(template, name, typeName);
-        if (field.isAnnotationPresent(Nullable.class)) {
-            sql += " NULL";
-        } else if (field.isAnnotationPresent(NotNull.class)) {
-            sql += " NOT NULL";
-        } else {
-            sql += " NOT NULL";
-        }
-        if (field.isAnnotationPresent(Unique.class)) {
-            sql += " UNIQUE";
-        }
-        return sql;
-    }
-
-    public String createInsertSQL(Class<? extends Savable> aClass) throws ClassNotFoundException {
-        var template = "INSERT INTO %1$s (%2$s) values (%3$s) returning *;";
-        var insertedFields = Mapper.getInsertableFields(aClass);
-        var finalFields = Arrays.stream(insertedFields)
-                .filter(field ->
-                        !field.isAnnotationPresent(ForeignKey.class) || field.getType().isArray() || !isDatabaseType(field))
-                .map(Mapper::getSQLFieldName)
-                .collect(Collectors.toList());
-        var inflate = Arrays.stream(insertedFields)
-                .filter(field ->
-                        field.isAnnotationPresent(ForeignKey.class) && !field.getType().isArray() && isDatabaseType(field))
-                .collect(Collectors.toList());
-        for (Field field : inflate) {
-            Class<? extends Savable> referencingClass = getReferencingClass(field);
-            var fields = getFields(referencingClass, PrimaryKey.class);
-            for (Field field1 : fields) {
-                var s = getSQLFieldName(field) + "_" + field1.getName();
-                finalFields.add(s);
-            }
-        }
-        System.out.println(aClass);
-        return format(template,
-                Mapper.getTableName(aClass),
-                String.join(", ", finalFields),
-                placeholders(finalFields.size())
+    /**
+     * @param entityType The entity Class that the Get Statement is for
+     * @return The SQL String with placeholders to fill in
+     */
+    public String createGetSQL(Class<? extends Savable> entityType) {
+        String template = "select %1$s from %2$s where %3$s";
+        return String.format(template,
+                allColumnNames(entityType),
+                Mapper.getSQLTableName(entityType),
+                String.join(" and ", makeSetToPlaceholders(Mapper.getPrimaryKeyFields(entityType)))
         );
     }
 
-    public String createGetSQL(Class<? extends Savable> aClass) {
-        var template = "SELECT * FROM %1$s WHERE %2$s";
-        var annotation = aClass.getAnnotation(TableName.class);
-        var tableName = annotation.value();
-        var collect = Arrays.stream(Mapper.getFields(aClass, PrimaryKey.class)).map(this::createSQLWhere).collect(Collectors.joining(" and "));
-        return format(template, tableName, collect);
-    }
-
-    public String createGetAllSQL(Class<? extends Savable> aClass) {
-        var template = "SELECT * FROM %1$s";
-        var annotation = aClass.getAnnotation(TableName.class);
-        var tableName = annotation.value();
-        return format(template, tableName);
-    }
-
-    private String createSQLWhere(Field field) {
-        return format("%1$s = ?", Mapper.getSQLFieldName(field));
-    }
-
-    public String createRemoveSQL(Class<? extends Savable> aClass) {
-        var template = "DELETE FROM %1$s WHERE %2$s returning *";
-        var fields = Mapper.getFields(aClass, PrimaryKey.class);
-        var collect = Arrays.stream(fields).map(this::createSQLWhere).collect(Collectors.joining(" and "));
-        return format(template, aClass.getAnnotation(TableName.class).value(), collect);
-    }
-
-    public String createUpdateSQL(Class<? extends Savable> aClass) throws ClassNotFoundException {
-        var template = "UPDATE %1$s SET %2$s WHERE %3$s returning *";
-        var primaryKeyFields = Mapper.getFields(aClass, PrimaryKey.class);
-        var collectP = Arrays.stream(primaryKeyFields).map(this::createSQLWhere).collect(Collectors.joining(" and "));
-        var insertedFields = Mapper.getInsertableFields(aClass);
-        var finalFields = Arrays.stream(insertedFields)
-                .filter(field ->
-                        !field.isAnnotationPresent(ForeignKey.class) || field.getType().isArray() || !isDatabaseType(field))
-                .map(Mapper::getSQLFieldName)
-                .collect(Collectors.toList());
-        var inflate = Arrays.stream(insertedFields)
-                .filter(field ->
-                        field.isAnnotationPresent(ForeignKey.class) && !field.getType().isArray() && isDatabaseType(field))
-                .collect(Collectors.toList());
-        for (Field field : inflate) {
-            Class<? extends Savable> referencingClass = getReferencingClass(field);
-            var fields = getFields(referencingClass, PrimaryKey.class);
-            for (Field field1 : fields) {
-                var s = getSQLFieldName(field) + "_" + field1.getName();
-                finalFields.add(s);
-            }
-        }
-
-        return format(template, aClass.getAnnotation(TableName.class).value(), finalFields.stream().map(s -> s + " = ?").collect(Collectors.joining(", ")), collectP);
-    }
-
-    public String createRelationRemoveSQL(Field field) throws NoSuchFieldException, ClassNotFoundException, SQLFeatureNotSupportedException {
-        var template = "DELETE FROM %1$s where %2$s;";
-        var tableName = Mapper.relationTableName(field);
-        var sql = format(template,
-                tableName,
-                Mapper.relationColumnLeftName(field, " = ? and ") + " = ?"
+    public String createGetAllSQL(Class<? extends Savable> entityType) {
+        String template = "select %1$s from %2$s";
+        return String.format(template,
+                Mapper.getPrimaryKeyFields(entityType).stream().map(SQLField::getSQLFieldName).collect(Collectors.joining(", ")),
+                Mapper.getSQLTableName(entityType)
         );
-        return sql;
     }
 
+    public String createInsertSQL(Class<? extends Savable> entityType) {
+        var fields = Mapper.getAllSQLFields(entityType).stream()
+                .filter(SQLField::isInsertable)
+                .collect(Collectors.toList());
+        String template =
+                "insert into %1$s (%2$s) values (%3$s) returning %4$s";
+
+        return String.format(template,
+                Mapper.getSQLTableName(entityType), //1
+                fields.stream() //2
+                        .map(SQLField::getSQLFieldName)
+                        .collect(Collectors.joining(", ")),
+                makePlaceholderString(fields),
+                allColumnNames(entityType)
+        );
+    }
+
+    public String createUpdateSQL(Class<? extends Savable> entityType) {
+        String template = "update %1$s set %2$s where %3$s returning %4$s"; //1 = table name 2 = all "value=?" 3 = pkmatches 4= pks
+        return String.format(template,
+                Mapper.getSQLTableName(entityType),
+                String.join(", ", makeSetToPlaceholders(Mapper.getAllSQLFields(entityType).stream()
+                        .filter(SQLField::isPrimitive)
+                        .collect(Collectors.toList()))),
+                String.join(" and ", makeSetToPlaceholders(Mapper.getPrimaryKeyFields(entityType))),
+                Mapper.getPrimaryKeyFields(entityType).stream().map(SQLField::getFieldName).collect(Collectors.joining(", "))
+        );
+    }
+
+    public String createRemoveSQL(Class<? extends Savable> entityType) {
+        String template = "delete from %1$s where %2$s"; //1= table name 2= pkmatches
+        return String.format(template,
+                Mapper.getSQLTableName(entityType),
+                String.join(" and ", makeSetToPlaceholders(Mapper.getPrimaryKeyFields(entityType)))
+        );
+    }
+
+    private String allColumnNames(Class<? extends Savable> entityType) {
+        return Mapper.getAllSQLFields(entityType).stream()
+                .filter(SQLField::isNotIgnored)
+                .filter(SQLField::isPrimitive)
+                .map(SQLField::getSQLFieldName)
+                .collect(Collectors.joining(", "));
+    }
+
+    public String createRelationGetRightSQL(SQLField field) {
+        String template = "select %1$s from %2$s where %3$s";//1=right pks 2=relation table name 3=left pks with "=?" and "and"
+        return String.format(template,
+                String.join(", ", field.getRelationTableRightPKnames()),
+                field.getRelationTableName(),
+                String.join(" and ", makeSetToPlaceholdersFromStrings(field.getRelationTableLeftPKnames()))
+        );
+    }
+
+    public String createRelationInsertSQL(SQLField field) {
+        String template = "insert into %1$s (%2$s, %3$s) values (%4$s, %5$s)"; //1=relation table name 2=left pk relation names 3=right pk relation names 4= combination of ?s
+        return String.format(template,
+                field.getRelationTableName(),
+                String.join(", ", field.getRelationTableLeftPKnames()),
+                String.join(", ", field.getRelationTableRightPKnames()),
+                makePlaceholderString(field.getRelationTableLeftPKnames()),
+                makePlaceholderString(field.getRelationTableRightPKnames())
+        );
+    }
+
+    public String createRelationRemoveSQL(SQLField field) {
+        String template = "delete from %1$s where %2$s";//1=relation table name 2=left pks
+        return String.format(template,
+                field.getRelationTableName(),
+                String.join(" and ", makeSetToPlaceholdersFromStrings(field.getRelationTableLeftPKnames()))
+        );
+    }
+
+    /**
+     * @param classes a list of classes that should be included in the generated tables (weird things could happen if this list is incomplete)
+     * @return a SQL-Script that initializes the DB
+     */
+    public String createTablesCreateStatement(List<Class<? extends Savable>> classes) {
+        StringBuilder ret = new StringBuilder();
+        for (Class<? extends Savable> aClass : classes) {
+            if (createDropStatements)
+                ret.append(String.format("drop table if exists %1$s cascade;\n", Mapper.getSQLTableName(aClass))); //remove the old table
+            ret.append(createSingleTableCreateStatement(aClass)); //create the table script excluding non primitive types
+//            ret.append(createSingleTableAlterStatements(aClass));
+        }
+        for (Class<? extends Savable> aClass : classes) { //after all base tables have been created
+            ret.append(createRelationTablesCreateSQL(aClass));
+        }
+        return ret.toString();
+    }
+
+    private String createRelationTablesCreateSQL(Class<? extends Savable> entityType) {
+        var fields = Mapper.getAllSQLFields(entityType).stream() //Fields that need a relationTable
+                .filter(f -> !f.isPrimitive())
+                .collect(Collectors.toList());
+        StringBuilder ret = new StringBuilder();
+        for (SQLField field : fields) {
+            ret.append(createSingleRelationTableCreateSQL(field));
+        }
+        return ret.toString();
+    }
+
+    /**
+     * @param field The field that this table should be generated for
+     * @return a SQL statement that creates a "relation table" for a single field
+     */
+    private String createSingleRelationTableCreateSQL(SQLField field) {
+        String template = "create table %1$s ( %2$s , %3$s,\n" + //1=Table Name 2=PrimaryKeys of this class(table) 3= PKs of referencing class(table)
+                " FOREIGN KEY (%4$s) REFERENCES %5$s (%6$s),\n" + //4=left PrimaryKeys(relationNames) 5=leftTableName 6=left PrimaryKeys(normal Names)
+                "FOREIGN KEY (%7$s) REFERENCES %8$s (%9$s)\n" + //7=right PrimaryKeys(relationNames) 8=rightTableName 9=right PrimaryKeys(normal Names)
+                ");\n";
+        if (createDropStatements) template = "drop table if exists %1$s cascade;\n" + template;
+        String tablename = field.getRelationTableName();
+        String leftPKs = String.join(", ", field.getRelationTableLeftPKnameswithType());
+        String rightPKs = String.join(", ", field.getRelationTableRightPKnameswithType());
+        return String.format(template,
+                tablename,//1
+                leftPKs,//2
+                rightPKs,//3
+                String.join(", ", field.getRelationTableLeftPKnames()),//4
+                field.getEncapsulatedTableName(),//5
+                Mapper.getPrimaryKeyFields(field.getFieldClass()).stream().map(SQLField::getSQLFieldName).collect(Collectors.joining(", ")),//6
+                String.join(", ", field.getRelationTableRightPKnames()),//7
+                Mapper.getSQLTableName(field.getReferencingClass()),//8
+                Mapper.getPrimaryKeyFields(field.getReferencingClass()).stream().map(SQLField::getSQLFieldName).collect(Collectors.joining(", "))//9
+        );
+    }
+
+    /**
+     * @param entityType class for which to generate the table
+     * @return a create table statement for the single table excluding things like primary key and relations between tables
+     */
+    private String createSingleTableCreateStatement(Class<? extends Savable> entityType) {
+        var allSQLFields = Mapper.getAllSQLFields(entityType);
+        String template = "create table %1$s (\n\t%2$s%3$s);\n";
+
+        return String.format(template,
+                Mapper.getSQLTableName(entityType),
+                allSQLFields.stream()
+                        .filter(SQLField::isNotIgnored)
+                        .filter(SQLField::isPrimitive)
+                        .map(f -> f.getSQLFieldName() + " " + f.getSQLType())
+                        .collect(Collectors.joining(",\n\t")),
+                createSingleTablePrimaryKeys(entityType)
+        );
+    }
+
+    /**
+     * @param entityType the entity class that is used
+     * @return a properly formatted string of primary keys to be used in the table declaration
+     */
+    private String createSingleTablePrimaryKeys(Class<? extends Savable> entityType) {
+        var fields = Mapper.getPrimaryKeyFields(entityType);
+        if (fields.stream().filter(SQLField::isNotIgnored).noneMatch(SQLField::isPrimaryKey)) {
+            return "//Danger, no pk set, relations might not work as intended\n"; //Warnung
+        }
+        return ",\n\t" + fields.stream()
+                .filter(SQLField::isNotIgnored)
+                .filter(SQLField::isPrimaryKey)
+                .map(SQLField::getSQLFieldName)
+                .collect(Collectors.joining(", ", "primary key (", ")\n"));
+    }
+
+    private String createSingleTableAlterStatements(Class<? extends Savable> entityType) {
+        StringBuilder ret = new StringBuilder();
+
+        return ret.toString();
+    }
+
+    private List<String> makeSetToPlaceholders(List<SQLField> fields) {
+        return fields.stream()
+                .map(f -> f.getSQLFieldName() + "=?")
+                .collect(Collectors.toList());
+    }
+
+    private List<String> makeSetToPlaceholdersFromStrings(List<String> fields) {
+        return fields.stream()
+                .map(f -> f + "=?")
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * @param fields a list of fields (only length is important)
+     * @return a String containing the appropriate amount of placeholders for the provided fields
+     */
+//    private String makePlaceholderString(List<SQLField> fields){
+//        return fields.stream().map(f->"?").collect(Collectors.joining(", "));
+//    }
+    private String makePlaceholderString(List<?> fields) {
+        return fields.stream().map(f -> "?").collect(Collectors.joining(", "));
+    }
 
 }

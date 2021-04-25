@@ -22,8 +22,9 @@ public class TicketStorageServiceImpl implements TicketStorageService{
     public TicketImpl add(Ticket ticket) {
         List<TicketImpl> tickets = null;
         try {
-            tickets = dao.insert(new TicketImpl(ticket.getFlight(), ticket.getSeat(), ticket.getFirstName(), ticket.getLastName(), ticket.getSeatOptions() ));
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            var opt= dao.insert(new TicketImpl(ticket.getFlight(), ticket.getSeat(), ticket.getFirstName(), ticket.getLastName(), ticket.getSeatOptions() ));
+            return opt.orElse(null);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         if(tickets.size() == 1){
@@ -38,7 +39,7 @@ public class TicketStorageServiceImpl implements TicketStorageService{
         try {
             var all = dao.getAll();
             return new ArrayList<>(all);
-        } catch (IllegalAccessException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return List.of();
@@ -46,12 +47,11 @@ public class TicketStorageServiceImpl implements TicketStorageService{
 
     @Override
     public boolean remove(Ticket ticket) {
-        List<TicketImpl> tickets = null;
         try {
-            tickets = dao.remove(new TicketImpl(ticket.getFlight(), ticket.getSeat(), ticket.getFirstName(), ticket.getLastName(), ticket.getSeatOptions() ));
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            dao.remove(new TicketImpl(ticket.getFlight(), ticket.getSeat(), ticket.getFirstName(), ticket.getLastName(), ticket.getSeatOptions() ));
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return tickets.size() == 1;
+        return true;
     }
 }

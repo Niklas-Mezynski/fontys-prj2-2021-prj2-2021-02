@@ -180,7 +180,7 @@ public class CreatePlaneController implements Controller {
         if (editMode) {
             var plane = businessLogicAPI.deletePlane(oldPlane);
             System.out.println(plane);
-            if (plane != null) {
+            if (plane) {
                 setRoot("home");
             } else {
                 System.out.println("Error deleting plane");

@@ -1,7 +1,7 @@
 package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.btfdao.annotations.*;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.Airport;
 import com.g02.flightsalesfx.businessEntities.Route;
 
@@ -126,8 +126,7 @@ public class RouteImpl implements Route, Savable {
         return result;
     }
 
-    @Override
-    public void afterConstruction() {
+    private void afterConstruction() {
         arrivalAirport=airports[0];
         departureAirport=airports[1];
     }

@@ -3,7 +3,7 @@ package com.g02.flightsalesfx.businessLogic;
 import com.g02.btfdao.annotations.ForeignKey;
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Seat;
 
@@ -35,6 +35,7 @@ public class PlaneImpl implements Plane, Savable {
         this.type = type;
         this.seatList = new SeatImpl[0];
     }
+    private PlaneImpl(){}
 
     @Override
     public int getId() {

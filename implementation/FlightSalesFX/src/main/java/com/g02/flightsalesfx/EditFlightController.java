@@ -125,7 +125,7 @@ public class EditFlightController implements Controller {
                 var f = (ReoccurringFlightImpl) selectedFlight;
                 var updatedFlight = f.getFlight();
 
-                if(App.persistenceAPI.getFlightStorageService(businessLogicAPI.getFlightManager()).remove(f)!=null){
+                if(App.persistenceAPI.getFlightStorageService(businessLogicAPI.getFlightManager()).remove(f)){
                     System.out.println("removed old");
                     if(businessLogicAPI.createFlightFromUI(updatedFlight)) {
                         exit();
