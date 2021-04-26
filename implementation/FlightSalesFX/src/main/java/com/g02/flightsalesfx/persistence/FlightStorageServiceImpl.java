@@ -63,4 +63,17 @@ public class FlightStorageServiceImpl implements FlightStorageService{
         }
         return List.of();
     }
+
+    @Override
+    public Flight update(Flight flight) {
+        var createdby=new SalesOfficerImpl(flight.getCreatedBy().getName(),flight.getCreatedBy().getEmail(),flight.getCreatedBy().getPassword());
+        var toUpdate=new FlightImpl(createdby,flight.getFlightNumber(),flight.getDeparture(),flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
+       try {
+           var update = dao.update(toUpdate);
+           return update;
+       } catch (SQLException e) {
+           e.printStackTrace();
+           return null;
+       }
+    }
 }

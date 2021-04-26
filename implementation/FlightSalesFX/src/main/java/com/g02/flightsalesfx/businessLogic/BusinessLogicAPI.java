@@ -68,4 +68,6 @@ public interface BusinessLogicAPI {
     boolean deletePlane(PlaneImpl oldPlane);
 
     Plane updatePlane(PlaneImpl oldPlane, String name, String type, String manufacturer, List<Seat> collect);
+
+    Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price);
 }

@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class HomeController implements Controller {
@@ -169,7 +170,13 @@ public class HomeController implements Controller {
         //requires: flightobject (db-issues)
 
         if(selectedFlight != null) {
+            final List<Flight> allFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
 
+            if(!allFlights.isEmpty()) {
+                App.businessLogicAPI.updateFlight()
+            } else {    // databaseselection failed
+                //todo insert error
+            }
         }
     }
 }

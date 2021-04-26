@@ -12,4 +12,6 @@ public interface FlightStorageService {
 
     public boolean remove(Flight flight);
 
+    public Flight update(Flight flight);
+
 }
