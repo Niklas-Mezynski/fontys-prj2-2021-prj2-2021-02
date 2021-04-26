@@ -43,11 +43,11 @@
     <center>
         <TabPane fx:id="tabPane" styleClass="borderless" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs>
-                <Tab fx:id="planesTab" styleClass="tab" text="Planes">
+                <Tab fx:id="planesTab" text="Planes">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0">
                             <children>
-                                <ScrollPane styleClass="borderless" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <ScrollPane layoutY="38.0" prefHeight="525.0" prefWidth="800.0" styleClass="borderless" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <content>
                                         <AnchorPane fx:id="planePane">
                                             <children>
