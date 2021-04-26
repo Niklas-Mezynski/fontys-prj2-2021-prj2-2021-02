@@ -48,7 +48,7 @@
                 </Label>
                 <TextField fx:id="username" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Button fx:id="loginButton" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="69.0" styleClass="toggle-button" text="Login" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                <Button fx:id="loginButton" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="69.0" styleClass="buttonOrange" text="Login" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                     <font>
                         <Font size="14.0" />
                     </font>

@@ -13,13 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.createBookingController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.createBookingController">
    <center>
       <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="flightTab" text="Flight Selection">
             <content>
-              <AnchorPane>
+              <AnchorPane styleClass="background">
                      <children>
                         <VBox fx:id="flightVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                            <children>
@@ -56,7 +56,7 @@
           </Tab>
             <Tab fx:id="seatsTab" onSelectionChanged="#disableFlightSelectionTab" text="Seat Allocation">
               <content>
-                <AnchorPane>
+                <AnchorPane styleClass="background">
                      <children>
                         <VBox fx:id="filterVBox">
                            <children>
@@ -73,7 +73,7 @@
             </Tab>
           <Tab fx:id="paxTab" onSelectionChanged="#disableSeatAllocationTab" text="Passengers">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="background">
                      <children>
                         <ScrollPane prefHeight="537.0" prefWidth="424.0">
                            <content>
@@ -95,7 +95,7 @@
           </Tab>
             <Tab fx:id="flightOptionsTab" onSelectionChanged="#disablePaxTab" text="Flight Options">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="background">
                      <children>
                         <VBox fx:id="flightOptionsVBox" prefHeight="42.0" prefWidth="346.0">
                            <children>
@@ -107,9 +107,9 @@
             </Tab>
             <Tab fx:id="confirmTab" onSelectionChanged="#disableFlightOptionsTab" text="Confirmation">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="background">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="800.0">
+                        <VBox prefHeight="200.0" prefWidth="800.0" styleClass="background">
                            <children>
                               <HBox fx:id="flightOverview" prefHeight="17.0" prefWidth="630.0">
                                  <children>

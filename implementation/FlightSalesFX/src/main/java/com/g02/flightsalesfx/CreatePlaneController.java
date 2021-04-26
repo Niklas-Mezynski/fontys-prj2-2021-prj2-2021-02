@@ -5,7 +5,6 @@ import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
 import com.g02.flightsalesfx.businessLogic.PlaneImpl;
 import com.g02.flightsalesfx.businessLogic.SeatImpl;
-import com.g02.flightsalesfx.businessLogic.SeatOptionImpl;
 import com.g02.flightsalesfx.helpers.Bundle;
 import com.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
@@ -128,6 +127,8 @@ public class CreatePlaneController implements Controller {
      */
     public void createSeat(VBox box) {
         var seatButton = new SeatButton(box);
+//        Font f=Font.loadFont("file:resources/com/g02/flightsalesfx/SourceCodePro-Regular.ttf",45);
+//        seatButton.setFont(f);
         this.seats.add(seatButton);
         var children = box.getChildren();
         children.add(children.size() - 1, seatButton);
