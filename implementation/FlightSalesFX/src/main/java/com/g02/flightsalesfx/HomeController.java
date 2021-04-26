@@ -7,6 +7,8 @@ import com.g02.flightsalesfx.businessLogic.PlaneImpl;
 import com.g02.flightsalesfx.gui.FlightTable;
 import com.g02.flightsalesfx.gui.PlaneTable;
 import com.g02.flightsalesfx.gui.RouteTable;
+import com.g02.flightsalesfx.helpers.Bundle;
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class HomeController {
+public class HomeController implements Controller {
 
     @FXML
     public VBox planesListVBox;
@@ -53,7 +55,10 @@ public class HomeController {
                 Plane rowData = row.getItem();
                 if (event.getClickCount() == 2) {
                     System.out.println("Double click on: " + rowData.getName());
-                    App.setRoot("createPlane");
+                    var bundle = new Bundle();
+                    bundle.add("edit", true);
+                    bundle.add("plane", rowData);
+                    App.setRoot("createPlane", bundle);
                 } else if (event.getClickCount() == 1) {
                     System.out.println("Normal click on: " + rowData.getName());
                     App.businessLogicAPI.viewPlane(rowData);
@@ -61,7 +66,9 @@ public class HomeController {
             }
         });
 //        tabPane.getSelectionModel().select(App.homeControllerTab);
+        planeTable.setId("planeTable");
         planesListVBox.getChildren().add(planeTable);
+        System.out.println("planeTable inserted");
         planeTable.setMinWidth(planePane.getPrefWidth());
 
         //List all Routes
@@ -69,7 +76,7 @@ public class HomeController {
 
 
         var allFlights = App.businessLogicAPI.getAllFlights(f -> true);
-
+        System.out.println(allFlights);
         var flightTable = new FlightTable(allFlights, (event, row) -> {
             Flight selectedFlight = row.getItem();
             System.out.println("Clicked on: " + selectedFlight);
@@ -80,7 +87,7 @@ public class HomeController {
             }
         });
 
-        flightPane.getChildren().add(flightTable);
+        flightVBox.getChildren().add(flightTable);
         flightTable.setMinWidth(flightPane.getPrefWidth());
 
     }

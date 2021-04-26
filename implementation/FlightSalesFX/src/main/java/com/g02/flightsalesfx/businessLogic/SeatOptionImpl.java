@@ -2,7 +2,7 @@ package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
 
 import java.util.Objects;
@@ -19,6 +19,7 @@ public class SeatOptionImpl implements SeatOption, Savable {
         this.name = name;
         this.price = price;
     }
+    private SeatOptionImpl(){}
 
     public String getName() {
         return this.name;

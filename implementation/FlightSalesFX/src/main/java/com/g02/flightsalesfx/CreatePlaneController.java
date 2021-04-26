@@ -1,9 +1,12 @@
 package com.g02.flightsalesfx;
 
+import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
+import com.g02.flightsalesfx.businessLogic.PlaneImpl;
 import com.g02.flightsalesfx.businessLogic.SeatImpl;
-import com.g02.flightsalesfx.businessLogic.SeatOptionImpl;
+import com.g02.flightsalesfx.helpers.Bundle;
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -21,7 +24,7 @@ import java.util.stream.Collectors;
 import static com.g02.flightsalesfx.App.businessLogicAPI;
 import static com.g02.flightsalesfx.App.setRoot;
 
-public class CreatePlaneController {
+public class CreatePlaneController implements Controller {
 
     private final ToggleGroup toggleGroupSeatOptions = new ToggleGroup();
 
@@ -40,7 +43,11 @@ public class CreatePlaneController {
     public TextField planeType;
     @FXML
     public TextField planeManufacturer;
+    @FXML
+    public Button deleteButton;
     private SeatOptionBox currentSelected = null;
+    private boolean editMode;
+    private PlaneImpl oldPlane;
 
     /**
      * Creates a new SeatRow and adds the corresponding VBox to the container
@@ -120,6 +127,8 @@ public class CreatePlaneController {
      */
     public void createSeat(VBox box) {
         var seatButton = new SeatButton(box);
+//        Font f=Font.loadFont("file:resources/com/g02/flightsalesfx/SourceCodePro-Regular.ttf",45);
+//        seatButton.setFont(f);
         this.seats.add(seatButton);
         var children = box.getChildren();
         children.add(children.size() - 1, seatButton);
@@ -137,8 +146,14 @@ public class CreatePlaneController {
         // Map all internal used SeatButtons to Seat
         var collect = seats.stream().map(seatButton ->(Seat) new SeatImpl(seatButton.row(), seatButton.column())).collect(Collectors.toList());
         // Create the plane using the businessLogicAPI
-        var planeCreated = App.businessLogicAPI.createPlaneFromUI(name, type, manufacturer, collect);
-        if (planeCreated) { // If the plane was saved successfully exit and return to the previous scene
+        Plane updatedPlane;
+        if (editMode) {
+            updatedPlane = businessLogicAPI.updatePlane(oldPlane, name, type, manufacturer, collect);
+        } else {
+            updatedPlane = App.businessLogicAPI.createPlaneFromUI(name, type, manufacturer, collect);
+        }
+
+        if (updatedPlane != null) { // If the plane was saved successfully exit and return to the previous scene
             exit();
         } else { // If there was an error, create and show and alert dialog to notify the user of this error
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -158,8 +173,49 @@ public class CreatePlaneController {
         setRoot("home");
     }
 
+    /**
+     * If view in edit mode delete the plane that is currently being edited
+     */
+    @FXML
+    private void delete() {
+        if (editMode) {
+            var plane = businessLogicAPI.deletePlane(oldPlane);
+            System.out.println(plane);
+            if (plane) {
+                setRoot("home");
+            } else {
+                System.out.println("Error deleting plane");
+            }
+        }
+    }
+
     private void updateSeatText() {
         seats.forEach(SeatButton::updateText);
+    }
+
+    @Override
+    public void init(Bundle bundle) {
+        if (bundle.getBoolean("edit", false)) {
+            this.editMode = true;
+            var plane = bundle.get("plane", PlaneImpl.class);
+            this.oldPlane = plane;
+            planeName.setText(oldPlane.getName());
+            planeType.setText(oldPlane.getType());
+            planeManufacturer.setText(oldPlane.getManufacturer());
+            System.out.println(plane);
+            int lastRowNum = -1;
+            VBox lastRow = null;
+            for (SeatImpl seat : plane.seatList) {
+                if (seat.getRowNumber() > lastRowNum) {
+                    lastRowNum++;
+                    lastRow = createRow();
+                    seatContainer.getChildren().add(lastRow);
+                }
+                createSeat(lastRow);
+            }
+        } else {
+            deleteButton.setVisible(false);
+        }
     }
 
     /**

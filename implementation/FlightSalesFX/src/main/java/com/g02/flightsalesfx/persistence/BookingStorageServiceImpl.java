@@ -1,32 +1,54 @@
 package com.g02.flightsalesfx.persistence;
 
+import com.g02.btfdao.dao.Dao;
 import com.g02.flightsalesfx.businessEntities.Booking;
 import com.g02.flightsalesfx.businessEntities.BookingManager;
+import com.g02.flightsalesfx.businessEntities.FlightOption;
+import com.g02.flightsalesfx.businessLogic.BookingImpl;
+import com.g02.flightsalesfx.businessLogic.TicketImpl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BookingStorageServiceImpl implements BookingStorageService{
-    private List<Booking> bookings;
 
-    public BookingStorageServiceImpl(BookingManager bookingManager) {
-        bookings = new ArrayList<Booking>();
+    private final Dao<BookingImpl> dao;
+
+    public BookingStorageServiceImpl(BookingManager bookingManager, Dao<BookingImpl> dao) {
+        this.dao = dao;
     }
 
     @Override
-    public boolean add(Booking booking) {
-        bookings.add(booking);
-        return bookings.contains(booking);
+    public BookingImpl add(Booking booking) {
+        try {
+            return dao.insert(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail() ))
+                    .orElse(null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public List<Booking> getAll() {
-        return bookings.stream().collect(Collectors.toUnmodifiableList());
+        try {
+            var all = dao.getAll();
+            return new ArrayList<>(all);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return List.of();
     }
 
     @Override
-    public void remove(Booking selectedBooking) {
-        bookings.remove(selectedBooking);
+    public boolean remove(Booking booking) {
+        List<BookingImpl> bookings = null;
+        try {
+            dao.remove(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail() ));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 }

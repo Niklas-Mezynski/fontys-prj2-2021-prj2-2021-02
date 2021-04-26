@@ -3,31 +3,53 @@ package com.g02.flightsalesfx.businessLogic;
 import com.g02.btfdao.annotations.ForeignKey;
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Seat;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.*;
 import java.util.stream.Collectors;
 
 @TableName("planes")
 public class PlaneImpl implements Plane, Savable {
 
-    @PrimaryKey
+    @PrimaryKey(autogen = true)
+    public int id;
     public String name;
     public String manufacturer;
     public String type;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.SeatImpl")
-    public SeatImpl[] seatList;
+    public SeatImpl[] seatList = new SeatImpl[0];
+
+    public PlaneImpl(int id, String name, String manufacturer, String type) {
+        this(name, manufacturer, type);
+        this.id = id;
+    }
 
     public PlaneImpl(String name, String type, String manufacturer) {
         this.name = name;
         this.manufacturer = manufacturer;
         this.type = type;
         this.seatList = new SeatImpl[0];
+    }
+
+    private PlaneImpl() {
+    }
+
+    public static PlaneImpl of(Plane plane) {
+        var plane1 = plane == null ? null : new PlaneImpl(plane.getId(), plane.getName(), plane.getType(), plane.getManufacturer());
+        if (plane != null) {
+            plane1.addAllSeats(plane.getAllSeats());
+        }
+        return plane1;
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     @Override
@@ -51,12 +73,12 @@ public class PlaneImpl implements Plane, Savable {
     }
 
     @Override
-    public int getSeatCount(){
+    public int getSeatCount() {
         return seatList.length;
     }
 
     @Override
-    public int getRowCount(){
+    public int getRowCount() {
         return Arrays.stream(seatList).mapToInt(Seat::getRowNumber).max().orElse(-1) + 1;
     }
 
@@ -78,19 +100,16 @@ public class PlaneImpl implements Plane, Savable {
 
     @Override
     public String toString() {
-
-
-        return "Plane " + name + ", ID: " + type + ", Manufacturer: " + manufacturer + ", Seats: " + seatList.length + " Rows: " + getRows();
+        return "Plane " + name + ", ID: " + id + ", Manufacturer: " + manufacturer + ", Seats: " + seatList.length + " Rows: " + getRows();
     }
 
-    public int getRows(){
+    public int getRows() {
         int rows = 0;
-        if(seatList.length!=0){
+        if (seatList.length != 0) {
             rows = seatList[seatList.length - 1].getRowNumber() + 1;
         }
         return rows;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -98,11 +117,6 @@ public class PlaneImpl implements Plane, Savable {
         if (o == null || getClass() != o.getClass()) return false;
         PlaneImpl plane = (PlaneImpl) o;
         return Objects.equals(getName(), plane.getName()) && Objects.equals(getManufacturer(), plane.getManufacturer()) && Objects.equals(getType(), plane.getType());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, manufacturer, type);
     }
 /*
     @Override
@@ -113,5 +127,10 @@ public class PlaneImpl implements Plane, Savable {
         }
         return rows;
     }*/
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, manufacturer, type);
+    }
 
 }

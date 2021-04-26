@@ -1,7 +1,7 @@
 package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.btfdao.annotations.*;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.Airport;
 import com.g02.flightsalesfx.businessEntities.Route;
 
@@ -10,7 +10,7 @@ import java.util.Objects;
 @TableName("routes")
 public class RouteImpl implements Route, Savable {
 
-    @PrimaryKey
+    @PrimaryKey(autogen = true)
     public int id;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.AirportImpl")
     public AirportImpl[] airports = new AirportImpl[2];
@@ -37,6 +37,10 @@ public class RouteImpl implements Route, Savable {
     private RouteImpl(int id, boolean rteEnabled){
         this.id=id;
         this.rteEnabled=rteEnabled;
+    }
+
+    private RouteImpl() {
+
     }
 
     /**
@@ -126,9 +130,12 @@ public class RouteImpl implements Route, Savable {
         return result;
     }
 
-    @Override
-    public void afterConstruction() {
+    private void afterConstruction() {
         arrivalAirport=airports[0];
         departureAirport=airports[1];
+    }
+    public static RouteImpl of(Route r){
+
+        return r==null?null:new RouteImpl(r.getDepartureAirport(), r.getArrivalAirport());
     }
 }

@@ -2,24 +2,31 @@ package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.Airport;
-
-import java.util.Objects;
 
 @TableName("airports")
 public class AirportImpl implements Airport, Savable {
 
     @PrimaryKey
-    public final String name;
-    public final String city;
-    public final String country;
+    public String name;
+    public String city;
+    public String country;
 
     public AirportImpl(String name, String city, String country) {
         this.name = name;
         this.city = city;
         this.country = country;
     }
+
+    private AirportImpl() {
+
+    }
+
+    public static AirportImpl of(Airport a) {
+        return new AirportImpl(a.getName(), a.getCity(), a.getCountry());
+    }
+
     /**
      * @return Name of the airport
      */
@@ -49,7 +56,6 @@ public class AirportImpl implements Airport, Savable {
         return this.name + ", " + this.city + ", " + this.country;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,8 +74,5 @@ public class AirportImpl implements Airport, Savable {
         result = 31 * result + (getCity() != null ? getCity().hashCode() : 0);
         result = 31 * result + (getCountry() != null ? getCountry().hashCode() : 0);
         return result;
-    }
-    public static AirportImpl of(Airport a){
-        return new AirportImpl(a.getName(), a.getCity(), a.getCountry());
     }
 }

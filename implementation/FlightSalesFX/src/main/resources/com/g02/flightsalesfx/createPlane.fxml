@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="342.0" prefWidth="867.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.CreatePlaneController">
+<BorderPane prefHeight="342.0" prefWidth="867.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.CreatePlaneController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <top>
-      <Label styleClass="textLabel" text="Create Plane" BorderPane.alignment="CENTER">
+      <Label text="Create Plane" BorderPane.alignment="CENTER">
          <font>
             <Font size="26.0" />
          </font></Label>
@@ -21,24 +28,20 @@
             <Separator prefWidth="200.0" />
             <HBox spacing="20.0">
                <children>
-                  <VBox spacing="20.0" HBox.hgrow="ALWAYS">
+                  <VBox HBox.hgrow="ALWAYS">
                      <children>
                         <HBox alignment="TOP_CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <VBox fx:id="seatOptions" alignment="TOP_CENTER" spacing="10.0" styleClass="menu-row">
+                              <VBox fx:id="seatOptions" alignment="TOP_CENTER" styleClass="menu-row">
                                  <children>
                                     <HBox alignment="TOP_CENTER">
                                        <children>
-                                          <Label styleClass="textLabel" text="Seat Options">
-                                             <font>
-                                                <Font name="System Bold" size="16.0" />
-                                             </font>
-                                          </Label>
+                                          <Label styleClass="sub-title" text="Seat Options" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="TOP_CENTER">
                                        <children>
-                                          <Button fx:id="addSeatOptionButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addSeatOption" text="Add new Seat Option" HBox.hgrow="ALWAYS" />
+                                          <Button fx:id="addSeatOptionButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addSeatOption" styleClass="buttonBlack" text="Add new Seat Option" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -69,9 +72,6 @@
                                  </children>
                               </VBox>-->
                            </children>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>
@@ -84,7 +84,7 @@
                      <children>
                         <HBox alignment="TOP_CENTER">
                            <children>
-                              <Label text="Plane Infos">
+                              <Label styleClass="sub-title" text="Plane Infos">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
@@ -93,38 +93,39 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" spacing="10.0">
                            <children>
-                              <Label styleClass="textLabel" text="Name" />
-                              <TextField fx:id="planeName" styleClass="inputField" />
+                              <Label text="Name" />
+                              <TextField fx:id="planeName" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="46.0" spacing="10.0">
                            <children>
-                              <Label styleClass="textLabel" text="Type" />
-                              <TextField fx:id="planeType" styleClass="inputField" />
+                              <Label text="Type" />
+                              <TextField fx:id="planeType" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="82.0" spacing="10.0">
                            <children>
-                              <Label styleClass="textLabel" text="Manufacturer" />
-                              <TextField fx:id="planeManufacturer" styleClass="inputField" />
+                              <Label text="Manufacturer" />
+                              <TextField fx:id="planeManufacturer" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
                   <Separator layoutX="722.0" layoutY="20.0" orientation="VERTICAL" />
-                  <VBox spacing="10.0">
+                  <VBox alignment="CENTER" spacing="10.0">
                      <children>
                         <HBox alignment="TOP_CENTER">
                            <children>
-                              <Label styleClass="textLabel" text="Save or Exit">
+                              <Label styleClass="sub-title" text="Save or Exit">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
                            </children>
                         </HBox>
-                        <Button fx:id="savePlaneButton" mnemonicParsing="false" onAction="#savePlane" text="Save and Exit" />
-                        <Button layoutX="10.0" layoutY="40.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
+                        <Button fx:id="savePlaneButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#savePlane" styleClass="buttonOrange" text="Save and Exit" />
+                        <Button layoutX="10.0" layoutY="40.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exit" styleClass="buttonBlack" text="Exit" />
+                        <Button fx:id="deleteButton" layoutX="10.0" layoutY="82.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#delete" styleClass="buttonBlack" text="Delete" />
                      </children>
                   </VBox>
                </children>
@@ -144,12 +145,12 @@
                      <HBox fx:id="seatContainer" spacing="2.0" />
                      <VBox alignment="CENTER_LEFT" maxWidth="100.0" HBox.hgrow="ALWAYS">
                         <children>
-                              <Button fx:id="addRow" mnemonicParsing="false" onAction="#addSeatRow" text="Add Row">
+                              <Button fx:id="addRow" mnemonicParsing="false" onAction="#addSeatRow" styleClass="buttonOrange" text="Add Row">
                               <VBox.margin>
                                  <Insets />
                               </VBox.margin>
                            </Button>
-                           <Button fx:id="addRow1" layoutX="20.0" layoutY="10.0" mnemonicParsing="false" onAction="#cloneSeatRow" text="Clone Row" />
+                           <Button fx:id="addRow1" layoutX="20.0" layoutY="10.0" mnemonicParsing="false" onAction="#cloneSeatRow" styleClass="buttonOrange" text="Clone Row" />
                         </children>
                      </VBox>
                      <padding>

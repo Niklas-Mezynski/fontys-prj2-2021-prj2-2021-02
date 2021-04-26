@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface BookingManager {
 
-    public Booking createBooking(SalesEmployee se, Flight flight, FlightOption[] bookedFlightOptions, String eMail);
+    public Booking createBooking(SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail);
 
 }

@@ -3,9 +3,8 @@ package com.g02.flightsalesfx.persistence;
 import com.g02.btfdao.dao.Dao;
 import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.FlightManager;
-import com.g02.flightsalesfx.businessLogic.AirportImpl;
-import com.g02.flightsalesfx.businessLogic.FlightImpl;
-import com.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
+import com.g02.flightsalesfx.businessEntities.Plane;
+import com.g02.flightsalesfx.businessLogic.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,27 +22,35 @@ public class FlightStorageServiceImpl implements FlightStorageService{
     @Override
     public Flight add(Flight flight) {
         var createdby=new SalesOfficerImpl(flight.getCreatedBy().getName(),flight.getCreatedBy().getEmail(),flight.getCreatedBy().getPassword());
+//        var flightImpl=new FlightImpl(createdby,flight.getFlightNumber(),flight.getDeparture(),flight.getArrival(), null, null, flight.getPrice());
         var flightImpl=new FlightImpl(createdby,flight.getFlightNumber(),flight.getDeparture(),flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
         try {
             var ret= dao.insert(flightImpl);
-            return ret.size()>0?ret.get(0):null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            if (ret.isPresent()){
+//                var flightret=ret.get(0);
+//                flightret.plane= PlaneImpl.of(flight.getPlane());
+//                flightret.route= RouteImpl.of(flight.getRoute());
+//                var flightreto=dao.update(flightret);
+                return ret.get();
+            }
+            return null;
+        } catch ( SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    public Flight remove(Flight flight) {
+    public boolean remove(Flight flight) {
         var createdby=new SalesOfficerImpl(flight.getCreatedBy().getName(),flight.getCreatedBy().getEmail(),flight.getCreatedBy().getPassword());
         var flightImpl=new FlightImpl(createdby,flight.getFlightNumber(),flight.getDeparture(),flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
         try {
-            var ret= dao.remove(flightImpl);
-            return ret.size()>0?ret.get(0):null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            dao.remove(flightImpl);
+        } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return null;
+        return true;
     }
 
     @Override
@@ -51,7 +58,7 @@ public class FlightStorageServiceImpl implements FlightStorageService{
         try {
             var all = dao.getAll();
             return new ArrayList<>(all);
-        } catch (IllegalAccessException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return List.of();

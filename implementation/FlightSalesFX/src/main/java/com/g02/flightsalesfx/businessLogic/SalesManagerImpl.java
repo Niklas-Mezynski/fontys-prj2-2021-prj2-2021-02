@@ -2,7 +2,7 @@ package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.SalesManager;
 
 import java.util.Objects;
@@ -19,6 +19,9 @@ public class SalesManagerImpl implements SalesManager, Savable {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+    private SalesManagerImpl(){
+        this(null,null,null);
     }
 
     @Override

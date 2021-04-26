@@ -2,7 +2,8 @@ package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
+import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.SalesEmployee;
 
 import java.util.Objects;
@@ -19,6 +20,11 @@ public class SalesEmployeeImpl implements SalesEmployee, Savable {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+
+    private SalesEmployeeImpl(){
+        this(null,null,null); //Will be overriden
     }
 
     @Override
@@ -47,5 +53,9 @@ public class SalesEmployeeImpl implements SalesEmployee, Savable {
     @Override
     public int hashCode() {
         return Objects.hash(name, email, password);
+    }
+
+    public static SalesEmployeeImpl of(SalesEmployee se){
+        return new SalesEmployeeImpl(se.getName(), se.getEmail(), se.getPassword());
     }
 }

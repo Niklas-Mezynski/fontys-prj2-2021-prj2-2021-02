@@ -1,6 +1,5 @@
 package com.g02.flightsalesfx.businessLogic;
 
-import com.g02.flightsalesfx.CreatePlaneController;
 import com.g02.flightsalesfx.businessEntities.*;
 
 import java.time.Duration;
@@ -38,7 +37,7 @@ public interface BusinessLogicAPI {
 
     public Employee login(String email, String password);
 
-    public boolean createPlaneFromUI(String name, String type, String manufacturer, List<Seat> seats);
+    public Plane createPlaneFromUI(String name, String type, String manufacturer, List<Seat> seats);
 
     public boolean createRouteFromUI(Airport departure, Airport arrival);
 
@@ -74,4 +73,7 @@ public interface BusinessLogicAPI {
 
     boolean addTicketFromUI(Ticket ticket);
 
+    boolean deletePlane(PlaneImpl oldPlane);
+
+    Plane updatePlane(PlaneImpl oldPlane, String name, String type, String manufacturer, List<Seat> collect);
 }

@@ -3,6 +3,7 @@ package com.g02.flightsalesfx;
 import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessLogic.BusinessLogicAPIImpl;
 import com.g02.flightsalesfx.businessLogic.ReoccurringFlightImpl;
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -17,7 +18,7 @@ import java.util.InputMismatchException;
 import static com.g02.flightsalesfx.App.businessLogicAPI;
 import static com.g02.flightsalesfx.App.setRoot;
 
-public class EditFlightController {
+public class EditFlightController implements Controller {
 
     @FXML
     private Label FlightNumberLabel;
@@ -124,7 +125,7 @@ public class EditFlightController {
                 var f = (ReoccurringFlightImpl) selectedFlight;
                 var updatedFlight = f.getFlight();
 
-                if(App.persistenceAPI.getFlightStorageService(businessLogicAPI.getFlightManager()).remove(f)!=null){
+                if(App.persistenceAPI.getFlightStorageService(businessLogicAPI.getFlightManager()).remove(f)){
                     System.out.println("removed old");
                     if(businessLogicAPI.createFlightFromUI(updatedFlight)) {
                         exit();

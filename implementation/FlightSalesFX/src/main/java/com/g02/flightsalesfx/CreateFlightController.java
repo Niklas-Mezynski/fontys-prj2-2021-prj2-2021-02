@@ -1,5 +1,6 @@
 package com.g02.flightsalesfx;
 
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import com.g02.flightsalesfx.businessEntities.Route;
@@ -15,7 +16,7 @@ import java.util.Locale;
 
 import static com.g02.flightsalesfx.App.setRoot;
 
-public class CreateFlightController {
+public class CreateFlightController implements Controller {
 
     //private Route selectedRoute;
 

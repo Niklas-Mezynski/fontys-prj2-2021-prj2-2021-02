@@ -2,7 +2,7 @@ package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.FlightOption;
 
@@ -18,6 +18,9 @@ public class FlightOptionImpl implements FlightOption, Savable {
         this.name = name;
         this.maxAvailable = maxAvailable;
         this.price = price;
+    }
+    public static FlightOptionImpl of(FlightOption f){
+        return new FlightOptionImpl(f.getName(), f.getMaxAvailability(), f.getPrice());
     }
 
     /**

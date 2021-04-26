@@ -6,10 +6,9 @@ import com.g02.flightsalesfx.businessEntities.PlaneManager;
 import com.g02.flightsalesfx.businessLogic.PlaneImpl;
 
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Collections.unmodifiableList;
 
 public class PlaneStorageServiceImpl implements PlaneStorageService {
 
@@ -21,11 +20,12 @@ public class PlaneStorageServiceImpl implements PlaneStorageService {
 
     @Override
     public Plane add(Plane plane) {
-        var planeImpl=new PlaneImpl(plane.getName(), plane.getType(), plane.getManufacturer());
+        var planeImpl = new PlaneImpl(plane.getName(), plane.getType(), plane.getManufacturer());
+        planeImpl.addAllSeats(plane.getAllSeats());
         try {
             var a = dao.insert(planeImpl);
-            return a.size()>0?a.get(0):null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            return a.isPresent()? a.get() : null;
+        } catch ( SQLException e) {
             e.printStackTrace();
             return null;
         }
@@ -36,9 +36,35 @@ public class PlaneStorageServiceImpl implements PlaneStorageService {
         try {
             var all = dao.getAll();
             return new ArrayList<>(all);
-        } catch (IllegalAccessException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return List.of();
+    }
+
+    @Override
+    public boolean delete(Plane plane) {
+        var planeImpl = new PlaneImpl(plane.getId(), plane.getName(), plane.getType(), plane.getManufacturer());
+        planeImpl.addAllSeats(plane.getAllSeats());
+        try {
+            dao.remove(planeImpl);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Plane update(Plane plane) {
+        var planeImpl = new PlaneImpl(plane.getId(), plane.getName(), plane.getType(), plane.getManufacturer());
+        planeImpl.addAllSeats(plane.getAllSeats());
+        try {
+            var update = dao.update(planeImpl);
+            return update;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
