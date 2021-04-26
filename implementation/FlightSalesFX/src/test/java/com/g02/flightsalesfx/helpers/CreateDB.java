@@ -20,6 +20,7 @@ import java.util.List;
 
 public class CreateDB {
 
+    @Disabled
     @Test
     void name() throws NoSuchFieldException, SQLException, ClassNotFoundException {
         List<Class<? extends Savable>> databaseSQL = List.of(
@@ -56,6 +57,7 @@ public class CreateDB {
         System.out.println(employeeStorageService.add(new SalesManagerImpl("SalesManager","m","")));
     }
 
+    @Disabled
     @Test
     void insertAirports() {
         var persistenceAPI = new PersistenceAPIImpl();
