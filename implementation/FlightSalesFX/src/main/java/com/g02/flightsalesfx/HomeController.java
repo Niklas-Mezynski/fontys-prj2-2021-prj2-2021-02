@@ -168,19 +168,8 @@ public class HomeController implements Controller {
         //todo: popup
         //requires: flightobject (db-issues)
 
-        // for development:
-//        this.selectedFlight = new FlightImpl((SalesOfficerImpl) App.employee, 123, LocalDateTime.now(), LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "Düsseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl("A420","413","Airbus"), 20);
-//        enableSalesprocess.setOnAction(
-//                new EventHandler<ActionEvent>() {
-//                    public void handle(ActionEvent event) {
-//                        final Stage dialog = new Stage();
-//                        dialog.initModality(Modality.APPLICATION_MODAL);
-//                        VBox dialogVbox = new VBox(20);
-//                        dialogVbox.getChildren().add(new Text("This is a Dialog"));
-//                        Scene dialogScene = new Scene(dialogVbox, 300, 200);
-//                        dialog.setScene(dialogScene);
-//                        dialog.show();
-//                    }
-//                });
+        if(selectedFlight != null) {
+
+        }
     }
 }
