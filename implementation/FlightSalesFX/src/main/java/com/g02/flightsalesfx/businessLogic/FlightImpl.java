@@ -8,7 +8,10 @@ import com.g02.flightsalesfx.businessEntities.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @TableName("flights")
@@ -45,6 +48,11 @@ public class FlightImpl implements Flight, Savable {
 
     }
 
+    public static FlightImpl of(Flight f) {
+        return new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()), f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
+    }
+
+    private FlightImpl() {}
 
     /**
      * Starts the Sales process for this Flight
@@ -154,6 +162,14 @@ public class FlightImpl implements Flight, Savable {
         }
     }
 
+    /*public boolean removePriceReduction(PriceReduction p) {
+        if(reductionList.contains(p)) {
+            reductionList.remove(p);
+            price = price * (1 + p.getPercentageAsADouble());
+        }
+        return false;
+    }*/
+
     /**
      * @return Current Price of this Flight
      */
@@ -174,14 +190,6 @@ public class FlightImpl implements Flight, Savable {
         }
         return newPrice;
     }
-
-    /*public boolean removePriceReduction(PriceReduction p) {
-        if(reductionList.contains(p)) {
-            reductionList.remove(p);
-            price = price * (1 + p.getPercentageAsADouble());
-        }
-        return false;
-    }*/
 
     /**
      * @return The Plane that this Flight uses
@@ -234,9 +242,5 @@ public class FlightImpl implements Flight, Savable {
         result = 31 * result + Arrays.hashCode(dynamicPriceReductions);
         result = 31 * result + Arrays.hashCode(optionsList);
         return result;
-    }
-
-    public static FlightImpl of(Flight f){
-        return new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()), f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
     }
 }

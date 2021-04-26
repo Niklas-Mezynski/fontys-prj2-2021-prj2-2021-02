@@ -39,6 +39,10 @@ public class RouteImpl implements Route, Savable {
         this.rteEnabled=rteEnabled;
     }
 
+    private RouteImpl() {
+
+    }
+
     /**
      * @return The Airport that the Plane should depart from
      */
