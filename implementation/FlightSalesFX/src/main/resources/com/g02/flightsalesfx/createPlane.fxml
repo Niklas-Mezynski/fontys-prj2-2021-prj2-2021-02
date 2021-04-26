@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="342.0" prefWidth="867.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.CreatePlaneController">
+<BorderPane prefHeight="342.0" prefWidth="867.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.CreatePlaneController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -41,7 +41,7 @@
                                     </HBox>
                                     <HBox alignment="TOP_CENTER">
                                        <children>
-                                          <Button fx:id="addSeatOptionButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addSeatOption" text="Add new Seat Option" HBox.hgrow="ALWAYS" />
+                                          <Button fx:id="addSeatOptionButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addSeatOption" styleClass="buttonBlack" text="Add new Seat Option" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -123,9 +123,9 @@
                               </Label>
                            </children>
                         </HBox>
-                        <Button fx:id="savePlaneButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#savePlane" text="Save and Exit" />
-                        <Button layoutX="10.0" layoutY="40.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exit" text="Exit" />
-                        <Button fx:id="deleteButton" layoutX="10.0" layoutY="82.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#delete" text="Delete" />
+                        <Button fx:id="savePlaneButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#savePlane" styleClass="buttonOrange" text="Save and Exit" />
+                        <Button layoutX="10.0" layoutY="40.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exit" styleClass="buttonBlack" text="Exit" />
+                        <Button fx:id="deleteButton" layoutX="10.0" layoutY="82.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#delete" styleClass="buttonBlack" text="Delete" />
                      </children>
                   </VBox>
                </children>
@@ -145,12 +145,12 @@
                      <HBox fx:id="seatContainer" spacing="2.0" />
                      <VBox alignment="CENTER_LEFT" maxWidth="100.0" HBox.hgrow="ALWAYS">
                         <children>
-                              <Button fx:id="addRow" mnemonicParsing="false" onAction="#addSeatRow" text="Add Row">
+                              <Button fx:id="addRow" mnemonicParsing="false" onAction="#addSeatRow" styleClass="buttonOrange" text="Add Row">
                               <VBox.margin>
                                  <Insets />
                               </VBox.margin>
                            </Button>
-                           <Button fx:id="addRow1" layoutX="20.0" layoutY="10.0" mnemonicParsing="false" onAction="#cloneSeatRow" text="Clone Row" />
+                           <Button fx:id="addRow1" layoutX="20.0" layoutY="10.0" mnemonicParsing="false" onAction="#cloneSeatRow" styleClass="buttonOrange" text="Clone Row" />
                         </children>
                      </VBox>
                      <padding>
