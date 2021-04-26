@@ -218,7 +218,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         System.out.println(reOccurFlight);
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
-        if(flightStorageService.remove(flight)!=null) {
+        if(flightStorageService.remove(flight)) {
             return flightStorageService.add(reOccurFlight)!=null;
         }
         return false;
@@ -256,7 +256,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
-    public Plane deletePlane(PlaneImpl oldPlane) {
+    public boolean deletePlane(PlaneImpl oldPlane) {
         return persistenceAPI.getPlaneStorageService(getPlaneManager()).delete(oldPlane);
     }
 

@@ -24,8 +24,8 @@ public class PlaneStorageServiceImpl implements PlaneStorageService {
         planeImpl.addAllSeats(plane.getAllSeats());
         try {
             var a = dao.insert(planeImpl);
-            return a.size() > 0 ? a.get(0) : null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            return a.isPresent()? a.get() : null;
+        } catch ( SQLException e) {
             e.printStackTrace();
             return null;
         }
@@ -36,22 +36,22 @@ public class PlaneStorageServiceImpl implements PlaneStorageService {
         try {
             var all = dao.getAll();
             return new ArrayList<>(all);
-        } catch (IllegalAccessException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return List.of();
     }
 
     @Override
-    public Plane delete(Plane plane) {
+    public boolean delete(Plane plane) {
         var planeImpl = new PlaneImpl(plane.getId(), plane.getName(), plane.getType(), plane.getManufacturer());
         planeImpl.addAllSeats(plane.getAllSeats());
         try {
-            var remove = dao.remove(planeImpl);
-            return remove.size() > 0 ? remove.get(0) : null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLFeatureNotSupportedException e) {
+            dao.remove(planeImpl);
+            return true;
+        } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
     }
 
@@ -60,9 +60,9 @@ public class PlaneStorageServiceImpl implements PlaneStorageService {
         var planeImpl = new PlaneImpl(plane.getId(), plane.getName(), plane.getType(), plane.getManufacturer());
         planeImpl.addAllSeats(plane.getAllSeats());
         try {
-            var remove = dao.update(planeImpl);
-            return remove.orElse(null);
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            var update = dao.update(planeImpl);
+            return update;
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }

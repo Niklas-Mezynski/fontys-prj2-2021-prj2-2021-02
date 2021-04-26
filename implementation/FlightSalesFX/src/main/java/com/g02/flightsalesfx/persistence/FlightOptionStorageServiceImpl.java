@@ -22,8 +22,8 @@ public class FlightOptionStorageServiceImpl implements FlightOptionStorageServic
     public FlightOption add(FlightOption flightOption) {
         try {
             var ret = dao.insert(new FlightOptionImpl(flightOption.getName(), flightOption.getMaxAvailability(), flightOption.getPrice()));
-            return ret.size()>0?ret.get(0):null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            return ret.isPresent()?ret.get():null;
+        } catch ( SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -34,7 +34,7 @@ public class FlightOptionStorageServiceImpl implements FlightOptionStorageServic
         try {
             var ret= dao.getAll();
             return new ArrayList<>(ret);
-        } catch (IllegalAccessException e) {
+        } catch ( SQLException e) {
             e.printStackTrace();
         }
         return List.of();

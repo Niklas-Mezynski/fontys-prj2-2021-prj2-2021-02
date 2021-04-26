@@ -24,8 +24,8 @@ public class AirportStorageServiceImpl implements AirportStorageService {
     public Airport add(Airport airport) {
         try {
             var ret= dao.insert(new AirportImpl(airport.getName(), airport.getCity(), airport.getCountry()));
-            return ret.size()>0?ret.get(0):null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            return ret.isPresent()?ret.get():null;
+        } catch ( SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -36,7 +36,7 @@ public class AirportStorageServiceImpl implements AirportStorageService {
         try {
             List<AirportImpl> all = dao.getAll();
             return new ArrayList<>(all);
-        } catch (IllegalAccessException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return List.of();
