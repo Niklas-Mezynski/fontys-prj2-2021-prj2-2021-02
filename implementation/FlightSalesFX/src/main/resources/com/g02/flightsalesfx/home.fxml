@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.HomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.HomeController">
     <!--<top>
        <MenuBar BorderPane.alignment="CENTER">
          <menus>
@@ -41,19 +41,19 @@
        </MenuBar>
     </top>-->
     <center>
-        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <TabPane fx:id="tabPane" styleClass="borderless" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs>
                 <Tab fx:id="planesTab" styleClass="tab" text="Planes">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0">
                             <children>
-                                <ScrollPane vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <ScrollPane styleClass="borderless" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <content>
                                         <AnchorPane fx:id="planePane">
                                             <children>
-                                    <BorderPane prefHeight="562.0" prefWidth="783.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <BorderPane prefHeight="562.0" prefWidth="783.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <center>
-                                                      <VBox fx:id="planesListVBox" spacing="10.0" BorderPane.alignment="CENTER">
+                                                      <VBox fx:id="planesListVBox" spacing="10.0" styleClass="borderless" BorderPane.alignment="CENTER">
                                                           <children>
                                                               <HBox>
                                                                   <children>
@@ -118,7 +118,10 @@
                                                               <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0">
                                                                   <children>
                                                                     <Button fx:id="goToCreateRoute" mnemonicParsing="false" onAction="#goToCreateRoute" prefHeight="30.0" styleClass="buttonOrange" text="Add Route" />
-                                                                    <CheckBox fx:id="showDisabled" mnemonicParsing="false" onAction="#showDisabledUpdated" prefHeight="30.0" styleClass="buttonOrange" text="Show Disabled Routes" />
+                                                                    <CheckBox fx:id="showDisabled" mnemonicParsing="false" onAction="#showDisabledUpdated" prefHeight="30.0" styleClass="buttonBlack" text="Show Disabled Routes">
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                         </padding></CheckBox>
                                                                   </children>
                                                    <VBox.margin>
                                                       <Insets left="10.0" />

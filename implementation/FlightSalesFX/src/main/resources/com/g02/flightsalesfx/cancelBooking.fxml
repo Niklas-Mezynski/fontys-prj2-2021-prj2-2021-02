@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.cancelBookingController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="910.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.cancelBookingController">
    <top>
       <HBox prefHeight="49.0" BorderPane.alignment="CENTER">
          <children>
@@ -38,12 +38,12 @@
    <bottom>
       <HBox prefHeight="31.0" prefWidth="910.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#abortButtonPressed" text="Abort">
+            <Button mnemonicParsing="false" onAction="#abortButtonPressed" styleClass="buttonBlack" text="Abort">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#cancelTicketPressed" text="Cancel selected Ticket">
+            <Button mnemonicParsing="false" onAction="#cancelTicketPressed" styleClass="buttonOrange" text="Cancel selected Ticket">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>

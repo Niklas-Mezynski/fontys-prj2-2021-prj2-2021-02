@@ -6,7 +6,7 @@
 }
 
 .buttonOrange:hover{
-      -fx-background-color:#C27E00;
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #069BD1 0%, #25DB89 100%);
 }
 .buttonBlack {
      /*-fx-max-width: MAX_VALUE;*/
@@ -17,7 +17,7 @@
  }
 
 .buttonBlack:hover{
-      -fx-background-color:#292929;
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #2E2E2E 0%, #4D4D4D 100%);
 }
 .background{
     -fx-background-color:#212121;
@@ -160,4 +160,7 @@ ToggleButton.selectSeatOption {
 
 .selected-seat {
     -fx-border-color: red;
+}
+.scroll-pane{
+-fx-background-color:transparent;
 }
