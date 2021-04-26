@@ -204,8 +204,14 @@ public class Dao<E extends Savable> {
                 Dao dao = new Dao(sqlField.getReferencingClass(), connection);
                 //TODO: get and if not present, then insert (?)
                 Class<? extends Savable> type = sqlField.getReferencingClass();
+                var optional=dao.get(Mapper.getPrimaryKeyFieldValues(type,sqlField.getFieldContent(toUpdate)).toArray());
                 if (!sqlField.isArray() && !sqlField.isList()) {
-                    var differententity = dao.update((Savable) sqlField.getFieldContent(toUpdate));
+                    Savable differententity=null;
+                    if (optional.isPresent()) {
+                        differententity = dao.update((Savable) sqlField.getFieldContent(toUpdate));
+                    } else {
+                        differententity = (Savable) dao.insert((Savable)sqlField.getFieldContent(toUpdate)).get();
+                    }
                     //TODO: update relation table
                     relationRemove(sqlField, toUpdate);
                     relationInsert(sqlField, toUpdate, differententity);
@@ -221,7 +227,14 @@ public class Dao<E extends Savable> {
                     for (int i = 0; i < length; i++) {
                         //insert and then save
                         var arrayObject = Array.get(array, i);
-                        var insertedOpt = dao.update(type.cast(arrayObject));
+                        var arrayOpt=dao.get(Mapper.getPrimaryKeyFieldValues(type,arrayObject).toArray());
+                        Savable insertedOpt;
+                        if(arrayOpt.isPresent()) {
+                            insertedOpt = dao.update(type.cast(arrayObject));
+                        } else {
+                            insertedOpt = (Savable) dao.insert(type.cast(arrayObject)).get();
+                        }
+
                         if (insertedOpt != null) {
                             //insert into other table successful, now insert into relation table
                             var updated = (Savable) insertedOpt;
