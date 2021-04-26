@@ -8,10 +8,10 @@ import org.postgresql.jdbc.PgArray;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -312,7 +312,13 @@ public class Dao<E extends Savable> {
 //            System.out.println(sqlField);
             Object variable = rst.getObject(sqlField.getSQLFieldName());
             if (!sqlField.isPrimitiveArray()) {
+
+                if(variable instanceof Timestamp){
+                    Timestamp tstamt=(Timestamp) variable;
+                    variable=tstamt.toLocalDateTime();
+                }
                 sqlField.setFieldContent(entity, variable);
+
             } else if (sqlField.isArray()) { //If it is an array, then postgres will return an pgarray instead of an array
                 var pgarray = (PgArray) variable;
                 //I hate arrays (int[] != Integer[])
