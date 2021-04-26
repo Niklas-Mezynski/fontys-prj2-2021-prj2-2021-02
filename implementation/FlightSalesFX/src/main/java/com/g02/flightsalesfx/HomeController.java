@@ -157,6 +157,7 @@ public class HomeController implements Controller {
 
     @FXML
     public void enableSalesprocess() throws IOException{
-        
+        //todo: popup
+        //requires: flightobject (db-issues)
     }
 }
