@@ -3,20 +3,28 @@ package com.g02.flightsalesfx;
 import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.Plane;
 import com.g02.flightsalesfx.businessEntities.Route;
+import com.g02.flightsalesfx.businessLogic.*;
 import com.g02.flightsalesfx.gui.FlightTable;
 import com.g02.flightsalesfx.gui.PlaneTable;
 import com.g02.flightsalesfx.gui.RouteTable;
 import com.g02.flightsalesfx.helpers.Bundle;
 import com.g02.flightsalesfx.helpers.Controller;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.function.Predicate;
 
 public class HomeController implements Controller {
@@ -159,5 +167,20 @@ public class HomeController implements Controller {
     public void enableSalesprocess() throws IOException{
         //todo: popup
         //requires: flightobject (db-issues)
+
+        // for development:
+//        this.selectedFlight = new FlightImpl((SalesOfficerImpl) App.employee, 123, LocalDateTime.now(), LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "Düsseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl("A420","413","Airbus"), 20);
+//        enableSalesprocess.setOnAction(
+//                new EventHandler<ActionEvent>() {
+//                    public void handle(ActionEvent event) {
+//                        final Stage dialog = new Stage();
+//                        dialog.initModality(Modality.APPLICATION_MODAL);
+//                        VBox dialogVbox = new VBox(20);
+//                        dialogVbox.getChildren().add(new Text("This is a Dialog"));
+//                        Scene dialogScene = new Scene(dialogVbox, 300, 200);
+//                        dialog.setScene(dialogScene);
+//                        dialog.show();
+//                    }
+//                });
     }
 }
