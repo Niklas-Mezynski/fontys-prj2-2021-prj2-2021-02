@@ -171,12 +171,14 @@ public class HomeController implements Controller {
 
         if(selectedFlight != null) {
             final List<Flight> currentFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
-
+            System.out.println("got flight");
             if(!currentFlights.isEmpty()) {
                 if(currentFlights.size() == 1) {
                     selectedFlight.startSalesProcess();
-                    App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getRoute(), selectedFlight.getPlane(), selectedFlight.getPrice());
-                    System.out.println("Done");
+                    //todo
+                    //implement update
+                    }
+
                 } else {    // too many flights received
                     System.out.println("size > 1");
                 }
