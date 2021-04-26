@@ -2,14 +2,15 @@ package com.g02.flightsalesfx.persistence;
 
 import com.g02.flightsalesfx.businessEntities.Booking;
 import com.g02.flightsalesfx.businessEntities.Ticket;
+import com.g02.flightsalesfx.businessLogic.TicketImpl;
 
 import java.util.List;
 
 public interface TicketStorageService {
 
-    boolean add(Ticket ticket);
+    TicketImpl add(Ticket ticket);
 
     List<Ticket> getAll();
 
-    void remove(Ticket ticket);
+    boolean remove(Ticket ticket);
 }

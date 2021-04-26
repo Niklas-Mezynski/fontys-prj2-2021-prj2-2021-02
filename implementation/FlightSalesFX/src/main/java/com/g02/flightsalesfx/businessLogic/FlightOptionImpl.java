@@ -19,6 +19,9 @@ public class FlightOptionImpl implements FlightOption, Savable {
         this.maxAvailable = maxAvailable;
         this.price = price;
     }
+    public static FlightOptionImpl of(FlightOption f){
+        return new FlightOptionImpl(f.getName(), f.getMaxAvailability(), f.getPrice());
+    }
 
     /**
      * @return How often this FlightOption is currently available

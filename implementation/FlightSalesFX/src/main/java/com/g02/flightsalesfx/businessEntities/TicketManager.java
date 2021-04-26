@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface TicketManager {
 
-    public Ticket createTicket(Flight flight, Seat seat, Booking booking, String passengerFName, String passengerLName, SeatOption[] bookedSeatOptions);
+    public Ticket createTicket(Flight flight, Seat seat,  String passengerFName, String passengerLName, SeatOption[] bookedSeatOptions);
     
 }

@@ -3,6 +3,7 @@ package com.g02.flightsalesfx.businessLogic;
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
 import com.g02.btfdao.utils.Savable;
+import com.g02.flightsalesfx.businessEntities.SalesEmployee;
 import com.g02.flightsalesfx.businessEntities.SalesOfficer;
 
 import java.util.Objects;
@@ -47,6 +48,10 @@ public class SalesOfficerImpl implements SalesOfficer, Savable {
     @Override
     public int hashCode() {
         return Objects.hash(name, email, password);
+    }
+
+    public static SalesOfficerImpl of(SalesOfficer se){
+        return new SalesOfficerImpl(se.getName(), se.getEmail(), se.getPassword());
     }
 }
 

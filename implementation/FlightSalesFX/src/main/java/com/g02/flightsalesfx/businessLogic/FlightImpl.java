@@ -236,4 +236,8 @@ public class FlightImpl implements Flight, Savable {
         result = 31 * result + Arrays.hashCode(optionsList);
         return result;
     }
+
+    public static FlightImpl of(Flight f){
+        return new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()), f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
+    }
 }
