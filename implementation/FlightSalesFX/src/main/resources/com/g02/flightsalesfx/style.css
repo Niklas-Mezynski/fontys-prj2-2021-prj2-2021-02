@@ -1,6 +1,7 @@
 Button {
     /*-fx-max-width: MAX_VALUE;*/
-    -fx-background-color: #0034d2;
+    -fx-background-color: linear-gradient(from 0% 25% to 100% 100%, #0f2e41 0%, #113348 100%);
+
     -fx-text-fill: #fff;
     -fx-font-size: 14px;
 }
