@@ -2,7 +2,7 @@ package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.SalesEmployee;
 import com.g02.flightsalesfx.businessEntities.SalesOfficer;
 
@@ -20,6 +20,9 @@ public class SalesOfficerImpl implements SalesOfficer, Savable {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+    private SalesOfficerImpl(){
+        this(null,null,null);
     }
 
     @Override

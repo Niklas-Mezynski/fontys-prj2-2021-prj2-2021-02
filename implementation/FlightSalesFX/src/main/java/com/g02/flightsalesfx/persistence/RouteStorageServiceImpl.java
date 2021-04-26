@@ -1,7 +1,7 @@
 package com.g02.flightsalesfx.persistence;
 
 import com.g02.btfdao.dao.Dao;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.Route;
 import com.g02.flightsalesfx.businessEntities.RouteManager;
 import com.g02.flightsalesfx.businessLogic.AirportImpl;
@@ -27,8 +27,8 @@ public class RouteStorageServiceImpl implements RouteStorageService {
         var routeImpl=new RouteImpl(AirportImpl.of(route.getDepartureAirport()), AirportImpl.of(route.getArrivalAirport()));
         try {
             var ret = dao.insert(routeImpl);
-            return ret.size() > 0 ? ret.get(0) : null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            return ret.isPresent()? ret.get() : null;
+        } catch ( SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -39,7 +39,7 @@ public class RouteStorageServiceImpl implements RouteStorageService {
         var ret = new ArrayList<Route>();
         try {
             ret.addAll(dao.getAll());
-        } catch (IllegalAccessException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return ret;

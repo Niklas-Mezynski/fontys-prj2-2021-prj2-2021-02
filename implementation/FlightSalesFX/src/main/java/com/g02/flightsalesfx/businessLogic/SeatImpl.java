@@ -3,7 +3,7 @@ package com.g02.flightsalesfx.businessLogic;
 import com.g02.btfdao.annotations.ForeignKey;
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.Seat;
 import com.g02.flightsalesfx.businessEntities.SeatOption;
@@ -31,10 +31,7 @@ public class SeatImpl implements Seat, Savable {
         this.seatOptions = new SeatOptionImpl[0];
     }
 
-    private SeatImpl(int id, int rowNumber, int seatNumber) {
-        this.id = id;
-        this.rowNumber = rowNumber;
-        this.seatNumber = seatNumber;
+    private SeatImpl() {
     }
 
     public SeatImpl(int rowNumber, int seatNumber, List<SeatOption> toAdd) {

@@ -11,7 +11,7 @@ public interface PlaneStorageService {
 
     public List<Plane> getAll();
 
-    Plane delete(Plane plane);
+    boolean delete(Plane plane);
 
     Plane update(Plane plane);
 }

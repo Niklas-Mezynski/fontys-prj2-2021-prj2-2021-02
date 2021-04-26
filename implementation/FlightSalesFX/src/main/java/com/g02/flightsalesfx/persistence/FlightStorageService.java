@@ -10,6 +10,6 @@ public interface FlightStorageService {
 
     public List<Flight> getAll();
 
-    public Flight remove(Flight flight);
+    public boolean remove(Flight flight);
 
 }

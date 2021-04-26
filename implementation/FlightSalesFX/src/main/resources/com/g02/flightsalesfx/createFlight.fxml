@@ -16,7 +16,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.CreateFlightController">
    <children>
-      <BorderPane layoutX="143.0" layoutY="74.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane layoutX="143.0" layoutY="74.0" prefHeight="400.0" prefWidth="600.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <VBox alignment="TOP_CENTER" prefHeight="83.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
@@ -48,7 +48,7 @@
                <children>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <bottom>
-                        <Button fx:id="createRouteButton" mnemonicParsing="false" onAction="#createRoute" text="Create route" BorderPane.alignment="CENTER">
+                        <Button fx:id="createRouteButton" mnemonicParsing="false" onAction="#createRoute" styleClass="buttonBlack" text="Create route" BorderPane.alignment="CENTER">
                            <BorderPane.margin>
                               <Insets top="10.0" />
                            </BorderPane.margin>
@@ -76,12 +76,12 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button fx:id="nextStepButton" mnemonicParsing="false" onAction="#nextStep" text="Next step" GridPane.halignment="RIGHT">
+                              <Button fx:id="nextStepButton" mnemonicParsing="false" onAction="#nextStep" styleClass="buttonOrange" text="Next step" GridPane.halignment="RIGHT">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </Button>
-                              <Button fx:id="exitFlightButton" mnemonicParsing="false" onAction="#exit" text="Exit (without saving)" GridPane.columnIndex="1">
+                              <Button fx:id="exitFlightButton" mnemonicParsing="false" onAction="#exit" styleClass="buttonBlack" text="Exit (without saving)" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin>
@@ -111,7 +111,7 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <DatePicker fx:id="startDate" prefHeight="26.0" prefWidth="218.0" GridPane.rowIndex="1">
+                                    <DatePicker fx:id="startDate" prefHeight="26.0" prefWidth="218.0" styleClass="toggle-button" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>

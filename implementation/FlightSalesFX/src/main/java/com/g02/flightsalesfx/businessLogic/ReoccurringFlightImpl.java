@@ -1,7 +1,7 @@
 package com.g02.flightsalesfx.businessLogic;
 
 import com.g02.btfdao.annotations.*;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.*;
 
 import java.time.Duration;
@@ -15,20 +15,23 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 public class ReoccurringFlightImpl implements ReoccurringFlight, Savable {
 
     @PrimaryKey
+    private int id;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightImpl")
-    public Flight flight;
+    public FlightImpl flight;
     @FieldName("interval")
     public long intervalDB;
     @Ignore
     public Duration interval;
 
     public ReoccurringFlightImpl(Flight flight, Duration interval) {
-        this.flight = flight;
+        this.flight = FlightImpl.of(flight);
+        this.id=flight.getFlightNumber();
         this.interval = interval;
     }
 
-    @Override
-    public void afterConstruction() {
+
+    private void afterConstruction() {
+        id=flight.getFlightNumber();
         interval = Duration.of(intervalDB, SECONDS);
     }
 
