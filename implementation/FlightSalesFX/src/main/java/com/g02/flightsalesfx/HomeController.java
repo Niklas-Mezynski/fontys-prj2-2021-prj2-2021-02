@@ -170,12 +170,19 @@ public class HomeController implements Controller {
         //requires: flightobject (db-issues)
 
         if(selectedFlight != null) {
-            final List<Flight> allFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
+            final List<Flight> currentFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
 
-            if(!allFlights.isEmpty()) {
-                App.businessLogicAPI.updateFlight()
-            } else {    // databaseselection failed
+            if(!currentFlights.isEmpty()) {
+                if(currentFlights.size() == 1) {
+                    selectedFlight.startSalesProcess();
+                    App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getRoute(), selectedFlight.getPlane(), selectedFlight.getPrice());
+                    System.out.println("Done");
+                } else {    // too many flights received
+                    System.out.println("size > 1");
+                }
+            } else {    // nothing received from db
                 //todo insert error
+                System.out.println("empty set");
             }
         }
     }
