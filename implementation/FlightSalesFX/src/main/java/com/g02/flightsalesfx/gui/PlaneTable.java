@@ -1,13 +1,11 @@
 package com.g02.flightsalesfx.gui;
 
 import com.g02.flightsalesfx.businessEntities.Plane;
-import javafx.event.EventHandler;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 
 import java.util.List;
 
@@ -27,13 +25,13 @@ public class PlaneTable extends TableView<Plane> {
         setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         getItems().addAll(planes);
         getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        getColumns().addAll(idColumn, nameColumn, manufColumn, seatColumn, rowColumn);
+        getColumns().addAll(nameColumn, idColumn, manufColumn, seatColumn, rowColumn);
         setRowFactory(planeTableView -> {
             TableRow<Plane> row = new TableRow<>();
             row.setOnMouseClicked(mouseEvent -> {
                 clickHandler.click(mouseEvent, row);
             });
-            return row ;
+            return row;
         });
     }
 }

@@ -7,6 +7,7 @@ import com.g02.flightsalesfx.gui.FlightTable;
 import com.g02.flightsalesfx.gui.PlaneTable;
 import com.g02.flightsalesfx.gui.RouteTable;
 import com.g02.flightsalesfx.helpers.Bundle;
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
@@ -17,7 +18,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.function.Predicate;
 
-public class HomeController {
+public class HomeController implements Controller {
 
     @FXML
     public VBox planesListVBox;
@@ -61,7 +62,9 @@ public class HomeController {
             }
         });
 //        tabPane.getSelectionModel().select(App.homeControllerTab);
+        planeTable.setId("planeTable");
         planesListVBox.getChildren().add(planeTable);
+        System.out.println("planeTable inserted");
         planeTable.setMinWidth(planePane.getPrefWidth());
 
         //List all Routes
@@ -80,7 +83,7 @@ public class HomeController {
             }
         });
 
-        flightPane.getChildren().add(flightTable);
+        flightVBox.getChildren().add(flightTable);
         flightTable.setMinWidth(flightPane.getPrefWidth());
 
     }

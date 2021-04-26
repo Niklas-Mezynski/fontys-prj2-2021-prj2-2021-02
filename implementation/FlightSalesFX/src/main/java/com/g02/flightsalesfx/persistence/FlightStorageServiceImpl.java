@@ -26,31 +26,31 @@ public class FlightStorageServiceImpl implements FlightStorageService{
         var flightImpl=new FlightImpl(createdby,flight.getFlightNumber(),flight.getDeparture(),flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
         try {
             var ret= dao.insert(flightImpl);
-            if (ret.size()>0){
+            if (ret.isPresent()){
 //                var flightret=ret.get(0);
 //                flightret.plane= PlaneImpl.of(flight.getPlane());
 //                flightret.route= RouteImpl.of(flight.getRoute());
 //                var flightreto=dao.update(flightret);
-                return ret.get(0);
+                return ret.get();
             }
             return null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+        } catch ( SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    public Flight remove(Flight flight) {
+    public boolean remove(Flight flight) {
         var createdby=new SalesOfficerImpl(flight.getCreatedBy().getName(),flight.getCreatedBy().getEmail(),flight.getCreatedBy().getPassword());
         var flightImpl=new FlightImpl(createdby,flight.getFlightNumber(),flight.getDeparture(),flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
         try {
-            var ret= dao.remove(flightImpl);
-            return ret.size()>0?ret.get(0):null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            dao.remove(flightImpl);
+        } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return null;
+        return true;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class FlightStorageServiceImpl implements FlightStorageService{
         try {
             var all = dao.getAll();
             return new ArrayList<>(all);
-        } catch (IllegalAccessException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return List.of();

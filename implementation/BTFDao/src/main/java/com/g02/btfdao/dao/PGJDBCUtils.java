@@ -1,4 +1,4 @@
-package com.g02.btfdao.utils;
+package com.g02.btfdao.dao;
 
 import org.postgresql.ds.PGSimpleDataSource;
 

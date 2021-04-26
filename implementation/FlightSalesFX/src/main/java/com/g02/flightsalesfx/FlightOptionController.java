@@ -3,6 +3,7 @@ package com.g02.flightsalesfx;
 import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.FlightOption;
 import com.g02.flightsalesfx.businessLogic.FlightOptionImpl;
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 import static com.g02.flightsalesfx.App.setRoot;
 
-public class FlightOptionController {
+public class FlightOptionController implements Controller {
 
     @FXML
     private Label flightNumberLabel;

@@ -1,7 +1,7 @@
 package com.g02.flightsalesfx.persistence;
 
 import com.g02.btfdao.dao.Dao;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.*;
 import com.g02.flightsalesfx.businessLogic.SalesEmployeeImpl;
 import com.g02.flightsalesfx.businessLogic.SalesManagerImpl;
@@ -10,6 +10,7 @@ import com.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class EmployeeStorageServiceImpl implements EmployeeStorageService {
 
@@ -30,26 +31,23 @@ public class EmployeeStorageServiceImpl implements EmployeeStorageService {
     @Override
     public Employee add(Employee employee) {
         Dao<? extends Employee> dao=sedao;
-        if (employee instanceof SalesEmployee) {
-            dao=sedao;
-            employee=new SalesEmployeeImpl(employee.getName(), employee.getEmail(), employee.getPassword());
-        }
-        else if (employee instanceof SalesOfficer) {
-            dao=sodao;
-            employee=new SalesOfficerImpl(employee.getName(), employee.getEmail(), employee.getPassword());
-        }
-        else if (employee instanceof SalesManager) {
-            dao=smdao;
-            employee=new SalesManagerImpl(employee.getName(), employee.getEmail(), employee.getPassword());
-        }
-        else return null; //Invalid Employee Type
+        Optional<? extends Employee> ret= Optional.empty();
         try {
-            var ret= dao.insert((Savable) employee);
-            return ret.size()>0?ret.get(0):null;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            if (employee instanceof SalesEmployee) {
+                var insertedemployee = new SalesEmployeeImpl(employee.getName(), employee.getEmail(), employee.getPassword());
+                ret = sedao.insert(insertedemployee);
+            } else if (employee instanceof SalesOfficer) {
+                var insertedemployee = new SalesOfficerImpl(employee.getName(), employee.getEmail(), employee.getPassword());
+                ret = sodao.insert(insertedemployee);
+            } else if (employee instanceof SalesManager) {
+                var insertedemployee = new SalesManagerImpl(employee.getName(), employee.getEmail(), employee.getPassword());
+                ret = smdao.insert(insertedemployee);
+            } else return null; //Invalid Employee Type
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-        return null;
+        return ret.isPresent()? ret.get() :null;
+
     }
 
     @Override
@@ -59,7 +57,7 @@ public class EmployeeStorageServiceImpl implements EmployeeStorageService {
             ret.addAll(sedao.getAll());
             ret.addAll(sodao.getAll());
             ret.addAll(smdao.getAll());
-        } catch (IllegalAccessException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return ret;

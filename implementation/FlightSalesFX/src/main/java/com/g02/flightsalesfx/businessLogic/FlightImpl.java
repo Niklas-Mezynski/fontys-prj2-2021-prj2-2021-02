@@ -3,13 +3,13 @@ package com.g02.flightsalesfx.businessLogic;
 import com.g02.btfdao.annotations.ForeignKey;
 import com.g02.btfdao.annotations.PrimaryKey;
 import com.g02.btfdao.annotations.TableName;
-import com.g02.btfdao.utils.Savable;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessEntities.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -48,6 +48,11 @@ public class FlightImpl implements Flight, Savable {
 
     }
 
+    public static FlightImpl of(Flight f) {
+        return new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()), f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
+    }
+
+    private FlightImpl() {}
 
     /**
      * Starts the Sales process for this Flight
@@ -157,6 +162,14 @@ public class FlightImpl implements Flight, Savable {
         }
     }
 
+    /*public boolean removePriceReduction(PriceReduction p) {
+        if(reductionList.contains(p)) {
+            reductionList.remove(p);
+            price = price * (1 + p.getPercentageAsADouble());
+        }
+        return false;
+    }*/
+
     /**
      * @return Current Price of this Flight
      */
@@ -177,14 +190,6 @@ public class FlightImpl implements Flight, Savable {
         }
         return newPrice;
     }
-
-    /*public boolean removePriceReduction(PriceReduction p) {
-        if(reductionList.contains(p)) {
-            reductionList.remove(p);
-            price = price * (1 + p.getPercentageAsADouble());
-        }
-        return false;
-    }*/
 
     /**
      * @return The Plane that this Flight uses
@@ -215,8 +220,10 @@ public class FlightImpl implements Flight, Savable {
     public void addAllFlightOptions(List<? extends FlightOption> options) {
         var b = options.stream().anyMatch(flightOption -> !(flightOption instanceof FlightOptionImpl));
         if (b) return;
-        var flightOptions = Arrays.asList(optionsList);
-        flightOptions.addAll((Collection<? extends FlightOptionImpl>) options);
+        var flightOptions = new ArrayList<>(Arrays.asList(optionsList));
+        for (FlightOption option : options) {
+            flightOptions.add((FlightOptionImpl) option);
+        }
         optionsList = flightOptions.toArray(new FlightOptionImpl[0]);
     }
 
@@ -235,9 +242,5 @@ public class FlightImpl implements Flight, Savable {
         result = 31 * result + Arrays.hashCode(dynamicPriceReductions);
         result = 31 * result + Arrays.hashCode(optionsList);
         return result;
-    }
-
-    public static FlightImpl of(Flight f){
-        return new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()), f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
     }
 }

@@ -2,6 +2,7 @@ package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Airport;
 import com.g02.flightsalesfx.businessEntities.Route;
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 import static com.g02.flightsalesfx.App.setRoot;
 
-public class CreateRouteController {
+public class CreateRouteController implements Controller {
 
     @FXML
     private ListView<Airport> listArr;

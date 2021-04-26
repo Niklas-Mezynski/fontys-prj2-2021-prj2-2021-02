@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.FlightOptionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.g02.flightsalesfx.FlightOptionController">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -50,7 +50,7 @@
                         <Insets top="12.0" />
                      </padding>
                   </HBox>
-                  <ListView fx:id="optionList" prefHeight="323.0" prefWidth="600.0" />
+                  <ListView fx:id="optionList" prefHeight="323.0" prefWidth="600.0" styleClass="background" />
                   <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="optionName" promptText="Option name">
@@ -72,7 +72,7 @@
                   </HBox>
                   <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#addFlightOption" text="Add flight Option" />
+                        <Button mnemonicParsing="false" onAction="#addFlightOption" styleClass="buttonOrange" text="Add flight Option" />
                      </children>
                   </HBox>
                </children>
@@ -81,7 +81,7 @@
          <bottom>
             <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" onAction="#exit" prefWidth="50.0" text="Exit">
+                  <Button mnemonicParsing="false" onAction="#exit" prefWidth="50.0" styleClass="buttonBlack" text="Exit">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

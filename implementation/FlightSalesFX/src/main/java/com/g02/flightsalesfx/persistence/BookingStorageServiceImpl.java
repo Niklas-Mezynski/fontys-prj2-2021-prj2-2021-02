@@ -21,17 +21,13 @@ public class BookingStorageServiceImpl implements BookingStorageService{
 
     @Override
     public BookingImpl add(Booking booking) {
-        List<BookingImpl> bookings = null;
         try {
-            bookings = dao.insert(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail() ));
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            return dao.insert(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail() ))
+                    .orElse(null);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        if(bookings.size() == 1){
-            return bookings.get(0);
-        }else{
-            return null;
-        }
+        return null;
     }
 
     @Override
@@ -39,7 +35,7 @@ public class BookingStorageServiceImpl implements BookingStorageService{
         try {
             var all = dao.getAll();
             return new ArrayList<>(all);
-        } catch (IllegalAccessException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return List.of();
@@ -49,10 +45,10 @@ public class BookingStorageServiceImpl implements BookingStorageService{
     public boolean remove(Booking booking) {
         List<BookingImpl> bookings = null;
         try {
-            bookings = dao.remove(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail() ));
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | SQLException e) {
+            dao.remove(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail() ));
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return bookings.size() == 1;
+        return true;
     }
 }
