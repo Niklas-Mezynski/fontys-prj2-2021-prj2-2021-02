@@ -1,13 +1,14 @@
 package com.g02.flightsalesfx;
 
 
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreatePriceReductions {
+public class CreatePriceReductions implements Controller {
 
     @FXML
     public DatePicker startDate;

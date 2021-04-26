@@ -185,7 +185,8 @@
                             </children>
                         </AnchorPane>
                     </content>
-                </Tab><Tab fx:id="priceRedTab" styleClass="buttons" text="Price Reduction">
+                </Tab>
+                <Tab fx:id="priceRedTab" styleClass="buttons" text="Price Reduction">
                 <content>
                     <AnchorPane styleClass="background">
                         <children>
