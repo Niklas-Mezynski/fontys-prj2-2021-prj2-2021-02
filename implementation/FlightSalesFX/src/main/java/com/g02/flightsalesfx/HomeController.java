@@ -164,6 +164,14 @@ public class HomeController implements Controller {
 
     }
 
+
+    /*
+     * return void.
+     *
+     * Method to start the salesprocess of a selectedFlight. The selected object is
+     * first removed and then added again but in a modified version, by pressing the Button (UI).
+     *
+     */
     @FXML
     public void enableSalesprocess() throws IOException {
         //todo: popup
@@ -187,16 +195,14 @@ public class HomeController implements Controller {
                             App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).add(selectedFlight);
                             System.out.println("applied to db");
                         } else {
-                            System.out.println("not equal.");
+                            System.out.println("selected flight is not equal to the one received from the db.");
                         }
                     }
-
-
                     //Update is not working (dao)
                     // App.businessLogicAPI.updateFlight(FlightImpl.of(flightOfList), selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
                 }
-            } else {    // too many flights received
-                System.out.println("size > 1");
+            } else {    // too many flights received OR no flights
+                System.out.println("received not exactly one flight");
             }
         } else {    // nothing received from db
             //todo insert error
