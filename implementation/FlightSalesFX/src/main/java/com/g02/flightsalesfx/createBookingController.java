@@ -119,6 +119,9 @@ public class createBookingController implements Controller {
 
     }
 
+    /**
+     * Add listeners to Departure- and arivalTextField -> update FlightTable
+     */
     public void createSearchFunctionality(){
         departureField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
             createOrUpdateRouteTable(f -> {
@@ -141,6 +144,9 @@ public class createBookingController implements Controller {
 
     }
 
+    /**
+     * Creates or Updates The Box Containing all availage seatoptions.
+     */
     public void createOrUpdateOptionFilterBox(){
         filterVBox.getChildren().remove(filterContainer);
 
@@ -150,6 +156,13 @@ public class createBookingController implements Controller {
         filterVBox.getChildren().add(filterContainer);
     }
 
+
+    /**
+     * Represents a SeatOption in the OptionFilterBox
+     * When selected, SeatOption is added to "currentlySelectedSeatOption"
+     * When deselected, Seatoption is removed from "currentlySelectedSeatOption"
+     * method "applyOptionFilterToAll()" called, to disable Seats from being selected, when they dont match selected SeatOptions
+     */
     public class OptionFilterSelectorBox extends HBox{
         private final SeatOption seatOption;
         public OptionFilterSelectorBox(SeatOption s){
@@ -171,6 +184,11 @@ public class createBookingController implements Controller {
 
     }
 
+    /**
+     *
+     * creates or updates Route Table
+     * @param pr predicate, which has to be true for a Flight, in order to be displayed in the table
+     */
     public void createOrUpdateRouteTable(Predicate<Flight> pr){
 
         flightVBox.getChildren().remove(flightTable);
@@ -201,6 +219,10 @@ public class createBookingController implements Controller {
         flightVBox.getChildren().add(flightTable);
     }
 
+    /**
+     * creates a graphical overview of available seats, that can be selected
+     * @param bookedSeats List of Seats, that are already booked, thus not available for new bookings
+     */
     public void createSeatMapAndLoadSeatOptions(List<Seat> bookedSeats){
         Plane currentPlane = selectedFlight.getPlane();
         List<Seat> seatsOfPlane = currentPlane.getAllSeats();
@@ -227,6 +249,10 @@ public class createBookingController implements Controller {
 
     }
 
+    /**
+     * loads all available seatoptions on that plane
+     * @param seatsOfPlane all seats of the plane
+     */
     public void loadSeatOptions(List<Seat> seatsOfPlane){
         availableSeatOptions = new ArrayList<SeatOption>();
         for(Seat s : seatsOfPlane){
@@ -240,11 +266,17 @@ public class createBookingController implements Controller {
         }
     }
 
+    /**
+     * applies the selected seatOptions to all SeatButtons
+     */
     public void applyOptionFilterToAll(){
         seatButtons.forEach(btn -> btn.optionFilter(this.currentlySelectedSeatOption));
     }
 
-
+    /**
+     * represents a Seat as a Button in the SeatMap
+     * Button state is disabled, when the seat is already booked, or is not qualified for the selected Seatoptions
+     */
     public class SeatBookButton extends Button {
 
         private final Seat s;
@@ -279,7 +311,10 @@ public class createBookingController implements Controller {
         }
 
 
-
+        /**
+         * enables, or disables the SeatButton, depending on availability of all seatOptions
+         * @param selectedOptions List of all selected FlightOptions
+         */
         void optionFilter(List<SeatOption> selectedOptions){
             if(!s.getSeatOptions().containsAll(selectedOptions) || available == false){
                 this.setDisable(true);
@@ -307,6 +342,7 @@ public class createBookingController implements Controller {
 
 
     }
+
 
     @FXML
     void abortButtonPressed(ActionEvent event) throws IOException {
@@ -399,6 +435,12 @@ public class createBookingController implements Controller {
         hBox.getChildren().addAll(new Label("E-Mail for Contacting: "), contactEmailField);
         paxListVBox.getChildren().add(hBox);
     }
+
+    /**
+     * checks if all required information of the Passengers is given
+     * If all info is given, the next Step(next Tab) is enabled.
+     * Else next Step(next Tab) is disabled
+     */
     public void checkPaxInfoStatus(){
         if(paxInfoBoxes != null && !paxInfoBoxes.isEmpty() && contactEmailField != null){
             personNameSeatComb = new HashMap<>();
@@ -421,6 +463,9 @@ public class createBookingController implements Controller {
         }
     }
 
+    /**
+     * Collects all Information entered and displays them in textual form
+     */
     public void generateOverview(){
         flightOverview.getChildren().add(new Label("FlightNo: "+selectedFlight.getFlightNumber()+"; From: "+selectedFlight.getRoute().getDepartureAirport().toString()+"; To: "+selectedFlight.getRoute().getArrivalAirport().toString()+"; On: "+selectedFlight.getDeparture().toString()));
 
@@ -504,6 +549,11 @@ public class createBookingController implements Controller {
 
     }
 
+    /**
+     *
+     * @param seat
+     * @return SeatPosition in format, which is used in the real world (e.g. 5F, 6D) not Row:5 Col:6
+     */
     String seatToText(Seat seat) {
         var i = seat.getSeatNumber();
         var i1 = seat.getRowNumber() + 1;
@@ -517,6 +567,10 @@ public class createBookingController implements Controller {
         return s;
     }
 
+    /**
+     * A Hbox containing the SeatNumber and two TextFields, that must be filled with the First and LastName of the passenger
+     * taking up this seat
+     */
     public class PaxInfoBox extends HBox{
         private final Seat seat;
         private TextField firstName;
