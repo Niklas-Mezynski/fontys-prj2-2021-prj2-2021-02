@@ -104,7 +104,7 @@ public class BusinessLogicAPIImplTest {
             "Peter, peter@gmx.de, peterIstDerBeste, Franz, notexisting@gmx.de, franzIstDerBeste, true",
     })
     void t06Login(String refName, String refEmail, String refPassword, String compName, String compEmail, String compPassword, boolean isNull) {
-        Employee employee = new SalesEmployeeImpl(refName, refEmail, refPassword);
+        Employee employee = new SalesEmployeeImpl(refName, refEmail, api.genPWHash(refPassword));
         api.persistenceAPI.getEmployeeStorageService(api.getEmployeeManager()).add(employee);
         var peterIstDerBeste = api.login(compEmail, compPassword);
         assertThat(peterIstDerBeste == null).isEqualTo(isNull);

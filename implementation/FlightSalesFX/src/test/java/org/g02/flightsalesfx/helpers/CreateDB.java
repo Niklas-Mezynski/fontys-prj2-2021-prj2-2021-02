@@ -6,12 +6,15 @@ import org.g02.btfdao.dao.Savable;
 import org.g02.flightsalesfx.persistence.PersistenceAPIImpl;
 import org.g02.flightsalesfx.businessLogic.*;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.sql.SQLException;
 import java.util.List;
 
 @Disabled
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class CreateDB {
 
     @Test
