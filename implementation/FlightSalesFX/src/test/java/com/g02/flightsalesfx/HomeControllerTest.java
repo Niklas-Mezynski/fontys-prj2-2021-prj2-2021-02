@@ -2,10 +2,7 @@ package com.g02.flightsalesfx;
 
 import com.g02.flightsalesfx.businessEntities.Flight;
 import com.g02.flightsalesfx.businessEntities.Route;
-import com.g02.flightsalesfx.businessLogic.AirportImpl;
-import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
-import com.g02.flightsalesfx.businessLogic.FlightImpl;
-import com.g02.flightsalesfx.businessLogic.RouteImpl;
+import com.g02.flightsalesfx.businessLogic.*;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.AfterAll;
@@ -16,6 +13,7 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +40,9 @@ public class HomeControllerTest {
 
         //sampleData
         List<Flight> flights = new ArrayList<>();
-        //todo: fill in sample-flight
-        flights.add();
+        SalesOfficerImpl so = new SalesOfficerImpl("Officer", "officermail", "123");
+        flights.add(new FlightImpl(so, 4, LocalDateTime.MIN, LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "Düsseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl(2, "flieger", "Lufthansa", "A380"), 20));
+
         Mockito.when(businessLogicAPI.getAllFlights(any())).thenReturn(flights);
 
         var app = new App();
