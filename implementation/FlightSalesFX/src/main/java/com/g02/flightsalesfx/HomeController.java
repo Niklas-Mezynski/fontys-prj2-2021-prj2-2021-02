@@ -91,7 +91,7 @@ public class HomeController implements Controller {
         var flightTable = new FlightTable(allFlights, (event, row) -> {
             selectedFlight = row.getItem();
             System.out.println("Clicked on: " + selectedFlight);
-            if(event.getClickCount() == 1) {
+            if (event.getClickCount() == 1) {
                 enableSalesprocess.setDisable(false);
             }
             if (event.getClickCount() == 2) {
@@ -165,27 +165,27 @@ public class HomeController implements Controller {
     }
 
     @FXML
-    public void enableSalesprocess() throws IOException{
+    public void enableSalesprocess() throws IOException {
         //todo: popup
         //requires: flightobject (db-issues)
 
-        if(selectedFlight != null) {
+        if (selectedFlight != null) {
             final List<Flight> currentFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
             System.out.println("got flight");
-            if(!currentFlights.isEmpty()) {
-                if(currentFlights.size() == 1) {
+            if (!currentFlights.isEmpty()) {
+                if (currentFlights.size() == 1) {
                     selectedFlight.startSalesProcess();
                     //todo
                     //implement update
-                    }
-
-                } else {    // too many flights received
-                    System.out.println("size > 1");
                 }
-            } else {    // nothing received from db
-                //todo insert error
-                System.out.println("empty set");
+
+            } else {    // too many flights received
+                System.out.println("size > 1");
             }
+        } else {    // nothing received from db
+            //todo insert error
+            System.out.println("empty set");
         }
     }
 }
+
