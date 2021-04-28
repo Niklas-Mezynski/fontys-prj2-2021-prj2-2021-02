@@ -10,7 +10,6 @@ import java.util.Objects;
 
 @TableName("salesemployees")
 public class SalesEmployeeImpl implements SalesEmployee, Savable {
-    @PrimaryKey
     public final String name;
     @PrimaryKey
     public final String email;

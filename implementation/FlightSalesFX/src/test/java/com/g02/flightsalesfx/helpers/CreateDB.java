@@ -18,11 +18,11 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.List;
 
+@Disabled
 public class CreateDB {
 
-    @Disabled
     @Test
-    void name() throws NoSuchFieldException, SQLException, ClassNotFoundException {
+    void t01name() throws NoSuchFieldException, SQLException, ClassNotFoundException {
         List<Class<? extends Savable>> databaseSQL = List.of(
                 AirportImpl.class,
                 DynamicPriceReductionImpl.class,
@@ -45,21 +45,21 @@ public class CreateDB {
 
 
     }
-    @Disabled
+
     @Test
-    void insertEmployee(){
+    void t02insertEmployee(){
         var persistenceAPI = new PersistenceAPIImpl();
+        var bb= new BusinessLogicAPIImpl(persistenceAPI);
         var employeeStorageService = persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl());
-        System.out.println(employeeStorageService.add(new SalesEmployeeImpl("Nils","b","b")));
-        System.out.println(employeeStorageService.add(new SalesEmployeeImpl("","","")));
-        System.out.println(employeeStorageService.add(new SalesEmployeeImpl("SalesEmployee","e","")));
-        System.out.println(employeeStorageService.add(new SalesOfficerImpl("SalesOfficer","o","")));
-        System.out.println(employeeStorageService.add(new SalesManagerImpl("SalesManager","m","")));
+        System.out.println(employeeStorageService.add(new SalesEmployeeImpl("Nils","b",bb.genPWHash("b"))));
+        System.out.println(employeeStorageService.add(new SalesEmployeeImpl("","",bb.genPWHash(""))));
+        System.out.println(employeeStorageService.add(new SalesEmployeeImpl("SalesEmployee","e",bb.genPWHash(""))));
+        System.out.println(employeeStorageService.add(new SalesOfficerImpl("SalesOfficer","o",bb.genPWHash(""))));
+        System.out.println(employeeStorageService.add(new SalesManagerImpl("SalesManager","m",bb.genPWHash(""))));
     }
 
-    @Disabled
     @Test
-    void insertAirports() {
+    void t03insertAirports() {
         var persistenceAPI = new PersistenceAPIImpl();
         var airportStorageService = persistenceAPI.getAirportStorageService(new AirportManagerImpl());
         System.out.println(airportStorageService.add(new AirportImpl("BRE","Bremen","Germany")));

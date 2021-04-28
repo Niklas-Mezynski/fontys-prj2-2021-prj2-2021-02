@@ -9,7 +9,6 @@ import java.util.Objects;
 
 @TableName("salesmanagers")
 public class SalesManagerImpl implements SalesManager, Savable {
-    @PrimaryKey
     public final String name;
     @PrimaryKey
     public final String email;
