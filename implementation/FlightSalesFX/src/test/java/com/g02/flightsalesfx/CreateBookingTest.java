@@ -40,6 +40,7 @@ package com.g02.flightsalesfx;
 
         import static org.mockito.ArgumentMatchers.any;
         import static org.testfx.assertions.api.Assertions.assertThat;
+
 @ExtendWith(ApplicationExtension.class)
 public class CreateBookingTest {
 
