@@ -1,21 +1,14 @@
 package com.g02.flightsalesfx.helpers;
 
 import com.g02.btfdao.dao.Dao;
-import com.g02.btfdao.dao.Savable;
-import com.g02.btfdao.queries.QueryBuilder;
-import com.g02.btfdao.queries.QueryExecutor;
 import com.g02.btfdao.dao.PGJDBCUtils;
-import com.g02.flightsalesfx.businessEntities.Route;
-import com.g02.flightsalesfx.businessEntities.SeatOption;
+import com.g02.btfdao.dao.Savable;
 import com.g02.flightsalesfx.businessLogic.*;
-import com.g02.flightsalesfx.persistence.AirportStorageService;
-import com.g02.flightsalesfx.persistence.EmployeeStorageService;
 import com.g02.flightsalesfx.persistence.PersistenceAPIImpl;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
 import java.util.List;
 
 @Disabled
