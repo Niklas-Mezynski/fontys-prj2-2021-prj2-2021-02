@@ -6,6 +6,7 @@ import org.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
 import org.g02.flightsalesfx.helpers.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -50,18 +51,25 @@ public class LoginController implements Controller {
             App.employee = employee;
 
 
-            if(App.employee.getClass().equals(SalesOfficerImpl.class)){//username & password :"a"
+            if(App.employee.getClass().equals(SalesOfficerImpl.class)){
                 System.out.println("SalesOfficer");
                 App.setRoot("home");
             }
-            if(App.employee.getClass().equals(SalesEmployeeImpl.class)){//username & password :"c"
+            if(App.employee.getClass().equals(SalesEmployeeImpl.class)){
                 System.out.println("SalesEmployee");
                 App.setRoot("salesEmployeeHome");
             }
-            if(App.employee.getClass().equals(SalesManagerImpl.class)){//username & password :"b"
+            if(App.employee.getClass().equals(SalesManagerImpl.class)){
                 System.out.println("SalesManager");
                 App.setRoot("home");//todo change to SalesManagerHome
             }
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Login-Error");
+            alert.setHeaderText("Wrong email-address or password entered");
+            alert.setContentText("Please check your inputs and try again");
+            alert.showAndWait();
         }
     }
 
