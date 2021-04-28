@@ -61,7 +61,7 @@ public class LoginController implements Controller {
             }
             if(App.employee.getClass().equals(SalesManagerImpl.class)){//username & password :"b"
                 System.out.println("SalesManager");
-                App.setRoot("home");//todo change to SalesManagerHome
+                App.setRoot("managementDashboard");
             }
         }
     }

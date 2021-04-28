@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -75,11 +76,20 @@
             </AnchorPane>
          </center>
          <bottom>
-            <Button mnemonicParsing="false" onAction="#viewButton" text="View KPIs for this route" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets bottom="2.0" top="2.0" />
-               </BorderPane.margin>
-            </Button>
+            <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#backToMenu" text="Back to menu">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#viewButton" text="View KPIs for this route">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </bottom>
       </BorderPane>
    </children>

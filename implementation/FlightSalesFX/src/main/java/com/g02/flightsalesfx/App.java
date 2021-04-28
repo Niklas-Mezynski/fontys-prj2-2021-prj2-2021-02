@@ -56,7 +56,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         persistenceAPI = PersistenceApiImplementationProvider.getImplementation();
         businessLogicAPI = BusinessLogicImplementationProvider.getImplementation(persistenceAPI);
-        scene = new Scene(loadFXML("viewKPIs").load(), 800, 600);
+        scene = new Scene(loadFXML("managementDashboard").load(), 800, 600);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle("Flight Ticket Sales");

@@ -4,6 +4,7 @@ import com.g02.flightsalesfx.businessEntities.Route;
 import com.g02.flightsalesfx.businessLogic.AirportImpl;
 import com.g02.flightsalesfx.businessLogic.RouteImpl;
 import com.g02.flightsalesfx.helpers.Bundle;
+import com.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -18,7 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class ViewKPIsController {
+public class ViewKPIsController implements Controller {
 
     @FXML
     private AnchorPane routePane;
@@ -63,5 +64,10 @@ public class ViewKPIsController {
             bundle.add("route", route);
             App.setRoot("viewSpecificRoutesKPIs", bundle);
         }
+    }
+
+    @FXML
+    void backToMenu() {
+        App.setRoot("managementDashboard");
     }
 }
