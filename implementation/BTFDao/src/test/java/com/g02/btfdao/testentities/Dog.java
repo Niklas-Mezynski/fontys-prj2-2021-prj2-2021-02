@@ -1,4 +1,4 @@
-package testentities;
+package com.g02.btfdao.testentities;
 
 import com.g02.btfdao.annotations.FieldName;
 import com.g02.btfdao.annotations.Ignore;

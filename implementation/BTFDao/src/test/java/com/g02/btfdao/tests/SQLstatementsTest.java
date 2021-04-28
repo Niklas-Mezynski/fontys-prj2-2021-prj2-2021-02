@@ -1,4 +1,4 @@
-package tests;
+package com.g02.btfdao.tests;
 
 import com.g02.btfdao.dao.Dao;
 import com.g02.btfdao.queries.QueryBuilder;
@@ -8,9 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import testentities.Cat;
-import testentities.Dog;
-import testentities.Mouse;
+import com.g02.btfdao.testentities.Cat;
+import com.g02.btfdao.testentities.Dog;
+import com.g02.btfdao.testentities.Mouse;
 
 import java.sql.Connection;
 import java.sql.SQLException;
