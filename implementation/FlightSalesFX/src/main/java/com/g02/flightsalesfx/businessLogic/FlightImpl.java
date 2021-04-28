@@ -52,6 +52,19 @@ public class FlightImpl implements Flight, Savable {
         return new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()), f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
     }
 
+    //db-constructor for updating
+    public FlightImpl(int flightNumber, LocalDateTime dep, LocalDateTime arr, double price, boolean salesProcessStarted) {
+        this.flightNumber = flightNumber;
+        this.departure = dep;
+        this.arrival = arr;
+        this.price = price;
+        this.salesProcessStarted = salesProcessStarted;
+    }
+
+    public static FlightImpl dbOf(Flight f) {
+        return new FlightImpl(f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getPrice(), f.getSalesProcessStatus());
+    }
+
     private FlightImpl() {}
 
     /**

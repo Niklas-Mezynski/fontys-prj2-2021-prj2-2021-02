@@ -175,10 +175,15 @@ public class HomeController implements Controller {
             if (!currentFlights.isEmpty()) {
                 if (currentFlights.size() == 1) {
                     selectedFlight.startSalesProcess();
+                    var flightOfList = currentFlights.get(0);
+                    flightOfList.startSalesProcess();
+                    System.out.println("salesprocess started: " + flightOfList);
                     //todo
-                    //implement update
-                }
+                    //implement update persistently
 
+                    App.businessLogicAPI.updateFlight(FlightImpl.of(flightOfList), selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
+                    System.out.println("applied to db");
+                }
             } else {    // too many flights received
                 System.out.println("size > 1");
             }

@@ -69,5 +69,5 @@ public interface BusinessLogicAPI {
 
     Plane updatePlane(PlaneImpl oldPlane, String name, String type, String manufacturer, List<Seat> collect);
 
-    Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price);
+    Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, double price, boolean salesprocess);
 }
