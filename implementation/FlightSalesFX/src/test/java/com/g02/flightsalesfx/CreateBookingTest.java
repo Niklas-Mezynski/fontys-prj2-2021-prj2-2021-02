@@ -1,47 +1,47 @@
 package com.g02.flightsalesfx;
 
-import com.g02.flightsalesfx.businessEntities.*;
-import com.g02.flightsalesfx.businessLogic.*;
-import javafx.scene.control.Spinner;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.extension.AfterAllCallback;
-import org.mockito.Mockito;
-import org.testfx.api.FxRobot;
-import org.testfx.framework.junit5.Start;
+        import com.g02.flightsalesfx.businessEntities.*;
+        import com.g02.flightsalesfx.businessLogic.*;
+        import javafx.scene.control.Spinner;
+        import javafx.scene.text.Text;
+        import javafx.stage.Stage;
+        import org.junit.jupiter.api.AfterAll;
+        import org.junit.jupiter.api.extension.AfterAllCallback;
+        import org.mockito.Mockito;
+        import org.testfx.api.FxRobot;
+        import org.testfx.framework.junit5.Start;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+        import java.io.IOException;
+        import java.time.LocalDateTime;
+        import java.util.ArrayList;
+        import java.util.List;
 
-import com.g02.flightsalesfx.businessEntities.Airport;
-import com.g02.flightsalesfx.businessLogic.AirportImpl;
-import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.testfx.api.FxRobot;
-import org.testfx.framework.junit5.ApplicationExtension;
-import org.testfx.framework.junit5.Start;
+        import com.g02.flightsalesfx.businessEntities.Airport;
+        import com.g02.flightsalesfx.businessLogic.AirportImpl;
+        import com.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
+        import javafx.scene.control.Button;
+        import javafx.scene.control.ListView;
+        import javafx.scene.control.TextField;
+        import javafx.stage.Stage;
+        import org.junit.jupiter.api.AfterAll;
+        import org.junit.jupiter.api.BeforeEach;
+        import org.junit.jupiter.api.Test;
+        import org.junit.jupiter.api.extension.ExtendWith;
+        import org.mockito.Mock;
+        import org.mockito.Mockito;
+        import org.testfx.api.FxRobot;
+        import org.testfx.framework.junit5.ApplicationExtension;
+        import org.testfx.framework.junit5.Start;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+        import java.io.IOException;
+        import java.util.ArrayList;
+        import java.util.List;
+        import java.util.stream.Collectors;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.testfx.assertions.api.Assertions.assertThat;
+        import static org.mockito.ArgumentMatchers.any;
+        import static org.testfx.assertions.api.Assertions.assertThat;
 @ExtendWith(ApplicationExtension.class)
-public class BookingTest {
+public class CreateBookingTest {
 
     private Stage stage;
     @Mock
@@ -129,3 +129,4 @@ public class BookingTest {
 
     }
 }
+
