@@ -42,7 +42,7 @@
                 <version>2.22.1</version>
                 <configuration>
                     <argLine>
-                        @{argLine} -ea --add-modules BTFDao --add-opens BTFDao/com.g02.btfdao.tests=ALL-UNNAMED
+                        @{argLine} -ea --add-modules BTFDao --add-opens BTFDao/org.g02.btfdao.tests=ALL-UNNAMED
                     </argLine>
                 </configuration>
             </plugin>
