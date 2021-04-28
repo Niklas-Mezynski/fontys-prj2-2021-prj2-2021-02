@@ -13,5 +13,5 @@ import java.time.LocalDateTime;
  */
 public interface FlightManager {
 
-    public Flight createFlight(SalesOfficer creator, int fNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price);
+    public Flight createFlight(SalesOfficer creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price);
 }

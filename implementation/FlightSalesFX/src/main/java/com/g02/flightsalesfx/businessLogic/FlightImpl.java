@@ -37,19 +37,27 @@ public class FlightImpl implements Flight, Savable {
     @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightOptionImpl")
     public FlightOptionImpl[] optionsList = new FlightOptionImpl[0];
 
-    public FlightImpl(SalesOfficerImpl creator, int fNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
+    public FlightImpl(SalesOfficerImpl creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
         this.creator = creator;
-        flightNumber = fNumber;
         departure = dep;
         arrival = arr;
         this.route = RouteImpl.of(route);
         this.plane = PlaneImpl.of(plane);
         this.price = price;
+    }
 
+    public FlightImpl(SalesOfficerImpl creator, int flightNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
+        this.creator = creator;
+        this.flightNumber = flightNumber;
+        departure = dep;
+        arrival = arr;
+        this.route = RouteImpl.of(route);
+        this.plane = PlaneImpl.of(plane);
+        this.price = price;
     }
 
     public static FlightImpl of(Flight f) {
-        return new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()), f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
+        return new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
     }
 
     private FlightImpl() {}

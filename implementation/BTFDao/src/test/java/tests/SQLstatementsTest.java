@@ -5,7 +5,9 @@ import com.g02.btfdao.queries.QueryBuilder;
 import com.g02.btfdao.queries.QueryExecutor;
 import com.g02.btfdao.dao.PGJDBCUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import testentities.Cat;
 import testentities.Dog;
 import testentities.Mouse;
@@ -15,6 +17,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
+@TestMethodOrder(MethodOrderer.DisplayName.class)
 public class SQLstatementsTest {
     Connection connection;
 
@@ -25,14 +28,14 @@ public class SQLstatementsTest {
     }
 
     @Test
-    void testGetStatement() {
+    void t01testGetStatement() {
         System.out.println(new QueryBuilder().createGetSQL(Dog.class));
         System.out.println(new QueryBuilder().createGetSQL(Cat.class));
         System.out.println(new QueryBuilder().createGetSQL(Mouse.class));
     }
 
     @Test
-    void testCreateTable() {
+    void t02testCreateTable() {
         QueryBuilder.createDropStatements = true;
         String statements = new QueryBuilder().createTablesCreateStatement(List.of(Dog.class, Cat.class, Mouse.class));
         System.out.println(statements);
@@ -40,12 +43,12 @@ public class SQLstatementsTest {
     }
 
     @Test
-    void testInsertStatement() {
+    void t03testInsertStatement() {
         System.out.println(new QueryBuilder().createInsertSQL(Dog.class));
     }
 
     @Test
-    void testInsertAction() throws SQLException {
+    void t04testInsertAction() throws SQLException {
         Mouse mouse = new Mouse(0);
         Mouse mouse2 = new Mouse(1);
         Cat cat1 = new Cat(0, Collections.singletonList(mouse));
@@ -57,21 +60,21 @@ public class SQLstatementsTest {
     }
 
     @Test
-    void testGetAction() throws SQLException {
+    void t05testGetAction() throws SQLException {
         Dao<Dog> dogdao = new Dao<>(Dog.class, connection);
         var dogopt = dogdao.get(new String[]{"Nils"});
         System.out.println(dogopt);
     }
 
     @Test
-    void testGetAllAction() throws SQLException {
+    void t06testGetAllAction() throws SQLException {
         Dao<Dog> dogdao = new Dao<>(Dog.class, connection);
         var dogopt = dogdao.getAll();
         System.out.println(dogopt);
     }
 
     @Test
-    void testUpdateAction() throws SQLException {
+    void t07testUpdateAction() throws SQLException {
         Dao<Dog> dogdao = new Dao<>(Dog.class, connection);
         var dogopt = dogdao.get(new String[]{"Nils"});
         var dog = dogopt.get();
@@ -83,7 +86,7 @@ public class SQLstatementsTest {
     }
 
     @Test
-    void testRemoveAction() throws SQLException {
+    void t08testRemoveAction() throws SQLException {
         Dao<Dog> dogdao = new Dao<>(Dog.class, connection);
         var dogopt = dogdao.get(new String[]{"Nils"});
         var dog = dogopt.get();

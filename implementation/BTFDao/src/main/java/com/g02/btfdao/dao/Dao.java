@@ -204,8 +204,8 @@ public class Dao<E extends Savable> {
                 Dao dao = new Dao(sqlField.getReferencingClass(), connection);
                 //TODO: get and if not present, then insert (?)
                 Class<? extends Savable> type = sqlField.getReferencingClass();
-                var optional=dao.get(Mapper.getPrimaryKeyFieldValues(type,sqlField.getFieldContent(toUpdate)).toArray());
                 if (!sqlField.isArray() && !sqlField.isList()) {
+                    var optional=dao.get(Mapper.getPrimaryKeyFieldValues(type,sqlField.getFieldContent(toUpdate)).toArray());
                     Savable differententity=null;
                     if (optional.isPresent()) {
                         differententity = dao.update((Savable) sqlField.getFieldContent(toUpdate));

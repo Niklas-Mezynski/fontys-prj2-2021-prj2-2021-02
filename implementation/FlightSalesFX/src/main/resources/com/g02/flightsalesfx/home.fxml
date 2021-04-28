@@ -70,7 +70,7 @@
                                                               <Button fx:id="goToCreatePlane" mnemonicParsing="false" onAction="#gotoCreatePlane" styleClass="buttonOrange" text="Create Plane" />
                                                           </children>
                                              <BorderPane.margin>
-                                                <Insets left="10.0" />
+                                                <Insets />
                                              </BorderPane.margin>
                                                       </VBox>
                                        </center>
@@ -105,12 +105,12 @@
                                                                                 <Font size="22.0" />
                                                                             </font>
                                                          <VBox.margin>
-                                                            <Insets left="10.0" />
+                                                            <Insets />
                                                          </VBox.margin>
                                                                         </Label>
                                                                         <Label prefHeight="17.0" prefWidth="223.0" styleClass="textLabel" text="Ctrl + 2xLeftClick to Toggle Route-Enable">
                                                          <VBox.margin>
-                                                            <Insets left="10.0" />
+                                                            <Insets />
                                                          </VBox.margin>
                                                       </Label>
                                                                     </children>
@@ -124,7 +124,7 @@
                                                          </padding></CheckBox>
                                                                   </children>
                                                    <VBox.margin>
-                                                      <Insets left="10.0" />
+                                                      <Insets />
                                                    </VBox.margin>
                                                               </HBox>
                                                           </children>
@@ -170,7 +170,7 @@
                                                             </Button>
                                                         </children>
                                              <BorderPane.margin>
-                                                <Insets left="10.0" />
+                                                <Insets />
                                              </BorderPane.margin>
                                                     </VBox>
                                        </center>

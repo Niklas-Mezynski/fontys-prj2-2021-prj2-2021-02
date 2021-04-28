@@ -23,7 +23,7 @@ public class FlightStorageServiceImpl implements FlightStorageService{
     public Flight add(Flight flight) {
         var createdby=new SalesOfficerImpl(flight.getCreatedBy().getName(),flight.getCreatedBy().getEmail(),flight.getCreatedBy().getPassword());
 //        var flightImpl=new FlightImpl(createdby,flight.getFlightNumber(),flight.getDeparture(),flight.getArrival(), null, null, flight.getPrice());
-        var flightImpl=new FlightImpl(createdby,flight.getFlightNumber(),flight.getDeparture(),flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
+        var flightImpl=new FlightImpl(createdby,flight.getDeparture(),flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
         try {
             var ret= dao.insert(flightImpl);
             if (ret.isPresent()){

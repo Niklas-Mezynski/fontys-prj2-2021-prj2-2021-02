@@ -14,12 +14,12 @@ public class RouteImpl implements Route, Savable {
     public int id;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.AirportImpl")
     public AirportImpl[] airports = new AirportImpl[2];
+    @FieldName("enabled")
+    public boolean rteEnabled;
     @Ignore
     private Airport arrivalAirport;
     @Ignore
     private Airport departureAirport;
-    @FieldName("enabled")
-    public boolean rteEnabled;
 
     public RouteImpl(Airport departureAirport, Airport arrivalAirport) {
         this.departureAirport = departureAirport;
@@ -29,18 +29,23 @@ public class RouteImpl implements Route, Savable {
         this.rteEnabled = true;
     }
 
-    public RouteImpl(int id,Airport departureAirport, Airport arrivalAirport, boolean rteEnabled) {
+    public RouteImpl(int id, Airport departureAirport, Airport arrivalAirport, boolean rteEnabled) {
         this(departureAirport, arrivalAirport);
-        this.id=id;
+        this.id = id;
         this.rteEnabled = rteEnabled;
     }
-    private RouteImpl(int id, boolean rteEnabled){
-        this.id=id;
-        this.rteEnabled=rteEnabled;
+
+    private RouteImpl(int id, boolean rteEnabled) {
+        this.id = id;
+        this.rteEnabled = rteEnabled;
     }
 
     private RouteImpl() {
 
+    }
+
+    public static RouteImpl of(Route r) {
+        return r == null ? null : new RouteImpl(r.getId(), r.getDepartureAirport(), r.getArrivalAirport(), r.getEnabled());
     }
 
     /**
@@ -104,6 +109,11 @@ public class RouteImpl implements Route, Savable {
     }
 
     @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
     public String toString() {
 
         return "Route from: " + departureAirport.toString() + " -> " + arrivalAirport.toString();
@@ -131,11 +141,7 @@ public class RouteImpl implements Route, Savable {
     }
 
     private void afterConstruction() {
-        arrivalAirport=airports[0];
-        departureAirport=airports[1];
-    }
-    public static RouteImpl of(Route r){
-
-        return r==null?null:new RouteImpl(r.getDepartureAirport(), r.getArrivalAirport());
+        arrivalAirport = airports[0];
+        departureAirport = airports[1];
     }
 }

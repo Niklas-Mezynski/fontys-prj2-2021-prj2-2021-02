@@ -55,4 +55,5 @@ public interface Route {
      */
     public void toggleEnable();
 
+    int getId();
 }

@@ -18,9 +18,9 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.List;
 
+@Disabled
 public class CreateDB {
 
-    @Disabled
     @Test
     void name() throws NoSuchFieldException, SQLException, ClassNotFoundException {
         List<Class<? extends Savable>> databaseSQL = List.of(
@@ -45,7 +45,7 @@ public class CreateDB {
 
 
     }
-    @Disabled
+
     @Test
     void insertEmployee(){
         var persistenceAPI = new PersistenceAPIImpl();
@@ -57,7 +57,6 @@ public class CreateDB {
         System.out.println(employeeStorageService.add(new SalesManagerImpl("SalesManager","m","")));
     }
 
-    @Disabled
     @Test
     void insertAirports() {
         var persistenceAPI = new PersistenceAPIImpl();

@@ -196,8 +196,8 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
-    public boolean createFlightFromUI(SalesOfficer creator, int fNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
-        var flight = getFlightManager().createFlight(creator, fNumber, dep, arr, route, plane, price);
+    public boolean createFlightFromUI(SalesOfficer creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
+        var flight = getFlightManager().createFlight(creator, dep, arr, route, plane, price);
         System.out.println(flight);
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
@@ -206,7 +206,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public boolean createFlightFromUI(Flight flight) {
-        var f = getFlightManager().createFlight(flight.getCreatedBy(), flight.getFlightNumber(), flight.getDeparture(), flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
+        var f = getFlightManager().createFlight(flight.getCreatedBy(), flight.getDeparture(), flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
         return flightStorageService.add(flight)!=null;
