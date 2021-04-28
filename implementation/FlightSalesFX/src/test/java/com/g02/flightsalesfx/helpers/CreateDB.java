@@ -12,13 +12,16 @@ import com.g02.flightsalesfx.persistence.AirportStorageService;
 import com.g02.flightsalesfx.persistence.EmployeeStorageService;
 import com.g02.flightsalesfx.persistence.PersistenceAPIImpl;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.List;
 
 @Disabled
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class CreateDB {
 
     @Test
