@@ -174,15 +174,26 @@ public class HomeController implements Controller {
             System.out.println("got flight");
             if (!currentFlights.isEmpty()) {
                 if (currentFlights.size() == 1) {
-                    selectedFlight.startSalesProcess();
                     var flightOfList = currentFlights.get(0);
-                    flightOfList.startSalesProcess();
-                    System.out.println("salesprocess started: " + flightOfList);
+                    System.out.println("salesprocess started: " + selectedFlight);
                     //todo
                     //implement update persistently
 
-                    App.businessLogicAPI.updateFlight(FlightImpl.of(flightOfList), selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
-                    System.out.println("applied to db");
+                    //workaround:
+                    if(App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).remove(currentFlights.get(0))) {
+                        if(selectedFlight.equals(flightOfList)) {
+                            selectedFlight.startSalesProcess();
+                            System.out.println("salesprocess started: " + selectedFlight);
+                            App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).add(selectedFlight);
+                            System.out.println("applied to db");
+                        } else {
+                            System.out.println("not equal.");
+                        }
+                    }
+
+
+                    //Update is not working (dao)
+                    // App.businessLogicAPI.updateFlight(FlightImpl.of(flightOfList), selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
                 }
             } else {    // too many flights received
                 System.out.println("size > 1");

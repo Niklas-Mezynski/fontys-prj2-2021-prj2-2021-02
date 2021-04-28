@@ -270,7 +270,11 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     @Override
     public Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, double price, boolean salesprocess) {
         //var flight = new FlightImpl((SalesOfficerImpl) oldFlight.getCreatedBy(), oldFlight.getFlightNumber(), dep, arr, oldFlight.getRoute(), oldFlight.getPlane(), price);
-        var newFlight =new FlightImpl(oldFlight.getFlightNumber(), dep, arr, price, salesprocess);
+        //later maybe:
+        // var newFlight =new FlightImpl(oldFlight.getFlightNumber(), dep, arr, price, salesprocess);
+
+        var newFlight = FlightImpl.of(oldFlight);
+        newFlight.startSalesProcess();
         return persistenceAPI.getFlightStorageService(getFlightManager()).update(newFlight);
     }
 }
