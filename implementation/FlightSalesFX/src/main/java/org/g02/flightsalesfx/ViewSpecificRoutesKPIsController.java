@@ -1,5 +1,6 @@
 package org.g02.flightsalesfx;
 
+import javafx.scene.layout.BorderPane;
 import org.g02.flightsalesfx.businessEntities.Booking;
 import org.g02.flightsalesfx.businessEntities.Route;
 import org.g02.flightsalesfx.helpers.Bundle;
@@ -32,6 +33,9 @@ public class ViewSpecificRoutesKPIsController implements Controller {
     @FXML
     private AnchorPane chartView;
 
+    @FXML
+    private BorderPane chartPane;
+
     private Route selectedRoute;
 
     @FXML
@@ -60,7 +64,7 @@ public class ViewSpecificRoutesKPIsController implements Controller {
         final NumberAxis xAxis = new NumberAxis(minBookingYear.orElse(2010) - 1, currentYear + 1, 1);
         final NumberAxis yAxis = new NumberAxis();
         AreaChart<Number, Number> areaChart = new AreaChart<Number, Number>(xAxis, yAxis);
-        XYChart.Series routeSeries = new XYChart.Series();
+        XYChart.Series<Number, Number> routeSeries = new XYChart.Series();
         routeSeries.setName(selectedRoute.toString());
 
 //        Sample Data
@@ -82,9 +86,10 @@ public class ViewSpecificRoutesKPIsController implements Controller {
 
 
         areaChart.getData().add(routeSeries);
-        chartView.getChildren().add(areaChart);
-        areaChart.setMinWidth(chartView.getWidth());
-        areaChart.setMinHeight(chartView.getHeight());
+        areaChart.setMinWidth(chartView.getPrefWidth());
+        areaChart.setMinHeight(chartView.getPrefHeight());
+        System.out.println(chartView.getPrefWidth());
+        chartPane.setCenter(areaChart);
     }
 
     @FXML
@@ -96,5 +101,10 @@ public class ViewSpecificRoutesKPIsController implements Controller {
             chartView.visibleProperty().set(false);
             numberStatsView.visibleProperty().set(true);
         }
+    }
+
+    @FXML
+    void backToMenu() {
+        App.setRoot("managementDashboard");
     }
 }
