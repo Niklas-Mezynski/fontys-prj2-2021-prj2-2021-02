@@ -32,7 +32,9 @@ public class CreateDB {
                 SalesManagerImpl.class,
                 SalesEmployeeImpl.class,
                 SeatOptionImpl.class,
-                SeatImpl.class
+                SeatImpl.class,
+                TicketImpl.class,
+                BookingImpl.class
         );
         //System.out.println(queryBuilder.createTablesCreateStatement(databaseSQL));
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
