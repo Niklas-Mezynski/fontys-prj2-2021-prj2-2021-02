@@ -12,20 +12,14 @@ public class RouteImpl implements Route, Savable {
 
     @PrimaryKey(autogen = true)
     public int id;
-    @ForeignKey("com.g02.flightsalesfx.businessLogic.AirportImpl")
-    public AirportImpl[] airports = new AirportImpl[2];
     @FieldName("enabled")
     public boolean rteEnabled;
-    @Ignore
-    private Airport arrivalAirport;
-    @Ignore
-    private Airport departureAirport;
+    private AirportImpl arrivalAirport;
+    private AirportImpl departureAirport;
 
     public RouteImpl(Airport departureAirport, Airport arrivalAirport) {
-        this.departureAirport = departureAirport;
-        this.airports[0] = (AirportImpl) departureAirport;
-        this.arrivalAirport = arrivalAirport;
-        this.airports[1] = (AirportImpl) arrivalAirport;
+        this.departureAirport = AirportImpl.of(departureAirport);
+        this.arrivalAirport = AirportImpl.of(arrivalAirport);
         this.rteEnabled = true;
     }
 
@@ -62,7 +56,6 @@ public class RouteImpl implements Route, Savable {
     @Override
     public void setDepartureAirport(Airport newAp) {
         this.departureAirport = (AirportImpl) newAp;
-        this.airports[0] = (AirportImpl) newAp;
     }
 
     /**
@@ -79,7 +72,6 @@ public class RouteImpl implements Route, Savable {
     @Override
     public void setArrivalAirport(Airport newAp) {
         this.arrivalAirport = (AirportImpl) newAp;
-        this.airports[1] = (AirportImpl) newAp;
     }
 
     @Override
@@ -101,11 +93,9 @@ public class RouteImpl implements Route, Savable {
     public void toggleEnable() {
         if (this.rteEnabled) {
             disableRoute();
-            ;
         } else {
             enableRoute();
         }
-        ;
     }
 
     @Override
@@ -140,8 +130,4 @@ public class RouteImpl implements Route, Savable {
         return result;
     }
 
-    private void afterConstruction() {
-        arrivalAirport = airports[0];
-        departureAirport = airports[1];
-    }
 }
