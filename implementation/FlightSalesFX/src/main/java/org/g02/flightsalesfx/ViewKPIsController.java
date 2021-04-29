@@ -1,10 +1,10 @@
-package com.g02.flightsalesfx;
+package org.g02.flightsalesfx;
 
-import com.g02.flightsalesfx.businessEntities.Route;
-import com.g02.flightsalesfx.businessLogic.AirportImpl;
-import com.g02.flightsalesfx.businessLogic.RouteImpl;
-import com.g02.flightsalesfx.helpers.Bundle;
-import com.g02.flightsalesfx.helpers.Controller;
+import org.g02.flightsalesfx.businessEntities.Route;
+import org.g02.flightsalesfx.businessLogic.AirportImpl;
+import org.g02.flightsalesfx.businessLogic.RouteImpl;
+import org.g02.flightsalesfx.helpers.Bundle;
+import org.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;

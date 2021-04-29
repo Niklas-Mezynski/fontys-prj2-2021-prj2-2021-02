@@ -1,9 +1,9 @@
-package com.g02.flightsalesfx;
+package org.g02.flightsalesfx;
 
 
-import com.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
-import com.g02.flightsalesfx.helpers.Controller;
-import com.g02.flightsalesfx.persistence.RouteStorageServiceImpl;
+import org.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
+import org.g02.flightsalesfx.helpers.Controller;
+import org.g02.flightsalesfx.persistence.RouteStorageServiceImpl;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;

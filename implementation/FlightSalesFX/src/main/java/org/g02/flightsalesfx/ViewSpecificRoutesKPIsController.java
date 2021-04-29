@@ -1,9 +1,9 @@
-package com.g02.flightsalesfx;
+package org.g02.flightsalesfx;
 
-import com.g02.flightsalesfx.businessEntities.Booking;
-import com.g02.flightsalesfx.businessEntities.Route;
-import com.g02.flightsalesfx.helpers.Bundle;
-import com.g02.flightsalesfx.helpers.Controller;
+import org.g02.flightsalesfx.businessEntities.Booking;
+import org.g02.flightsalesfx.businessEntities.Route;
+import org.g02.flightsalesfx.helpers.Bundle;
+import org.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;

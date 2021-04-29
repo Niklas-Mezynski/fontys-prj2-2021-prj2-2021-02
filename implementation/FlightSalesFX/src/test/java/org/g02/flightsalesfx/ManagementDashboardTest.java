@@ -1,7 +1,7 @@
-package com.g02.flightsalesfx;
+package org.g02.flightsalesfx;
 
-import com.g02.flightsalesfx.businessEntities.*;
-import com.g02.flightsalesfx.businessLogic.*;
+import org.g02.flightsalesfx.businessEntities.*;
+import org.g02.flightsalesfx.businessLogic.*;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.*;
