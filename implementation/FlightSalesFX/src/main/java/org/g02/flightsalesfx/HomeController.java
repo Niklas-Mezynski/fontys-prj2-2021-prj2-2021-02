@@ -162,36 +162,21 @@ public class HomeController implements Controller {
         //requires: flightobject (db-issues)
         if (selectedFlight != null) {
             final List<Flight> currentFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
-            System.out.println("got flight");
             if (!currentFlights.isEmpty()) {
                 if (currentFlights.size() == 1) {
-                    var flightOfList = currentFlights.get(0);
+                    System.out.println("selected flight successfully");
                     selectedFlight.startSalesProcess();
                     System.out.println("salesprocess started: " + selectedFlight);
-                    //workaround for update:
-//                  if(App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).remove(currentFlights.get(0))) {
-//                        if(selectedFlight.equals(flightOfList)) {
-//                            selectedFlight.startSalesProcess();
-//                            System.out.println("salesprocess started: " + selectedFlight);
-//                            App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).add(selectedFlight);
-//                            System.out.println("applied to db");
-//                        } else {
-//                            System.out.println("selected flight is not equal to the one received from the db.");
-//                        }
-//                    }
 
                     //Update using update-method:
                     App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
-                    System.out.println("///");
-                    System.out.println("reached update statement");
-                    System.out.println("///");
                 }
-            } else {    // too many flights received OR no flights
+            } else {
                 System.out.println("received not exactly one flight");
             }
         } else {    // nothing received from db
             //todo insert error
-            System.out.println("empty set");
+            System.out.println(" !!! No flight selected !!!");
         }
     }
 

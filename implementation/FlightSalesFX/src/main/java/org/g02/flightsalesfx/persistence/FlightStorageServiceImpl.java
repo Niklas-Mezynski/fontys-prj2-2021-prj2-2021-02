@@ -60,7 +60,6 @@ public class FlightStorageServiceImpl implements FlightStorageService{
             flightImpl.startSalesProcess();
         }
         try {
-            System.out.println("reached flightUpdate in persistence-layer. Following flight is passed: \n" + flightImpl);
             var update = dao.update(flightImpl);
             return update;
         } catch (SQLException e) {
