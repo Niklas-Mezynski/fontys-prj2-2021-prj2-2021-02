@@ -160,13 +160,13 @@ public class HomeController implements Controller {
     public void enableSalesprocess() throws IOException {
         //todo: popup
         //requires: flightobject (db-issues)
-
         if (selectedFlight != null) {
             final List<Flight> currentFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
             System.out.println("got flight");
             if (!currentFlights.isEmpty()) {
                 if (currentFlights.size() == 1) {
                     var flightOfList = currentFlights.get(0);
+                    selectedFlight.startSalesProcess();
                     System.out.println("salesprocess started: " + selectedFlight);
                     //workaround for update:
 //                  if(App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).remove(currentFlights.get(0))) {
@@ -182,6 +182,7 @@ public class HomeController implements Controller {
 
                     //Update using update-method:
                     App.businessLogicAPI.updateFlight(FlightImpl.of(flightOfList), selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
+                    System.out.println("reached update statement");
                 }
             } else {    // too many flights received OR no flights
                 System.out.println("received not exactly one flight");
