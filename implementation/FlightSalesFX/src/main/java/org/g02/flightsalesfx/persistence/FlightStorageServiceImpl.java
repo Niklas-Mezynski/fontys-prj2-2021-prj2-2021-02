@@ -4,6 +4,7 @@ import org.g02.btfdao.dao.Dao;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.FlightManager;
 import org.g02.flightsalesfx.businessLogic.FlightImpl;
+import org.g02.flightsalesfx.businessLogic.PlaneImpl;
 import org.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
 
 import java.sql.SQLException;
@@ -54,7 +55,14 @@ public class FlightStorageServiceImpl implements FlightStorageService{
 
     @Override
     public Flight update(Flight flight) {
-        return null;
+        var flightImpl = new FlightImpl(flight.getFlightNumber(), flight.getDeparture(), flight.getArrival(), flight.getPrice(), flight.getSalesProcessStatus());
+        try {
+            var update = dao.update(flightImpl);
+            return update;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

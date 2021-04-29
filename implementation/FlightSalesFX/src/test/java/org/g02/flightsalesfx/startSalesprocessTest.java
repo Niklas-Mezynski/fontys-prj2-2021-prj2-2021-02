@@ -1,15 +1,17 @@
 package org.g02.flightsalesfx;
 
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.Route;
 import org.g02.flightsalesfx.businessLogic.*;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.testfx.api.FxRobot;
+import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
@@ -19,8 +21,8 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 
-public class HomeControllerTest {
-
+@ExtendWith(ApplicationExtension.class)
+public class startSalesprocessTest {
     static {
         if (Boolean.getBoolean("headless")) {
             System.setProperty("testfx.robot", "glass");
@@ -42,7 +44,6 @@ public class HomeControllerTest {
         List<Flight> flights = new ArrayList<>();
         SalesOfficerImpl so = new SalesOfficerImpl("Officer", "officermail", "123");
         flights.add(new FlightImpl(so, 4, LocalDateTime.MIN, LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "Düsseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl(2, "flieger", "Lufthansa", "A380"), 20));
-
         Mockito.when(businessLogicAPI.getAllFlights(any())).thenReturn(flights);
 
         var app = new App();
@@ -60,7 +61,6 @@ public class HomeControllerTest {
     void goToTab(FxRobot fxRobot) {
         var x = fxRobot.lookup("#flightsTab").query();
         fxRobot.clickOn(x);
+        fxRobot.clickOn(fxRobot.lookup("#goToCreateFlight").queryAs(Button.class));
     }
-
-    //todo: testing
 }

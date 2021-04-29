@@ -294,7 +294,8 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, double price, boolean salesprocess) {
-        return null;
+        var flight = new FlightImpl(oldFlight.getFlightNumber(), dep, arr, price, salesprocess);
+        return persistenceAPI.getFlightStorageService(getFlightManager()).update(flight);
     }
 
     private static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException

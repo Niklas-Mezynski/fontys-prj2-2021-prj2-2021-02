@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.Plane;
 import org.g02.flightsalesfx.businessEntities.Route;
+import org.g02.flightsalesfx.businessLogic.FlightImpl;
 import org.g02.flightsalesfx.gui.FlightTable;
 import org.g02.flightsalesfx.gui.PlaneTable;
 import org.g02.flightsalesfx.gui.RouteTable;
@@ -151,10 +152,8 @@ public class HomeController implements Controller {
     }
 
     /*
-     * return void.
-     *
      * Method to start the salesprocess of a selectedFlight. The selected object is
-     * first removed and then added again but in a modified version, by pressing the Button (UI).
+     * updated in the database, by pressing the Button (UI).
      *
      */
     @FXML
@@ -169,23 +168,20 @@ public class HomeController implements Controller {
                 if (currentFlights.size() == 1) {
                     var flightOfList = currentFlights.get(0);
                     System.out.println("salesprocess started: " + selectedFlight);
-                    //todo
-                    //implement update persistently
+                    //workaround for update:
+//                  if(App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).remove(currentFlights.get(0))) {
+//                        if(selectedFlight.equals(flightOfList)) {
+//                            selectedFlight.startSalesProcess();
+//                            System.out.println("salesprocess started: " + selectedFlight);
+//                            App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).add(selectedFlight);
+//                            System.out.println("applied to db");
+//                        } else {
+//                            System.out.println("selected flight is not equal to the one received from the db.");
+//                        }
+//                    }
 
-                    //workaround:
-                    if(App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).remove(currentFlights.get(0))) {
-                        if(selectedFlight.equals(flightOfList)) {
-                            selectedFlight.startSalesProcess();
-                            System.out.println("salesprocess started: " + selectedFlight);
-                            App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).add(selectedFlight);
-                            System.out.println("applied to db");
-                            
-                        } else {
-                            System.out.println("selected flight is not equal to the one received from the db.");
-                        }
-                    }
-                    //Update is not working (dao)
-                    //App.businessLogicAPI.updateFlight(FlightImpl.of(flightOfList), selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
+                    //Update using update-method:
+                    App.businessLogicAPI.updateFlight(FlightImpl.of(flightOfList), selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
                 }
             } else {    // too many flights received OR no flights
                 System.out.println("received not exactly one flight");
