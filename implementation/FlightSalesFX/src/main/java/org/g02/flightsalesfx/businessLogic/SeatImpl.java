@@ -21,7 +21,7 @@ public class SeatImpl implements Seat, Savable {
     public int rowNumber;
     public int seatNumber;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.SeatOptionImpl")
-    public SeatOptionImpl[] seatOptions;
+    public SeatOptionImpl[] seatOptions = new SeatOptionImpl[0];
 
     //    Useless constructor because cant be accessed from SeatManagerImpl
     public SeatImpl(int rowNumber, int seatNumber) {
