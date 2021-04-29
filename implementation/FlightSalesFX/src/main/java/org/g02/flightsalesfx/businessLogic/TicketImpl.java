@@ -25,7 +25,7 @@ public class TicketImpl implements Ticket, Savable {
 
 
     @ForeignKey("com.g02.flightsalesfx.businessLogic.SeatOptionImpl")
-    public SeatOption[] seatOptions;
+    public SeatOptionImpl[] seatOptions;
     public String paxFName;
     public String paxLName;
 
@@ -33,7 +33,7 @@ public class TicketImpl implements Ticket, Savable {
     public TicketImpl(Flight flight, Seat seat, String firstName, String lastName, SeatOption[] seatOptions){
         this.flight = FlightImpl.of(flight);
         this.seat = SeatImpl.of(seat);
-        this.seatOptions = seatOptions;
+        this.seatOptions = Arrays.asList(seatOptions).stream().map(so -> SeatOptionImpl.of(so)).toArray(SeatOptionImpl[]::new);
         this.paxFName = firstName;
         this.paxLName = lastName;
 
