@@ -292,6 +292,11 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         return persistenceAPI.getPlaneStorageService(getPlaneManager()).update(plane);
     }
 
+    @Override
+    public Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, double price, boolean salesprocess) {
+        return null;
+    }
+
     private static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException
     {
         String[] parts = storedPassword.split(":");

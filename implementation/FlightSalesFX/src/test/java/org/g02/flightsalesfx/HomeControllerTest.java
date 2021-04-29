@@ -1,8 +1,8 @@
-package com.g02.flightsalesfx;
+package org.g02.flightsalesfx;
 
-import com.g02.flightsalesfx.businessEntities.Flight;
-import com.g02.flightsalesfx.businessEntities.Route;
-import com.g02.flightsalesfx.businessLogic.*;
+import org.g02.flightsalesfx.businessEntities.Flight;
+import org.g02.flightsalesfx.businessEntities.Route;
+import org.g02.flightsalesfx.businessLogic.*;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.AfterAll;

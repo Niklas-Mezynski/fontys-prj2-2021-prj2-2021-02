@@ -53,6 +53,11 @@ public class FlightStorageServiceImpl implements FlightStorageService{
     }
 
     @Override
+    public Flight update(Flight flight) {
+        return null;
+    }
+
+    @Override
     public List<Flight> getAll() {
         try {
             var all = dao.getAll();
