@@ -111,6 +111,8 @@ public class SeatImpl implements Seat, Savable {
     }*/
 
     public static SeatImpl of(Seat s){
-        return new SeatImpl(s.getRowNumber(), s.getSeatNumber());
+        var seat = new SeatImpl(s.getRowNumber(), s.getSeatNumber());
+        seat.addAllSeatOptions(s.getSeatOptions());
+        return seat;
     }
 }
