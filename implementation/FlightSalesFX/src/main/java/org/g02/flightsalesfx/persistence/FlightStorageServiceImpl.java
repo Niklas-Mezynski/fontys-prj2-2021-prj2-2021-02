@@ -55,8 +55,12 @@ public class FlightStorageServiceImpl implements FlightStorageService{
 
     @Override
     public Flight update(Flight flight) {
-        var flightImpl = new FlightImpl(flight.getFlightNumber(), flight.getDeparture(), flight.getArrival(), flight.getPrice(), flight.getSalesProcessStatus());
+        var flightImpl = new FlightImpl((SalesOfficerImpl) flight.getCreatedBy(), flight.getFlightNumber(), flight.getDeparture(), flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
+        if(flight.getSalesProcessStatus()) {
+            flightImpl.startSalesProcess();
+        }
         try {
+            System.out.println("reached flightUpdate in persistence-layer. Following flight is passed: \n" + flightImpl);
             var update = dao.update(flightImpl);
             return update;
         } catch (SQLException e) {

@@ -181,8 +181,10 @@ public class HomeController implements Controller {
 //                    }
 
                     //Update using update-method:
-                    App.businessLogicAPI.updateFlight(FlightImpl.of(flightOfList), selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
+                    App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
+                    System.out.println("///");
                     System.out.println("reached update statement");
+                    System.out.println("///");
                 }
             } else {    // too many flights received OR no flights
                 System.out.println("received not exactly one flight");
