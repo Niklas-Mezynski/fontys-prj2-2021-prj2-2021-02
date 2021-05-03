@@ -1,6 +1,7 @@
 package org.g02.flightsalesfx;
 
 import org.g02.flightsalesfx.businessEntities.Airport;
+import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.Plane;
 import org.g02.flightsalesfx.businessEntities.SalesOfficer;
 import org.g02.flightsalesfx.gui.PlaneTable;
@@ -43,9 +44,14 @@ public class SubmitFlightController implements Controller {
     private PlaneTable planeTable;
     private Plane selectedPlane = null;
 
-    static public boolean helperIsPlaneAvailable(Plane searchedPlane, LocalDateTime searchedTime, Airport searchAirport) {
-        var flightsArr = App.businessLogicAPI.getAllFlights(s -> s.getPlane().equals(searchedPlane));
-        var flightsDev = App.businessLogicAPI.getAllFlights(s -> s.getPlane().equals(searchedPlane));
+    static public boolean helperIsPlaneAvailable(List<Flight> allFlights,Plane searchedPlane, LocalDateTime searchedTime, Airport searchAirport) {
+        var flightsArr = allFlights.stream()
+                .filter(s -> s.getPlane().equals(searchedPlane))
+                .collect(Collectors.toList());
+        var flightsDev = flightsArr; //See below
+        // clone the other list if you want to manipulate them independently, but since only stream operations are done on them,
+        // they can be identical (they could also use the same variable)
+
         /*
         remove all flight that are not by the plane searched for
         remove all flights that are in air at the time
@@ -71,7 +77,8 @@ public class SubmitFlightController implements Controller {
 
         var flightArrMax = flightsArr.stream().max((s1, s2) -> s1.getArrival().compareTo(s2.getArrival())).get();
         var flightDepMin = flightsDev.stream().min((s1, s2) -> s1.getDeparture().compareTo(s2.getDeparture())).get();
-        return (flightDepMin.getRoute().getDepartureAirport().equals(flightArrMax.getRoute().getArrivalAirport())) && searchAirport.equals(flightDepMin.getRoute().getDepartureAirport());
+        return (flightDepMin.getRoute().getDepartureAirport().equals(flightArrMax.getRoute().getArrivalAirport()))
+                && searchAirport.equals(flightDepMin.getRoute().getDepartureAirport());
     }
 
     public void initialize() {
@@ -89,7 +96,8 @@ public class SubmitFlightController implements Controller {
     private void createPlaneTableWithData(List<Plane> planes) {
         planeTablePane.getChildren().remove(planeTable);
         var extendedRoute = CreateFlightController.getExtendedRoute();
-        planes = planes.stream().filter(s -> helperIsPlaneAvailable(s, extendedRoute.getDepartureDateWithTime(), extendedRoute.getSelectedRoute().getDepartureAirport())).collect(Collectors.toList());
+        var flights=App.businessLogicAPI.getAllFlights(b->true); //Get and cache before killing the backend with SQL-requests (taking O(n) time based on the number of total planes)
+        planes = planes.stream().filter(s -> helperIsPlaneAvailable(flights, s, extendedRoute.getDepartureDateWithTime(), extendedRoute.getSelectedRoute().getDepartureAirport())).collect(Collectors.toList());
         planeTable = new PlaneTable(planes, (event, row) -> {
             if (!row.isEmpty()) {
                 Plane rowData = row.getItem();

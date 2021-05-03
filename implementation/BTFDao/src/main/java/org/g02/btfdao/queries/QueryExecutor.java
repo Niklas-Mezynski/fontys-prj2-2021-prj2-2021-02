@@ -10,7 +10,8 @@ public class QueryExecutor {
         try {
             var pst = connection.prepareStatement(sql);
             fillPreparedStatement(pst, values);
-            return pst.executeQuery();
+            var resultSet = pst.executeQuery();
+            return resultSet;
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -22,7 +23,9 @@ public class QueryExecutor {
         try {
             var pst = connection.prepareStatement(sql);
             fillPreparedStatement(pst, values);
-            return pst.execute();
+            var ret=pst.execute();
+            pst.close(); //Only a failsafe, please remember to close the connection in the dao as well
+            return ret;
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();

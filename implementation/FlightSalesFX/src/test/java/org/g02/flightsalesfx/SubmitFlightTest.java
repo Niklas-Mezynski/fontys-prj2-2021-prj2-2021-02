@@ -83,7 +83,6 @@ public class SubmitFlightTest {
         var v7=fxRobot.lookup(node -> ((Text)node).getText().contains("A420")).query();
         fxRobot.clickOn(v7);
         fxRobot.clickOn(fxRobot.lookup("#flightPrice").queryAs(TextField.class)).write("10");
-        fxRobot.clickOn(fxRobot.lookup("#flightNumberTextField").queryAs(TextField.class)).write("10");
         fxRobot.clickOn(fxRobot.lookup("#saveFlightButton").queryButton());
     }
     @AfterAll

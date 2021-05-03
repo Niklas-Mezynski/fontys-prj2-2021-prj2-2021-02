@@ -1,4 +1,4 @@
-module com.g02.flightsalesfx {
+module org.g02.flightsalesfx {
     requires javafx.controls;
     requires javafx.fxml;
     requires BTFDao;
