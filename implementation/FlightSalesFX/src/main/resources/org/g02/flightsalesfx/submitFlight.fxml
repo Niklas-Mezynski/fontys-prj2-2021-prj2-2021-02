@@ -95,24 +95,10 @@
                               </Label>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <VBox fx:id="flightOptionsContainer">
-                                       <children>
-                                          <HBox fx:id="mockupflightoption">
-                                             <children>
-                                                <TextField prefHeight="25.0" prefWidth="100.0" promptText="Name" />
-                                                <Label text="Available:">
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </Label>
-                                                <Spinner editable="true" prefHeight="25.0" prefWidth="72.0" />
-                                                <TextField prefHeight="25.0" prefWidth="137.0" promptText="Surcharge" />
-                                             </children></HBox>
-                                       </children>
-                                    </VBox>
+                                    <VBox fx:id="flightOptionsContainer" />
                                     <HBox prefHeight="90.0" prefWidth="380.0">
                                        <children>
-                                          <Button fx:id="addFlightOptionBT" mnemonicParsing="false" styleClass="buttonBlack" text="Add new Flight Option" />
+                                          <Button fx:id="addFlightOptionBT" maxHeight="20.0" mnemonicParsing="false" onAction="#addFlightOption" styleClass="buttonBlack" text="Add new Flight Option" />
                                        </children>
                                     </HBox>
                                  </children>

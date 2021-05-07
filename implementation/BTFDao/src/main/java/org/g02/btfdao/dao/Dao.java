@@ -29,6 +29,7 @@ public class Dao<E extends Savable> {
     private QueryExecutor queryExecutor;
     private boolean followOnUpdate = true;
     private final DataSource dataSource;
+    public static boolean DEBUG = false;
 
     @Deprecated //will use default dataSource, Connection parameter is ignored
     public Dao(Class<E> entityType, Connection connection) {

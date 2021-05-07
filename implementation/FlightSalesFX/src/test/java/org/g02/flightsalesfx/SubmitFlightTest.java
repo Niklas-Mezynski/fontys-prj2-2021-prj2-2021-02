@@ -53,7 +53,7 @@ public class SubmitFlightTest {
         planes.add(new PlaneImpl("A420","413","Airbus"));
         Mockito.when(businessLogicAPI.getAllRoutes(any())).thenReturn(routes);
         Mockito.when(businessLogicAPI.getAllPlanes(any())).thenReturn(planes);
-        Mockito.when(businessLogicAPI.createFlightFromUI(new SalesOfficerImpl("ABC","DEF","GHI"), LocalDateTime.of(LocalDate.of(2021,4,12), LocalTime.of(12,01)), LocalDateTime.of(LocalDate.of(2021,4,12), LocalTime.of(14,11)), new RouteImpl(new AirportImpl("DUS", "Düsseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl("A420","413","Airbus"), 10)).thenReturn(true);
+        Mockito.when(businessLogicAPI.createFlightFromUI(new SalesOfficerImpl("ABC","DEF","GHI"), LocalDateTime.of(LocalDate.of(2021,4,12), LocalTime.of(12,01)), LocalDateTime.of(LocalDate.of(2021,4,12), LocalTime.of(14,11)), new RouteImpl(new AirportImpl("DUS", "Düsseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl("A420","413","Airbus"), 10,List.of())).thenReturn(true);
         App.employee=new SalesOfficerImpl("ABC","DEF","GHI");
 
         var app = new App();
