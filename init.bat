@@ -1,1 +1,1 @@
-mvn -s ../.m2/settings.xml compile
+mvn -s .m2/settings.xml --file ./implementation/ compile
