@@ -1,5 +1,6 @@
 package org.g02.btfdao.dao;
 
+import org.postgresql.ds.PGConnectionPoolDataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
@@ -10,11 +11,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.commons.dbcp2.*;
 
 public class PGJDBCUtils {
 
@@ -31,21 +35,25 @@ public class PGJDBCUtils {
                 (s) -> {
                     Properties props = properties(APPLICATION_PROPERTIES);
 
-                    PGSimpleDataSource source = new PGSimpleDataSource();
+                    var source = new BasicDataSource(); //This is now an Apache Data Source
 
                     String prefix = sourceName + ".";
                     String[] serverNames = {
                             props.getProperty(prefix + "dbhost")
                     };
-                    source.setServerNames(serverNames);
+                    source.setDriverClassName("org.postgresql.Driver");
 
                     String user = props.getProperty(prefix + "username");
-                    source.setUser(user);
-
-                    source.setDatabaseName(props
-                            .getProperty(prefix + "dbname"));
+                    source.setUsername(user);
                     source.setPassword(props
                             .getProperty(prefix + "password"));
+
+                    source.setUrl("jdbc:postgresql://" + serverNames[0] + "/");
+                    source.setInitialSize(50);
+                    source.setMinIdle(5);
+                    source.setMaxIdle(50);
+                    source.setMaxOpenPreparedStatements(100);
+                    //Begin check
                     String pingQuery = "SELECT current_database(), now()::TIMESTAMP as now;";
                     try (Connection con = source.getConnection();
                          PreparedStatement pst = con.prepareStatement(pingQuery);) {
@@ -58,7 +66,6 @@ public class PGJDBCUtils {
                                         .toString());
                             }
                         }
-
                     } catch (SQLException ex) {
                         Logger.getLogger(PGJDBCUtils.class.getName()).log(
                                 Level.SEVERE, null, ex);

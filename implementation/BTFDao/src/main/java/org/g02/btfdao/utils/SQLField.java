@@ -3,6 +3,7 @@ package org.g02.btfdao.utils;
 import org.g02.btfdao.annotations.FieldName;
 import org.g02.btfdao.annotations.Ignore;
 import org.g02.btfdao.annotations.PrimaryKey;
+import org.g02.btfdao.dao.Dao;
 import org.g02.btfdao.dao.Savable;
 
 import java.lang.reflect.Array;
@@ -145,15 +146,16 @@ public class SQLField {
      * @return whether this SQLField is "Valid", should ideally only be used in dev environments via assertions
      */
     public boolean isValid() {
-        if(true){ //Dump information in case errors occur
+        if(Dao.DEBUG){ //Dump information in case errors occur
+            System.out.println("SQLField being created for:");
             System.out.println("fieldClass: "+getFieldClass().getName());
             System.out.println("fieldTypeName: "+getFieldType().getName());
 
         }
         if (isIgnored()) return true;
-        assert !isList() : "Not supported yet";
+        assert !isList() : "List/Collection types are not supported (yet). Mark as @Ignored please";
+        if(Dao.DEBUG)System.out.println("declaringClass: "+field.getDeclaringClass().getName());
         if (!isPrimitive()) {
-//            System.out.println(field.getDeclaringClass().getName());
             assert Savable.class.isAssignableFrom(field.getDeclaringClass());
         }
         assert isPrimitive() || Savable.class.isAssignableFrom(field.getType())
