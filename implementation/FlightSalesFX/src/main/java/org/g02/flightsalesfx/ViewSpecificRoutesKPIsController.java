@@ -58,7 +58,7 @@ public class ViewSpecificRoutesKPIsController implements Controller {
 
 
 
-        //Fill Line Chart with data
+        //Creating the NumberAxis
         OptionalInt minBookingYear = bookings.stream().mapToInt(booking -> booking.getFlight().getDeparture().getYear()).min();
         int currentYear = LocalDate.now().getYear();
         final NumberAxis xAxis = new NumberAxis(minBookingYear.orElse(2010) - 1, currentYear + 1, 1);
@@ -84,7 +84,7 @@ public class ViewSpecificRoutesKPIsController implements Controller {
             routeSeries.getData().add(new XYChart.Data(year, sumRevenueOneYear));
         }
 
-
+        //Add everything to the area chart
         areaChart.getData().add(routeSeries);
         areaChart.setMinWidth(chartView.getPrefWidth());
         areaChart.setMinHeight(chartView.getPrefHeight());
@@ -94,7 +94,7 @@ public class ViewSpecificRoutesKPIsController implements Controller {
 
     @FXML
     void switchView() {
-        if (numberStatsView.visibleProperty().get()) {
+        if (numberStatsView.isVisible()) {
             numberStatsView.visibleProperty().set(false);
             chartView.visibleProperty().set(true);
         } else {
