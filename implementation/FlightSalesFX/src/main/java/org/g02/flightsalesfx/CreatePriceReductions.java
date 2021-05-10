@@ -1,7 +1,7 @@
-package com.g02.flightsalesfx;
+package org.g02.flightsalesfx;
 
 
-import com.g02.flightsalesfx.helpers.Controller;
+import org.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -45,6 +45,10 @@ public class CreatePriceReductions implements Controller {
         endHour.getItems().addAll(hourTimes);
         startMin.getItems().addAll(minTimes);
         endMin.getItems().addAll(minTimes);
+        startHour.setVisibleRowCount(5);
+        endHour.setVisibleRowCount(5);
+        startMin.setVisibleRowCount(5);
+        endMin.setVisibleRowCount(5);
     }
     public void initialize() {
         final var allFlights=App.businessLogicAPI.getAllFlights();

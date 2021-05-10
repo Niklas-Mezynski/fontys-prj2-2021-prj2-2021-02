@@ -225,6 +225,23 @@ ToggleButton.selectSeatOption {
     -fx-text-fill: black;
 }
 
+.combo-box .list-cell {
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #3b3b3b 0%, #343434 100%);
+    -fx-text-fill:white;
+}
+
+.combo-box .list-cell:focus {
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #08AEEA 0%, #2AF598 100%);
+    -fx-text-fill:black;
+}
+
+.combo-box{
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #3b3b3b 0%, #343434 100%);
+}
+.combo-box .arrow{
+    -fx-background-color:white;
+}
+
 .list-cell {
      -fx-background-color: #1A1A1A;
      -fx-text-fill: white;
@@ -238,5 +255,9 @@ ToggleButton.selectSeatOption {
 }
 
 .date-picker > .arrow-button {
-    -fx-background-color: #212121;
+    -fx-background-color: #484848;
+}
+
+.date-picker{
+    -fx-background-color: #484848;
 }
