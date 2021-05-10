@@ -93,7 +93,6 @@ public class HomeController implements Controller {
 
         flightVBox.getChildren().add(flightTable);
         flightTable.setMinWidth(flightPane.getPrefWidth());
-
     }
 
     public void createOrUpdateRouteTable(Predicate<Route> pr) {
@@ -149,16 +148,22 @@ public class HomeController implements Controller {
         App.setRoot("createFlight");
     }
 
-    /*
-     * Method to start the salesprocess of a selectedFlight. The selected object is
-     * updated in the database, by pressing the Button (UI).
+    /**
+     * Requires a selected flight (clicked on by User). If not, throws Exception.
      *
+     * Checks, if the salesprocess for this flight is already started. If it is, it raises an Alert and
+     * and offers an option to stop the salesprocess or to do nothing.
+     *
+     * If the salesprocess has not been started yet, the selected flights is getting updated using the businesslogicAPI
+     * that uses the persistence layer and the DAO to finalize the action.
+     *
+     *
+     * @throws IOException
      */
     @FXML
     public void enableSalesprocess() throws IOException {
-        //todo: popup
         if (selectedFlight != null) {
-            // check if salesprocess is already started
+            // check if salesprocess is already started and handle that situation
             if(selectedFlight.getSalesProcessStatus()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION,
                         "The Salesprocess for the selected flight has been started earlier. \n" +
@@ -188,6 +193,8 @@ public class HomeController implements Controller {
                 alert.showAndWait();
                 return;
             }
+        } else {
+            throw new IOException();
         }
     }
 
