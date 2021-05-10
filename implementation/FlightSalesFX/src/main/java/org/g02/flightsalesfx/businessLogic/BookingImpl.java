@@ -34,6 +34,7 @@ public class BookingImpl implements Booking, Savable {
         this.eMail = eMail;
     }
 
+
     private BookingImpl(){}
 
     public static BookingImpl of(Booking b){
