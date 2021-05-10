@@ -88,7 +88,6 @@ public class ViewSpecificRoutesKPIsController implements Controller {
         areaChart.getData().add(routeSeries);
         areaChart.setMinWidth(chartView.getPrefWidth());
         areaChart.setMinHeight(chartView.getPrefHeight());
-        System.out.println(chartView.getPrefWidth());
         chartPane.setCenter(areaChart);
     }
 
