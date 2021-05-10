@@ -157,21 +157,24 @@ public class SubmitFlightController implements Controller {
         var flightCreated = false;
 
         if (creator != null && depDateTime != null && arrDateTime != null && route != null && plane != null && price != -1 && conversionOK) {
-            var f = new FlightImpl((SalesOfficerImpl) creator, depDateTime, arrDateTime, route, plane, price);
+            var f = FlightImpl.of(new FlightImpl((SalesOfficerImpl) creator, depDateTime, arrDateTime, route, plane, price));
             flightCreated = App.businessLogicAPI.createFlightFromUI(f);
 
             if (flightCreated) {
                 if(checkboxSalesprocess.isSelected()) {
-                    //todo
                     var allf = App.businessLogicAPI.getAllFlights(flight -> true);
+
+                    //sort the flightlist by flightnumber
                     var sortedFlights =allf.stream()
                             .sorted((o1, o2) -> o2.getFlightNumber())
                             .toArray();
+
+                    //get the latest flight by selecting the last index of the array (asc-order)
                     var recentlyAddedFlight = (FlightImpl) sortedFlights[sortedFlights.length - 1];
                     App.businessLogicAPI.updateFlight(recentlyAddedFlight, depDateTime, arrDateTime, price, true);
                 }
-                exit();
 
+                exit();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
