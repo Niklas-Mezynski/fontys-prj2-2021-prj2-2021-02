@@ -2,6 +2,7 @@ package org.g02.flightsalesfx;
 
 import javafx.scene.control.CheckBox;
 import org.g02.flightsalesfx.businessEntities.Airport;
+import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.Plane;
 import org.g02.flightsalesfx.businessEntities.SalesOfficer;
 import org.g02.flightsalesfx.businessLogic.FlightImpl;
@@ -18,7 +19,9 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.g02.flightsalesfx.App.setRoot;
 
@@ -155,12 +158,17 @@ public class SubmitFlightController implements Controller {
 
         if (creator != null && depDateTime != null && arrDateTime != null && route != null && plane != null && price != -1 && conversionOK) {
             var f = new FlightImpl((SalesOfficerImpl) creator, depDateTime, arrDateTime, route, plane, price);
-            flightCreated = App.businessLogicAPI.createFlightFromUI(creator, depDateTime, arrDateTime, route, plane, price);
+            flightCreated = App.businessLogicAPI.createFlightFromUI(f);
 
             if (flightCreated) {
                 if(checkboxSalesprocess.isSelected()) {
                     //todo
-                    App.businessLogicAPI.updateFlight(f, depDateTime, arrDateTime, price, true);
+                    var allf = App.businessLogicAPI.getAllFlights(flight -> true);
+                    var sortedFlights =allf.stream()
+                            .sorted((o1, o2) -> o2.getFlightNumber())
+                            .toArray();
+                    var recentlyAddedFlight = (FlightImpl) sortedFlights[sortedFlights.length - 1];
+                    App.businessLogicAPI.updateFlight(recentlyAddedFlight, depDateTime, arrDateTime, price, true);
                 }
                 exit();
 
