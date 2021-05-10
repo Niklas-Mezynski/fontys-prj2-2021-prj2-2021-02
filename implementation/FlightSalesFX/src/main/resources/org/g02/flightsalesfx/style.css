@@ -12,7 +12,7 @@
 .buttonBlack {
     /*-fx-max-width: MAX_VALUE;*/
     -fx-background-color: #1A1A1A;
-    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #353535 0%, #555555 100%);
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #3e3e3e 0%, #474747 100%);
     -fx-text-fill: #fff;
     -fx-font-size: 14px;
 }
@@ -46,7 +46,7 @@
 }
 
 .text-field {
-    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #1A1A1A 0%, #2B2B2B 100%);
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #3b3b3b 0%, #343434 100%);
     -fx-text-fill: #FFFFFF;
     -fx-margin: 0;
 }
