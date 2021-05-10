@@ -232,7 +232,9 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     @Override
     public boolean createFlightFromUI(Flight flight) {
         var f = getFlightManager().createFlight(flight.getCreatedBy(), flight.getDeparture(), flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
-
+        if(flight.getSalesProcessStatus()) {
+            f.startSalesProcess();
+        }
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
         return flightStorageService.add(flight)!=null;
     }

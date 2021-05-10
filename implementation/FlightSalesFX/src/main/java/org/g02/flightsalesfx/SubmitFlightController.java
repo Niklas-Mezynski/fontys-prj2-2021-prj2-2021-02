@@ -1,8 +1,11 @@
 package org.g02.flightsalesfx;
 
+import javafx.scene.control.CheckBox;
 import org.g02.flightsalesfx.businessEntities.Airport;
 import org.g02.flightsalesfx.businessEntities.Plane;
 import org.g02.flightsalesfx.businessEntities.SalesOfficer;
+import org.g02.flightsalesfx.businessLogic.FlightImpl;
+import org.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
 import org.g02.flightsalesfx.gui.PlaneTable;
 import org.g02.flightsalesfx.helpers.Controller;
 import javafx.event.ActionEvent;
@@ -35,6 +38,9 @@ public class SubmitFlightController implements Controller {
 
     @FXML
     private Button exitFlightButton;
+
+    @FXML
+    private CheckBox checkboxSalesprocess;
 
     @FXML
     private TextField flightNumberTextField;
@@ -145,23 +151,25 @@ public class SubmitFlightController implements Controller {
         var route = extendedRoute.getSelectedRoute();
         var depDateTime = extendedRoute.getDepartureDateWithTime();
         var arrDateTime = extendedRoute.getArrivalDateWithTime();
+        var flightCreated = false;
 
         if (creator != null && depDateTime != null && arrDateTime != null && route != null && plane != null && price != -1 && conversionOK) {
-
-            var flightCreated = App.businessLogicAPI.createFlightFromUI(creator, depDateTime, arrDateTime, route, plane, price);
+            var f = new FlightImpl((SalesOfficerImpl) creator, depDateTime, arrDateTime, route, plane, price);
+            flightCreated = App.businessLogicAPI.createFlightFromUI(creator, depDateTime, arrDateTime, route, plane, price);
 
             if (flightCreated) {
-
+                if(checkboxSalesprocess.isSelected()) {
+                    //todo
+                    App.businessLogicAPI.updateFlight(f, depDateTime, arrDateTime, price, true);
+                }
                 exit();
 
             } else {
-
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Error saving flight");
                 alert.setContentText("There was an error while saving the created flight. Try again!");
                 alert.showAndWait();
-
             }
 
         } else {
@@ -173,8 +181,10 @@ public class SubmitFlightController implements Controller {
             alert.showAndWait();
 
         }
-
-
     }
 
+    @FXML
+    void startSalesprocess(ActionEvent event) {
+
+    }
 }
