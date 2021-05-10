@@ -165,53 +165,75 @@ public class HomeController implements Controller {
     @FXML
     public void enableSalesprocess() throws IOException {
         if (selectedFlight != null) {
-            // check if salesprocess is already started and handle that situation
-            if(selectedFlight.getSalesProcessStatus()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                        "The Salesprocess for the selected flight has been started earlier. \n" +
-                                "Do you want to stop the salesprocess?",
-                        ButtonType.OK,
-                        ButtonType.CANCEL);
-                alert.setTitle("Salesprocess is started");
-                Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == (ButtonType.OK)) {
+            //get selected flight from db -> useful to avoid any errors/bugs
+            final List<Flight> currentFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
+            boolean noDataIssues = currentFlights.size() == 1;
+            boolean salesprocessStatus = currentFlights.get(0).getSalesProcessStatus();
+
+            //check if salesprocess is already started and handle that situation
+            if(salesprocessStatus && noDataIssues) {
+                var buttonPressed = handleStartedSalesprocess();
+                if(buttonEqualsOk(buttonPressed)) {
                     App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), false);
                     return;
                 }
+                return;
             }
-
-            final List<Flight> currentFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
-            if (!currentFlights.isEmpty() && currentFlights.size() == 1) {
+            if (noDataIssues) {
                 //asking for cofirmation
-
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                        "Do you want to proceed and start the salesproces for this flight?",
-                        ButtonType.OK,
-                        ButtonType.CANCEL
-                        );
-                alert.setTitle("Confirm to start Salesprocess");
-                Optional<ButtonType> res = alert.showAndWait();
-
-                if(res.get() == ButtonType.OK) {
-                    selectedFlight.startSalesProcess();
-
-                    //Update using update-method:
-                    App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
+                var buttonPressed = handleNotStartedSalesprocess();
+                if(buttonEqualsOk(buttonPressed)) {
+                    App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), true);
                     return;
                 }
             } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Problems during processing selectedflight information.");
-                alert.setContentText("There occurred an issue by transfering necessary data.");
-                alert.showAndWait();
+                dataErrorAlert();
                 return;
             }
         } else {
             throw new IOException();
         }
-
         //refresh the table to include the changes into the view.
         flightTable.refreshTable();
+    }
+
+    //HELPER
+    Optional<ButtonType> handleStartedSalesprocess() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                "The Salesprocess for the selected flight has been started earlier. \n" +
+                        "Do you want to stop the salesprocess?",
+                ButtonType.OK,
+                ButtonType.CANCEL);
+        alert.setTitle("Salesprocess is started");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        return result;
+    }
+
+    //HELPER
+    Optional<ButtonType> handleNotStartedSalesprocess() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                "Do you want to proceed and start the salesproces for this flight?",
+                ButtonType.OK,
+                ButtonType.CANCEL
+        );
+        alert.setTitle("Confirm to start Salesprocess");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        return result;
+    }
+
+    //HELPER
+    boolean buttonEqualsOk(Optional<ButtonType> decision) {
+        return decision.get() == (ButtonType.OK);
+    }
+
+    //ALERTMETHOD
+    void dataErrorAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Problems during processing selectedflight information.");
+        alert.setContentText("There occurred an issue by transfering necessary data.");
+        alert.showAndWait();
     }
 }
