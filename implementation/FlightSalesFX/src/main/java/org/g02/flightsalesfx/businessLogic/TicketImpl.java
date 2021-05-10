@@ -29,6 +29,8 @@ public class TicketImpl implements Ticket, Savable {
     public String paxFName;
     public String paxLName;
 
+    private TicketImpl(){}
+
 
     public TicketImpl(Flight flight, Seat seat, String firstName, String lastName, SeatOption[] seatOptions){
         this.flight = FlightImpl.of(flight);

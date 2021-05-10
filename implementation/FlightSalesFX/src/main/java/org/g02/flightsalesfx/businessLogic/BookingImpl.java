@@ -33,6 +33,9 @@ public class BookingImpl implements Booking, Savable {
         this.flightOptions = Arrays.asList(bookedFlightOptions).stream().map(bfo -> FlightOptionImpl.of(bfo)).toArray(FlightOptionImpl[]::new);
         this.eMail = eMail;
     }
+
+    private BookingImpl(){}
+
     public static BookingImpl of(Booking b){
 
         return new BookingImpl(SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), b.getTickets().toArray(Ticket[]::new), b.getBookedFlightOptions().toArray(FlightOption[]::new), b.getCustomerEmail());
