@@ -68,21 +68,37 @@ public class startSalesprocessTest {
         fxRobot.clickOn(x);
     }
 
+    /**
+     * Testing that the button enables itself when selecting a flight
+     *
+     * @param fxRobot
+     */
     @Test
     void enableButtonTest(FxRobot fxRobot) {
         clickOnSampleFlight(fxRobot);
         fxRobot.clickOn(fxRobot.lookup("#enableSalesprocess").queryAs(Button.class));
     }
 
+    /**
+     * Assert that the salesprocessStatus changed after pressing the button
+     *
+     * @param fxRobot
+     */
     @Test
     void setSalesprocessTrueTest(FxRobot fxRobot) {
         clickOnSampleFlight(fxRobot);
         fxRobot.clickOn(fxRobot.lookup("#enableSalesprocess").queryAs(Button.class));
+        fxRobot.clickOn(fxRobot.lookup("OK").queryAs(Button.class));
 
         Assertions.assertThat(businessLogicAPI.getAllFlights(f -> f.getSalesProcessStatus() == true).size())
                 .isEqualTo(1);
     }
 
+    /**
+     * Alert appearing if the salesprocess is already started.
+     *
+     * @param fxRobot
+     */
     @Test
     void alertWhenSalesprocessAlreadyStartedTest (FxRobot fxRobot) {
         List<Flight> allFlights = businessLogicAPI.getAllFlights(any());
@@ -93,9 +109,13 @@ public class startSalesprocessTest {
         fxRobot.clickOn(fxRobot.lookup("OK").queryAs(Button.class));
     }
 
-    //HELPER
+    /**
+     * Helper() to select the sampleflight faster
+     *
+     * @param fxRobot
+     */
     void clickOnSampleFlight(FxRobot fxRobot) {
-        var v=fxRobot.lookup(node -> ((Text)node).getText().contains("4")).query();
+        var v = fxRobot.lookup(node -> ((Text)node).getText().contains("4")).query();
         fxRobot.clickOn(v);
     }
 }
