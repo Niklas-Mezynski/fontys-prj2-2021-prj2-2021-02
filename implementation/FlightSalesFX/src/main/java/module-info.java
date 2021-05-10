@@ -1,4 +1,4 @@
-module com.g02.flightsalesfx {
+module org.g02.flightsalesfx {
     requires java.sql;
     requires BTFDao;
     requires javafx.graphics;
