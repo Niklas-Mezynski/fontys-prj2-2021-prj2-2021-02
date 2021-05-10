@@ -66,8 +66,6 @@ public class startSalesprocessTest {
     void goToTab(FxRobot fxRobot) {
         var x = fxRobot.lookup("#flightsTab").query();
         fxRobot.clickOn(x);
-
-
     }
 
     @Test
@@ -80,6 +78,7 @@ public class startSalesprocessTest {
     void setSalesprocessTrueTest(FxRobot fxRobot) {
         clickOnSampleFlight(fxRobot);
         fxRobot.clickOn(fxRobot.lookup("#enableSalesprocess").queryAs(Button.class));
+
         Assertions.assertThat(businessLogicAPI.getAllFlights(f -> f.getSalesProcessStatus() == true).size())
                 .isEqualTo(1);
     }
