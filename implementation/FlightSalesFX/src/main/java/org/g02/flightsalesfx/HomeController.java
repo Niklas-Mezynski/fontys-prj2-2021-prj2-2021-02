@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class HomeController implements Controller {
@@ -157,6 +158,21 @@ public class HomeController implements Controller {
     public void enableSalesprocess() throws IOException {
         //todo: popup
         if (selectedFlight != null) {
+            // check if salesprocess is already started
+            if(selectedFlight.getSalesProcessStatus()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "The Salesprocess for the selected flight has been started earlier. \n" +
+                                "Do you want to stop the salesprocess?",
+                        ButtonType.OK,
+                        ButtonType.CANCEL);
+                alert.setTitle("Salesprocess is started");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get() == (ButtonType.OK)) {
+                    App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), false);
+                    return;
+                }
+            }
+
             final List<Flight> currentFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
             if (!currentFlights.isEmpty() && currentFlights.size() == 1) {
                 selectedFlight.startSalesProcess();

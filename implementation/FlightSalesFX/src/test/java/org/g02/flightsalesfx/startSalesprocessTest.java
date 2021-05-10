@@ -1,20 +1,21 @@
 package org.g02.flightsalesfx;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.assertj.core.api.ThrowableAssert;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.Route;
 import org.g02.flightsalesfx.businessLogic.*;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.testfx.api.FxRobot;
+import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
@@ -65,13 +66,37 @@ public class startSalesprocessTest {
     void goToTab(FxRobot fxRobot) {
         var x = fxRobot.lookup("#flightsTab").query();
         fxRobot.clickOn(x);
+
+
     }
 
     @Test
     void enableButtonTest(FxRobot fxRobot) {
+        clickOnSampleFlight(fxRobot);
+        fxRobot.clickOn(fxRobot.lookup("#enableSalesprocess").queryAs(Button.class));
+    }
+
+    @Test
+    void setSalesprocessTrueTest(FxRobot fxRobot) {
+        clickOnSampleFlight(fxRobot);
+        fxRobot.clickOn(fxRobot.lookup("#enableSalesprocess").queryAs(Button.class));
+        Assertions.assertThat(businessLogicAPI.getAllFlights(f -> f.getSalesProcessStatus() == true).size())
+                .isEqualTo(1);
+    }
+
+    @Test
+    void alertWhenSalesprocessAlreadyStartedTest (FxRobot fxRobot) {
+        List<Flight> allFlights = businessLogicAPI.getAllFlights(any());
+        allFlights.get(0).startSalesProcess();
+
+        clickOnSampleFlight(fxRobot);
+        fxRobot.clickOn(fxRobot.lookup("#enableSalesprocess").queryAs(Button.class));
+        fxRobot.clickOn(fxRobot.lookup("OK").queryAs(Button.class));
+    }
+
+    //HELPER
+    void clickOnSampleFlight(FxRobot fxRobot) {
         var v=fxRobot.lookup(node -> ((Text)node).getText().contains("4")).query();
         fxRobot.clickOn(v);
-
-        fxRobot.clickOn(fxRobot.lookup("#enableSalesprocess").queryAs(Button.class));
     }
 }
