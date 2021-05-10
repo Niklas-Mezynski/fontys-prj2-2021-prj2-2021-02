@@ -197,7 +197,7 @@ public class HomeController implements Controller {
      *
      * Appearing alertmessage that offers the opportunity to stop the salesprocess.
      *
-     * @return button pressed by User
+     * @return button pressed by user
      */
     Optional<ButtonType> handleStartedSalesprocess() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION,
@@ -216,7 +216,7 @@ public class HomeController implements Controller {
      *
      * @param selectedFlight selected flight received from the database
      *
-     * @return button pressed by User
+     * @return button pressed by user
      */
     Optional<ButtonType> handleNotStartedSalesprocess(Flight selectedFlight) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
@@ -239,7 +239,7 @@ public class HomeController implements Controller {
     }
 
     /**
-     * Alertmessage that informs about issues with data
+     * Error message that informs about issues with data received from database
      */
     void dataErrorAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
