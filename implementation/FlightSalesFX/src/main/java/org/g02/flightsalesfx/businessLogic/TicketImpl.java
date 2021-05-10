@@ -38,6 +38,9 @@ public class TicketImpl implements Ticket, Savable {
         this.paxLName = lastName;
 
     }
+
+    private TicketImpl() {}
+
     public static TicketImpl of(Ticket t){
 
         return new TicketImpl(t.getFlight(), t.getSeat(), t.getFirstName(), t.getLastName(), t.getSeatOptions());

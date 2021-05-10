@@ -38,6 +38,8 @@ public class BookingImpl implements Booking, Savable {
         return new BookingImpl(SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), b.getTickets().toArray(Ticket[]::new), b.getBookedFlightOptions().toArray(FlightOption[]::new), b.getCustomerEmail());
     }
 
+    private BookingImpl() {}
+
     @Override
     public SalesEmployee getSalesEmployee() {
         return se;
