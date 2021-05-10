@@ -45,6 +45,8 @@ public class HomeController implements Controller {
     private RouteTable routeTable;
     private Flight selectedFlight;
 
+    FlightTable flightTable;
+
     public void initialize() {
         enableSalesprocess.setDisable(true);
         tabPane.getSelectionModel().select(App.inRootTab);
@@ -78,7 +80,7 @@ public class HomeController implements Controller {
 
         var allFlights = App.businessLogicAPI.getAllFlights(f -> true);
         System.out.println(allFlights);
-        var flightTable = new FlightTable(allFlights, (event, row) -> {
+        flightTable = new FlightTable(allFlights, (event, row) -> {
             selectedFlight = row.getItem();
             System.out.println("Clicked on: " + selectedFlight);
             if (event.getClickCount() == 1) {
@@ -149,10 +151,10 @@ public class HomeController implements Controller {
     }
 
     /**
-     * Requires a selected flight (clicked on by User). If not, throws Exception.
+     * Requires a selected flight (clicked on by User). Else, throws Exception.
      *
-     * Checks, if the salesprocess for this flight is already started. If it is, it raises an Alert and
-     * and offers an option to stop the salesprocess or to do nothing.
+     * Checks, if the salesprocess for this flight has already started. If it has, it raises an Alert
+     * and offers an option to stop the salesprocess or to cancel the process.
      *
      * If the salesprocess has not been started yet, the selected flights is getting updated using the businesslogicAPI
      * that uses the persistence layer and the DAO to finalize the action.
@@ -180,11 +182,23 @@ public class HomeController implements Controller {
 
             final List<Flight> currentFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
             if (!currentFlights.isEmpty() && currentFlights.size() == 1) {
-                selectedFlight.startSalesProcess();
+                //asking for cofirmation
 
-                //Update using update-method:
-                App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
-                return;
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                        "Do you want to proceed and start the salesproces for this flight?",
+                        ButtonType.OK,
+                        ButtonType.CANCEL
+                        );
+                alert.setTitle("Confirm to start Salesprocess");
+                Optional<ButtonType> res = alert.showAndWait();
+
+                if(res.get() == ButtonType.OK) {
+                    selectedFlight.startSalesProcess();
+
+                    //Update using update-method:
+                    App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
+                    return;
+                }
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
@@ -196,6 +210,8 @@ public class HomeController implements Controller {
         } else {
             throw new IOException();
         }
-    }
 
+        //refresh the table to include the changes into the view.
+        flightTable.refreshTable();
+    }
 }
