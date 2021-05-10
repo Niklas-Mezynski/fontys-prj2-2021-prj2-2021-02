@@ -151,9 +151,9 @@ public class HomeController implements Controller {
     }
 
     /**
-     * Requires a selected flight (clicked on by User). Else, throws Exception.
+     * Requires a selected flight (clicked on by User). Else, throw exception.
      *
-     * Checks, if the salesprocess for this flight has already started. If it has, it raises an Alert
+     * Checks if the salesprocess for this flight has already started. If it has, it raises an alert
      * and offers an option to stop the salesprocess or to cancel the process.
      *
      * If the salesprocess has not been started yet, the selected flights is getting updated using the businesslogicAPI
@@ -166,25 +166,22 @@ public class HomeController implements Controller {
     public void enableSalesprocess() throws IOException {
         if (selectedFlight != null) {
             //get selected flight from db -> useful to avoid any errors/bugs
-            final List<Flight> currentFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
-            boolean noDataIssues = currentFlights.size() == 1;
-            boolean salesprocessStatus = currentFlights.get(0).getSalesProcessStatus();
+            final List<Flight> selectedFlightFromDB = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
 
-            //check if salesprocess is already started and handle that situation
-            if(salesprocessStatus && noDataIssues) {
-                var buttonPressed = handleStartedSalesprocess();
-                if(buttonEqualsOk(buttonPressed)) {
-                    App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), false);
+            if(selectedFlightFromDB.size() == 1) {
+                //check if salesprocess is already started and handle that situation
+                if(selectedFlightFromDB.get(0).getSalesProcessStatus()) {
+                    var buttonPressed = handleStartedSalesprocess();
+                    if(buttonEqualsOk(buttonPressed)) {
+                        App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), false);
+                        flightTable.refreshTable();
+                    }
                     return;
                 }
-                return;
-            }
-            if (noDataIssues) {
-                //asking for cofirmation
+                //asking for confirmation
                 var buttonPressed = handleNotStartedSalesprocess();
                 if(buttonEqualsOk(buttonPressed)) {
                     App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), true);
-                    return;
                 }
             } else {
                 dataErrorAlert();
@@ -193,11 +190,17 @@ public class HomeController implements Controller {
         } else {
             throw new IOException();
         }
-        //refresh the table to include the changes into the view.
+        //refresh the table to apply changes in UI
         flightTable.refreshTable();
     }
 
-    //HELPER
+    /**
+     * HELPER
+     *
+     * Appearing alertmessage that offers the opportunity to stop the salesprocess.
+     *
+     * @return button pressed by User
+     */
     Optional<ButtonType> handleStartedSalesprocess() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION,
                 "The Salesprocess for the selected flight has been started earlier. \n" +
@@ -210,7 +213,13 @@ public class HomeController implements Controller {
         return result;
     }
 
-    //HELPER
+    /**
+     * HELPER
+     *
+     * Appearing alertmessage that offers the opportunity to confirm the start of the salesprocess.
+     *
+     * @return button pressed by User
+     */
     Optional<ButtonType> handleNotStartedSalesprocess() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                 "Do you want to proceed and start the salesproces for this flight?",
@@ -223,12 +232,19 @@ public class HomeController implements Controller {
         return result;
     }
 
-    //HELPER
+    /**
+     * HELPER
+     *
+     * @param decision the pressed button
+     * @return true, if the pressed button is of type "OK"
+     */
     boolean buttonEqualsOk(Optional<ButtonType> decision) {
         return decision.get() == (ButtonType.OK);
     }
 
-    //ALERTMETHOD
+    /**
+     * Alertmessage that informs about issues with data
+     */
     void dataErrorAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
