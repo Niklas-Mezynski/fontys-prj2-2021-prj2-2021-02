@@ -47,7 +47,7 @@ public class TicketStorageServiceImpl implements TicketStorageService{
     @Override
     public boolean remove(Ticket ticket) {
         try {
-            dao.remove(new TicketImpl(ticket.getFlight(), ticket.getSeat(), ticket.getFirstName(), ticket.getLastName(), ticket.getSeatOptions() ));
+            dao.remove(TicketImpl.of(ticket));
         } catch (SQLException e) {
             e.printStackTrace();
         }

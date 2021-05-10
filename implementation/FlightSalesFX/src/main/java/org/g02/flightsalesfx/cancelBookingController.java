@@ -74,6 +74,7 @@ public class cancelBookingController implements Controller {
 
             ButtonType result = alert.getResult();
             if(ButtonType.YES.equals(result)){
+                App.persistenceAPI.getBookingStorageService(App.businessLogicAPI.getBookingManager()).remove(selectedBooking);
                 List<Ticket> tickets = selectedBooking.getTickets();
 
                 tickets.forEach(ticket -> {
@@ -81,7 +82,7 @@ public class cancelBookingController implements Controller {
                     App.persistenceAPI.getTicketStorageService(App.businessLogicAPI.getTicketManager()).remove(ticket);
                 });
 
-                App.persistenceAPI.getBookingStorageService(App.businessLogicAPI.getBookingManager()).remove(selectedBooking);
+
                 createOrUpdateBookingTable(App.businessLogicAPI.getAllBookings(booking -> booking.getFlight().getDeparture().isAfter(LocalDateTime.now()) && booking.getCustomerEmail().contains(this.eMailTextField.getText()) && (booking.getFlight().getFlightNumber()+"").contains(this.flightNumberTextField.getText())));
             }
             if(ButtonType.NO.equals(result)){

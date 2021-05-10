@@ -207,7 +207,8 @@ public class createBookingController implements Controller {
                     availableSeatsText.setText(rowData.getPlane().getSeatCount()+"");
                     row.getTableView().refresh();
                     List<Seat> bookedSeats = new ArrayList<Seat>();
-                    App.businessLogicAPI.getAllBookings(booking -> true).stream().filter(booking -> booking.getFlight().equals(this.selectedFlight)).forEach(booking ->{
+                    App.businessLogicAPI.getAllBookings(booking -> booking.getFlight().getFlightNumber() == selectedFlight.getFlightNumber()).stream().forEach(booking -> {
+                        System.out.println("Found Booking");
                         booking.getTickets().forEach(ticket -> bookedSeats.add(ticket.getSeat()));
                     });
                     createSeatMapAndLoadSeatOptions(bookedSeats);
@@ -301,9 +302,10 @@ public class createBookingController implements Controller {
                     }
                 }
             });
-            if(bookedSeats.contains(this.s)){
+            if(bookedSeats.stream().anyMatch(seat -> (seat.getRowNumber() == this.s.getRowNumber() && seat.getSeatNumber() == this.s.getSeatNumber()))){
                 available = false;
             }
+
             this.setDisable(!available);
             updateText();
 

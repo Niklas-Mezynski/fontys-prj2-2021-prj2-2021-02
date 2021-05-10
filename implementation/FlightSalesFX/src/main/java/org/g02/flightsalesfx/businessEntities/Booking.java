@@ -6,6 +6,7 @@
 package org.g02.flightsalesfx.businessEntities;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -29,4 +30,6 @@ public interface Booking {
     public void addTicket(Ticket t);
 
     void removeTicket(Ticket ticket);
+
+    Optional<Integer> getID();
 }

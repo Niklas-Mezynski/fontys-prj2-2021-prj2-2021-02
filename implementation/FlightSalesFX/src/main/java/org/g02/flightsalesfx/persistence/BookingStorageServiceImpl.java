@@ -21,8 +21,7 @@ public class BookingStorageServiceImpl implements BookingStorageService{
 
     @Override
     public BookingImpl add(Booking booking) {
-        BookingImpl bImpl = new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail() );
-        bImpl.getTickets().stream().forEach(t -> System.out.println(t.toString()));
+        BookingImpl bImpl = BookingImpl.of(booking);
         try {
             return dao.insert(bImpl)
                     .orElse(null);
@@ -46,8 +45,9 @@ public class BookingStorageServiceImpl implements BookingStorageService{
     @Override
     public boolean remove(Booking booking) {
         List<BookingImpl> bookings = null;
+        BookingImpl bImpl = BookingImpl.of(booking);
         try {
-            dao.remove(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail() ));
+            dao.remove(bImpl);
         } catch (SQLException e) {
             e.printStackTrace();
         }
