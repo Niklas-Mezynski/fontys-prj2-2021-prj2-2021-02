@@ -1,6 +1,6 @@
 package org.g02.flightsalesfx;
 
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.Plane;
 import org.g02.flightsalesfx.businessEntities.Route;
@@ -11,9 +11,6 @@ import org.g02.flightsalesfx.gui.RouteTable;
 import org.g02.flightsalesfx.helpers.Bundle;
 import org.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -159,24 +156,22 @@ public class HomeController implements Controller {
     @FXML
     public void enableSalesprocess() throws IOException {
         //todo: popup
-        //requires: flightobject (db-issues)
         if (selectedFlight != null) {
             final List<Flight> currentFlights = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
-            if (!currentFlights.isEmpty()) {
-                if (currentFlights.size() == 1) {
-                    System.out.println("selected flight successfully");
-                    selectedFlight.startSalesProcess();
-                    System.out.println("salesprocess started: " + selectedFlight);
+            if (!currentFlights.isEmpty() && currentFlights.size() == 1) {
+                selectedFlight.startSalesProcess();
 
-                    //Update using update-method:
-                    App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
-                }
+                //Update using update-method:
+                App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), selectedFlight.getSalesProcessStatus());
+                return;
             } else {
-                System.out.println("received not exactly one flight");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Problems during processing selectedflight information.");
+                alert.setContentText("There occurred an issue by transfering necessary data.");
+                alert.showAndWait();
+                return;
             }
-        } else {    // nothing received from db
-            //todo insert error
-            System.out.println(" !!! No flight selected !!!");
         }
     }
 

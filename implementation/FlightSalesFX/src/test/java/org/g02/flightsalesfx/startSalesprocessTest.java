@@ -1,12 +1,16 @@
 package org.g02.flightsalesfx;
 
 import javafx.scene.control.Button;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.assertj.core.api.ThrowableAssert;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.Route;
 import org.g02.flightsalesfx.businessLogic.*;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -61,6 +65,13 @@ public class startSalesprocessTest {
     void goToTab(FxRobot fxRobot) {
         var x = fxRobot.lookup("#flightsTab").query();
         fxRobot.clickOn(x);
-        fxRobot.clickOn(fxRobot.lookup("#goToCreateFlight").queryAs(Button.class));
+    }
+
+    @Test
+    void enableButtonTest(FxRobot fxRobot) {
+        var v=fxRobot.lookup(node -> ((Text)node).getText().contains("4")).query();
+        fxRobot.clickOn(v);
+
+        fxRobot.clickOn(fxRobot.lookup("#enableSalesprocess").queryAs(Button.class));
     }
 }
