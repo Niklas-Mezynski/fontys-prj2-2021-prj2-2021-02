@@ -68,4 +68,6 @@ public interface BusinessLogicAPI {
     boolean deletePlane(PlaneImpl oldPlane);
 
     Plane updatePlane(PlaneImpl oldPlane, String name, String type, String manufacturer, List<Seat> collect);
+
+    public List<Employee> getAllEmployees(Predicate<Employee> predicate);
 }
