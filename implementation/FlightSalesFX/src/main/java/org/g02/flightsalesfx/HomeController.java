@@ -157,20 +157,18 @@ public class HomeController implements Controller {
      * and offers an option to stop the salesprocess or to cancel the process.
      *
      * If the salesprocess has not been started yet, the selected flights is getting updated using the businesslogicAPI
-     * that uses the persistence layer and the DAO to finalize the action.
-     *
+     * that uses the persistence layer and the DAO to finalize the process.
      *
      * @throws IOException
      */
     @FXML
     public void enableSalesprocess() throws IOException {
         if (selectedFlight != null) {
-            //get selected flight from db -> useful to avoid any errors/bugs
-            final List<Flight> selectedFlightFromDB = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
+            //get selected flight from db -> useful to avoid any errors/bugs when changing the same object multiple times
+            final List<Flight> selectedFlightFromDBAsList = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
 
-            if(selectedFlightFromDB.size() == 1) {
-                //check if salesprocess is already started and handle that situation
-                if(selectedFlightFromDB.get(0).getSalesProcessStatus()) {
+            if(selectedFlightFromDBAsList.size() == 1) {
+                if(selectedFlightFromDBAsList.get(0).getSalesProcessStatus()) {
                     var buttonPressed = handleStartedSalesprocess();
                     if(buttonEqualsOk(buttonPressed)) {
                         App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), false);
@@ -178,8 +176,7 @@ public class HomeController implements Controller {
                     }
                     return;
                 }
-                //asking for confirmation
-                var buttonPressed = handleNotStartedSalesprocess();
+                var buttonPressed = handleNotStartedSalesprocess(selectedFlightFromDBAsList.get(0));
                 if(buttonEqualsOk(buttonPressed)) {
                     App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), true);
                 }
@@ -190,6 +187,7 @@ public class HomeController implements Controller {
         } else {
             throw new IOException();
         }
+
         //refresh the table to apply changes in UI
         flightTable.refreshTable();
     }
@@ -208,9 +206,7 @@ public class HomeController implements Controller {
                 ButtonType.OK,
                 ButtonType.CANCEL);
         alert.setTitle("Salesprocess is started");
-        Optional<ButtonType> result = alert.showAndWait();
-
-        return result;
+        return alert.showAndWait();
     }
 
     /**
@@ -218,18 +214,18 @@ public class HomeController implements Controller {
      *
      * Appearing alertmessage that offers the opportunity to confirm the start of the salesprocess.
      *
+     * @param selectedFlight selected flight received from the database
+     *
      * @return button pressed by User
      */
-    Optional<ButtonType> handleNotStartedSalesprocess() {
+    Optional<ButtonType> handleNotStartedSalesprocess(Flight selectedFlight) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                "Do you want to proceed and start the salesproces for this flight?",
+                "Do you want to proceed and start the salesprocess for this flight? \n" + selectedFlight.toString(),
                 ButtonType.OK,
                 ButtonType.CANCEL
         );
         alert.setTitle("Confirm to start Salesprocess");
-        Optional<ButtonType> result = alert.showAndWait();
-
-        return result;
+        return alert.showAndWait();
     }
 
     /**
