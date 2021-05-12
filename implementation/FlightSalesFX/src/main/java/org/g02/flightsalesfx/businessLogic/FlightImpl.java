@@ -69,10 +69,6 @@ public class FlightImpl implements Flight, Savable {
         this.salesProcessStarted = salesProcessStarted;
     }
 
-    public static FlightImpl dbOf(Flight f) {
-        return new FlightImpl(f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getPrice(), f.getSalesProcessStatus());
-    }
-
     private FlightImpl() {}
 
     /**
