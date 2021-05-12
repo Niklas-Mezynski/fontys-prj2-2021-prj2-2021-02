@@ -74,6 +74,10 @@ public class TicketImpl implements Ticket, Savable {
 
     @Override
     public SeatOption[] getSeatOptions() {
+        if (seatOptions == null) {
+            seatOptions = new SeatOptionImpl[0];
+            return seatOptions = new SeatOptionImpl[0];
+        }
         return seatOptions;
     }
 }
