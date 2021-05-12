@@ -18,6 +18,8 @@ import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -210,7 +212,8 @@ public class CreatePlaneController implements Controller {
             System.out.println(plane);
             int lastRowNum = -1;
             VBox lastRow = null;
-            for (SeatImpl seat : plane.seatList) {
+            var seats = Arrays.stream(plane.seatList).sorted(Comparator.comparingInt(o -> o.rowNumber)).collect(Collectors.toList());
+            for (SeatImpl seat : seats) {
                 if (seat.getRowNumber() > lastRowNum) {
                     lastRowNum++;
                     lastRow = createRow();
