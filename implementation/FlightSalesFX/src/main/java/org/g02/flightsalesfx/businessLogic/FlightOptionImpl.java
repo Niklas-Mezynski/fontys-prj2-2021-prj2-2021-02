@@ -30,8 +30,6 @@ public class FlightOptionImpl implements FlightOption, Savable {
         return new FlightOptionImpl(f.getName(), f.getMaxAvailability(), f.getPrice(),f.getCurrentAvailability(),f.getID());
     }
 
-    private FlightOptionImpl () {}
-
     /**
      * @return How often this FlightOption is currently available
      */
