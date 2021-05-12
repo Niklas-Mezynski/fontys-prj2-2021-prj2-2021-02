@@ -3,8 +3,7 @@ package org.g02.flightsalesfx.helpers;
 import org.g02.btfdao.dao.Dao;
 import org.g02.btfdao.dao.PGJDBCUtils;
 import org.g02.btfdao.dao.Savable;
-import org.g02.flightsalesfx.businessEntities.Airport;
-import org.g02.flightsalesfx.businessEntities.PlaneManager;
+import org.g02.flightsalesfx.businessEntities.*;
 import org.g02.flightsalesfx.persistence.PersistenceAPIImpl;
 import org.g02.flightsalesfx.businessLogic.*;
 import org.junit.jupiter.api.Disabled;
@@ -103,11 +102,92 @@ public class CreateDB {
         var flightStorageService = persistenceAPI.getFlightStorageService(new FlightManagerImpl());
         System.out.println(flightStorageService.add(new FlightImpl(
                 (SalesOfficerImpl) persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl()).get("o").get(),
+                LocalDateTime.of(2018, 6, 5, 12, 30),
+                LocalDateTime.of(2018, 6, 5, 14, 30),
+                persistenceAPI.getRouteStorageService(new RouteManagerImpl()).getAll().get(0),
+                persistenceAPI.getPlaneStorageService(new PlaneManagerImpl()).getAll().get(0),
+                85.99
+        )));
+        System.out.println(flightStorageService.add(new FlightImpl(
+                (SalesOfficerImpl) persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl()).get("o").get(),
+                LocalDateTime.of(2019, 6, 5, 12, 30),
+                LocalDateTime.of(2019, 6, 5, 14, 30),
+                persistenceAPI.getRouteStorageService(new RouteManagerImpl()).getAll().get(0),
+                persistenceAPI.getPlaneStorageService(new PlaneManagerImpl()).getAll().get(0),
+                75.99
+        )));
+        System.out.println(flightStorageService.add(new FlightImpl(
+                (SalesOfficerImpl) persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl()).get("o").get(),
+                LocalDateTime.of(2020, 6, 5, 12, 30),
+                LocalDateTime.of(2020, 6, 5, 14, 30),
+                persistenceAPI.getRouteStorageService(new RouteManagerImpl()).getAll().get(0),
+                persistenceAPI.getPlaneStorageService(new PlaneManagerImpl()).getAll().get(0),
+                85.99
+        )));
+        System.out.println(flightStorageService.add(new FlightImpl(
+                (SalesOfficerImpl) persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl()).get("o").get(),
                 LocalDateTime.of(2021, 6, 5, 12, 30),
                 LocalDateTime.of(2021, 6, 5, 14, 30),
                 persistenceAPI.getRouteStorageService(new RouteManagerImpl()).getAll().get(0),
                 persistenceAPI.getPlaneStorageService(new PlaneManagerImpl()).getAll().get(0),
-                85.99
+                95.99
+        )));
+    }
+
+    @Test
+    void t06insertBookings() {
+        var persistenceAPI = new PersistenceAPIImpl();
+        var bookingStorageService = persistenceAPI.getBookingStorageService(new BookingManagerImpl());
+
+        var flight = persistenceAPI.getFlightStorageService(new FlightManagerImpl()).getAll().get(0);
+        TicketImpl ticket = new TicketImpl(flight, flight.getPlane().getAllSeats().get(0), "Hans", "Peter", new SeatOption[0]);
+        TicketImpl[] tickets = {ticket};
+
+        System.out.println(bookingStorageService.add(new BookingImpl(
+                (SalesEmployeeImpl) persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl()).get("e").get(),
+                flight,
+                tickets,
+                new FlightOption[0],
+                "hans@gmail.com"
+        )));
+
+
+        flight = persistenceAPI.getFlightStorageService(new FlightManagerImpl()).getAll().get(1);
+        ticket = new TicketImpl(flight, flight.getPlane().getAllSeats().get(0), "Hans", "Peter", new SeatOption[0]);
+        tickets = new TicketImpl[]{ticket};
+
+        System.out.println(bookingStorageService.add(new BookingImpl(
+                (SalesEmployeeImpl) persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl()).get("e").get(),
+                flight,
+                tickets,
+                new FlightOption[0],
+                "hans@gmail.com"
+        )));
+
+
+        flight = persistenceAPI.getFlightStorageService(new FlightManagerImpl()).getAll().get(2);
+        ticket = new TicketImpl(flight, flight.getPlane().getAllSeats().get(0), "Hans", "Peter", new SeatOption[0]);
+        tickets = new TicketImpl[]{ticket};
+
+        System.out.println(bookingStorageService.add(new BookingImpl(
+                (SalesEmployeeImpl) persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl()).get("e").get(),
+                flight,
+                tickets,
+                new FlightOption[0],
+                "hans@gmail.com"
+        )));
+
+
+        flight = persistenceAPI.getFlightStorageService(new FlightManagerImpl()).getAll().get(3);
+        ticket = new TicketImpl(flight, flight.getPlane().getAllSeats().get(0), "Hans", "Peter", new SeatOption[0]);
+        tickets = new TicketImpl[]{ticket};
+
+        System.out.println(bookingStorageService.add(new BookingImpl(
+                (SalesEmployeeImpl) persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl()).get("e").get(),
+                flight,
+                tickets,
+                new FlightOption[0],
+                "hans@gmail.com"
         )));
     }
 }
