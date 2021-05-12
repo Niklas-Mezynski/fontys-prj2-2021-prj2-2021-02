@@ -34,7 +34,7 @@ public class EditPlaneTest {
 
     private Plane plane1 = new PlaneImpl("D-ABCD", "A", "A");
     private Plane plane2 = new PlaneImpl("D-BCDE", "B", "B");
-    private List<Seat> seats = List.of(new SeatImpl(0, 0));
+    private List<Seat> seats = List.of(new SeatImpl(0, 0), new SeatImpl(1, 0));
     private List<Plane> planes = List.of(plane1);
 
     /**
@@ -72,5 +72,10 @@ public class EditPlaneTest {
                 .queryAllAs(CreatePlaneController.SeatButton.class);
         System.out.println(lookup);
         Assertions.assertThat(lookup).hasSize(1);
+    }
+
+    @Test
+    void t02testPlaneSeatsLoaded() {
+
     }
 }
