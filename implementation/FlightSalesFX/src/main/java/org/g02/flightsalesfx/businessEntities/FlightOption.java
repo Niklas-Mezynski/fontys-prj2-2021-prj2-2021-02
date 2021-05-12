@@ -21,4 +21,5 @@ public interface FlightOption extends Option{
      */
     public int getMaxAvailability();
 
+    public int getID();
 }

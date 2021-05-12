@@ -221,8 +221,9 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
-    public boolean createFlightFromUI(SalesOfficer creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
+    public boolean createFlightFromUI(SalesOfficer creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price, List<? extends FlightOption> flightOptions) {
         var flight = getFlightManager().createFlight(creator, dep, arr, route, plane, price);
+        flight.addAllFlightOptions(flightOptions);
         System.out.println(flight);
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
