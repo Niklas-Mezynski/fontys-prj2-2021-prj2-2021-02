@@ -17,7 +17,7 @@ public class SeatOptionImpl implements SeatOption, Savable {
         this.name = name;
         this.price = price;
     }
-    private SeatOptionImpl(){}
+    public SeatOptionImpl(){}
 
     public String getName() {
         return this.name;

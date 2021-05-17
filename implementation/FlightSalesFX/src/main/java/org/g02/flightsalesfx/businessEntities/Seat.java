@@ -1,6 +1,8 @@
 package org.g02.flightsalesfx.businessEntities;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public interface Seat extends Comparable<Seat> {
 
@@ -38,5 +40,10 @@ public interface Seat extends Comparable<Seat> {
     }
 
     public List<SeatOption> getSeatOptions();
+
+
+    static List<Seat> getSeatsInRow(Collection<? extends Seat> seats, int row) {
+        return seats.stream().filter(seat -> seat.getRowNumber() == row).collect(Collectors.toList());
+    }
 
 }

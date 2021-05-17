@@ -1,12 +1,5 @@
 package org.g02.flightsalesfx;
 
-import org.g02.flightsalesfx.businessEntities.Plane;
-import org.g02.flightsalesfx.businessEntities.Seat;
-import org.g02.flightsalesfx.businessEntities.SeatOption;
-import org.g02.flightsalesfx.businessLogic.PlaneImpl;
-import org.g02.flightsalesfx.businessLogic.SeatImpl;
-import org.g02.flightsalesfx.helpers.Bundle;
-import org.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -15,6 +8,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import org.g02.flightsalesfx.businessEntities.Plane;
+import org.g02.flightsalesfx.businessEntities.Seat;
+import org.g02.flightsalesfx.businessEntities.SeatOption;
+import org.g02.flightsalesfx.businessLogic.PlaneImpl;
+import org.g02.flightsalesfx.businessLogic.SeatImpl;
+import org.g02.flightsalesfx.businessLogic.SeatOptionImpl;
+import org.g02.flightsalesfx.helpers.Bundle;
+import org.g02.flightsalesfx.helpers.Controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,8 +23,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.g02.flightsalesfx.App.setRoot;
+import java.util.stream.Stream;
 
 public class CreatePlaneController implements Controller {
 
@@ -88,7 +88,11 @@ public class CreatePlaneController implements Controller {
      */
     @FXML
     private void addSeatOption() {
-        seatOptions.getChildren().add(seatOptions.getChildren().size() - 1, new SeatOptionBox());
+        addSeatOption(new SeatOptionBox());
+    }
+
+    private void addSeatOption(SeatOptionBox seatOptionBox) {
+        seatOptions.getChildren().add(seatOptions.getChildren().size() - 1, seatOptionBox);
     }
 
     /**
@@ -146,9 +150,9 @@ public class CreatePlaneController implements Controller {
         var manufacturer = planeManufacturer.getText();
         // Map all internal used SeatButtons to Seat
         var collect = seats.stream()
-                .map(s->{
-                    var ret = new SeatImpl(s.row(),s.column());
-                    ret.addAllSeatOptions(s.options);
+                .map(s -> {
+                    var ret = new SeatImpl(s.row(), s.column());
+                    ret.addAllSeatOptions(s.options.stream().map(SeatOptionBox::getSeatOption).collect(Collectors.toList()));
                     return (Seat) ret;
                 })
                 .collect(Collectors.toList());
@@ -173,6 +177,7 @@ public class CreatePlaneController implements Controller {
 
     /**
      * Exit the current scene and return to the previous one, using the static setRoot method of App
+     *
      * @see App#setRoot(String)
      */
     @FXML
@@ -221,6 +226,15 @@ public class CreatePlaneController implements Controller {
                 }
                 createSeat(lastRow);
             }
+            // TODO add the seat options to the seats
+            var distinct = seats.stream().flatMap(seat -> seat.getSeatOptions().stream()).distinct().collect(Collectors.toList());
+            for (SeatOption seatOption : distinct) {
+                System.out.println(seatOption);
+                var seatOptionBox = new SeatOptionBox();
+                seatOptionBox.setSeatOption(seatOption);
+                addSeatOption(seatOptionBox);
+            }
+
         } else {
             deleteButton.setVisible(false);
         }
@@ -230,7 +244,7 @@ public class CreatePlaneController implements Controller {
      * Inner class that represents a SeatOption on the UI.
      * Extends HBox and has a Button, TextField and Spinner
      */
-    public class SeatOptionBox extends HBox implements SeatOption {
+    public class SeatOptionBox extends HBox {
         String optionName = "";
         // Button to toggle which SeatOption will be applied to the Seats if they are selected
         ToggleButton chooseButton;
@@ -263,21 +277,15 @@ public class CreatePlaneController implements Controller {
             });
         }
 
-        /**
-         * @return The Name of this Option
-         */
-        @Override
-        public String getName() {
-            return changeNameTextField.getText();
+        public SeatOption getSeatOption() {
+            return new SeatOptionImpl(changeNameTextField.getText(), changeAvailableSpinner.getValue());
         }
 
-        /**
-         * @return The price that this FlightOption costs
-         */
-        @Override
-        public double getPrice() {
-            return changeAvailableSpinner.getValue();
+        public void setSeatOption(SeatOption seatOption) {
+            changeNameTextField.setText(seatOption.getName());
+            changeAvailableSpinner.getValueFactory().setValue(seatOption.getPrice());
         }
+
     }
 
     /**
@@ -334,6 +342,7 @@ public class CreatePlaneController implements Controller {
 
         /**
          * get the row of the seat
+         *
          * @return Integer
          */
         public int row() {
@@ -342,6 +351,7 @@ public class CreatePlaneController implements Controller {
 
         /**
          * get the seat number of the seat
+         *
          * @return Integer
          */
         public int column() {
