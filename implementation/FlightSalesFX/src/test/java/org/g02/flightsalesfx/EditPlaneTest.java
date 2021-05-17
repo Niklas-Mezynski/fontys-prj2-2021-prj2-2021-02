@@ -136,7 +136,7 @@ public class EditPlaneTest {
         var lookup = fxRobot.lookup("#seatOptions").queryAs(VBox.class);
         var children = lookup.getChildren();
         assertThat(children).hasSizeGreaterThan(2);
-        var nodes = children.subList(1, children.size() - 2);
+        var nodes = children.subList(1, children.size() - 1);
         assertThat(nodes).hasSize(allSeatOptions.size());
         List<SeatOptionImpl> seatOptions = new ArrayList<>();
         for (Node node : nodes) {
