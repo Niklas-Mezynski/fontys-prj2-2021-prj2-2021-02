@@ -62,7 +62,7 @@ public class FlightImpl implements Flight, Savable {
     }
 
     public static FlightImpl of(Flight f) {
-        var ret= new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()), f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
+        var ret= new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()),f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
         ret.addAllFlightOptions(f.getFlightOptions());
         return ret;
     }
