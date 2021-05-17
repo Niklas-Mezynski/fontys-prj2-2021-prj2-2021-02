@@ -7,16 +7,14 @@ import org.g02.btfdao.dao.PGJDBCUtils;
 import org.g02.btfdao.testentities.Cat;
 import org.g02.btfdao.testentities.Dog;
 import org.g02.btfdao.testentities.Mouse;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
+@Disabled
 @TestMethodOrder(MethodOrderer.DisplayName.class)
 public class SQLstatementsTest {
     Connection connection;
