@@ -299,6 +299,8 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         var flightImpl = FlightImpl.of(oldFlight);
         if(salesprocess) {
             flightImpl.startSalesProcess();
+        } else {
+            flightImpl.stopSalesProcess();
         }
         return persistenceAPI.getFlightStorageService(getFlightManager()).update(flightImpl);
     }

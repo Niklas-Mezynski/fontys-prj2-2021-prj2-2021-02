@@ -57,6 +57,11 @@ public class ReoccurringFlightImpl implements ReoccurringFlight, Savable {
     }
 
     @Override
+    public void stopSalesProcess() {
+        flight.stopSalesProcess();
+    }
+
+    @Override
     public int getFlightNumber() {
         return flight.getFlightNumber();
     }

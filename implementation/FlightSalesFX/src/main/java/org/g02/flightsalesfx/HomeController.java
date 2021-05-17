@@ -171,7 +171,7 @@ public class HomeController implements Controller {
                 if(selectedFlightFromDBAsList.get(0).getSalesProcessStatus()) {
                     var buttonPressed = handleStartedSalesprocess();
                     if(buttonEqualsOk(buttonPressed)) {
-                        App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), false);
+                        App.businessLogicAPI.updateFlight(FlightImpl.of(selectedFlight), selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), false);
                         flightTable.refreshTable();
                     }
                     return;
