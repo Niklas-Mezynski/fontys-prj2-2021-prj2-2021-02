@@ -57,6 +57,7 @@ public class CreateDB {
         var employeeStorageService = persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl());
         System.out.println(employeeStorageService.add(new SalesEmployeeImpl("Nils","b",bb.genPWHash("b"))));
         System.out.println(employeeStorageService.add(new SalesEmployeeImpl("","",bb.genPWHash(""))));
+        System.out.println(employeeStorageService.add(new SalesEmployeeImpl("Huhn","mail@gmail.com",bb.genPWHash(""))));
         System.out.println(employeeStorageService.add(new SalesEmployeeImpl("SalesEmployee","e",bb.genPWHash(""))));
         System.out.println(employeeStorageService.add(new SalesOfficerImpl("SalesOfficer","o",bb.genPWHash(""))));
         System.out.println(employeeStorageService.add(new SalesManagerImpl("SalesManager","m",bb.genPWHash(""))));
@@ -192,7 +193,33 @@ public class CreateDB {
                 tickets,
                 new FlightOption[0],
                 "hans@gmail.com",
-                LocalDateTime.of(2029, 4, 10, 10, 0)
+                LocalDateTime.of(2019, 4, 10, 10, 0)
+        )));
+
+        flight = persistenceAPI.getFlightStorageService(new FlightManagerImpl()).getAll().get(3);
+        ticket = new TicketImpl(flight, flight.getPlane().getAllSeats().get(0), "Hans", "Peter", new SeatOption[0]);
+        tickets = new TicketImpl[]{ticket};
+
+        System.out.println(bookingStorageService.add(new BookingImpl(
+                (SalesEmployeeImpl) persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl()).get("mail@gmail.com").get(),
+                flight,
+                tickets,
+                new FlightOption[0],
+                "hans@gmail.com",
+                LocalDateTime.of(2021, 1, 10, 10, 0)
+        )));
+
+        flight = persistenceAPI.getFlightStorageService(new FlightManagerImpl()).getAll().get(3);
+        ticket = new TicketImpl(flight, flight.getPlane().getAllSeats().get(0), "Hans", "Peter", new SeatOption[0]);
+        tickets = new TicketImpl[]{ticket};
+
+        System.out.println(bookingStorageService.add(new BookingImpl(
+                (SalesEmployeeImpl) persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl()).get("mail@gmail.com").get(),
+                flight,
+                tickets,
+                new FlightOption[0],
+                "hans@gmail.com",
+                LocalDateTime.of(2021, 1, 10, 10, 0)
         )));
     }
 }
