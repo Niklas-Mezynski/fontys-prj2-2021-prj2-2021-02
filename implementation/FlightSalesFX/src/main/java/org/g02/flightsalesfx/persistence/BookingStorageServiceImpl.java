@@ -22,7 +22,7 @@ public class BookingStorageServiceImpl implements BookingStorageService{
     @Override
     public BookingImpl add(Booking booking) {
         try {
-            return dao.insert(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail() ))
+            return dao.insert(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail(), booking.getBookingDate() ))
                     .orElse(null);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -45,7 +45,7 @@ public class BookingStorageServiceImpl implements BookingStorageService{
     public boolean remove(Booking booking) {
         List<BookingImpl> bookings = null;
         try {
-            dao.remove(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail() ));
+            dao.remove(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail(), booking.getBookingDate()));
         } catch (SQLException e) {
             e.printStackTrace();
         }

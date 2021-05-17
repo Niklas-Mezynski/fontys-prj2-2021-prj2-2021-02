@@ -8,7 +8,7 @@ public class Bundle {
 
     private Map<String, Object> stringObjectMap = new HashMap<>();
 
-    public <E extends Serializable> void add(String key, E e) {
+    public <E> void add(String key, E e) {
         stringObjectMap.put(key, e);
     }
 
