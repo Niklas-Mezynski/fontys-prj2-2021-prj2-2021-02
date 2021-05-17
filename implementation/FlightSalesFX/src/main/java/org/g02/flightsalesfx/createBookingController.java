@@ -70,6 +70,9 @@ public class createBookingController implements Controller {
     private HBox contactEmailOverview;
 
     @FXML
+    private HBox totalPriceVBox;
+
+    @FXML
     private VBox seatsOverviewVBox;
 
     @FXML
@@ -468,13 +471,19 @@ public class createBookingController implements Controller {
      * Collects all Information entered and displays them in textual form
      */
     public void generateOverview(){
+        double sum = 0.0;
         flightOverview.getChildren().add(new Label("FlightNo: "+selectedFlight.getFlightNumber()+"; From: "+selectedFlight.getRoute().getDepartureAirport().toString()+"; To: "+selectedFlight.getRoute().getArrivalAirport().toString()+"; On: "+selectedFlight.getDeparture().toString()));
-
+        // todo set Reduced price as basePricePerSeat
+        double basePricePerSeat = selectedFlight.getPrice();
         contactEmailOverview.getChildren().add(new Label(contactEmail));
 
         VBox flightOptions = new VBox();
         for(FlightOption fo : selectedFlightOptions.keySet()){
-            String overviewString = selectedFlightOptions.get(fo)+"x : "+fo.getName()+ " : +"+fo.getPrice();
+            int qty = selectedFlightOptions.get(fo);
+            double pricePerFO = fo.getPrice();
+            String overviewString = qty+"x : "+fo.getName()+ " : +"+pricePerFO;
+            double flightOptionTotal = qty * pricePerFO;
+            sum += flightOptionTotal;
             flightOptions.getChildren().add(new Label(overviewString));
         }
         flightOptionsOverview.getChildren().add(flightOptions);
@@ -488,10 +497,19 @@ public class createBookingController implements Controller {
             seatBox.getChildren().add(new Label(seatInfoString));
 
             VBox seatOptionsBox = new VBox();
-            selectedSeatsForBooking.get(s).forEach(so -> seatOptionsBox.getChildren().add(new Label(so.getName()+": "+so.getPrice()+"€")));
+            double seatTotal = basePricePerSeat;
+
+            var seatOptions = selectedSeatsForBooking.get(s);
+            for(SeatOption so : seatOptions){
+                double seatOptionBasePrice = so.getPrice();
+                seatOptionsBox.getChildren().add(new Label(so.getName()+": "+seatOptionBasePrice+"€"));
+                seatTotal += seatOptionBasePrice;
+            }
+            sum += seatTotal;
             seatBox.getChildren().add(seatOptionsBox);
             seatsOverviewVBox.getChildren().add(seatBox);
         }
+        totalPriceVBox.getChildren().add(new Label(sum+"€"));
 
     }
 

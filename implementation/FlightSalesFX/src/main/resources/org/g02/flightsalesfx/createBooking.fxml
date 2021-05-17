@@ -132,6 +132,11 @@
                                     <VBox fx:id="seatsOverviewVBox" prefHeight="100.0" prefWidth="766.0" />
                                  </children>
                               </HBox>
+                              <HBox fx:id="totalPriceVBox" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Total: " />
+                                 </children>
+                              </HBox>
                               <Button fx:id="createBooking" mnemonicParsing="false" onAction="#createBooking" text="Create Booking" />
                            </children>
                         </VBox>
