@@ -70,6 +70,7 @@ public class FlightImpl implements Flight, Savable {
         return "ID: " + flightNumber + "; " + route + "; " + plane + "; takeoff: " + departure + ", arrival: " + arrival + "; Price:" + price + "; sale started:" + salesProcessStarted;
     }
 
+    
     @Override
     public void startSalesProcess() {
         salesProcessStarted = true;
