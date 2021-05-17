@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalInt;
@@ -101,7 +102,7 @@ public class ViewSpecificRoutesKPIsController implements Controller {
         int currentYear = LocalDate.now().getYear();
         final NumberAxis xAxis = new NumberAxis(minBookingYear.orElse(2010) - 1, currentYear + 1, 1);
         final NumberAxis yAxis = new NumberAxis();
-        AreaChart<Number, Number> areaChart = new AreaChart<Number, Number>(xAxis, yAxis);
+        LineChart<Number, Number> chart = new LineChart<>(xAxis, yAxis);
         XYChart.Series<Number, Number> routeSeries = new XYChart.Series();
         routeSeries.setName(selectedRoute.toString());
 
@@ -110,7 +111,6 @@ public class ViewSpecificRoutesKPIsController implements Controller {
 //        routeSeries.getData().add(new XYChart.Data(2011, 59000.0));
 //        routeSeries.getData().add(new XYChart.Data(2012, 70000.0));
 //        routeSeries.getData().add(new XYChart.Data(2013, 62000.0));
-
         //Calculate XYChart.Data for each year
         for (int year = minBookingYear.orElse(2010); year <= currentYear; year++ ) {
             int finalYear = year;
@@ -123,10 +123,10 @@ public class ViewSpecificRoutesKPIsController implements Controller {
         }
 
         //Add everything to the area chart
-        areaChart.getData().add(routeSeries);
-        areaChart.setMinWidth(chartView.getPrefWidth());
-        areaChart.setMinHeight(chartView.getPrefHeight());
-        chartPane.setCenter(areaChart);
+        chart.getData().add(routeSeries);
+        chart.setMinWidth(chartView.getPrefWidth());
+        chart.setMinHeight(chartView.getPrefHeight());
+        chartPane.setCenter(chart);
     }
 
     @FXML
