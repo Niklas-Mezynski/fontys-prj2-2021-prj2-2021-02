@@ -210,7 +210,7 @@ public class SubmitFlightController implements Controller {
         var route = extendedRoute.getSelectedRoute();
         var depDateTime = extendedRoute.getDepartureDateWithTime();
         var arrDateTime = extendedRoute.getArrivalDateWithTime();
-        var flightCreated = false;
+        
 
         if (creator != null && depDateTime != null && arrDateTime != null && route != null && plane != null && price != -1 && conversionOK) {
           
