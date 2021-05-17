@@ -18,12 +18,8 @@ import org.g02.flightsalesfx.helpers.Bundle;
 import org.g02.flightsalesfx.helpers.Controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CreatePlaneController implements Controller {
 
@@ -49,6 +45,7 @@ public class CreatePlaneController implements Controller {
     private SeatOptionBox currentSelected = null;
     private boolean editMode;
     private PlaneImpl oldPlane;
+
 
     /**
      * Creates a new SeatRow and adds the corresponding VBox to the container
@@ -95,6 +92,13 @@ public class CreatePlaneController implements Controller {
         seatOptions.getChildren().add(seatOptions.getChildren().size() - 1, seatOptionBox);
     }
 
+    private SeatOptionBox createNewSeatOptionBox(SeatOption seatOption) {
+        var seatOptionBox = new SeatOptionBox();
+        seatOptionBox.setSeatOption(seatOption);
+        addSeatOption(seatOptionBox);
+        return seatOptionBox;
+    }
+
     /**
      * Creates a new VBox as a container for all seats in a row. Also adds the ADD button at the end of the VBox
      *
@@ -130,7 +134,8 @@ public class CreatePlaneController implements Controller {
      *
      * @param box The box to which the seats are to be added
      */
-    public void createSeat(VBox box) {
+    public SeatButton createSeat(VBox box) {
+        System.out.println("new seat");
         var seatButton = new SeatButton(box);
 //        Font f=Font.loadFont("file:resources/com/g02/flightsalesfx/SourceCodePro-Regular.ttf",45);
 //        seatButton.setFont(f);
@@ -138,6 +143,7 @@ public class CreatePlaneController implements Controller {
         var children = box.getChildren();
         children.add(children.size() - 1, seatButton);
         updateSeatText();
+        return seatButton;
     }
 
     /**
@@ -191,7 +197,16 @@ public class CreatePlaneController implements Controller {
     @FXML
     private void delete() {
         if (editMode) {
-            var plane = App.businessLogicAPI.deletePlane(oldPlane);
+            var plane = false;
+            try {
+                plane = App.businessLogicAPI.deletePlane(oldPlane);
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error deleting plane");
+                alert.setContentText("There was an error while deleting the current plane. Try again!");
+                alert.showAndWait();
+            }
             System.out.println(plane);
             if (plane) {
                 App.setRoot("home");
@@ -218,22 +233,35 @@ public class CreatePlaneController implements Controller {
             int lastRowNum = -1;
             VBox lastRow = null;
             var seats = Arrays.stream(plane.seatList).sorted(Comparator.comparingInt(o -> o.rowNumber)).collect(Collectors.toList());
+//            var addedSeatOptions = new ArrayList<SeatOption>();
+            Map<SeatOption, SeatOptionBox> seatOptionBoxMap = new HashMap<>();
             for (SeatImpl seat : seats) {
                 if (seat.getRowNumber() > lastRowNum) {
                     lastRowNum++;
                     lastRow = createRow();
                     seatContainer.getChildren().add(lastRow);
                 }
-                createSeat(lastRow);
+                var seatButton = createSeat(lastRow);
+                var seatOptions = seat.getSeatOptions();
+                for (SeatOption seatOption : seatOptions) {
+                    if (!seatOptionBoxMap.containsKey(seatOption)) {
+                        var newSeatOption = createNewSeatOptionBox(seatOption);
+                        seatOptionBoxMap.put(seatOption, newSeatOption);
+                    }
+                    var seatOptionBox = seatOptionBoxMap.get(seatOption);
+                    seatOptionBox.chooseButton.fire();
+                    seatButton.fire();
+                    seatOptionBox.chooseButton.fire();
+                }
             }
+            System.out.println(seatContainer);
+            System.out.println(this.seats);
             // TODO add the seat options to the seats
-            var distinct = seats.stream().flatMap(seat -> seat.getSeatOptions().stream()).distinct().collect(Collectors.toList());
+            /*var distinct = seats.stream().flatMap(seat -> seat.getSeatOptions().stream()).distinct().collect(Collectors.toList());
             for (SeatOption seatOption : distinct) {
                 System.out.println(seatOption);
-                var seatOptionBox = new SeatOptionBox();
-                seatOptionBox.setSeatOption(seatOption);
-                addSeatOption(seatOptionBox);
-            }
+                createNewSeatOption(seatOption);
+            }*/
 
         } else {
             deleteButton.setVisible(false);
