@@ -1,23 +1,28 @@
 package org.g02.flightsalesfx;
 
 import javafx.scene.control.CheckBox;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.util.converter.CurrencyStringConverter;
 import org.g02.flightsalesfx.businessEntities.Airport;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.Plane;
 import org.g02.flightsalesfx.businessEntities.SalesOfficer;
 import org.g02.flightsalesfx.businessLogic.FlightImpl;
 import org.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
+import org.g02.flightsalesfx.businessLogic.FlightOptionImpl;
+
 import org.g02.flightsalesfx.gui.PlaneTable;
 import org.g02.flightsalesfx.helpers.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.net.URL;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,39 +53,94 @@ public class SubmitFlightController implements Controller {
     @FXML
     private TextField flightNumberTextField;
 
+    @FXML
+    private VBox flightOptionsContainer;
+
+    @FXML
+    private Button addFlightOptionBT;
+
     private List<Plane> selectedPlanes;
     private PlaneTable planeTable;
     private Plane selectedPlane = null;
 
-    static public boolean helperIsPlaneAvailable(Plane searchedPlane, LocalDateTime searchedTime, Airport searchAirport) {
-        var flightsArr = App.businessLogicAPI.getAllFlights(s -> s.getPlane().equals(searchedPlane));
-        var flightsDev = App.businessLogicAPI.getAllFlights(s -> s.getPlane().equals(searchedPlane));
-        /*
-        remove all flight that are not by the plane searched for
-        remove all flights that are in air at the time
-        if in air return null
-        retrace the flight order and select the airport the plane is at
-         */
-        if (flightsArr.isEmpty()) {
-            return true;
-        }
-        flightsArr = flightsArr.stream().filter(s -> s.getArrival().isBefore(searchedTime)).collect(Collectors.toList());
-        flightsDev = flightsDev.stream().filter(s -> s.getDeparture().isAfter(searchedTime)).collect(Collectors.toList());
-        if (flightsArr.isEmpty() && flightsDev.isEmpty()) {
-            return false;
-        }
-        if (flightsArr.isEmpty()) {
-            var flightDepMin = flightsDev.stream().min((s1, s2) -> s1.getDeparture().compareTo(s2.getDeparture())).get();
-            return flightDepMin.getRoute().getDepartureAirport().equals(searchAirport);
-        }
-        if (flightsDev.isEmpty()) {
-            var flightArrMax = flightsArr.stream().max((s1, s2) -> s1.getArrival().compareTo(s2.getArrival())).get();
-            return flightArrMax.getRoute().getArrivalAirport().equals(searchAirport);
-        }
+    @FXML
+    void addFlightOption(){
+        //construct new FlightOptionHBOX
+        var fohbox=new HBox();
 
-        var flightArrMax = flightsArr.stream().max((s1, s2) -> s1.getArrival().compareTo(s2.getArrival())).get();
-        var flightDepMin = flightsDev.stream().min((s1, s2) -> s1.getDeparture().compareTo(s2.getDeparture())).get();
-        return (flightDepMin.getRoute().getDepartureAirport().equals(flightArrMax.getRoute().getArrivalAirport())) && searchAirport.equals(flightDepMin.getRoute().getDepartureAirport());
+        var namefield=new TextField();
+        namefield.setPromptText("Name");
+        namefield.setTooltip(new Tooltip("The Name that this Flight Option should have"));
+        namefield.setPrefWidth(100);
+        fohbox.getChildren().add(namefield);
+
+        var availableLabel= new Label("Available:");
+        availableLabel.setPrefWidth(60);
+        fohbox.getChildren().add(availableLabel);
+
+        var availableSpinner=new Spinner<Integer>();
+        availableSpinner.setPrefWidth(70);
+        availableSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0, 1));
+        availableSpinner.setEditable(true);
+        fohbox.getChildren().add(availableSpinner);
+
+        var surchargeField=new TextField();
+        surchargeField.setPromptText("Surcharge");
+        namefield.setTooltip(new Tooltip("The Surcharge that selecting this Flight Option should add to the Price"));
+        surchargeField.setPrefWidth(80);
+        surchargeField.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        fohbox.getChildren().add(surchargeField);
+
+        var buttonsContainer=new GridPane();
+        buttonsContainer.setMaxHeight(surchargeField.getPrefHeight());
+        buttonsContainer.setPrefHeight(surchargeField.getPrefHeight());
+
+        var removeButton=new Button("X");
+        removeButton.setOnAction(e->{
+            flightOptionsContainer.getChildren().remove(fohbox);
+            if(flightOptionsContainer.getChildren().size()==0){
+                addFlightOptionBT.setVisible(true);
+            }else {
+                //enable add button on last FlightOptionBox
+                var last=(HBox)flightOptionsContainer.getChildren().get(flightOptionsContainer.getChildren().size()-1);
+                var lastBtContainer=(GridPane)last.getChildren().get(4);
+                lastBtContainer.getChildren().get(1).setVisible(true);
+            }
+        });
+        removeButton.setMaxHeight(buttonsContainer.getMaxHeight()/2);
+        removeButton.setPrefHeight(buttonsContainer.getPrefHeight()/2);
+        removeButton.setStyle("-fx-font-size: 7");
+
+        buttonsContainer.add(removeButton,0,0);
+
+        var addButton=new Button("+");
+        addButton.setOnAction(e->{
+            addFlightOption();
+            addButton.setVisible(false);
+        });
+        addButton.setMaxHeight(buttonsContainer.getMaxHeight()/2);
+        addButton.setPrefHeight(buttonsContainer.getPrefHeight()/2);
+        addButton.setStyle("-fx-font-size: 7");
+
+        buttonsContainer.add(addButton,0,1);
+
+        fohbox.getChildren().add(buttonsContainer);
+
+        flightOptionsContainer.getChildren().add(fohbox);
+        addFlightOptionBT.setVisible(false);
+    }
+
+    static public boolean helperIsPlaneAvailable(List<Flight> allFlights,Plane searchedPlane, LocalDateTime searchedTime, Airport searchAirport) {
+        var flightsArr = allFlights.stream()
+                .filter(s -> s.getPlane().equals(searchedPlane))
+                .collect(Collectors.toList());
+        // clone the other list if you want to manipulate them independently, but since only stream operations are done on them,
+        // they can be identical (they could also use the same variable)
+
+        return !flightsArr.stream()
+                .anyMatch(s->{
+                    return s.getDeparture().isBefore(searchedTime)&&s.getArrival().isAfter(searchedTime);
+                });
     }
 
     public void initialize() {
@@ -98,7 +158,8 @@ public class SubmitFlightController implements Controller {
     private void createPlaneTableWithData(List<Plane> planes) {
         planeTablePane.getChildren().remove(planeTable);
         var extendedRoute = CreateFlightController.getExtendedRoute();
-        planes = planes.stream().filter(s -> helperIsPlaneAvailable(s, extendedRoute.getDepartureDateWithTime(), extendedRoute.getSelectedRoute().getDepartureAirport())).collect(Collectors.toList());
+        var flights=App.businessLogicAPI.getAllFlights(b->true); //Get and cache before killing the backend with SQL-requests (taking O(n) time based on the number of total planes)
+        planes = planes.stream().filter(s -> helperIsPlaneAvailable(flights, s, extendedRoute.getDepartureDateWithTime(), extendedRoute.getSelectedRoute().getDepartureAirport())).collect(Collectors.toList());
         planeTable = new PlaneTable(planes, (event, row) -> {
             if (!row.isEmpty()) {
                 Plane rowData = row.getItem();
@@ -134,12 +195,7 @@ public class SubmitFlightController implements Controller {
         double price = -1;
         boolean conversionOK = true;
         try {
-            if (flightPrice.getText().contains(",")) {
-                price = Integer.valueOf(flightPrice.getText().split(",")[0]) + (Double.valueOf(flightPrice.getText().split(",")[1]) / 100);
-            } else {
-                price = Double.valueOf(flightPrice.getText());
-            }
-
+            price = Double.parseDouble(flightPrice.getText().replace(",",".").replaceAll("[€$]",""));
         } catch (Exception e) {
             if (e.getClass().equals(NumberFormatException.class)) {
                 conversionOK = false;
@@ -157,8 +213,24 @@ public class SubmitFlightController implements Controller {
         var flightCreated = false;
 
         if (creator != null && depDateTime != null && arrDateTime != null && route != null && plane != null && price != -1 && conversionOK) {
-            var f = new FlightImpl((SalesOfficerImpl) creator, depDateTime, arrDateTime, route, plane, price);
-            flightCreated = App.businessLogicAPI.createFlightFromUI(f);
+          
+          var flightOptionList=flightOptionsContainer.getChildren().stream()
+                    .map(n->(HBox)n)
+                    .map(box->{
+                        var nameTF=(TextField)box.getChildren().get(0);
+                        var name=nameTF.getText();
+                        var availableSP=(Spinner<Integer>)box.getChildren().get(2);
+                        var availabel=availableSP.getValue();
+                        var surchargeTF=(TextField)box.getChildren().get(3);
+                        var surchargeString=surchargeTF.getText();
+                        surchargeString=surchargeString.replace(",",".");
+                        surchargeString=surchargeString.replaceAll("[€$]","");
+                        var surchargeValue=Double.parseDouble(surchargeString);
+                        return new FlightOptionImpl(name,availabel,surchargeValue);
+                    })
+                    .collect(Collectors.toList());
+            System.out.println(flightOptionList);
+            var flightCreated = App.businessLogicAPI.createFlightFromUI(creator, depDateTime, arrDateTime, route, plane, price, flightOptionList);
 
             if (flightCreated) {
                 if(checkboxSalesprocess.isSelected()) {

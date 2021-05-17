@@ -66,11 +66,11 @@ public class EmployeeStorageServiceImpl implements EmployeeStorageService {
     public Optional<? extends Employee> get(String email){
         Optional<? extends Employee> opt;
         try {
-            opt=sedao.get(new Object[]{email});
+            opt=sedao.get(email);
             if(opt.isPresent())return opt;
-            opt=sodao.get(new Object[]{email});
+            opt=sodao.get(email);
             if(opt.isPresent())return opt;
-            opt=smdao.get(new Object[]{email});
+            opt=smdao.get(email);
             return opt;
         } catch (SQLException throwables) {
             throwables.printStackTrace();

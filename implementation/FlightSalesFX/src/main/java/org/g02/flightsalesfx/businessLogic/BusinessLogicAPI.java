@@ -49,7 +49,7 @@ public interface BusinessLogicAPI {
 
     public List<Airport> getAllAirports(Predicate<Airport> predicate);
 
-    boolean createFlightFromUI(SalesOfficer creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price);
+    boolean createFlightFromUI(SalesOfficer creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price, List<? extends FlightOption> flightOptions);
 
     public boolean createFlightFromUI(Flight flight);
 
