@@ -1,5 +1,6 @@
 package org.g02.flightsalesfx;
 
+import org.assertj.core.api.SoftAssertions;
 import org.g02.flightsalesfx.businessEntities.*;
 import org.g02.flightsalesfx.businessLogic.*;
 import javafx.geometry.Bounds;
@@ -23,6 +24,7 @@ import org.testfx.framework.junit5.Start;
 
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -63,14 +65,15 @@ public class ManagementDashboardTest {
 
         //SampleData Booking
         List<Booking> bookings = new ArrayList<>();
-        var se = new SalesEmployeeImpl("", "", "");
+        var se = new SalesEmployeeImpl("Snens", "email@gmail.com", "");
         var so = new SalesOfficerImpl("", "", "");
         var flight = new FlightImpl(so, 123, LocalDateTime.now(), LocalDateTime.now().plusMinutes(10), route, null, 50);
-        Ticket[] tickets = new Ticket[0];
+        Ticket[] tickets = new Ticket[]{new TicketImpl(flight, new SeatImpl(0,0), "Peter", "Gockel", new SeatOption[0])};
         FlightOption[] flightOptions = new FlightOption[0];
         bookings.add(new BookingImpl(se, flight, tickets , flightOptions, "no mail", LocalDateTime.of(2021, 4, 10, 20, 0)));
 
         Mockito.when(businessLogicAPI.getAllBookings(any())).thenReturn(bookings);
+        Mockito.when(businessLogicAPI.getAllEmployees(any())).thenReturn(List.of(se, so));
 
         var app = new App();
         app.start(stage);
@@ -83,22 +86,15 @@ public class ManagementDashboardTest {
         App.inRootTab=0;
     }
 
-//    @BeforeEach
-//    void goToTab(FxRobot fxRobot) {
-//        var x = fxRobot.lookup("#flightsTab").query();
-//        fxRobot.clickOn(x);
-//        fxRobot.clickOn(fxRobot.lookup("#goToCreateFlight").queryAs(Button.class));
-//    }
-
     @Test
-    void tManagementDashButtonTest(FxRobot fxRobot) throws InterruptedException {
+    void t01ManagementDashButtonTest(FxRobot fxRobot) throws InterruptedException {
         assertThatCode( () -> {
             fxRobot.clickOn(fxRobot.lookup("#viewRevenueRoute").queryAs(Button.class));
         }).doesNotThrowAnyException();
     }
 
     @Test
-    void tRouteSelection(FxRobot fxRobot) throws InterruptedException {
+    void t02RouteSelection(FxRobot fxRobot) throws InterruptedException {
         fxRobot.clickOn(fxRobot.lookup("#viewRevenueRoute").queryAs(Button.class));
 
         //Click on the route in the ListView
@@ -115,6 +111,27 @@ public class ManagementDashboardTest {
         double totalRevenue = Double.parseDouble(totalRevenueString.split("€")[0].split(",")[0]);
 
         assertThat(totalRevenue).isEqualTo(50);
-
     }
+
+    @Test
+    void t03EmployeeKPIsTest(FxRobot fxRobot) {
+        fxRobot.clickOn(fxRobot.lookup(node -> ((Button) node).getText().contains("Employee")).queryAs(Button.class));
+
+        //Click on the Emp in the ListView and Than "View Stats"
+        var empItem = fxRobot.lookup(node -> ((Text) node).getText().contains("Snens")).query();
+        fxRobot.clickOn(empItem);
+        fxRobot.clickOn(fxRobot.lookup(node -> ((Button) node).getText().contains("View")).queryAs(Button.class));
+
+        var totalRevField = fxRobot.lookup("#totalRevenueField").queryAs(TextField.class);
+        var noBookingsField = fxRobot.lookup("#noBookings").queryAs(TextField.class);
+        var avgTicketsField = fxRobot.lookup("#avgTickets").queryAs(TextField.class);
+
+        SoftAssertions.assertSoftly( s -> {
+            s.assertThat(TestUtil.getDoubleConsideringLocale(totalRevField.getText().split("€")[0])).isEqualTo(50);
+            s.assertThat(TestUtil.getIntConsideringLocale(noBookingsField.getText())).isEqualTo(1);
+            s.assertThat(TestUtil.getDoubleConsideringLocale(avgTicketsField.getText())).isEqualTo(1);
+        });
+    }
+
+
 }

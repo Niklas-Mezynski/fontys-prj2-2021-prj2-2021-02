@@ -75,7 +75,7 @@ public class ViewSpecEmpNumbersController implements Controller {
         OptionalDouble avgTicketAmount = allBookings.stream()
                 .mapToInt(booking -> booking.getTickets().size())
                 .average();
-        avgTickets.setText(String.valueOf(avgTicketAmount.orElse(0)));
+        avgTickets.setText(String.format("%.2f",avgTicketAmount.orElse(0)));
 
 
         /*

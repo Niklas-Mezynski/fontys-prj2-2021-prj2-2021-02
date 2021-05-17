@@ -62,7 +62,7 @@
                                     <Insets />
                                  </GridPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#viewEmployeeNumbers" text="View numbers for a specific Employee" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                              <Button onAction="#viewEmployeeNumbers" text="View numbers for a specific Employee" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                            </children>
                         </GridPane>
                      </children>
