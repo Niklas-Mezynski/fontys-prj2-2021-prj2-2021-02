@@ -171,14 +171,14 @@ public class HomeController implements Controller {
                 if(selectedFlightFromDBAsList.get(0).getSalesProcessStatus()) {
                     var buttonPressed = handleStartedSalesprocess();
                     if(buttonEqualsOk(buttonPressed)) {
-                        App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), false);
+                        App.businessLogicAPI.updateFlight(FlightImpl.of(selectedFlight), selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), false);
                         flightTable.refreshTable();
                     }
                     return;
                 }
                 var buttonPressed = handleNotStartedSalesprocess(selectedFlightFromDBAsList.get(0));
                 if(buttonEqualsOk(buttonPressed)) {
-                    App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), true);
+                    App.businessLogicAPI.updateFlight(FlightImpl.of(selectedFlight), selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), true);
                 }
             } else {
                 dataErrorAlert();
@@ -245,7 +245,7 @@ public class HomeController implements Controller {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText("Problems during processing selectedflight information.");
-        alert.setContentText("There occurred an issue by transfering necessary data.");
+        alert.setContentText("There occurred an error while retrieving the requested data.");
         alert.showAndWait();
     }
 }

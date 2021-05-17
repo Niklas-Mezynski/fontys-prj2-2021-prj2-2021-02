@@ -27,7 +27,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(ApplicationExtension.class)
-public class startSalesprocessTest {
+public class StartSalesprocessTest {
     static {
         if (Boolean.getBoolean("headless")) {
             System.setProperty("testfx.robot", "glass");
@@ -76,7 +76,8 @@ public class startSalesprocessTest {
     @Test
     void enableButtonTest(FxRobot fxRobot) {
         clickOnSampleFlight(fxRobot);
-        fxRobot.clickOn(fxRobot.lookup("#enableSalesprocess").queryAs(Button.class));
+        Assertions.assertThat(fxRobot.lookup("#enableSalesprocess").queryAs(Button.class).isDisabled())
+                .isEqualTo(false);
     }
 
     /**

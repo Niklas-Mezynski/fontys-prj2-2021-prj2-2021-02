@@ -157,7 +157,7 @@ public class SubmitFlightController implements Controller {
         var flightCreated = false;
 
         if (creator != null && depDateTime != null && arrDateTime != null && route != null && plane != null && price != -1 && conversionOK) {
-            var f = FlightImpl.of(new FlightImpl((SalesOfficerImpl) creator, depDateTime, arrDateTime, route, plane, price));
+            var f = new FlightImpl((SalesOfficerImpl) creator, depDateTime, arrDateTime, route, plane, price);
             flightCreated = App.businessLogicAPI.createFlightFromUI(f);
 
             if (flightCreated) {
