@@ -245,7 +245,7 @@ public class HomeController implements Controller {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText("Problems during processing selectedflight information.");
-        alert.setContentText("There occurred an issue by transfering necessary data.");
+        alert.setContentText("There occurred an issue while retrieving the requested data.");
         alert.showAndWait();
     }
 }
