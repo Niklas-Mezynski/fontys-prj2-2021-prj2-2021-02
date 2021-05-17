@@ -42,22 +42,20 @@ public class salesEmployeeHomeController implements Controller {
     public void createSearchFunctionality(){
         departureField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
             createOrUpdateRouteTable(f -> {
-                System.out.println("departure changed");
                 String depField = newValue.toLowerCase();
                 String arrField = arrivalField.getText().toLowerCase();
                 String dep = f.getRoute().getDepartureAirport().toString().toLowerCase();
                 String arr = f.getRoute().getArrivalAirport().toString().toLowerCase();
-                return dep.contains(depField) && arr.contains(arrField);
+                return dep.contains(depField)&&arr.contains(arrField);
             });
         }));
         arrivalField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
             createOrUpdateRouteTable(f -> {
-                System.out.println("arrival changed");
                 String depField = departureField.getText().toLowerCase();
                 String arrField = newValue.toLowerCase();
                 String dep = f.getRoute().getDepartureAirport().toString().toLowerCase();
                 String arr = f.getRoute().getArrivalAirport().toString().toLowerCase();
-                return dep.contains(depField) && arr.contains(arrField);
+                return dep.contains(depField)&&arr.contains(arrField);
             });
         }));
 

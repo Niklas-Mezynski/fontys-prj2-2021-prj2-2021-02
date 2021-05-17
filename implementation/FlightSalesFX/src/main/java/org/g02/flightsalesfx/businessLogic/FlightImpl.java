@@ -1,7 +1,6 @@
 package org.g02.flightsalesfx.businessLogic;
 
 import org.g02.btfdao.annotations.ForeignKey;
-import org.g02.btfdao.annotations.Ignore;
 import org.g02.btfdao.annotations.PrimaryKey;
 import org.g02.btfdao.annotations.TableName;
 import org.g02.btfdao.dao.Savable;
@@ -36,9 +35,7 @@ public class FlightImpl implements Flight, Savable {
     @ForeignKey("com.g02.flightsalesfx.businessLogic.DynamicPriceReductionImpl")
     public DynamicPriceReductionImpl[] dynamicPriceReductions = new DynamicPriceReductionImpl[0];
     @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightOptionImpl")
-    private FlightOptionImpl[] optionsListDB = new FlightOptionImpl[0];
-    @Ignore
-    private List<FlightOptionImpl> optionsList;
+    public FlightOptionImpl[] optionsList = new FlightOptionImpl[0];
 
     public FlightImpl(SalesOfficerImpl creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
         this.creator = creator;
@@ -47,7 +44,6 @@ public class FlightImpl implements Flight, Savable {
         this.route = RouteImpl.of(route);
         this.plane = PlaneImpl.of(plane);
         this.price = price;
-        optionsList=new ArrayList<>();
     }
 
     public FlightImpl(SalesOfficerImpl creator, int flightNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
@@ -58,13 +54,10 @@ public class FlightImpl implements Flight, Savable {
         this.route = RouteImpl.of(route);
         this.plane = PlaneImpl.of(plane);
         this.price = price;
-        optionsList=new ArrayList<>();
     }
 
     public static FlightImpl of(Flight f) {
-        var ret= new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()),f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
-        ret.addAllFlightOptions(f.getFlightOptions());
-        return ret;
+        return new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
     }
 
     private FlightImpl() {}
@@ -219,18 +212,27 @@ public class FlightImpl implements Flight, Savable {
      */
     @Override
     public List<FlightOption> getFlightOptions() {
-        return new ArrayList<>(optionsList);
+        return Arrays.asList(optionsList.clone());
     }
 
     @Override
     public void addFlightOption(FlightOption flightOption) {
-        optionsList.add(FlightOptionImpl.of(flightOption));
+        if (flightOption instanceof FlightOptionImpl) {
+            var flightOptions = Arrays.asList(optionsList);
+            flightOptions.add((FlightOptionImpl) flightOption);
+            optionsList = flightOptions.toArray(new FlightOptionImpl[0]);
+        }
     }
 
     @Override
     public void addAllFlightOptions(List<? extends FlightOption> options) {
-        var tmp=options.stream().map(FlightOptionImpl::of).collect(Collectors.toList());
-        optionsList.addAll(tmp);
+        var b = options.stream().anyMatch(flightOption -> !(flightOption instanceof FlightOptionImpl));
+        if (b) return;
+        var flightOptions = new ArrayList<>(Arrays.asList(optionsList));
+        for (FlightOption option : options) {
+            flightOptions.add((FlightOptionImpl) option);
+        }
+        optionsList = flightOptions.toArray(new FlightOptionImpl[0]);
     }
 
     @Override
@@ -238,7 +240,7 @@ public class FlightImpl implements Flight, Savable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FlightImpl flight = (FlightImpl) o;
-        return getFlightNumber() == flight.getFlightNumber() && Double.compare(flight.getPrice(), getPrice()) == 0 && salesProcessStarted == flight.salesProcessStarted && Objects.equals(getDeparture(), flight.getDeparture()) && Objects.equals(getArrival(), flight.getArrival()) && Objects.equals(getRoute(), flight.getRoute()) && Objects.equals(getPlane(), flight.getPlane()) && Objects.equals(creator, flight.creator) && Arrays.equals(staticPriceReductions, flight.staticPriceReductions) && Arrays.equals(dynamicPriceReductions, flight.dynamicPriceReductions) && optionsList.equals(flight.optionsList);
+        return getFlightNumber() == flight.getFlightNumber() && Double.compare(flight.getPrice(), getPrice()) == 0 && salesProcessStarted == flight.salesProcessStarted && Objects.equals(getDeparture(), flight.getDeparture()) && Objects.equals(getArrival(), flight.getArrival()) && Objects.equals(getRoute(), flight.getRoute()) && Objects.equals(getPlane(), flight.getPlane()) && Objects.equals(creator, flight.creator) && Arrays.equals(staticPriceReductions, flight.staticPriceReductions) && Arrays.equals(dynamicPriceReductions, flight.dynamicPriceReductions) && Arrays.equals(optionsList, flight.optionsList);
     }
 
     @Override
@@ -246,13 +248,7 @@ public class FlightImpl implements Flight, Savable {
         int result = Objects.hash(getFlightNumber(), getDeparture(), getArrival(), getRoute(), getPlane(), getPrice(), salesProcessStarted, creator);
         result = 31 * result + Arrays.hashCode(staticPriceReductions);
         result = 31 * result + Arrays.hashCode(dynamicPriceReductions);
-        result = 31 * result + optionsList.hashCode();
+        result = 31 * result + Arrays.hashCode(optionsList);
         return result;
-    }
-    private void beforeDeconstruction(){
-        optionsListDB=optionsList.toArray(FlightOptionImpl[]::new);
-    }
-    private void afterConstruction(){
-        optionsList= Arrays.stream(optionsListDB).collect(Collectors.toList());
     }
 }

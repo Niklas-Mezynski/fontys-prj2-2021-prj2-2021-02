@@ -30,53 +30,49 @@
                <children>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <ScrollPane hbarPolicy="NEVER" maxHeight="200.0" VBox.vgrow="ALWAYS">
-                           <content>
-                              <HBox alignment="TOP_CENTER" spacing="20.0">
+                        <HBox alignment="TOP_CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <VBox fx:id="seatOptions" alignment="TOP_CENTER" styleClass="menu-row">
                                  <children>
-                                    <VBox fx:id="seatOptions" alignment="TOP_CENTER" prefHeight="70.0" prefWidth="390.0" styleClass="menu-row">
+                                    <HBox alignment="TOP_CENTER">
                                        <children>
-                                          <HBox alignment="TOP_CENTER">
-                                             <children>
-                                                <Label styleClass="sub-title" text="Seat Options" />
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="TOP_CENTER">
-                                             <children>
-                                                <Button fx:id="addSeatOptionButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addSeatOption" styleClass="buttonBlack" text="Add new Seat Option" HBox.hgrow="ALWAYS" />
-                                             </children>
-                                          </HBox>
+                                          <Label styleClass="sub-title" text="Seat Options" />
                                        </children>
-                                    </VBox>
-                  <!--                  <Separator orientation="VERTICAL" />-->
-                                    <!--<VBox fx:id="flightOptions" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" styleClass="menu-row">
+                                    </HBox>
+                                    <HBox alignment="TOP_CENTER">
                                        <children>
-                                          <HBox alignment="TOP_CENTER">
-                                             <children>
-                                                <Label text="Flight Options">
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font></Label>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER">
-                                             <children>
-                                                <Button mnemonicParsing="false" />
-                                                <TextField styleClass="menu-row" />
-                                                <Spinner editable="true" styleClass="menu-row" />
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="TOP_CENTER">
-                                             <children>
-                                                <Button mnemonicParsing="false" text="Add new Flight Option" HBox.hgrow="ALWAYS" />
-                                             </children>
-                                          </HBox>
+                                          <Button fx:id="addSeatOptionButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addSeatOption" styleClass="buttonBlack" text="Add new Seat Option" HBox.hgrow="ALWAYS" />
                                        </children>
-                                    </VBox>-->
+                                    </HBox>
                                  </children>
-                              </HBox>
-                           </content>
-                        </ScrollPane>
+                              </VBox>
+            <!--                  <Separator orientation="VERTICAL" />-->
+                              <!--<VBox fx:id="flightOptions" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" styleClass="menu-row">
+                                 <children>
+                                    <HBox alignment="TOP_CENTER">
+                                       <children>
+                                          <Label text="Flight Options">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font></Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Button mnemonicParsing="false" />
+                                          <TextField styleClass="menu-row" />
+                                          <Spinner editable="true" styleClass="menu-row" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="TOP_CENTER">
+                                       <children>
+                                          <Button mnemonicParsing="false" text="Add new Flight Option" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>-->
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                   <Separator orientation="VERTICAL">

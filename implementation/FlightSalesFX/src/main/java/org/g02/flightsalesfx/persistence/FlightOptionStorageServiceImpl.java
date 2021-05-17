@@ -39,14 +39,4 @@ public class FlightOptionStorageServiceImpl implements FlightOptionStorageServic
         }
         return List.of();
     }
-    @Override
-    public FlightOption update(FlightOption flightOption){
-        var fo=FlightOptionImpl.of(flightOption);
-        try {
-            return dao.update(fo);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return null;
-    }
 }

@@ -1,9 +1,8 @@
-module org.g02.flightsalesfx {
-    requires java.sql;
-    requires BTFDao;
-    requires javafx.graphics;
-    requires javafx.fxml;
+module com.g02.flightsalesfx {
     requires javafx.controls;
+    requires javafx.fxml;
+    requires BTFDao;
+    requires java.sql;
     opens org.g02.flightsalesfx;
     opens org.g02.flightsalesfx.businessEntities;
     opens org.g02.flightsalesfx.businessLogic;

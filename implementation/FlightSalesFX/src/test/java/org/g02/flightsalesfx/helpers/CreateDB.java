@@ -39,9 +39,7 @@ public class CreateDB {
         //System.out.println(queryBuilder.createTablesCreateStatement(databaseSQL));
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         assert simpledao != null: "No datasource";
-        var connection=simpledao.getConnection();
-        Dao.createAllTables(connection,databaseSQL);
-        connection.close();
+        Dao.createAllTables(simpledao.getConnection(),databaseSQL);
 
 
     }

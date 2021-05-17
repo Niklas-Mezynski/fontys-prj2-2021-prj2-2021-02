@@ -1,55 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<settings>
-  <servers>
-    <server>
-      <username></username>
-      <password></password>
-      <id>central</id>
-    </server>
-    <server>
-      <username></username>
-      <password></password>
-      <id>snapshots</id>
-    </server>
-  </servers>
-  <profiles>
-    <profile>
-      <repositories>
-        <repository>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-          <id>central</id>
-          <name>default-maven-virtual</name>
-          <url>https://mcslinplay.jfrog.io/artifactory/default-maven-virtual</url>
-        </repository>
-        <repository>
-          <snapshots />
-          <id>snapshots</id>
-          <name>default-maven-virtual</name>
-          <url>https://mcslinplay.jfrog.io/artifactory/default-maven-virtual</url>
-        </repository>
-      </repositories>
-      <pluginRepositories>
-        <pluginRepository>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-          <id>central</id>
-          <name>default-maven-virtual</name>
-          <url>https://mcslinplay.jfrog.io/artifactory/default-maven-virtual</url>
-        </pluginRepository>
-        <pluginRepository>
-          <snapshots />
-          <id>snapshots</id>
-          <name>default-maven-virtual</name>
-          <url>https://mcslinplay.jfrog.io/artifactory/default-maven-virtual</url>
-        </pluginRepository>
-      </pluginRepositories>
-      <id>artifactory</id>
-    </profile>
-  </profiles>
-  <activeProfiles>
-    <activeProfile>artifactory</activeProfile>
-  </activeProfiles>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <profiles>
+        <profile>
+            <id>sebivenlo</id>
+            <repositories>
+                <repository>
+                    <id>fontysvenlo.org</id>
+                    <url>https://www.fontysvenlo.org/repository</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>sebivenlo</activeProfile>
+    </activeProfiles>
 </settings>
+

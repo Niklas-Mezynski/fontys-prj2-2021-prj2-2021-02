@@ -1,14 +1,16 @@
 package org.g02.flightsalesfx.businessLogic;
 
 import org.g02.btfdao.annotations.ForeignKey;
-import org.g02.btfdao.annotations.Ignore;
 import org.g02.btfdao.annotations.PrimaryKey;
 import org.g02.btfdao.annotations.TableName;
 import org.g02.btfdao.dao.Savable;
 import org.g02.flightsalesfx.businessEntities.Seat;
 import org.g02.flightsalesfx.businessEntities.SeatOption;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @TableName("seats")
@@ -19,15 +21,13 @@ public class SeatImpl implements Seat, Savable {
     public int rowNumber;
     public int seatNumber;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.SeatOptionImpl")
-    private SeatOptionImpl[] seatOptionsDB = new SeatOptionImpl[0];
-    @Ignore
-    private List<SeatOption> seatOptions;
+    public SeatOptionImpl[] seatOptions = new SeatOptionImpl[0];
 
     //    Useless constructor because cant be accessed from SeatManagerImpl
     public SeatImpl(int rowNumber, int seatNumber) {
         this.rowNumber = rowNumber;
         this.seatNumber = seatNumber;
-        this.seatOptions = new ArrayList<>();
+        this.seatOptions = new SeatOptionImpl[0];
     }
 
     private SeatImpl() {
@@ -50,17 +50,22 @@ public class SeatImpl implements Seat, Savable {
 
     @Override
     public void addSeatOption(SeatOption so) {
-        seatOptions.add(so);
+        var collect = Arrays.stream(this.seatOptions).collect(Collectors.toList());
+        if (!(so instanceof SeatOptionImpl)) return;
+        collect.add((SeatOptionImpl) so);
+        this.seatOptions = collect.toArray(new SeatOptionImpl[0]);
     }
 
     @Override
     public void addAllSeatOptions(List<? extends SeatOption> seatOptionList) {
-        seatOptions.addAll(seatOptionList);
+        var collect = Arrays.stream(this.seatOptions).collect(Collectors.toList());
+        collect.addAll((Collection<? extends SeatOptionImpl>) seatOptionList);
+        this.seatOptions = collect.toArray(new SeatOptionImpl[0]);
     }
 
     @Override
     public List<SeatOption> getSeatOptions() {
-        return seatOptions;
+        return Arrays.stream(seatOptions).collect(Collectors.toUnmodifiableList());
     }
 
     @Override
@@ -68,8 +73,7 @@ public class SeatImpl implements Seat, Savable {
         return "SeatImpl{" +
                 "rowNumber=" + rowNumber +
                 ", seatNumber=" + seatNumber +
-                ", seatOptions=" + seatOptions +
-                ", seatOptionsDB" + Arrays.toString(seatOptionsDB) +
+                ", seatOptions=" + Arrays.toString(seatOptions) +
                 '}';
     }
 
@@ -91,13 +95,13 @@ public class SeatImpl implements Seat, Savable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SeatImpl seat = (SeatImpl) o;
-        return id == seat.id && getRowNumber() == seat.getRowNumber() && getSeatNumber() == seat.getSeatNumber() && seatOptions.equals(seat.seatOptions);
+        return id == seat.id && getRowNumber() == seat.getRowNumber() && getSeatNumber() == seat.getSeatNumber() && Arrays.equals(seatOptions, seat.seatOptions);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(id, getRowNumber(), getSeatNumber());
-        result = 31 * result + seatOptions.hashCode();
+        result = 31 * result + Arrays.hashCode(seatOptions);
         return result;
     }
 
@@ -106,19 +110,7 @@ public class SeatImpl implements Seat, Savable {
         return seatOptions;
     }*/
 
-    public static SeatImpl of(Seat s) {
-        var seat = new SeatImpl(s.getRowNumber(), s.getSeatNumber());
-        seat.addAllSeatOptions(s.getSeatOptions());
-        return seat;
-    }
-
-    private void beforeDeconstruction() {
-        seatOptionsDB = seatOptions.stream()
-                .map(SeatOptionImpl::of)
-                .toArray(SeatOptionImpl[]::new);
-    }
-
-    private void afterConstruction() {
-        seatOptions = Arrays.stream(seatOptionsDB).collect(Collectors.toList());
+    public static SeatImpl of(Seat s){
+        return new SeatImpl(s.getRowNumber(), s.getSeatNumber());
     }
 }

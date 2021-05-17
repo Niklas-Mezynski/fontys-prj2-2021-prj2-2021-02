@@ -7,7 +7,6 @@ import org.g02.flightsalesfx.businessLogic.RouteImpl;
 import org.g02.flightsalesfx.businessEntities.*;
 import org.g02.flightsalesfx.businessLogic.*;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -42,18 +41,13 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
         return bookingStorageService;
     }
 
-    @Deprecated
     private Connection connection;
-
-    private DataSource dataSource;
 
     public PersistenceAPIImpl() {
         var simpledao = PGJDBCUtils.getDataSource("simpledao");
         assert simpledao != null: "No datasource";
         try {
-            dataSource=simpledao;
             connection=simpledao.getConnection();
-            connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -64,9 +58,9 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
         if (employeeStorageService == null) {
             employeeStorageService = new EmployeeStorageServiceImpl(
                     employeeManager,
-                    new Dao<>(SalesEmployeeImpl.class,dataSource),
-                    new Dao<>(SalesOfficerImpl.class,dataSource),
-                    new Dao<>(SalesManagerImpl.class,dataSource));
+                    new Dao<>(SalesEmployeeImpl.class,connection),
+                    new Dao<>(SalesOfficerImpl.class,connection),
+                    new Dao<>(SalesManagerImpl.class,connection));
         }
         return employeeStorageService;
     }
@@ -107,7 +101,7 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     @Override
     public AirportStorageService getAirportStorageService(AirportManager airportManager) {
         if(airportStorageService == null) {
-            airportStorageService = new AirportStorageServiceImpl(airportManager, new Dao<>(AirportImpl.class,dataSource));
+            airportStorageService = new AirportStorageServiceImpl(airportManager, new Dao<>(AirportImpl.class,connection));
         }
 
         return airportStorageService;

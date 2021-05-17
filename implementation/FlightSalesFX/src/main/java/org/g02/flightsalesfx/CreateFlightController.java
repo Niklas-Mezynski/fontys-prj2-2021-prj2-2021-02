@@ -10,10 +10,8 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.g02.flightsalesfx.App.setRoot;
 
@@ -50,7 +48,7 @@ public class CreateFlightController implements Controller {
 
 
 
-    private List<Route> allRoutesCache;
+
     private List<Route> selectedRoutes;
     private RouteTable routeTable;
     private Route selectedRoute = null;
@@ -58,19 +56,16 @@ public class CreateFlightController implements Controller {
     private static ExtendedRoute extendedRoute;
 
     public void initialize() {
-        allRoutesCache = App.businessLogicAPI.getAllRoutes(Route::getEnabled);
-        selectedRoutes=new ArrayList<>(allRoutesCache);
+        selectedRoutes = App.businessLogicAPI.getAllRoutes(route -> {
+            return route.getEnabled();
+        });
+
         routeSearchBar.textProperty().addListener(((observableValue, oldValue, newValue) -> {
                 updateRoutes(newValue);
         }));
 
         createRouteTableWithData(selectedRoutes);
 
-        routeSearchBar.setTooltip(new Tooltip("Search for a route"));
-        startDate.setTooltip(new Tooltip("Select the date on which the Flight should depart"));
-        startTime.setTooltip(new Tooltip("The time at which the Flight departs, in the hh:mm format e.g. \"13:12\""));
-        durationHours.setTooltip(new Tooltip("The hours part of the duration that this Flight takes, whole Numbers only"));
-        durationMinutes.setTooltip(new Tooltip("The minutes part of the duration that this Flight takes, whole Numbers only, has to be smaller than 60"));
 
     }
 
@@ -92,15 +87,16 @@ public class CreateFlightController implements Controller {
 
     private void updateRoutes(String term){
         String lowerTerm = term.toLowerCase();
-        selectedRoutes = allRoutesCache.stream().filter(route -> {
+        selectedRoutes = App.businessLogicAPI.getAllRoutes(route -> {
             String[] terms = lowerTerm.split(" ");
             for(String s : terms){
                 if(!(route.getEnabled()&&route.toString().toLowerCase().contains(s))){
                     return false;
                 }
             }
+
             return true;
-        }).collect(Collectors.toList());
+        });
         if(routeTable != null){
             createRouteTableWithData(selectedRoutes);
         }
@@ -172,16 +168,9 @@ public class CreateFlightController implements Controller {
 
                 this.departureDateWithTime = createDepartureInfo(startDate, startTime);
 
-                try {
-                    this.arrivalDateWithTime = createArrivalInfo(durationHours, durationMinutes);
-                } catch (InputMismatchException | IllegalArgumentException e){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Error during registration");
-                    alert.setContentText(e.getMessage());
-                    alert.showAndWait();
-                    throw e;
-                }
+
+                this.arrivalDateWithTime = createArrivalInfo(durationHours, durationMinutes);
+
         }
 
         private void setRoute(Route r) throws IllegalArgumentException{
@@ -204,17 +193,28 @@ public class CreateFlightController implements Controller {
                 if(splittedField.length == 2) {
                     int hour = -1;
                     int min = -1;
+                    boolean inputOK = true;
                     try{
-                        hour = Integer.parseInt(splittedField[0].trim());
-                        min = Integer.parseInt(splittedField[1].trim());
-                        return startDate.atTime(hour, min);
-                    } catch(NumberFormatException e) {
-                        throw new IllegalArgumentException("The entered information regarding the departure is either not filled in or filled in wrongly." +
-                                " Make sure the Departure Time looks like this: 'hh:mm'.");
+                        hour = Integer.valueOf(splittedField[0].trim());
+                        min = Integer.valueOf(splittedField[1].trim());
+                    } catch(Exception e) {
+                        if(e.getClass().equals(NumberFormatException.class)){
+                            inputOK = false;
+                        }
                     }
+
+                    if(inputOK){
+                        return startDate.atTime(hour, min);
+                    }
+
                 } else {
-                    throw new IllegalArgumentException("The entered information regarding the departure is either not filled in or filled in wrongly." +
-                            " Make sure the Departure Time looks like this: 'hh:mm'.");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Error during registration");
+                    alert.setContentText("The entered information regarding the departure are either not filled in or filled in wrongly." +
+                            " Make sure the input looks like 'hh:mm'.");
+                    alert.showAndWait();
+                    new IllegalArgumentException().printStackTrace();
                 }
 
             }
@@ -223,19 +223,22 @@ public class CreateFlightController implements Controller {
         }
 
         private LocalDateTime createArrivalInfo(TextField durHour, TextField durMin) throws InputMismatchException{
-            int hours;
-            int mins;
+            int hours = -1;
+            int mins = -1;
             if(durHour.getText().isEmpty() || durMin.getText().isEmpty()){
-                throw new InputMismatchException("Please make sure that no fields are empty");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error during registration");
+                alert.setContentText("Please make sure that no fields are empty.");
+                alert.showAndWait();
+                throw new InputMismatchException("Wrong input-syntax. input must look like: 'hh:mm'.");
             }else{
                 try{
-                    hours = Integer.parseInt(durHour.getText().trim());
-                    mins = Integer.parseInt(durMin.getText().trim());
-                    if(mins>=60||mins<0||hours<0){
-                        throw new InputMismatchException("Tha values for the Flight-Duration are outside of the valid range");
-                    };
-                }catch (NumberFormatException e){
-                        throw new InputMismatchException("Wrong input-syntax. Duration has to be a valid number");
+                    hours = Integer.valueOf(durHour.getText().trim());
+                    mins = Integer.valueOf(durMin.getText().trim());
+                }catch (Exception e){
+                        throw new InputMismatchException("Wrong input-syntax. input must look like: 'hh:mm'.");
+
                 }
             }
 
