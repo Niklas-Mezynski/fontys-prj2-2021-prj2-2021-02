@@ -242,6 +242,15 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         return flightStorageService.add(flight)!=null;
     }
 
+
+
+    @Override
+    public boolean createPriceReductionFromUI(PriceReduction reduction) {
+        System.out.println(reduction);
+        var reductionStorageService = persistenceAPI.getPriceReductionStorageService(getPriceReductionManager());
+        return reductionStorageService.add(reduction)!=null;
+    }
+
     @Override
     public boolean createReoccurringFlightFromUI(Flight flight, Duration interval) {
         var reOccurFlight = getReoccurringFlightManager().createRoccurringFlight(flight, interval);

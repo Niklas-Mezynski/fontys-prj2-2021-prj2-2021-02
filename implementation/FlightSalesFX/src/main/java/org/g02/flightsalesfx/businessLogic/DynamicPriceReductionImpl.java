@@ -5,6 +5,7 @@ import org.g02.btfdao.annotations.TableName;
 import org.g02.btfdao.dao.Savable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @TableName("dynamicpriceredutions")
 public class DynamicPriceReductionImpl extends PriceReductionImpl implements Savable {
@@ -12,22 +13,35 @@ public class DynamicPriceReductionImpl extends PriceReductionImpl implements Sav
     @PrimaryKey
     public String name;
     public String source;
-    public LocalDate endDate;
+    public LocalDateTime endDate;
+
+    public LocalDateTime startDate;
+    public boolean isPercentage;
 
     // external source that determines the characteristics of this dynamic price-reduction
     //private var source;
 
     // todo: implement source
-    public DynamicPriceReductionImpl(String name, String source, LocalDate end) {
-        super(name, end);
+    public DynamicPriceReductionImpl(String name, String source, LocalDateTime end, LocalDateTime start,boolean isPercentage, double reductionPercentage) {
+        super(name, end,start,isPercentage,reductionPercentage);
         this.source = source;
     }
     /**
      * @return The LocalDate that this PriceReduction expires on
      */
     @Override
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndTime() {
         return endDate;
+    }
+
+    @Override
+    public LocalDateTime getStartTime() {
+        return startDate;
+    }
+
+    @Override
+    public boolean isPercentage() {
+        return isPercentage;
     }
 
     @Override

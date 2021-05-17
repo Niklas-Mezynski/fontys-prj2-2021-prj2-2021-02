@@ -6,6 +6,7 @@
 package org.g02.flightsalesfx.businessEntities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -16,7 +17,11 @@ public interface PriceReduction {
     /**
      * @return The LocalDate that this PriceReduction expires on
      */
-    public LocalDate getEndDate();
+    public LocalDateTime getEndTime();
+
+    public LocalDateTime getStartTime();
+
+    public boolean isPercentage();
 
     public String getName();
 

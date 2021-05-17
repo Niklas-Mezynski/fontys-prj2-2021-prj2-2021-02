@@ -184,11 +184,11 @@ public class FlightImpl implements Flight, Savable {
     @Override
     public double getPriceWithPriceReductionsApplied() {
         List<PriceReduction> availablePriceReductions = Arrays.stream(this.staticPriceReductions)
-                .filter(priceReduction -> priceReduction.getEndDate().isAfter(LocalDate.now()))
+                .filter(priceReduction -> priceReduction.getEndTime().isAfter(LocalDateTime.now()))
                 .sorted()
                 .collect(Collectors.toList());
         List<PriceReduction> collect = Arrays.stream(dynamicPriceReductions)
-                .filter(priceReduction -> priceReduction.getEndDate().isAfter(LocalDate.now()))
+                .filter(priceReduction -> priceReduction.getEndTime().isAfter(LocalDateTime.now()))
                 .sorted()
                 .collect(Collectors.toList());
         availablePriceReductions.addAll(collect);

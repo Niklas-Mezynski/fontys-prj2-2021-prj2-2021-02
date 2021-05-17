@@ -59,6 +59,8 @@ public interface BusinessLogicAPI {
 
     public void createAirportFromUI(String name, String city, String country);
 
+    public boolean createPriceReductionFromUI(PriceReduction priceReduction);
+
     public List<Flight> getAllFlights(Predicate<Flight> predicate);
 
     public List<Flight> getAllFlights();
