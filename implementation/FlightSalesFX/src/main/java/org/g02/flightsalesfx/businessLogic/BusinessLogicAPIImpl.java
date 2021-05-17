@@ -305,6 +305,12 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         }
         return persistenceAPI.getFlightStorageService(getFlightManager()).update(flightImpl);
     }
+  
+    @Override
+    public List<Employee> getAllEmployees(Predicate<Employee> predicate) {
+        var all = persistenceAPI.getEmployeeStorageService(employeeManager).getAll();
+        return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
+    }
 
     private static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException
     {

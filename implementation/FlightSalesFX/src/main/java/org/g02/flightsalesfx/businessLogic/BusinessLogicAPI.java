@@ -70,4 +70,6 @@ public interface BusinessLogicAPI {
     Plane updatePlane(PlaneImpl oldPlane, String name, String type, String manufacturer, List<Seat> collect);
 
     Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, double price, boolean salesprocess);
+
+    public List<Employee> getAllEmployees(Predicate<Employee> predicate);
 }

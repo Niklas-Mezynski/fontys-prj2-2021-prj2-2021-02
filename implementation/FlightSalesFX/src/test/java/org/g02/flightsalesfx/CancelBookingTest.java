@@ -10,6 +10,7 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,8 @@ public class CancelBookingTest {
                 flightDepartIn1D,
                 ts,
                 noFlightOptions,
-                "test1@gmail.com"
+                "test1@gmail.com",
+                LocalDateTime.of(2021, 4, 10, 10, 0)
                 );
         t = new TicketImpl(flightDepart1MAgo, flightDepart1MAgo.getPlane().getAllSeats().get(0), "fName", "lName", noSeatOptions);
         tickets.add(t);
@@ -90,7 +92,8 @@ public class CancelBookingTest {
                 flightDepart1MAgo,
                 ts1,
                 noFlightOptions,
-                "test2@gmail.com"
+                "test2@gmail.com",
+                LocalDateTime.of(2021, 4, 10, 10, 0)
                 );
         t = new TicketImpl(flightDepartIn2M, flightDepartIn2M.getPlane().getAllSeats().get(0), "fName", "lName", noSeatOptions);
         tickets.add(t);
@@ -99,7 +102,8 @@ public class CancelBookingTest {
                 flightDepartIn2M,
                 ts2,
                 noFlightOptions,
-                "test3@gmail.com"
+                "test3@gmail.com",
+                LocalDateTime.of(2021, 4, 10, 10, 0)
                 );
 
 
