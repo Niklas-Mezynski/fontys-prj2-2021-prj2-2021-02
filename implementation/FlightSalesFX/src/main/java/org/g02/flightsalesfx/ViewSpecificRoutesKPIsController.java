@@ -98,7 +98,7 @@ public class ViewSpecificRoutesKPIsController implements Controller {
          */
 
         //Creating the NumberAxis
-        OptionalInt minBookingYear = bookings.stream().mapToInt(booking -> booking.getFlight().getDeparture().getYear()).min();
+        OptionalInt minBookingYear = bookings.stream().mapToInt(booking -> booking.getBookingDate().getYear()).min();
         int currentYear = LocalDate.now().getYear();
         final NumberAxis xAxis = new NumberAxis(minBookingYear.orElse(2010) - 1, currentYear + 1, 1);
         final NumberAxis yAxis = new NumberAxis();
@@ -115,7 +115,7 @@ public class ViewSpecificRoutesKPIsController implements Controller {
         for (int year = minBookingYear.orElse(2010); year <= currentYear; year++ ) {
             int finalYear = year;
             double sumRevenueOneYear = bookings.stream()
-                    .filter(booking -> booking.getFlight().getDeparture().getYear() == finalYear)
+                    .filter(booking -> booking.getBookingDate().getYear() == finalYear)
                     .flatMap(booking -> booking.getTickets().stream())
                     .mapToDouble(ticket -> ticket.getFlight().getPrice()) //TODO later have to include prices of different SeatOptions etc... (Maybe directly save the final price of a booking in the object?)
                     .sum();

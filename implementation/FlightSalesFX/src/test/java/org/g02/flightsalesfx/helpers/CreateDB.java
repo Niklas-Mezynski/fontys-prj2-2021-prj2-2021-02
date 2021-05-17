@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +149,8 @@ public class CreateDB {
                 flight,
                 tickets,
                 new FlightOption[0],
-                "hans@gmail.com"
+                "hans@gmail.com",
+                LocalDateTime.of(2021, 4, 10, 10, 0)
         )));
 
 
@@ -161,7 +163,8 @@ public class CreateDB {
                 flight,
                 tickets,
                 new FlightOption[0],
-                "hans@gmail.com"
+                "hans@gmail.com",
+                LocalDateTime.of(2021, 1, 10, 10, 0)
         )));
 
 
@@ -174,7 +177,8 @@ public class CreateDB {
                 flight,
                 tickets,
                 new FlightOption[0],
-                "hans@gmail.com"
+                "hans@gmail.com",
+                LocalDateTime.of(2020, 8, 10, 10, 0)
         )));
 
 
@@ -187,7 +191,8 @@ public class CreateDB {
                 flight,
                 tickets,
                 new FlightOption[0],
-                "hans@gmail.com"
+                "hans@gmail.com",
+                LocalDateTime.of(2029, 4, 10, 10, 0)
         )));
     }
 }

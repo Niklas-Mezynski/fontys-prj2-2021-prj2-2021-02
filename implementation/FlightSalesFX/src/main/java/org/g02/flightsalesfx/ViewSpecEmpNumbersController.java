@@ -17,6 +17,7 @@ import org.g02.flightsalesfx.helpers.Controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.OptionalDouble;
@@ -93,7 +94,7 @@ public class ViewSpecEmpNumbersController implements Controller {
             int cMonth = month;
 
             double revenueThisMonth = allBookings.stream()
-                    .filter(booking -> booking.getFlight().getDeparture().isAfter(startDate.plusMonths(cMonth - 1)) &&  booking.getFlight().getDeparture().isBefore(startDate.plusMonths(cMonth)))
+                    .filter(booking -> booking.getBookingDate().isAfter(startDate.plusMonths(cMonth - 1)) &&  booking.getBookingDate().isBefore(startDate.plusMonths(cMonth)))
                     .mapToDouble(booking -> booking.getFlight().getPrice())
                     .sum();
             monthSeries.getData().add(new XYChart.Data<>(month, revenueThisMonth));

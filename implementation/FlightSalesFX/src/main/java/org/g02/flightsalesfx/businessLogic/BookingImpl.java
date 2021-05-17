@@ -6,6 +6,8 @@ import org.g02.btfdao.annotations.TableName;
 import org.g02.btfdao.dao.Savable;
 import org.g02.flightsalesfx.businessEntities.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,18 +26,20 @@ public class BookingImpl implements Booking, Savable {
     @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightOptionImpl")
     public FlightOptionImpl[] flightOptions;
     public String eMail;
+    public LocalDateTime bookingDate;
 
 
-    public BookingImpl(SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail){
+    public BookingImpl(SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail, LocalDateTime bookingDate){
         this.se = SalesEmployeeImpl.of(se);
         this.flight = FlightImpl.of(flight);
         this.tickets = Arrays.asList(tickets).stream().map(ticket -> TicketImpl.of(ticket)).toArray(TicketImpl[]::new);
         this.flightOptions = Arrays.asList(bookedFlightOptions).stream().map(bfo -> FlightOptionImpl.of(bfo)).toArray(FlightOptionImpl[]::new);
         this.eMail = eMail;
+        this.bookingDate = bookingDate;
     }
     public static BookingImpl of(Booking b){
 
-        return new BookingImpl(SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), b.getTickets().toArray(Ticket[]::new), b.getBookedFlightOptions().toArray(FlightOption[]::new), b.getCustomerEmail());
+        return new BookingImpl(SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), b.getTickets().toArray(Ticket[]::new), b.getBookedFlightOptions().toArray(FlightOption[]::new), b.getCustomerEmail(), b.getBookingDate());
     }
 
     private BookingImpl() {}
@@ -63,6 +67,11 @@ public class BookingImpl implements Booking, Savable {
     @Override
     public Flight getFlight() {
         return this.flight;
+    }
+
+    @Override
+    public LocalDateTime getBookingDate() {
+        return bookingDate;
     }
 
     @Override
