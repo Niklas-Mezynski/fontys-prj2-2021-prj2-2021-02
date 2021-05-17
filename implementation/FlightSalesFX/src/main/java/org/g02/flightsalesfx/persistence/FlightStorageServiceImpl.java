@@ -55,7 +55,7 @@ public class FlightStorageServiceImpl implements FlightStorageService{
 
     @Override
     public Flight update(Flight flight) {
-        var flightImpl = FlightImpl.of(flight);
+        FlightImpl flightImpl = (FlightImpl) flight;
         if(flight.getSalesProcessStatus()) {
             flightImpl.startSalesProcess();
         }

@@ -296,7 +296,8 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, double price, boolean salesprocess) {
-        var flightImpl = FlightImpl.of(oldFlight);
+        var flightImpl = oldFlight;
+        System.out.println(flightImpl.getFlightNumber());
         if(salesprocess) {
             flightImpl.startSalesProcess();
         } else {

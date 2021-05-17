@@ -166,19 +166,21 @@ public class HomeController implements Controller {
         if (selectedFlight != null) {
             //get selected flight from db -> useful to avoid any errors/bugs when changing the same object multiple times
             final List<Flight> selectedFlightFromDBAsList = App.businessLogicAPI.getAllFlights(f -> f.getFlightNumber() == selectedFlight.getFlightNumber());
+            FlightImpl useThisFlight = (FlightImpl) selectedFlight;
 
             if(selectedFlightFromDBAsList.size() == 1) {
                 if(selectedFlightFromDBAsList.get(0).getSalesProcessStatus()) {
                     var buttonPressed = handleStartedSalesprocess();
                     if(buttonEqualsOk(buttonPressed)) {
-                        App.businessLogicAPI.updateFlight(FlightImpl.of(selectedFlight), selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), false);
+                        App.businessLogicAPI.updateFlight(useThisFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), false);
                         flightTable.refreshTable();
                     }
                     return;
                 }
                 var buttonPressed = handleNotStartedSalesprocess(selectedFlightFromDBAsList.get(0));
                 if(buttonEqualsOk(buttonPressed)) {
-                    App.businessLogicAPI.updateFlight((FlightImpl) selectedFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), true);
+                    System.out.println(FlightImpl.of(selectedFlight));
+                    App.businessLogicAPI.updateFlight(useThisFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), true);
                 }
             } else {
                 dataErrorAlert();
