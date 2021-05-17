@@ -11,8 +11,8 @@ public class BookingManagerImpl implements BookingManager {
     private BookingStorageService bookingStorageService;
 
     @Override
-    public Booking createBooking(SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail, LocalDateTime booking) {
-        return new BookingImpl(se, flight, tickets, bookedFlightOptions, eMail, booking);
+    public Booking createBooking(SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail, LocalDateTime bookingTime) {
+        return new BookingImpl(se, flight, tickets, bookedFlightOptions, eMail, bookingTime);
     }
 
     public void setBookingStorageService(BookingStorageService bookingStorageService) {
