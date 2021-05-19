@@ -221,8 +221,10 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
-    public boolean createFlightFromUI(SalesOfficer creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
+    public boolean createFlightFromUI(SalesOfficer creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price, List<? extends FlightOption> flightOptions) {
         var flight = getFlightManager().createFlight(creator, dep, arr, route, plane, price);
+        flight.addAllFlightOptions(flightOptions);
+
         System.out.println(flight);
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
@@ -235,6 +237,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         if(flight.getSalesProcessStatus()) {
             f.startSalesProcess();
         }
+
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
         return flightStorageService.add(flight)!=null;
     }
@@ -305,7 +308,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         }
         return persistenceAPI.getFlightStorageService(getFlightManager()).update(flightImpl);
     }
-  
+
     @Override
     public List<Employee> getAllEmployees(Predicate<Employee> predicate) {
         var all = persistenceAPI.getEmployeeStorageService(employeeManager).getAll();

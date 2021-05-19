@@ -12,7 +12,7 @@
 .buttonBlack {
     /*-fx-max-width: MAX_VALUE;*/
     -fx-background-color: #1A1A1A;
-    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #353535 0%, #555555 100%);
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #3e3e3e 0%, #474747 100%);
     -fx-text-fill: #fff;
     -fx-font-size: 14px;
 }
@@ -46,18 +46,18 @@
 }
 
 .text-field {
-    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #1A1A1A 0%, #2B2B2B 100%);
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #3b3b3b 0%, #343434 100%);
     -fx-text-fill: #FFFFFF;
     -fx-margin: 0;
 }
 
 .toggle-button {
-    -fx-background-color: #1C1C1C;
+    -fx-background-color: #131313;
     -fx-margin: 0;
 }
 
 .toggle-button:selected {
-    -fx-background-color: #1A1A1A;
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #08AEEA 0%, #2AF598 100%);
     -fx-background: #FFFFFF;
     -fx-text-fill: #FFFFFF;
 }
@@ -90,6 +90,29 @@
     -fx-text-fill: #fff;
     -fx-alignment: CENTER;
     -fx-text-fill: #FFFFFF;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #4A4A4A;
+    -fx-text-fill: transparent;
+}
+.spinner .increment-arrow-button .increment-arrow {
+    /* The default Modena styling */
+    -fx-background-color: white;
+    -fx-background-insets: 0 0 -1 0, 0;
+    -fx-padding: 0.166667em 0.333333em 0.166667em 0.333333em;  /* 2 4 2 4 */
+    -fx-shape: "M 0 4 h 7 l -3.5 -4 z";
+}
+.spinner .decrement-arrow-button .decrement-arrow {
+    /* The default Modena styling */
+    -fx-background-color: white;
+    -fx-background-insets: 0 0 -1 0, 0;
+    -fx-padding: 0.166667em 0.333333em 0.166667em 0.333333em; /* 2 4 2 4 */
+    -fx-shape: "M 0 0 h 7 l -3.5 4 z";
+}/* In general */
+.spinner {
+    -fx-background-color: transparent;
 }
 
 .tab-pane:top *.tab-header-area {
@@ -176,9 +199,44 @@ ToggleButton.selectSeatOption {
 .scroll-pane{
 -fx-background-color:transparent;
 }
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color:#212121;
+}
+
+ .scroll-bar:vertical .thumb {
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #08AEEA 0%, #2AF598 100%);
+ }
+ .scroll-bar:horizontal .thumb{
+    -fx-background-color: linear-gradient(from 100% 50% to 0% 50%, #08AEEA 0%, #2AF598 100%);
+ }
+ .tab-pane .tab-header-area .tab-header-background {
+     -fx-opacity: 0;
+ }
 .all-red{
 -fx-background-color:red;
 -fx-border-color:red;
 -fx-text-fill:red;
 -fx-focus-color:red;
+}
+
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #08AEEA 0%, #2AF598 100%);
+    -fx-text-fill: black;
+}
+
+.list-cell {
+     -fx-background-color: #1A1A1A;
+     -fx-text-fill: white;
+ }
+
+.list-cell:filled:hover {
+    -fx-background-color: #383838;
+}
+.date-picker:editable > .arrow-button > * {
+    -fx-background-color: white;
+}
+
+.date-picker > .arrow-button {
+    -fx-background-color: #212121;
 }

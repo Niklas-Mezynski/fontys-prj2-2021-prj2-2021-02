@@ -4,7 +4,6 @@ import org.g02.btfdao.dao.Dao;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.FlightManager;
 import org.g02.flightsalesfx.businessLogic.FlightImpl;
-import org.g02.flightsalesfx.businessLogic.PlaneImpl;
 import org.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
 
 import java.sql.SQLException;
@@ -21,9 +20,9 @@ public class FlightStorageServiceImpl implements FlightStorageService{
 
     @Override
     public Flight add(Flight flight) {
-        var createdby=new SalesOfficerImpl(flight.getCreatedBy().getName(),flight.getCreatedBy().getEmail(),flight.getCreatedBy().getPassword());
+        var createdby=SalesOfficerImpl.of(flight.getCreatedBy());
 //        var flightImpl=new FlightImpl(createdby,flight.getFlightNumber(),flight.getDeparture(),flight.getArrival(), null, null, flight.getPrice());
-        var flightImpl=new FlightImpl(createdby,flight.getDeparture(),flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
+        var flightImpl=FlightImpl.of(flight);
         try {
             var ret= dao.insert(flightImpl);
             if (ret.isPresent()){
@@ -54,6 +53,17 @@ public class FlightStorageServiceImpl implements FlightStorageService{
     }
 
     @Override
+    public List<Flight> getAll() {
+        try {
+            var all = dao.getAll();
+            return new ArrayList<>(all);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return List.of();
+    }
+
+    @Override
     public Flight update(Flight flight) {
         FlightImpl flightImpl = (FlightImpl) flight;
         if(flight.getSalesProcessStatus()) {
@@ -66,16 +76,5 @@ public class FlightStorageServiceImpl implements FlightStorageService{
             e.printStackTrace();
             return null;
         }
-    }
-
-    @Override
-    public List<Flight> getAll() {
-        try {
-            var all = dao.getAll();
-            return new ArrayList<>(all);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return List.of();
     }
 }

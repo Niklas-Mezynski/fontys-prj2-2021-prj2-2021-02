@@ -27,8 +27,6 @@ public class HomeController implements Controller {
     public AnchorPane planePane;
     public MenuItem createPlane;
     @FXML
-    private Button enableSalesprocess;
-    @FXML
     public VBox routeListVBox;
     @FXML
     public AnchorPane routePane;
@@ -41,11 +39,12 @@ public class HomeController implements Controller {
     private AnchorPane flightPane;
     @FXML
     private CheckBox showDisabled;
+    @FXML
+    private Button enableSalesprocess;
 
     private RouteTable routeTable;
     private Flight selectedFlight;
-
-    FlightTable flightTable;
+    private FlightTable flightTable;
 
     public void initialize() {
         enableSalesprocess.setDisable(true);
@@ -95,6 +94,7 @@ public class HomeController implements Controller {
 
         flightVBox.getChildren().add(flightTable);
         flightTable.setMinWidth(flightPane.getPrefWidth());
+
     }
 
     public void createOrUpdateRouteTable(Predicate<Route> pr) {
@@ -173,7 +173,7 @@ public class HomeController implements Controller {
                     var buttonPressed = handleStartedSalesprocess();
                     if(buttonEqualsOk(buttonPressed)) {
                         App.businessLogicAPI.updateFlight(useThisFlight, selectedFlight.getDeparture(), selectedFlight.getArrival(), selectedFlight.getPrice(), false);
-                        flightTable.refreshTable();
+                        flightTable.refresh();
                     }
                     return;
                 }
@@ -191,7 +191,7 @@ public class HomeController implements Controller {
         }
 
         //refresh the table to apply changes in UI
-        flightTable.refreshTable();
+        flightTable.refresh();
     }
 
     /**

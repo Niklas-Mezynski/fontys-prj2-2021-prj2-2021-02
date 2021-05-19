@@ -18,7 +18,11 @@ public interface Flight {
      */
     public void startSalesProcess();
 
+    /**
+     * Stops the salesprocess for this flight
+     */
     public void stopSalesProcess();
+
     /**
      * @return Flight number of this Flight
      */

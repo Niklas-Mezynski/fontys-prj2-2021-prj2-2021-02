@@ -29,6 +29,7 @@ public class FlightTable extends TableView<Flight>{
 
         setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
         getItems().addAll(flights);
         getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         getColumns().addAll(flightNumber, departAirport, departureTime, arrivalAirport, arrivalTime, planeType, planeID);
@@ -39,9 +40,5 @@ public class FlightTable extends TableView<Flight>{
             });
             return row ;
         });
-    }
-
-    public void refreshTable() {
-        refresh();
     }
 }
