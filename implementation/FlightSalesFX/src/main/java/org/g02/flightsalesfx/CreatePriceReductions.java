@@ -34,6 +34,7 @@ public class CreatePriceReductions implements Controller {
     public Button addReduction;
     public VBox flightVBox;
     public VBox reductionsVBox;
+    public FlightTable flightTable;
 
     private void setData(){
         List<String> hourTimes=new ArrayList<>();
@@ -75,15 +76,15 @@ public class CreatePriceReductions implements Controller {
 
             var priceRed=new StaticPriceReductionImpl(redName.getText(),end,start,isPercent.isSelected(),price);
             App.businessLogicAPI.createPriceReductionFromUI(priceRed);
-
         });
         setData();
         setTables();
     }
     public void setTables(){
+        flightTable=null;
         var allFlights = App.businessLogicAPI.getAllFlights(f -> true);
         System.out.println(allFlights);
-        var flightTable = new FlightTable(allFlights, (event, row) -> {
+        flightTable = new FlightTable(allFlights, (event, row) -> {
             Flight selectedFlight = row.getItem();
             System.out.println("Clicked on: " + selectedFlight);
         });

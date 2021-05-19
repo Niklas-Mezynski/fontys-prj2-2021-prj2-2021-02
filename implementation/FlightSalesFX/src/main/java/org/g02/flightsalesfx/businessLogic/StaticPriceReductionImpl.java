@@ -19,6 +19,9 @@ public class StaticPriceReductionImpl extends PriceReductionImpl implements Sava
     // as 0.10 / 0.09 ...
     public double percentageAsDouble;
 
+    private StaticPriceReductionImpl(){
+    }
+
     public StaticPriceReductionImpl(String name, LocalDateTime end, LocalDateTime start,boolean isPercentage, double percentage) {
         super(name, end,start,isPercentage,percentage);
         this.percentageAsDouble = percentage;

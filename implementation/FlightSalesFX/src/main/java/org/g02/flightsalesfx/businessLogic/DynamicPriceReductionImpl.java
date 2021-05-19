@@ -21,6 +21,10 @@ public class DynamicPriceReductionImpl extends PriceReductionImpl implements Sav
     // external source that determines the characteristics of this dynamic price-reduction
     //private var source;
 
+    private DynamicPriceReductionImpl(){
+
+    }
+
     // todo: implement source
     public DynamicPriceReductionImpl(String name, String source, LocalDateTime end, LocalDateTime start,boolean isPercentage, double reductionPercentage) {
         super(name, end,start,isPercentage,reductionPercentage);
