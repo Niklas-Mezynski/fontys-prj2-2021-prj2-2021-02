@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="345.0" prefWidth="537.0" spacing="20.0" styleClass="loginBackground" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.g02.flightsalesfx.LoginController">
+<VBox alignment="CENTER" prefHeight="345.0" prefWidth="537.0" spacing="20.0" styleClass="loginBackground" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.g02.flightsalesfx.LoginController">
 
     <children>
         <GridPane hgap="10.0" layoutX="150.0" layoutY="154.0" vgap="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

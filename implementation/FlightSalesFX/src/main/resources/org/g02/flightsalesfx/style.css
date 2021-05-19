@@ -1,12 +1,38 @@
 .buttonOrange {
     /*-fx-max-width: MAX_VALUE;*/
-    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #08AEEA 0%, #2AF598 100%);
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #07a3db 0%, #23d484 100%);
     -fx-text-fill: #1A1A1A;
     -fx-font-size: 14px;
+    -fx-background-radius: 100;
 }
 
 .buttonOrange:hover{
-    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #069BD1 0%, #25DB89 100%);
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #09b8ff 0%, #29fa9b 100%);
+    -fx-background-radius: 100;
+    -fx-font-size: 14px;
+}
+
+.addButton{
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #09b8ff 0%, #29fa9b 100%);
+    -fx-min-width: 50px;
+    -fx-background-radius: 0;
+    -fx-font-size: 14px;
+}
+.seatButton {
+    /*-fx-max-width: MAX_VALUE;*/
+    -fx-background-color: #1A1A1A;
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #3e3e3e 0%, #474747 100%);
+    -fx-min-width: 50px;
+    -fx-text-fill: #fff;
+    -fx-font-size: 14px;
+    -fx-background-radius: 0;
+}
+
+.buttonOrange:selected{
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #09b8ff 0%, #29fa9b 100%);
+    -fx-border-radius: 100;
+    -fx-background-radius: 100;
+    -fx-font-size: 14px;
 }
 
 .buttonBlack {
@@ -49,6 +75,7 @@
     -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #3b3b3b 0%, #343434 100%);
     -fx-text-fill: #FFFFFF;
     -fx-margin: 0;
+    -fx-background-radius: 0;
 }
 
 .toggle-button {
@@ -228,15 +255,17 @@ ToggleButton.selectSeatOption {
 .combo-box .list-cell {
     -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #3b3b3b 0%, #343434 100%);
     -fx-text-fill:white;
+    -fx-background-radius: 0;
 }
 
-.combo-box .list-cell:focus {
+.combo-box .list-cell:focused {
     -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #08AEEA 0%, #2AF598 100%);
     -fx-text-fill:black;
 }
 
 .combo-box{
     -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #3b3b3b 0%, #343434 100%);
+    -fx-background-radius: 0;
 }
 .combo-box .arrow{
     -fx-background-color:white;
@@ -260,4 +289,5 @@ ToggleButton.selectSeatOption {
 
 .date-picker{
     -fx-background-color: #484848;
+    -fx-background-radius: 0;
 }

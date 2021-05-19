@@ -1,5 +1,7 @@
 package org.g02.flightsalesfx;
 
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
 import org.g02.flightsalesfx.businessEntities.Plane;
 import org.g02.flightsalesfx.businessEntities.Seat;
 import org.g02.flightsalesfx.businessEntities.SeatOption;
@@ -11,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -28,6 +31,7 @@ public class CreatePlaneController implements Controller {
     private final ToggleGroup toggleGroupSeatOptions = new ToggleGroup();
 
     private final List<SeatButton> seats = new ArrayList<>();
+    private final List<Button> addButtons = new ArrayList<>();
     @FXML
     public VBox seatOptions;
     @FXML
@@ -71,6 +75,7 @@ public class CreatePlaneController implements Controller {
             // Creating the seats and add it to the new row. The last element is always the ADD button so they are inserted on the index size() - 1
             for (int i = 0; i < node; i++) {
                 var seat = new SeatButton(row);
+                seat.getStyleClass().add("seatButton");
                 seats.add(seat);
                 row.getChildren().add(row.getChildren().size() - 1, seat);
             }
@@ -94,6 +99,8 @@ public class CreatePlaneController implements Controller {
      *
      * @return VBox The created VBox that is not yet added to the container
      */
+
+
     private VBox createRow() {
         var box = new VBox();
         // Configuring the VBox with correct spacing and alignment
@@ -105,9 +112,10 @@ public class CreatePlaneController implements Controller {
         addButton.setFont(Font.font("Source Code Pro Semibold"));
         addButton.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         addButton.setOnAction(actionEvent -> createSeat(box));
+        addButton.getStyleClass().add("addButton");
         // Adding the click listener to add seats or remove the row depending on which mouse button was pressed
         addButton.setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getButton() == MouseButton.SECONDARY) { // If it was right click remove the row and all seats that is contains
+            if (mouseEvent.getButton() == MouseButton.SECONDARY||(mouseEvent.isControlDown()&&mouseEvent.getButton()==MouseButton.PRIMARY)) { // If it was right click remove the row and all seats that is contains
                 System.out.println("right click");
                 box.getChildren().forEach(seats::remove);
                 seatContainer.getChildren().remove(box);
@@ -116,6 +124,7 @@ public class CreatePlaneController implements Controller {
         });
         // add the button to the VBox
         box.getChildren().add(addButton);
+        addButtons.add(addButton);
         return box;
     }
 
@@ -126,6 +135,7 @@ public class CreatePlaneController implements Controller {
      */
     public void createSeat(VBox box) {
         var seatButton = new SeatButton(box);
+        seatButton.getStyleClass().add("seatButton");
 //        Font f=Font.loadFont("file:resources/com/g02/flightsalesfx/SourceCodePro-Regular.ttf",45);
 //        seatButton.setFont(f);
         this.seats.add(seatButton);
@@ -320,7 +330,11 @@ public class CreatePlaneController implements Controller {
             }
             if (currentSelected != null && options.contains(currentSelected)) {
                 //s += ": X";
-                this.setStyle("-fx-text-fill: #007698; ");
+                this.setStyle("-fx-background-color: #1A1A1A;\n" +
+                        "    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #0b97d4 0%, #30c27e 100%);\n" +
+                        "    -fx-text-fill: #FFF;\n" +
+                        "    -fx-font-size: 14px;\n" +
+                        "    -fx-background-radius: 0;");
             } else {
                 this.setStyle("");
             }

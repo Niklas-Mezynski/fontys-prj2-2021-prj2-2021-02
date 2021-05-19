@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.g02.flightsalesfx.CreatePriceReductions">
    <children>
-      <HBox>
+      <HBox spacing="10.0">
          <children>
-            <VBox fx:id="flightVBox" prefHeight="600.0" prefWidth="400.0">
+            <VBox fx:id="flightVBox" prefHeight="600.0" prefWidth="400.0" spacing="10.0">
                <children>
                   <Label text="Available Flights" />
-                  <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exit" styleClass="buttonOrange" text="EXIT" />
+                  <HBox fx:id="saveHBox" spacing="10.0">
+                     <children>
+                        <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exit" styleClass="buttonBlack" text="EXIT" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
-            <VBox fx:id="reductionsVBox" prefHeight="600.0" prefWidth="400.0">
+            <VBox fx:id="reductionsVBox" prefHeight="600.0" prefWidth="400.0" spacing="10.0">
                <children>
                   <Label text="Price Reductions" />
                   <VBox>
                      <children>
                         <VBox>
                            <children>
-                              <Label text="Add New Price Reductions" />
+                              <Label styleClass="textLabel" text="Add New Price Reductions">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="50.0" right="10.0" top="10.0" />
+                                 </VBox.margin></Label>
                               <HBox alignment="TOP_CENTER">
                                  <children>
                                     <VBox>
@@ -33,23 +41,26 @@
                                     </VBox>
                                     <VBox>
                                        <children>
-                                          <TextField fx:id="redPrice" prefHeight="25.0" prefWidth="150.0" promptText="Reduction Price" />
+                                          <TextField fx:id="redPrice" prefHeight="25.0" prefWidth="150.0" promptText="Price Reduction" />
                                           <HBox>
                                              <children>
                                                 <ComboBox fx:id="startHour" prefHeight="25.0" prefWidth="75.0" promptText="HH" visibleRowCount="5" />
-                                                <ComboBox fx:id="startMin" prefHeight="25.0" prefWidth="75.0" promptText="MM" visibleRowCount="5" />
+                                                <ComboBox fx:id="startMin" prefHeight="25.0" prefWidth="75.0" promptText="MM" />
                                              </children>
                                           </HBox>
                                           <HBox>
                                              <children>
                                                 <ComboBox fx:id="endHour" prefHeight="25.0" prefWidth="75.0" promptText="HH" visibleRowCount="5" />
-                                                <ComboBox fx:id="endMin" prefHeight="25.0" prefWidth="75.0" promptText="MM" visibleRowCount="5" />
+                                                <ComboBox fx:id="endMin" prefHeight="25.0" prefWidth="75.0" promptText="MM" />
                                              </children>
                                           </HBox>
                                           <Button fx:id="addReduction" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" styleClass="buttonOrange" text="Add Reduction" />
                                        </children>
                                     </VBox>
                                  </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
                               </HBox>
                            </children>
                         </VBox>

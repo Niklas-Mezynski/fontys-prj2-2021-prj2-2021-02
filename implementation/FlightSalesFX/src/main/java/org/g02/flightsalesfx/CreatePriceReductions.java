@@ -2,6 +2,7 @@ package org.g02.flightsalesfx;
 
 
 import javafx.event.ActionEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.PriceReduction;
@@ -23,6 +24,10 @@ import java.util.List;
 
 public class CreatePriceReductions implements Controller {
 
+    private Flight flight;
+    private PriceReduction reduction;
+    private Button saveButton;
+
     @FXML
     public DatePicker startDate;
     public DatePicker endDate;
@@ -38,6 +43,7 @@ public class CreatePriceReductions implements Controller {
     public VBox reductionsVBox;
     public FlightTable flightTable;
     public Button exitButton;
+    public HBox saveHBox;
 
     private void setData(){
         List<String> hourTimes=new ArrayList<>();
@@ -68,27 +74,62 @@ public class CreatePriceReductions implements Controller {
         endMin.setVisibleRowCount(5);
     }
     public void initialize() {
-        final var allFlights=App.businessLogicAPI.getAllFlights();
-        final var allReductions=App.businessLogicAPI.getAllPriceReductions();
+        saveButton=new Button("Select to Save");
+        saveButton.setDisable(true);
+        saveButton.getStyleClass().add("buttonOrange");
+        saveHBox.getChildren().add(0,saveButton);
         addReduction.setOnMouseClicked((event)->{
-            LocalDateTime end=endDate.getValue().atTime(Integer.parseInt(endHour.getValue()),Integer.parseInt(endMin.getValue()));
-            LocalDateTime start=startDate.getValue().atTime(Integer.parseInt(startHour.getValue()),Integer.parseInt(startMin.getValue()));
-            var priceS=redPrice.getText();
-            priceS=priceS.replace(',','.');
-            double price=Double.valueOf(priceS);
-
-            var priceRed=new StaticPriceReductionImpl(redName.getText(),end,start,isPercent.isSelected(),price);
-            App.businessLogicAPI.createPriceReductionFromUI(priceRed);
-            updateTables();
+            saveReductions();
         });
         setData();
         setTables();
     }
 
+    public void saveReductions(){
+        String eD=endDate.getEditor().getText();
+        String sD=startDate.getEditor().getText();
+        eD=eD.replace(',','.');
+        eD=eD.replace('/','.');
+        eD=eD.replace('\\','.');
+        sD=sD.replace(',','.');
+        sD=sD.replace('/','.');
+        sD=sD.replace('\\','.');
+        String[] eDs=eD.split("\\.");
+        String[] sDs=sD.split("\\.");
+        if(Integer.parseInt(eDs[2])<1000){
+            eDs[2]="20"+eDs[2];
+        }
+        if(Integer.parseInt(sDs[2])<1000){
+            sDs[2]="20"+sDs[2];
+        }
+        LocalDateTime end=LocalDateTime.of(Integer.parseInt(eDs[2]),Integer.parseInt(eDs[1]),Integer.parseInt(eDs[0]),Integer.parseInt(endHour.getValue()),Integer.parseInt(endMin.getValue()));
+        LocalDateTime start=LocalDateTime.of(Integer.parseInt(sDs[2]),Integer.parseInt(sDs[1]),Integer.parseInt(sDs[0]),Integer.parseInt(startHour.getValue()),Integer.parseInt(startMin.getValue()));
+        var priceS=redPrice.getText();
+        priceS=priceS.replace(',','.');
+        double price=Double.valueOf(priceS);
+
+        var priceRed=new StaticPriceReductionImpl(redName.getText(),end,start,isPercent.isSelected(),price);
+        App.businessLogicAPI.createPriceReductionFromUI(priceRed);
+        updateTables();
+    }
+
     public void updateTables(){
-        flightVBox.getChildren().remove(1);
         reductionsVBox.getChildren().remove(1);
-        setTables();
+        var allReductions = App.businessLogicAPI.getAllPriceReductions();
+        System.out.println(allReductions);
+        var reductionTable = new PriceReductionsTable(allReductions, (event, row) -> {
+            PriceReduction selectedReduction = row.getItem();
+            System.out.println("Clicked on: " + selectedReduction);
+        });
+        reductionTable.setMinWidth(400);
+        reductionsVBox.getChildren().add(1,reductionTable);
+        reductionTable.setOnMouseClicked(e->{
+            reduction=reductionTable.getSelectionModel().getSelectedItem();
+            if(flight!=null){
+                saveButton.setDisable(false);
+                saveButton.setText("Add \""+reduction.getName()+"\" to Flight Nr. \""+flight.getFlightNumber()+"\"");
+            }
+        });
     }
     public void setTables(){
         var allFlights = App.businessLogicAPI.getAllFlights(f -> true);
@@ -98,16 +139,29 @@ public class CreatePriceReductions implements Controller {
             System.out.println("Clicked on: " + selectedFlight);
         });
         flightVBox.getChildren().add(1,flightTable);
+        flightTable.setOnMouseClicked(e->{
+            flight=flightTable.getSelectionModel().getSelectedItem();
+            if(reduction!=null){
+                saveButton.setDisable(false);
+                saveButton.setText("Add \""+reduction.getName()+"\" to Flight Nr. \""+flight.getFlightNumber()+"\"");
+            }
+        });
         flightTable.setMinWidth(400);
-
         var allReductions = App.businessLogicAPI.getAllPriceReductions();
         System.out.println(allReductions);
         var reductionTable = new PriceReductionsTable(allReductions, (event, row) -> {
             PriceReduction selectedReduction = row.getItem();
             System.out.println("Clicked on: " + selectedReduction);
         });
-        reductionsVBox.getChildren().add(1,reductionTable);
         reductionTable.setMinWidth(400);
+        reductionsVBox.getChildren().add(1,reductionTable);
+        reductionTable.setOnMouseClicked(e->{
+            reduction=reductionTable.getSelectionModel().getSelectedItem();
+            if(flight!=null){
+                saveButton.setDisable(false);
+                saveButton.setText("Add \""+reduction.getName()+"\" to Flight Nr. \""+flight.getFlightNumber()+"\"");
+            }
+        });
     }
 
     public void exit() throws IOException {
