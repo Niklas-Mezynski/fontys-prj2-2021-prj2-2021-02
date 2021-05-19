@@ -3,29 +3,32 @@ package org.g02.flightsalesfx.businessLogic;
 import org.g02.btfdao.annotations.PrimaryKey;
 import org.g02.btfdao.annotations.TableName;
 import org.g02.btfdao.dao.Savable;
+import org.g02.flightsalesfx.businessEntities.PriceReduction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @TableName("staticpriceredutions")
-public class StaticPriceReductionImpl extends PriceReductionImpl implements Savable {
+public class StaticPriceReductionImpl implements Savable,PriceReduction {
 
     @PrimaryKey
     public String name;
+
     public LocalDateTime endDate;
     public LocalDateTime startDate;
-    public boolean isPercentage;
-
+    public boolean isPercent;
     // as 0.10 / 0.09 ...
-    public double percentageAsDouble;
+    public double reductionPercentage;
 
     private StaticPriceReductionImpl(){
     }
 
     public StaticPriceReductionImpl(String name, LocalDateTime end, LocalDateTime start,boolean isPercentage, double percentage) {
-        super(name, end,start,isPercentage,percentage);
-        this.percentageAsDouble = percentage;
-        this.name=name;
+        this.name = name;
+        this.endDate = end;
+        this.startDate=start;
+        this.isPercent=isPercentage;
+        this.reductionPercentage=percentage;
     }
 
     /**
@@ -43,7 +46,7 @@ public class StaticPriceReductionImpl extends PriceReductionImpl implements Sava
 
     @Override
     public boolean isPercentage() {
-        return isPercentage;
+        return isPercent;
     }
 
     @Override
@@ -53,6 +56,10 @@ public class StaticPriceReductionImpl extends PriceReductionImpl implements Sava
 
     @Override
     public double getPercentageAsDouble() {
-        return percentageAsDouble;
+        return reductionPercentage;
+    }
+
+    public static StaticPriceReductionImpl of(PriceReduction priceReduction) {
+        return new StaticPriceReductionImpl(priceReduction.getName(), priceReduction.getEndTime(), priceReduction.getStartTime(), priceReduction.isPercentage(), priceReduction.getPercentageAsDouble());
     }
 }

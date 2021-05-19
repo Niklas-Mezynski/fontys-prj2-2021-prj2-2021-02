@@ -10,6 +10,7 @@
             <VBox fx:id="flightVBox" prefHeight="600.0" prefWidth="400.0">
                <children>
                   <Label text="Available Flights" />
+                  <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exit" styleClass="buttonOrange" text="EXIT" />
                </children>
             </VBox>
             <VBox fx:id="reductionsVBox" prefHeight="600.0" prefWidth="400.0">

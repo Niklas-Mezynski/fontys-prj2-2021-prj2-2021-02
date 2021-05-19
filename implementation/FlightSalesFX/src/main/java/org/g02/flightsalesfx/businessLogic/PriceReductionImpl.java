@@ -6,19 +6,19 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public abstract class PriceReductionImpl implements PriceReduction {
-    private String name;
-    private LocalDateTime endTime;
-    private LocalDateTime startTime;
-    private boolean isPercent;
-    private double reductionPercentage;
+    protected String name;
+    protected LocalDateTime endDate;
+    protected LocalDateTime startDate;
+    protected boolean isPercent;
+    protected double reductionPercentage;
 
     public PriceReductionImpl(){}
 
 
     public PriceReductionImpl (String name,LocalDateTime endTime, LocalDateTime startTime, boolean isPercent,double reductionPercentage) {
         this.name = name;
-        this.endTime = endTime;
-        this.startTime=startTime;
+        this.endDate = endTime;
+        this.startDate=startTime;
         this.isPercent=isPercent;
         this.reductionPercentage=reductionPercentage;
     }
@@ -27,8 +27,8 @@ public abstract class PriceReductionImpl implements PriceReduction {
     public String toString() {
         return "PriceReductionImpl{" +
                 "name='" + name + '\'' +
-                ", endTime=" + endTime +
-                ", startTime=" + startTime +
+                ", endTime=" + endDate +
+                ", startTime=" + startDate +
                 ", isPercent=" + isPercent +
                 ", reductionPercentage=" + reductionPercentage +
                 '}';

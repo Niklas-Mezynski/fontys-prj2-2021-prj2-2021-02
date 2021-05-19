@@ -3,20 +3,22 @@ package org.g02.flightsalesfx.businessLogic;
 import org.g02.btfdao.annotations.PrimaryKey;
 import org.g02.btfdao.annotations.TableName;
 import org.g02.btfdao.dao.Savable;
+import org.g02.flightsalesfx.businessEntities.PriceReduction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @TableName("dynamicpriceredutions")
-public class DynamicPriceReductionImpl extends PriceReductionImpl implements Savable {
+public class DynamicPriceReductionImpl implements Savable, PriceReduction {
 
     @PrimaryKey
     public String name;
     public String source;
     public LocalDateTime endDate;
-
     public LocalDateTime startDate;
-    public boolean isPercentage;
+    public boolean isPercent;
+    // as 0.10 / 0.09 ...
+    public double reductionPercentage;
 
     // external source that determines the characteristics of this dynamic price-reduction
     //private var source;
@@ -27,7 +29,11 @@ public class DynamicPriceReductionImpl extends PriceReductionImpl implements Sav
 
     // todo: implement source
     public DynamicPriceReductionImpl(String name, String source, LocalDateTime end, LocalDateTime start,boolean isPercentage, double reductionPercentage) {
-        super(name, end,start,isPercentage,reductionPercentage);
+        this.name=name;
+        this.endDate=end;
+        this.startDate=start;
+        this.isPercent=isPercentage;
+        this.reductionPercentage=reductionPercentage;
         this.source = source;
     }
     /**
@@ -45,7 +51,7 @@ public class DynamicPriceReductionImpl extends PriceReductionImpl implements Sav
 
     @Override
     public boolean isPercentage() {
-        return isPercentage;
+        return isPercent;
     }
 
     @Override

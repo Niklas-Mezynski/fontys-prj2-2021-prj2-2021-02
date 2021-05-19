@@ -1,6 +1,7 @@
 package org.g02.flightsalesfx;
 
 
+import javafx.event.ActionEvent;
 import javafx.scene.layout.VBox;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.PriceReduction;
@@ -14,6 +15,7 @@ import javafx.scene.control.*;
 import org.g02.flightsalesfx.persistence.PriceReductionStorageService;
 import org.g02.flightsalesfx.persistence.PriceReductionStorageServiceImpl;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class CreatePriceReductions implements Controller {
     public VBox flightVBox;
     public VBox reductionsVBox;
     public FlightTable flightTable;
+    public Button exitButton;
 
     private void setData(){
         List<String> hourTimes=new ArrayList<>();
@@ -76,19 +79,25 @@ public class CreatePriceReductions implements Controller {
 
             var priceRed=new StaticPriceReductionImpl(redName.getText(),end,start,isPercent.isSelected(),price);
             App.businessLogicAPI.createPriceReductionFromUI(priceRed);
+            updateTables();
         });
         setData();
         setTables();
     }
+
+    public void updateTables(){
+        flightVBox.getChildren().remove(1);
+        reductionsVBox.getChildren().remove(1);
+        setTables();
+    }
     public void setTables(){
-        flightTable=null;
         var allFlights = App.businessLogicAPI.getAllFlights(f -> true);
         System.out.println(allFlights);
         flightTable = new FlightTable(allFlights, (event, row) -> {
             Flight selectedFlight = row.getItem();
             System.out.println("Clicked on: " + selectedFlight);
         });
-        flightVBox.getChildren().add(flightTable);
+        flightVBox.getChildren().add(1,flightTable);
         flightTable.setMinWidth(400);
 
         var allReductions = App.businessLogicAPI.getAllPriceReductions();
@@ -99,5 +108,9 @@ public class CreatePriceReductions implements Controller {
         });
         reductionsVBox.getChildren().add(1,reductionTable);
         reductionTable.setMinWidth(400);
+    }
+
+    public void exit() throws IOException {
+        App.setRoot("home");
     }
 }
