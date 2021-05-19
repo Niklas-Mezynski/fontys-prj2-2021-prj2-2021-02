@@ -79,6 +79,9 @@ public class createBookingController implements Controller {
     @FXML
     private Text selectedFlightText;
 
+    @FXML
+    private TabPane tabPane;
+
 
 
 
@@ -113,6 +116,7 @@ public class createBookingController implements Controller {
     public void initialize(){
 
         createOrUpdateRouteTable(v -> v.getSalesProcessStatus() == true && v.getDeparture().isAfter(LocalDateTime.now()));
+
         createSearchFunctionality();
 
         paxTab.setDisable(true);
@@ -215,6 +219,7 @@ public class createBookingController implements Controller {
                         System.out.println("Found Booking");
                         booking.getTickets().forEach(ticket -> bookedSeats.add(ticket.getSeat()));
                     });
+                    tabPane.getSelectionModel().select(seatsTab);
                     createSeatMapAndLoadSeatOptions(bookedSeats);
 
                 }
@@ -228,18 +233,17 @@ public class createBookingController implements Controller {
      * @param bookedSeats List of Seats, that are already booked, thus not available for new bookings
      */
     public void createSeatMapAndLoadSeatOptions(List<Seat> bookedSeats){
+        seatHBox.getChildren().clear();
         Plane currentPlane = selectedFlight.getPlane();
         List<Seat> seatsOfPlane = currentPlane.getAllSeats();
         loadSeatOptions(seatsOfPlane);
         createOrUpdateOptionFilterBox();
         int rows = seatsOfPlane.stream().mapToInt(Seat::getRowNumber).max().orElse(-1) + 1;
-        Map<Integer, List<Seat>> seatMap = new HashMap<Integer, List<Seat>>();
 
         for(int i = 0; i < rows; i++){
+            System.out.println(i);
             int currentRow = i;
             Comparator<Seat> comparator = (Seat s1, Seat s2) -> s1.getSeatNumber()- s2.getSeatNumber();
-            List<Seat> row = seatsOfPlane.stream().filter(seat -> seat.getRowNumber()==currentRow).sorted(comparator).collect(Collectors.toUnmodifiableList());
-            seatMap.put(i, row);
             VBox rowBox = new VBox();
             seatsOfPlane.stream().filter(seat -> seat.getRowNumber()==currentRow).sorted(comparator).forEach(seat -> {
                 var addButton = new SeatBookButton(seat, bookedSeats);

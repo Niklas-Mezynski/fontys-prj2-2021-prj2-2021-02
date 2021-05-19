@@ -39,15 +39,16 @@ public class BookingImpl implements Booking, Savable {
         this.bookingDate = bookingDate;
     }
 
-<<<<<<< HEAD
-    public BookingImpl(int id, SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail){
-        this.id = id;
+    public BookingImpl(int id, SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail, LocalDateTime bookingDate){
         this.se = SalesEmployeeImpl.of(se);
         this.flight = FlightImpl.of(flight);
         this.tickets = Arrays.asList(tickets).stream().map(ticket -> TicketImpl.of(ticket)).toArray(TicketImpl[]::new);
         this.flightOptions = Arrays.asList(bookedFlightOptions).stream().map(bfo -> FlightOptionImpl.of(bfo)).toArray(FlightOptionImpl[]::new);
         this.eMail = eMail;
+        this.bookingDate = bookingDate;
+        this.id = id;
     }
+
 
 
     private BookingImpl(){}
@@ -56,15 +57,11 @@ public class BookingImpl implements Booking, Savable {
         TicketImpl[] tImp = b.getTickets().stream().map( t -> {return TicketImpl.of(t);}).toArray(TicketImpl[]::new);
         FlightOptionImpl[] foImpl = b.getBookedFlightOptions().stream().map(bfo -> FlightOptionImpl.of(bfo)).toArray(FlightOptionImpl[]::new);
         if(b.getID().isPresent()){
-            return new BookingImpl(b.getID().get(), SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), tImp, foImpl, b.getCustomerEmail());
+            return new BookingImpl(b.getID().get(), SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), tImp, foImpl, b.getCustomerEmail(), b.getBookingDate());
         }
-        return new BookingImpl(SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), tImp, foImpl, b.getCustomerEmail());
-=======
         return new BookingImpl(SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), b.getTickets().toArray(Ticket[]::new), b.getBookedFlightOptions().toArray(FlightOption[]::new), b.getCustomerEmail(), b.getBookingDate());
->>>>>>> master
-    }
 
-    private BookingImpl() {}
+    }
 
     @Override
     public SalesEmployee getSalesEmployee() {

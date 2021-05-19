@@ -23,11 +23,9 @@ public class BookingStorageServiceImpl implements BookingStorageService{
     public BookingImpl add(Booking booking) {
         BookingImpl bImpl = BookingImpl.of(booking);
         try {
-<<<<<<< HEAD
-            return dao.insert(bImpl)
-=======
+
             return dao.insert(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail(), booking.getBookingDate() ))
->>>>>>> master
+
                     .orElse(null);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,11 +49,9 @@ public class BookingStorageServiceImpl implements BookingStorageService{
         List<BookingImpl> bookings = null;
         BookingImpl bImpl = BookingImpl.of(booking);
         try {
-<<<<<<< HEAD
-            dao.remove(bImpl);
-=======
+
             dao.remove(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail(), booking.getBookingDate()));
->>>>>>> master
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

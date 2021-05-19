@@ -30,48 +30,21 @@ public class TicketImpl implements Ticket, Savable {
     public String paxFName;
     public String paxLName;
 
-    private TicketImpl(){}
-
 
     public TicketImpl(Flight flight, Seat seat, String firstName, String lastName, SeatOption[] seatOptions){
         this.flight = FlightImpl.of(flight);
         this.seat = SeatImpl.of(seat);
-        this.seatOptions = new SeatOptionImpl[0];
-        if(seatOptions != null)
         this.seatOptions = Arrays.asList(seatOptions).stream().map(so -> SeatOptionImpl.of(so)).toArray(SeatOptionImpl[]::new);
         this.paxFName = firstName;
         this.paxLName = lastName;
 
     }
-<<<<<<< HEAD
-=======
 
     private TicketImpl() {}
 
     public static TicketImpl of(Ticket t){
->>>>>>> master
 
-    public TicketImpl(int id, Flight flight, Seat seat, String firstName, String lastName, SeatOption[] seatOptions){
-        this.flight = FlightImpl.of(flight);
-        this.seat = SeatImpl.of(seat);
-        this.id = id;
-        this.seatOptions = new SeatOptionImpl[0];
-        if(seatOptions != null)
-            this.seatOptions = Arrays.asList(seatOptions).stream().map(so -> SeatOptionImpl.of(so)).toArray(SeatOptionImpl[]::new);
-        this.paxFName = firstName;
-        this.paxLName = lastName;
-
-    }
-
-    public static TicketImpl of(Ticket t){
-        SeatOption[] so = new SeatOption[0];
-        if(t.getSeatOptions() != null){
-            so = t.getSeatOptions();
-        }
-        if(t.getId().isPresent())
-            return new TicketImpl(t.getId().get(), FlightImpl.of(t.getFlight()), SeatImpl.of(t.getSeat()), t.getFirstName(), t.getLastName(), so);
-
-        return new TicketImpl(FlightImpl.of(t.getFlight()), SeatImpl.of(t.getSeat()), t.getFirstName(), t.getLastName(), so);
+        return new TicketImpl(t.getFlight(), t.getSeat(), t.getFirstName(), t.getLastName(), t.getSeatOptions());
     }
 
     @Override
@@ -110,10 +83,8 @@ public class TicketImpl implements Ticket, Savable {
 
     @Override
     public Optional<Integer> getId() {
-        if(this.id != 0){
-            return  Optional.of(id);
-
-        }
+        if(id != 0)
+            return Optional.of(id);
 
         return Optional.empty();
     }

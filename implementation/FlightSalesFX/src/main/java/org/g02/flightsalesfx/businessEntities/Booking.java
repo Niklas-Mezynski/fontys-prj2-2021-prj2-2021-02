@@ -35,8 +35,6 @@ public interface Booking {
 
     void removeTicket(Ticket ticket);
 
-<<<<<<< HEAD
     Optional<Integer> getID();
-=======
->>>>>>> master
+
 }
