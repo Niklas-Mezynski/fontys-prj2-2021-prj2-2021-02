@@ -82,6 +82,11 @@ public class FlightImpl implements Flight, Savable {
         salesProcessStarted = true;
     }
 
+    @Override
+    public void stopSalesProcess() {
+        salesProcessStarted = false;
+    }
+
     /**
      * @return Flight number of this Flight
      */
