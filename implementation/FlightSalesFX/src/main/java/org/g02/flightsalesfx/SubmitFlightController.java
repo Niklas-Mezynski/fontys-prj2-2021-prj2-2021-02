@@ -255,10 +255,5 @@ public class SubmitFlightController implements Controller {
             alert.showAndWait();
 
         }
-
-
-    }
-
-    public void startSalesprocess(ActionEvent event) {
     }
 }
