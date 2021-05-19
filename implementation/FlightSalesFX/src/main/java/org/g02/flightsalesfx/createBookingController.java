@@ -14,6 +14,7 @@ import javafx.util.Pair;
 import org.g02.flightsalesfx.businessEntities.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Predicate;
@@ -541,7 +542,7 @@ public class createBookingController implements Controller {
         }
 
         Ticket[] ticketsForBooking = tickets.toArray(Ticket[]::new);
-        Booking booking = bm.createBooking((SalesEmployee) App.employee, this.selectedFlight, ticketsForBooking, flightOptions.toArray(FlightOption[]::new), contactEmail);
+        Booking booking = bm.createBooking((SalesEmployee) App.employee, this.selectedFlight, ticketsForBooking, flightOptions.toArray(FlightOption[]::new), contactEmail, LocalDateTime.now());
 
         boolean saveComplete = true;
         if(!App.businessLogicAPI.addBookingFromUI(booking)){

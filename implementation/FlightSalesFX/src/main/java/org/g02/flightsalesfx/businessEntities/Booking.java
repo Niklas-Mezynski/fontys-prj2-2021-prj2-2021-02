@@ -5,6 +5,8 @@
  */
 package org.g02.flightsalesfx.businessEntities;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +29,14 @@ public interface Booking {
 
     public Flight getFlight();
 
+    public LocalDateTime getBookingDate();
+
     public void addTicket(Ticket t);
 
     void removeTicket(Ticket ticket);
 
+<<<<<<< HEAD
     Optional<Integer> getID();
+=======
+>>>>>>> master
 }

@@ -143,7 +143,13 @@ public class CreatePlaneController implements Controller {
         var type = planeType.getText();
         var manufacturer = planeManufacturer.getText();
         // Map all internal used SeatButtons to Seat
-        var collect = seats.stream().map(seatButton ->(Seat) new SeatImpl(seatButton.row(), seatButton.column())).collect(Collectors.toList());
+        var collect = seats.stream()
+                .map(s->{
+                    var ret = new SeatImpl(s.row(),s.column());
+                    ret.addAllSeatOptions(s.options);
+                    return (Seat) ret;
+                })
+                .collect(Collectors.toList());
         // Create the plane using the businessLogicAPI
         Plane updatedPlane;
         if (editMode) {
