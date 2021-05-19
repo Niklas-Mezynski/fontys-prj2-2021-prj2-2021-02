@@ -103,7 +103,7 @@
                                     </HBox>
                                  </children>
                               </VBox>
-                              <CheckBox fx:id="checkboxSalesprocess" mnemonicParsing="false" onAction="#startSalesprocess" text="Start Salesprocess immediately"></CheckBox>
+                              <CheckBox fx:id="checkboxSalesprocess" mnemonicParsing="false" text="Start Salesprocess immediately"></CheckBox>
                            </children>
                         </VBox>
                      </center>
