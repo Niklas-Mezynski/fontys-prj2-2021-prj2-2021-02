@@ -8,7 +8,9 @@ import org.g02.flightsalesfx.businessEntities.Airport;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.Plane;
 import org.g02.flightsalesfx.businessEntities.SalesOfficer;
+import org.g02.flightsalesfx.businessLogic.FlightImpl;
 import org.g02.flightsalesfx.businessLogic.FlightOptionImpl;
+import org.g02.flightsalesfx.businessLogic.SalesOfficerImpl;
 import org.g02.flightsalesfx.gui.PlaneTable;
 import org.g02.flightsalesfx.helpers.Controller;
 import javafx.event.ActionEvent;
@@ -49,6 +51,9 @@ public class SubmitFlightController implements Controller {
 
     @FXML
     private Button addFlightOptionBT;
+
+    @FXML
+    private CheckBox checkboxSalesprocess;
 
     private List<Plane> selectedPlanes;
     private PlaneTable planeTable;
@@ -220,12 +225,17 @@ public class SubmitFlightController implements Controller {
                     })
                     .collect(Collectors.toList());
             System.out.println(flightOptionList);
-            var flightCreated = App.businessLogicAPI.createFlightFromUI(creator, depDateTime, arrDateTime, route, plane, price, flightOptionList);
+            var newFlight = new FlightImpl((SalesOfficerImpl) creator, depDateTime, arrDateTime, route, plane, price);
+            newFlight.addAllFlightOptions(flightOptionList);
+            if(checkboxSalesprocess.isSelected()) {
+                newFlight.startSalesProcess();
+            }
+            //var flightCreated = App.businessLogicAPI.createFlightFromUI(creator, depDateTime, arrDateTime, route, plane, price, flightOptionList);
+            var flightCreated = App.businessLogicAPI.createFlightFromUI(newFlight);
 
             if (flightCreated) {
 
                 exit();
-
             } else {
 
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -249,4 +259,6 @@ public class SubmitFlightController implements Controller {
 
     }
 
+    public void startSalesprocess(ActionEvent event) {
+    }
 }
