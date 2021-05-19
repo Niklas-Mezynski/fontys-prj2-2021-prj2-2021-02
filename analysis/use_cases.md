@@ -523,23 +523,27 @@ Tickets in it
       <td><b>Actor</b></td><td>Sales Manager</td>
    </tr>
 	<tr>
-      <td><b>Description</b></td><td>Sales Manager wants to see different KPIs in order to see which flights perform best.</td>
+      <td><b>Description</b></td><td>Sales Manager wants to see some Key Performance Indicatorss in order to see which Routes/Employees perform best.</td>
 </tr>
 <tr>
 <td><b>Scenario</b></td>
 <td>
 
-1. Actor selects section for KPIs
+1. Actor enters the Management Dashboard
    
-2. System shows a few general KPIs
+2. System shows options to see Route or Employee KPIs
    
-3. Actor selects the filter section
+3. Actor selects an option
    
-4. System offers filter options
+4. System offers a search for a specific Route/Employee
    
-5. Actor selects a filter
+5. Actor selects a Route/Employee
    
-6. System shows the KPIs for these filters
+6. System shows a few KPIs for this Route/Employee
+	
+7. Actor selects option to show a Diagram which shows the Revenue over time
+	
+8. System shows the diagram
 
 </td>
 </tr>
