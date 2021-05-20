@@ -253,13 +253,6 @@ public class CreatePlaneController implements Controller {
             }
             System.out.println(seatContainer);
             System.out.println(this.seats);
-            // TODO add the seat options to the seats
-            /*var distinct = seats.stream().flatMap(seat -> seat.getSeatOptions().stream()).distinct().collect(Collectors.toList());
-            for (SeatOption seatOption : distinct) {
-                System.out.println(seatOption);
-                createNewSeatOption(seatOption);
-            }*/
-
         } else {
             deleteButton.setVisible(false);
         }
