@@ -24,7 +24,7 @@ public class BookingStorageServiceImpl implements BookingStorageService{
         BookingImpl bImpl = BookingImpl.of(booking);
         try {
 
-            return dao.insert(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail(), booking.getBookingDate() ))
+            return dao.insert(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail(), booking.getBookingDate(), booking.getBookingPrice() ))
 
                     .orElse(null);
         } catch (SQLException e) {
@@ -50,7 +50,7 @@ public class BookingStorageServiceImpl implements BookingStorageService{
         BookingImpl bImpl = BookingImpl.of(booking);
         try {
 
-            dao.remove(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail(), booking.getBookingDate()));
+            dao.remove(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail(), booking.getBookingDate(), booking.getBookingPrice()));
 
         } catch (SQLException e) {
             e.printStackTrace();

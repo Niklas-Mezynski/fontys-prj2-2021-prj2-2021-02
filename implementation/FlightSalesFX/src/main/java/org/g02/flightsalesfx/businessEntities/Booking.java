@@ -37,4 +37,6 @@ public interface Booking {
 
     Optional<Integer> getID();
 
+    public double getBookingPrice();
+
 }

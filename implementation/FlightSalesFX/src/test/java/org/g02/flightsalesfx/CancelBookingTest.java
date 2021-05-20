@@ -83,7 +83,8 @@ public class CancelBookingTest {
                 ts,
                 noFlightOptions,
                 "test1@gmail.com",
-                LocalDateTime.of(2021, 4, 10, 10, 0)
+                LocalDateTime.of(2021, 4, 10, 10, 0),
+                123.99
                 );
         t = new TicketImpl(flightDepart1MAgo, flightDepart1MAgo.getPlane().getAllSeats().get(0), "fName", "lName", noSeatOptions);
         tickets.add(t);
@@ -93,7 +94,8 @@ public class CancelBookingTest {
                 ts1,
                 noFlightOptions,
                 "test2@gmail.com",
-                LocalDateTime.of(2021, 4, 10, 10, 0)
+                LocalDateTime.of(2021, 4, 10, 10, 0),
+                123.99
                 );
         t = new TicketImpl(flightDepartIn2M, flightDepartIn2M.getPlane().getAllSeats().get(0), "fName", "lName", noSeatOptions);
         tickets.add(t);
@@ -103,7 +105,8 @@ public class CancelBookingTest {
                 ts2,
                 noFlightOptions,
                 "test3@gmail.com",
-                LocalDateTime.of(2021, 4, 10, 10, 0)
+                LocalDateTime.of(2021, 4, 10, 10, 0),
+                123.99
                 );
 
 

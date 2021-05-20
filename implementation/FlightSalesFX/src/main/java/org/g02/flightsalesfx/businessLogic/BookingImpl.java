@@ -28,18 +28,20 @@ public class BookingImpl implements Booking, Savable {
     public FlightOptionImpl[] flightOptions = new FlightOptionImpl[0];
     public String eMail;
     public LocalDateTime bookingDate;
+    public double pricePaid;
 
 
-    public BookingImpl(SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail, LocalDateTime bookingDate){
+    public BookingImpl(SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail, LocalDateTime bookingDate, double pricePaid){
         this.se = SalesEmployeeImpl.of(se);
         this.flight = FlightImpl.of(flight);
         this.tickets = Arrays.asList(tickets).stream().map(ticket -> TicketImpl.of(ticket)).toArray(TicketImpl[]::new);
         this.flightOptions = Arrays.asList(bookedFlightOptions).stream().map(bfo -> FlightOptionImpl.of(bfo)).toArray(FlightOptionImpl[]::new);
         this.eMail = eMail;
         this.bookingDate = bookingDate;
+        this.pricePaid = pricePaid;
     }
 
-    public BookingImpl(int id, SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail, LocalDateTime bookingDate){
+    public BookingImpl(int id, SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail, LocalDateTime bookingDate, double pricePaid){
         this.se = SalesEmployeeImpl.of(se);
         this.flight = FlightImpl.of(flight);
         this.tickets = Arrays.asList(tickets).stream().map(ticket -> TicketImpl.of(ticket)).toArray(TicketImpl[]::new);
@@ -47,6 +49,7 @@ public class BookingImpl implements Booking, Savable {
         this.eMail = eMail;
         this.bookingDate = bookingDate;
         this.id = id;
+        this.pricePaid = pricePaid;
     }
 
 
@@ -57,9 +60,9 @@ public class BookingImpl implements Booking, Savable {
         TicketImpl[] tImp = b.getTickets().stream().map( t -> {return TicketImpl.of(t);}).toArray(TicketImpl[]::new);
         FlightOptionImpl[] foImpl = b.getBookedFlightOptions().stream().map(bfo -> FlightOptionImpl.of(bfo)).toArray(FlightOptionImpl[]::new);
         if(b.getID().isPresent()){
-            return new BookingImpl(b.getID().get(), SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), tImp, foImpl, b.getCustomerEmail(), b.getBookingDate());
+            return new BookingImpl(b.getID().get(), SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), tImp, foImpl, b.getCustomerEmail(), b.getBookingDate(), b.getBookingPrice());
         }
-        return new BookingImpl(SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), b.getTickets().toArray(Ticket[]::new), b.getBookedFlightOptions().toArray(FlightOption[]::new), b.getCustomerEmail(), b.getBookingDate());
+        return new BookingImpl(SalesEmployeeImpl.of(b.getSalesEmployee()), FlightImpl.of(b.getFlight()), b.getTickets().toArray(Ticket[]::new), b.getBookedFlightOptions().toArray(FlightOption[]::new), b.getCustomerEmail(), b.getBookingDate(), b.getBookingPrice());
 
     }
 
@@ -113,5 +116,10 @@ public class BookingImpl implements Booking, Savable {
             return Optional.of(id);
 
         return Optional.empty();
+    }
+
+    @Override
+    public double getBookingPrice() {
+        return pricePaid;
     }
 }

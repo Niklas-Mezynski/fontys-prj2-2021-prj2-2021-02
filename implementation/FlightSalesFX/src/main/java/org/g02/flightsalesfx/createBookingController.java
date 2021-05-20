@@ -83,7 +83,7 @@ public class createBookingController implements Controller {
     private TabPane tabPane;
 
 
-
+    private double sum = 0.0;
 
     private FlightTable flightTable;
 
@@ -476,10 +476,10 @@ public class createBookingController implements Controller {
      * Collects all Information entered and displays them in textual form
      */
     public void generateOverview(){
-        double sum = 0.0;
+
         flightOverview.getChildren().add(new Label("FlightNo: "+selectedFlight.getFlightNumber()+"; From: "+selectedFlight.getRoute().getDepartureAirport().toString()+"; To: "+selectedFlight.getRoute().getArrivalAirport().toString()+"; On: "+selectedFlight.getDeparture().toString()));
-        // todo set Reduced price as basePricePerSeat
-        double basePricePerSeat = selectedFlight.getPrice();
+
+        double basePricePerSeat = selectedFlight.getPriceWithPriceReductionsApplied();
         contactEmailOverview.getChildren().add(new Label(contactEmail));
 
         VBox flightOptions = new VBox();
@@ -495,10 +495,11 @@ public class createBookingController implements Controller {
 
         //seatsOverviewVBox
         //selectedSeatsForBooking
+        seatsOverviewVBox.getChildren().add(new Label("Baseprice per Seat: "+ basePricePerSeat));
         for(Seat s : selectedSeatsForBooking.keySet()){
             HBox seatBox = new HBox();
             Pair<String,String> namePair = personNameSeatComb.get(s);
-            String seatInfoString = seatToText(s)+ ": "+ namePair.getValue()+", "+namePair.getKey();
+            String seatInfoString = seatToText(s)+ ": "+ namePair.getValue()+", "+namePair.getKey()+": ";
             seatBox.getChildren().add(new Label(seatInfoString));
 
             VBox seatOptionsBox = new VBox();
@@ -507,7 +508,7 @@ public class createBookingController implements Controller {
             var seatOptions = selectedSeatsForBooking.get(s);
             for(SeatOption so : seatOptions){
                 double seatOptionBasePrice = so.getPrice();
-                seatOptionsBox.getChildren().add(new Label(so.getName()+": "+seatOptionBasePrice+"€"));
+                seatOptionsBox.getChildren().add(new Label(so.getName()+": +"+seatOptionBasePrice+"€"));
                 seatTotal += seatOptionBasePrice;
             }
             sum += seatTotal;
@@ -546,7 +547,7 @@ public class createBookingController implements Controller {
         }
 
         Ticket[] ticketsForBooking = tickets.toArray(Ticket[]::new);
-        Booking booking = bm.createBooking((SalesEmployee) App.employee, this.selectedFlight, ticketsForBooking, flightOptions.toArray(FlightOption[]::new), contactEmail, LocalDateTime.now());
+        Booking booking = bm.createBooking((SalesEmployee) App.employee, this.selectedFlight, ticketsForBooking, flightOptions.toArray(FlightOption[]::new), contactEmail, LocalDateTime.now(), sum);
 
         boolean saveComplete = true;
         if(!App.businessLogicAPI.addBookingFromUI(booking)){
