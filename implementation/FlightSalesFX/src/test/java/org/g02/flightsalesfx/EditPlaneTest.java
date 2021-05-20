@@ -1,10 +1,10 @@
 package org.g02.flightsalesfx;
 
 import javafx.collections.ObservableList;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import org.assertj.core.api.Assumptions;
 import org.assertj.core.api.SoftAssertions;
 import org.g02.flightsalesfx.businessEntities.Plane;
@@ -13,7 +13,6 @@ import org.g02.flightsalesfx.businessLogic.BusinessLogicAPI;
 import org.g02.flightsalesfx.businessLogic.PlaneImpl;
 import org.g02.flightsalesfx.businessLogic.SeatImpl;
 import javafx.scene.Node;
-import javafx.scene.control.TableRow;
 import javafx.stage.Stage;
 import org.assertj.core.api.Assertions;
 import org.g02.flightsalesfx.businessLogic.SeatOptionImpl;
@@ -148,5 +147,22 @@ public class EditPlaneTest {
             }
         }
         assertThat(allSeatOptions).containsAll(seatOptions);
+    }
+
+    @Test
+    void t06testErrorDialog(FxRobot fxRobot) {
+        var lookup = fxRobot.lookup("#deleteButton").queryButton();
+        when(businessLogicAPI.deletePlane(any())).thenReturn(false);
+        fxRobot.clickOn(lookup);
+        verify(businessLogicAPI).deletePlane(any());
+        Node dialogPane = fxRobot.lookup(".dialog-pane").queryAs(DialogPane.class);
+        var are_you_sure = fxRobot.from(dialogPane).lookup((Text t) -> t.getText().startsWith("There was an error while deleting the current plane. Try again!"));
+        Assertions.assertThat(are_you_sure.queryAll()).isNotEmpty();
+        for (Button queryAllA : fxRobot.from(dialogPane).lookup((Node node) -> node instanceof Button).queryAllAs(Button.class)) {
+            System.out.println(queryAllA.getText());
+            if (queryAllA.getText().equals("OK")) {
+                fxRobot.clickOn(queryAllA);
+            }
+        }
     }
 }
