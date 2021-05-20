@@ -198,20 +198,17 @@ public class CreatePlaneController implements Controller {
     private void delete() {
         if (editMode) {
             var plane = false;
-            try {
-                plane = App.businessLogicAPI.deletePlane(oldPlane);
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Error deleting plane");
-                alert.setContentText("There was an error while deleting the current plane. Try again!");
-                alert.showAndWait();
-            }
+            plane = App.businessLogicAPI.deletePlane(oldPlane);
             System.out.println(plane);
             if (plane) {
                 App.setRoot("home");
             } else {
                 System.out.println("Error deleting plane");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error deleting plane");
+                alert.setContentText("There was an error while deleting the current plane. Try again!");
+                alert.showAndWait();
             }
         }
     }
