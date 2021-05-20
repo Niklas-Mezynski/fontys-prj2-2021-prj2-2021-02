@@ -29,11 +29,6 @@ public class RouteImpl implements Route, Savable {
         this.rteEnabled = rteEnabled;
     }
 
-    private RouteImpl(int id, boolean rteEnabled) {
-        this.id = id;
-        this.rteEnabled = rteEnabled;
-    }
-
     private RouteImpl() {
 
     }

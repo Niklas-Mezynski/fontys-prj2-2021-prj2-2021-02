@@ -17,6 +17,13 @@ public class SeatOptionImpl implements SeatOption, Savable {
         this.name = name;
         this.price = price;
     }
+
+    private SeatOptionImpl(int id, String name, double price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+
     private SeatOptionImpl(){}
 
     public String getName() {
@@ -29,6 +36,11 @@ public class SeatOptionImpl implements SeatOption, Savable {
     @Override
     public double getPrice() {
         return price;
+    }
+
+    @Override
+    public int getID() {
+        return id;
     }
 
     @Override
@@ -59,6 +71,6 @@ public class SeatOptionImpl implements SeatOption, Savable {
         return result;
     }
     public static SeatOptionImpl of(SeatOption s){
-        return new SeatOptionImpl(s.getName(),s.getPrice());
+        return new SeatOptionImpl(s.getID(), s.getName(),s.getPrice());
     }
 }

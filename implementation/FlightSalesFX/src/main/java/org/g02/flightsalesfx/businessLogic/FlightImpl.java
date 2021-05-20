@@ -64,6 +64,7 @@ public class FlightImpl implements Flight, Savable {
     public static FlightImpl of(Flight f) {
         var ret= new FlightImpl(SalesOfficerImpl.of(f.getCreatedBy()),f.getFlightNumber(), f.getDeparture(), f.getArrival(), f.getRoute(), f.getPlane(), f.getPrice());
         ret.addAllFlightOptions(f.getFlightOptions());
+        ret.salesProcessStarted=f.getSalesProcessStatus();
         return ret;
     }
 
@@ -225,6 +226,11 @@ public class FlightImpl implements Flight, Savable {
     @Override
     public List<FlightOption> getFlightOptions() {
         return new ArrayList<>(optionsList);
+    }
+
+    @Override
+    public void removeFlightOption(FlightOption flightOption) {
+        optionsList.removeIf(f->flightOption.getID()==f.getID());
     }
 
     @Override
