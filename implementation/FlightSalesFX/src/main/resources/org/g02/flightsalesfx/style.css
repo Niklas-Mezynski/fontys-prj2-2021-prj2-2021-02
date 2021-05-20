@@ -28,7 +28,7 @@
     -fx-background-radius: 0;
 }
 
-.buttonOrange:selected{
+.buttonOrange:focused{
     -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #09b8ff 0%, #29fa9b 100%);
     -fx-border-radius: 100;
     -fx-background-radius: 100;
@@ -44,7 +44,10 @@
 }
 
 .buttonBlack:hover{
-    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #2E2E2E 0%, #4D4D4D 100%);
+     -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #2E2E2E 0%, #4D4D4D 100%);
+ }
+.buttonBlack:selected{
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #08AEEA 0%, #2AF598 100%);
 }
 
 .background {
@@ -77,13 +80,19 @@
     -fx-margin: 0;
     -fx-background-radius: 0;
 }
+.text-field:focused {
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #4e4e4e 0%, #3e3e3e 100%);
+    -fx-text-fill: #FFFFFF;
+    -fx-margin: 0;
+    -fx-background-radius: 0;
+}
 
 .toggle-button {
     -fx-background-color: #131313;
     -fx-margin: 0;
 }
 
-.toggle-button:selected {
+.toggle-button:focused {
     -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #08AEEA 0%, #2AF598 100%);
     -fx-background: #FFFFFF;
     -fx-text-fill: #FFFFFF;
@@ -258,7 +267,7 @@ ToggleButton.selectSeatOption {
     -fx-background-radius: 0;
 }
 
-.combo-box .list-cell:focused {
+.combo-box:focused .list-cell:selected {
     -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #08AEEA 0%, #2AF598 100%);
     -fx-text-fill:black;
 }
@@ -269,6 +278,10 @@ ToggleButton.selectSeatOption {
 }
 .combo-box .arrow{
     -fx-background-color:white;
+}
+.combo-box:focused{
+    -fx-background-color: linear-gradient(from 50% 100% to 50% 0%, #08AEEA 0%, #2AF598 100%);
+    -fx-background-radius: 0;
 }
 
 .list-cell {
