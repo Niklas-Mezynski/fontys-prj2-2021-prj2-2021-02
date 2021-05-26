@@ -110,6 +110,7 @@ public class cancelBookingController implements Controller {
      */
     @FXML
     void cancelTicketPressed(ActionEvent event) {
+        // if no booking is selected
         if(selectedBooking == null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Information");
@@ -121,6 +122,7 @@ public class cancelBookingController implements Controller {
             alert.showAndWait();
 
             ButtonType result = alert.getResult();
+            //if alert gets confirmed -> delete Booking incl. all of its tickets
             if(ButtonType.YES.equals(result)){
                 App.persistenceAPI.getBookingStorageService(App.businessLogicAPI.getBookingManager()).remove(selectedBooking);
                 List<Ticket> tickets = selectedBooking.getTickets();
