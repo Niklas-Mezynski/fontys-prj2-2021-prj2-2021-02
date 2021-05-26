@@ -52,10 +52,45 @@
       </HBox>
    </bottom>
    <center>
-      <ScrollPane BorderPane.alignment="CENTER">
-        <content>
-          <AnchorPane fx:id="bookingFlightPane" minHeight="0.0" minWidth="0.0" />
-        </content>
-      </ScrollPane>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <ScrollPane prefHeight="503.0" prefWidth="456.0">
+              <content>
+                <AnchorPane fx:id="bookingFlightPane" minHeight="0.0" minWidth="0.0" />
+              </content>
+            </ScrollPane>
+            <VBox prefHeight="503.0" prefWidth="453.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="63.0" text="Seats: " />
+                        <VBox fx:id="seatsVBox" prefHeight="100.0" prefWidth="445.0" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="20.0" prefWidth="453.0">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="61.0" text="Price: " />
+                        <VBox prefHeight="100.0" prefWidth="445.0">
+                           <children>
+                              <Label fx:id="priceTag" text="0.00€" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="20.0" prefWidth="453.0">
+                     <children>
+                        <Label text="E-Mail: " />
+                        <Label fx:id="bookingEmailLabel" text="No Booking selected" />
+                     </children></HBox>
+                  <HBox prefHeight="19.0" prefWidth="453.0">
+                     <children>
+                        <Label text="Booking Date: " />
+                        <Label fx:id="bookingDateLabel" text="--.--.----" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
    </center>
 </BorderPane>

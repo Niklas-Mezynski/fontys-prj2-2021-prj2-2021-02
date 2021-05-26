@@ -579,7 +579,7 @@ public class createBookingController implements Controller {
      * @param seat
      * @return SeatPosition in format, which is used in the real world (e.g. 5F, 6D) not Row:5 Col:6
      */
-    String seatToText(Seat seat) {
+     static String seatToText(Seat seat) {
         var i = seat.getSeatNumber();
         var i1 = seat.getRowNumber() + 1;
         String s = String.format("%02d", i1);

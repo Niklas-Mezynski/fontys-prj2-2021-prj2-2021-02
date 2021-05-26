@@ -50,8 +50,7 @@ public class BookingStorageServiceImpl implements BookingStorageService{
         BookingImpl bImpl = BookingImpl.of(booking);
         try {
 
-            dao.remove(new BookingImpl(booking.getSalesEmployee(), booking.getFlight(), booking.getTickets().toArray(TicketImpl[]::new), booking.getBookedFlightOptions().toArray(FlightOption[]::new), booking.getCustomerEmail(), booking.getBookingDate(), booking.getBookingPrice()));
-
+            dao.remove(BookingImpl.of(booking));
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,8 @@
 package org.g02.flightsalesfx;
 
 
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import org.g02.flightsalesfx.businessEntities.Booking;
 import org.g02.flightsalesfx.businessEntities.Ticket;
 import org.g02.flightsalesfx.gui.BookingTable;
@@ -14,6 +16,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class cancelBookingController implements Controller {
@@ -27,6 +30,19 @@ public class cancelBookingController implements Controller {
     @FXML
     private AnchorPane bookingFlightPane;
 
+    @FXML
+    private VBox seatsVBox;
+
+    @FXML
+    private Label priceTag;
+
+    @FXML
+    private Label bookingEmailLabel;
+
+    @FXML
+    private Label bookingDateLabel;
+
+
     private BookingTable bTable;
 
     private Booking selectedBooking;
@@ -38,6 +54,10 @@ public class cancelBookingController implements Controller {
         createSearchFunctionality();
     }
 
+    /**
+     * creates an overview of bookings
+     * @param bookings list of bookings to be included in the table
+     */
     public void createOrUpdateBookingTable(List<Booking> bookings){
         if(bTable != null){
             bookingFlightPane.getChildren().remove(bTable);
@@ -49,17 +69,45 @@ public class cancelBookingController implements Controller {
 
                 if (event.getClickCount() == 1) {
                     this.selectedBooking = rowData;
+                    showOverviewForBooking(rowData);
                 }
             }
         });
         bookingFlightPane.getChildren().add(bTable);
     }
 
+    void showOverviewForBooking(Booking b){
+        double price = b.getBookingPrice();
+        priceTag.setText(price +"€");
+        seatsVBox.getChildren().clear();
+        var tickets = b.getTickets();
+        for(Ticket t: tickets){
+            StringBuilder ticketStr = new StringBuilder();
+            ticketStr.append(t.getLastName()+", ");
+            ticketStr.append(t.getFirstName()+", ");
+            ticketStr.append(createBookingController.seatToText(t.getSeat())+", ");
+            seatsVBox.getChildren().add(new Label(ticketStr.toString()));
+
+        }
+        bookingEmailLabel.setText(b.getCustomerEmail());
+        bookingDateLabel.setText(b.getBookingDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+    }
+
+    /**
+     * when abort button is pressed you are redirected to previous page
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void abortButtonPressed(ActionEvent event) throws IOException {
         App.setRoot("salesEmployeeHome");
     }
 
+    /**
+     * Method gets called when "Cancel" Button is pressed.
+     * Confirmation is required to cancel a booking
+     * @param event
+     */
     @FXML
     void cancelTicketPressed(ActionEvent event) {
         if(selectedBooking == null){
@@ -95,6 +143,9 @@ public class cancelBookingController implements Controller {
     void searchFieldInputDetected(ActionEvent event) {
     }
 
+    /**
+     * enables the Testfields to act as search fields
+     */
     public void createSearchFunctionality(){
         this.eMailTextField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
             createOrUpdateBookingTable(App.businessLogicAPI.getAllBookings(booking -> booking.getFlight().getDeparture().isAfter(LocalDateTime.now()) && booking.getCustomerEmail().contains(newValue) && (booking.getFlight().getFlightNumber()+"").contains(this.flightNumberTextField.getText())));
