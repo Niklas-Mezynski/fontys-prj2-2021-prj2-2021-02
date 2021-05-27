@@ -77,6 +77,10 @@ public class CreatePriceReductions implements Controller {
         saveButton=new Button("Select to Save");
         saveButton.setDisable(true);
         saveButton.getStyleClass().add("buttonOrange");
+        saveButton.setOnMouseClicked(e->{
+            flight.addPriceReduction(reduction);
+            App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager());
+        });
         saveHBox.getChildren().add(0,saveButton);
         addReduction.setOnMouseClicked((event)->{
             saveReductions();
