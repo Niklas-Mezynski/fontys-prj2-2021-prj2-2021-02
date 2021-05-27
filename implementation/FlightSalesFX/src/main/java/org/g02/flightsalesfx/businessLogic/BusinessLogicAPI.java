@@ -51,7 +51,7 @@ public interface BusinessLogicAPI {
 
     public List<Airport> getAllAirports(Predicate<Airport> predicate);
 
-    boolean createFlightFromUI(SalesOfficer creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price);
+    boolean createFlightFromUI(SalesOfficer creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price, List<? extends FlightOption> flightOptions);
 
     public boolean createFlightFromUI(Flight flight);
 
@@ -78,4 +78,8 @@ public interface BusinessLogicAPI {
     boolean deletePlane(PlaneImpl oldPlane);
 
     Plane updatePlane(PlaneImpl oldPlane, String name, String type, String manufacturer, List<Seat> collect);
+
+    Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, double price, boolean salesprocess);
+
+    public List<Employee> getAllEmployees(Predicate<Employee> predicate);
 }

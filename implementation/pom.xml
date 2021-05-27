@@ -7,6 +7,5 @@
     <packaging>pom</packaging>
     <modules>
         <module>FlightSalesFX</module>
-        <module>BTFDao</module>
     </modules>
 </project>

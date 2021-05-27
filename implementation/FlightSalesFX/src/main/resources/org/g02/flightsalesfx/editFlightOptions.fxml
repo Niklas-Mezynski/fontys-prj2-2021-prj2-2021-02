@@ -15,7 +15,7 @@
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <Label fx:id="flightNumberLabel" text="Edit Flight Options for flight: XXXX" BorderPane.alignment="CENTER">
+            <Label fx:id="flightNumberLabel" text="Edit Flight Options for Flight: XXXX" BorderPane.alignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -37,14 +37,14 @@
                               <Insets left="10.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="planeInfoText" editable="false">
+                        <Label fx:id="planeInfoText">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
-                        </TextField>
+                        </Label>
                      </children>
                      <padding>
                         <Insets top="12.0" />

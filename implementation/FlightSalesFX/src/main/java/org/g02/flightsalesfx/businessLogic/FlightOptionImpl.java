@@ -7,19 +7,27 @@ import org.g02.flightsalesfx.businessEntities.FlightOption;
 
 @TableName("flightoptions")
 public class FlightOptionImpl implements FlightOption, Savable {
-    @PrimaryKey
+    @PrimaryKey(autogen = true)
     public int id;
     public String name;
     public int maxAvailable;
+    public int currentAvailable;
     public double price;
 
+    private FlightOptionImpl(){}
+
     public FlightOptionImpl (String name, int maxAvailable, double price) {
+        this(name,maxAvailable,price,-1,0);
+    }
+    public FlightOptionImpl (String name, int maxAvailable, double price, int currentAvailable,int id) {
+        this.id=id;
         this.name = name;
         this.maxAvailable = maxAvailable;
         this.price = price;
+        this.currentAvailable=currentAvailable;
     }
     public static FlightOptionImpl of(FlightOption f){
-        return new FlightOptionImpl(f.getName(), f.getMaxAvailability(), f.getPrice());
+        return new FlightOptionImpl(f.getName(), f.getMaxAvailability(), f.getPrice(),f.getCurrentAvailability(),f.getID());
     }
 
     /**
@@ -28,7 +36,7 @@ public class FlightOptionImpl implements FlightOption, Savable {
     @Override
     public int getCurrentAvailability() {
         //TODO (should this be saved or calculated by subtracting the already booked FOs from the maxAvailable)
-        return 0;
+        return currentAvailable;
     }
 
     /**
@@ -55,5 +63,10 @@ public class FlightOptionImpl implements FlightOption, Savable {
     @Override
     public String toString() {
         return "Name: " + name + ", Max available: " + maxAvailable + ", Price: " + price + "€";
+    }
+
+    @Override
+    public int getID() {
+        return id;
     }
 }
