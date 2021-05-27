@@ -256,7 +256,7 @@ public class HomeController implements Controller {
     @FXML
     public void goToPriceReductions() throws IOException {
         App.inRootTab = 3;
-        App.setRoot("CreatePriceReductions");
+        App.setRoot("createPriceReductions");
     }
 
 }
