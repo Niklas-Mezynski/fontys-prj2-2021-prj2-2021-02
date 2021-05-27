@@ -62,4 +62,15 @@ public class StaticPriceReductionImpl implements Savable,PriceReduction {
     public static StaticPriceReductionImpl of(PriceReduction priceReduction) {
         return new StaticPriceReductionImpl(priceReduction.getName(), priceReduction.getEndTime(), priceReduction.getStartTime(), priceReduction.isPercentage(), priceReduction.getPercentageAsDouble());
     }
+
+    @Override
+    public String toString() {
+        return "StaticPriceRed.[" +
+                "name='" + name + '\'' +
+                ", endDate=" + endDate +
+                ", startDate=" + startDate +
+                ", isPercent=" + isPercent +
+                ", reductionPercentage=" + reductionPercentage +
+                ']';
+    }
 }

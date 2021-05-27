@@ -64,4 +64,16 @@ public class DynamicPriceReductionImpl implements Savable, PriceReduction {
         //TODO Calculate the PriceReduction depending on the @Source
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "DynamicPriceRed.[" +
+                "name='" + name + '\'' +
+                ", source='" + source + '\'' +
+                ", endDate=" + endDate +
+                ", startDate=" + startDate +
+                ", isPercent=" + isPercent +
+                ", reductionPercentage=" + reductionPercentage +
+                ']';
+    }
 }

@@ -79,7 +79,7 @@ public class CreatePriceReductions implements Controller {
         saveButton.getStyleClass().add("buttonOrange");
         saveButton.setOnMouseClicked(e->{
             flight.addPriceReduction(reduction);
-            App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager());
+            App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).update(flight);
         });
         saveHBox.getChildren().add(0,saveButton);
         addReduction.setOnMouseClicked((event)->{
@@ -112,7 +112,7 @@ public class CreatePriceReductions implements Controller {
         priceS=priceS.replace(',','.');
         double price=Double.valueOf(priceS);
 
-        var priceRed=new StaticPriceReductionImpl(redName.getText(),end,start,isPercent.isSelected(),price);
+        var priceRed=new StaticPriceReductionImpl(redName.getText().trim(),end,start,isPercent.isSelected(),price);
         App.businessLogicAPI.createPriceReductionFromUI(priceRed);
         updateTables();
     }
