@@ -64,6 +64,28 @@
     -fx-effect: dropshadow(three-pass-box, black, 10, 0.5, 0, 0);
 }
 
+.planeTab{
+    -fx-background-image: url("Planes.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}
+.routeTab{
+    -fx-background-image: url("Routes.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: stretch;
+}
+.flightTab{
+-fx-background-image: url("Flight.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}
+.reductionTab{
+-fx-background-image: url("Reduction.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}
+
+
 .textLabel {
     -fx-text-fill: #FFFFFF;
     -fx-background-color: #212121;
@@ -108,7 +130,8 @@
 
 .tab-pane {
     -fx-background-color: #1A1A1A;
-    -fx-tab-min-width: 90px;
+    -fx-tab-min-width: 75px;
+    -fx-tab-min-height: 85px;
     -fx-focus-color: transparent;
 }
 
@@ -117,15 +140,15 @@
 }
 
 .tab .tab-label {
-    -fx-alignment: CENTER;
-    -fx-text-fill: #FFFFFF;
+    -fx-alignment: bottom-center;
+    -fx-content-display: bottom;
+    -fx-text-fill: transparent;
     -fx-focus-color: transparent;
 }
 
 .tab:selected .tab-label {
-    -fx-text-fill: #fff;
-    -fx-alignment: CENTER;
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: transparent;
+    -fx-alignment: bottom-center;
 }
 
 .spinner .increment-arrow-button,
