@@ -27,4 +27,6 @@ public interface Ticket {
     public String getLastName();
 
     public SeatOption[] getSeatOptions();
+
+    int getID();
 }

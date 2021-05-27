@@ -275,6 +275,11 @@ public class CreatePlaneController implements Controller {
         public double getPrice() {
             return changeAvailableSpinner.getValue();
         }
+
+        @Override
+        public int getID() {
+            return -1;
+        }
     }
 
     /**

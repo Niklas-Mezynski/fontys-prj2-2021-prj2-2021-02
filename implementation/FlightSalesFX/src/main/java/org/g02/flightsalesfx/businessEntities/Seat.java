@@ -39,4 +39,6 @@ public interface Seat extends Comparable<Seat> {
 
     public List<SeatOption> getSeatOptions();
 
+    int getID();
+
 }

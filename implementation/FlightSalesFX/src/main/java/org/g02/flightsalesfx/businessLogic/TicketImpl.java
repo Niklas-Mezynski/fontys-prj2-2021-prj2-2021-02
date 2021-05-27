@@ -42,8 +42,9 @@ public class TicketImpl implements Ticket, Savable {
     private TicketImpl() {}
 
     public static TicketImpl of(Ticket t){
-
-        return new TicketImpl(t.getFlight(), t.getSeat(), t.getFirstName(), t.getLastName(), t.getSeatOptions());
+        var ticket = new TicketImpl(t.getFlight(), t.getSeat(), t.getFirstName(), t.getLastName(), t.getSeatOptions());
+        ticket.id=t.getID();
+        return ticket;
     }
 
     @Override
@@ -70,6 +71,11 @@ public class TicketImpl implements Ticket, Savable {
     @Override
     public String getLastName() {
         return this.paxLName;
+    }
+
+    @Override
+    public int getID() {
+        return id;
     }
 
     @Override
