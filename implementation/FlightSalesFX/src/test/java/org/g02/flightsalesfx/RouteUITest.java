@@ -41,6 +41,13 @@ public class RouteUITest {
         App.setRoot("home");
     }
 
+    @BeforeEach
+    void goToCreateRoute(FxRobot test) {
+        var v = test.lookup("#routesTab").query();
+        test.clickOn(v);
+        test.clickOn(test.lookup("#goToCreateRoute").queryAs(Button.class));
+    }
+
     @Start
     void start(Stage stage) throws IOException {
         businessLogicAPI = Mockito.mock(BusinessLogicAPI.class);
@@ -54,13 +61,6 @@ public class RouteUITest {
         App.businessLogicAPI = businessLogicAPI;
         App.setRoot("home");
         this.stage = stage;
-    }
-
-    @BeforeEach
-    void goToCreateRoute(FxRobot test) {
-        var v = test.lookup("#routesTab").query();
-        test.clickOn(v);
-        test.clickOn(test.lookup("#goToCreateRoute").queryAs(Button.class));
     }
 
     @Test

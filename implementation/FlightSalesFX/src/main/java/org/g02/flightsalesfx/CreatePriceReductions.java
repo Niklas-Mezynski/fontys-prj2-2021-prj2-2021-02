@@ -146,8 +146,10 @@ public class CreatePriceReductions implements Controller {
         flightTable.setOnMouseClicked(e->{
             flight=flightTable.getSelectionModel().getSelectedItem();
             if(reduction!=null){
-                saveButton.setDisable(false);
-                saveButton.setText("Add \""+reduction.getName()+"\" to Flight Nr. \""+flight.getFlightNumber()+"\"");
+                if(flight!=null) {
+                    saveButton.setDisable(false);
+                    saveButton.setText("Add \"" + reduction.getName() + "\" to Flight Nr. \"" + flight.getFlightNumber() + "\"");
+                }
             }
         });
         flightTable.setMinWidth(400);
@@ -162,8 +164,10 @@ public class CreatePriceReductions implements Controller {
         reductionTable.setOnMouseClicked(e->{
             reduction=reductionTable.getSelectionModel().getSelectedItem();
             if(flight!=null){
-                saveButton.setDisable(false);
-                saveButton.setText("Add \""+reduction.getName()+"\" to Flight Nr. \""+flight.getFlightNumber()+"\"");
+                if(reduction!=null) {
+                    saveButton.setDisable(false);
+                    saveButton.setText("Add \"" + reduction.getName() + "\" to Flight Nr. \"" + flight.getFlightNumber() + "\"");
+                }
             }
         });
     }
