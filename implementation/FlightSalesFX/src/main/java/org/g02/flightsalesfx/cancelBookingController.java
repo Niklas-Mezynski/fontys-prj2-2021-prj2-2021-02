@@ -49,7 +49,7 @@ public class cancelBookingController implements Controller {
 
 
     public void initialize(){
-        List<Booking> bookings = App.businessLogicAPI.getAllBookings(booking -> booking.getFlight().getDeparture().isAfter(LocalDateTime.now()));
+        List<Booking> bookings = App.businessLogicAPI.getAllBookings(booking -> booking.getFlight().getDeparture().isAfter(LocalDateTime.now().plusHours(23).plusMinutes(59)));
         createOrUpdateBookingTable(bookings);
         createSearchFunctionality();
     }
