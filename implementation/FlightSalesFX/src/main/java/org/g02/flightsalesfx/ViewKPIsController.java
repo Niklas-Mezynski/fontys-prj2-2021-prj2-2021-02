@@ -40,12 +40,11 @@ public class ViewKPIsController implements Controller {
         var routes = App.businessLogicAPI.getAllRoutes(route -> true);
         createOrUpdateRouteTable(routes, route -> true);
 
-        searchTextField.textProperty().addListener( ((observableValue, oldValue, newValue) -> {
-            Predicate<Route> pred = ( route -> {
-                String airportString = (route.getDepartureAirport().getName() +
-                        route.getArrivalAirport().getName()).toLowerCase().trim();
-                return airportString.contains(newValue.toLowerCase().trim());
-            });
+        searchTextField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            Predicate<Route> pred = (route -> route.getArrivalAirport().getName().toLowerCase().contains(newValue.toLowerCase()) ||
+                    route.getArrivalAirport().getCity().toLowerCase().contains(newValue.toLowerCase()) ||
+                    route.getDepartureAirport().getName().toLowerCase().contains(newValue.toLowerCase()) ||
+                    route.getDepartureAirport().getCity().toLowerCase().contains(newValue.toLowerCase()));
             createOrUpdateRouteTable(routes, pred);
         }));
 

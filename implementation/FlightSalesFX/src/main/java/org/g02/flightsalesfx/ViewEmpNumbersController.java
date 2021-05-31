@@ -15,6 +15,7 @@ import org.g02.flightsalesfx.helpers.Bundle;
 import org.g02.flightsalesfx.helpers.Controller;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,7 @@ public class ViewEmpNumbersController implements Controller {
         createOrUpdateEmpTable(salesEmployees, employee -> true);
 
         searchTextField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
-            Predicate<Employee> pred = (emp -> emp.getName().contains(newValue) || emp.getEmail().contains(newValue));
+            Predicate<Employee> pred = (emp -> emp.getName().toLowerCase().contains(newValue.toLowerCase()) || emp.getEmail().toLowerCase().contains(newValue.toLowerCase()));
             createOrUpdateEmpTable(salesEmployees, pred);
         }));
 
