@@ -16,24 +16,14 @@ public class ManagementDashboardController implements Controller {
     @FXML
     private Label greetingLabel;
 
-
-    @FXML
-    private ProgressBar progressBar;
-
     @FXML
     void initialize() {
-        greetingLabel.setText(greetingLabel.getText().replace("XXX", App.employee != null ? App.employee.getName() : "Madam/Sir"));
+        greetingLabel.setText(greetingLabel.getText().replace("XXX", App.employee != null ? App.employee.getName() : ""));
     }
 
     @FXML
     void viewRevenueRoute() {
         App.setRoot("viewKPIs");
-        final Timeline timeline = new Timeline();
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        final KeyValue kv = new KeyValue(progressBar.progressProperty(), 1);
-        final KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
-        timeline.getKeyFrames().add(kf);
-        timeline.play();
     }
 
     @FXML
