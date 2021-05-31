@@ -232,13 +232,34 @@ System shows available flights
 Actor selects a flight
 </li>
 <li>
-System shows <ins>available options</ins>
+Systems shows available Seats and seat options
 </li>
 <li>
-Actor selects options
+Actor selects required seat options
 </li>
 <li>
-Actor chooses to finish current booking
+System updates seats, to match selected seat options
+</li>
+<li>
+Actor choses seat
+</li>
+<li>
+System requests names of the passengers and Email for contacting
+</li>
+<li>
+Actor provides names of passengers and gives email
+</li>
+<li>
+System shows <ins>available Flight options</ins>
+</li>
+<li>
+Actor selects requsted flight Options
+</li>
+<li>
+System gives overview of booking
+</li>
+<li>
+Actor confirms booking
 </li>
 <li>
 System prints the tickets and returns to main page

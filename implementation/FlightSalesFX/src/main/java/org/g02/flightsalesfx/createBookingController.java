@@ -138,7 +138,7 @@ public class createBookingController implements Controller {
                 String arrField = arrivalField.getText().toLowerCase();
                 String dep = f.getRoute().getDepartureAirport().toString().toLowerCase();
                 String arr = f.getRoute().getArrivalAirport().toString().toLowerCase();
-                return dep.contains(depField)&&arr.contains(arrField);
+                return dep.contains(depField)&&arr.contains(arrField)&&f.getSalesProcessStatus();
             });
         }));
         arrivalField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
@@ -147,7 +147,7 @@ public class createBookingController implements Controller {
                 String arrField = newValue.toLowerCase();
                 String dep = f.getRoute().getDepartureAirport().toString().toLowerCase();
                 String arr = f.getRoute().getArrivalAirport().toString().toLowerCase();
-                return dep.contains(depField)&&arr.contains(arrField);
+                return dep.contains(depField)&&arr.contains(arrField)&&f.getSalesProcessStatus();
             });
         }));
 
