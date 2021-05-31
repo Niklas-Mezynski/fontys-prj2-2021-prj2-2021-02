@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.Cursor?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.g02.flightsalesfx.HomeController">
     <!--<top>
        <MenuBar BorderPane.alignment="CENTER">
@@ -174,6 +175,16 @@
                                              </BorderPane.margin>
                                                     </VBox>
                                        </center>
+                                        <right>
+                                            <Button fx:id="enableSalesprocess" alignment="TOP_CENTER" defaultButton="true" mnemonicParsing="false" onAction="#enableSalesprocess" text="Salesprocess" styleClass="buttonOrange" textAlignment="JUSTIFY" BorderPane.alignment="CENTER">
+                                                <cursor>
+                                                    <Cursor fx:constant="HAND" />
+                                                </cursor>
+                                                <BorderPane.margin>
+                                                    <Insets left="4.0" />
+                                                </BorderPane.margin>
+                                            </Button>
+                                        </right>
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </padding>

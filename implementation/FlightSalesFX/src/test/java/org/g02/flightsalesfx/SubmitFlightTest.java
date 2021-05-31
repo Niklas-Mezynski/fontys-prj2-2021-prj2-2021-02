@@ -8,6 +8,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -78,6 +79,7 @@ public class SubmitFlightTest {
         fxRobot.clickOn(fxRobot.lookup("#nextStepButton").queryAs(Button.class));
     }
 
+    @Disabled
     @Test
     void check(FxRobot fxRobot) {
         var v7=fxRobot.lookup(node -> ((Text)node).getText().contains("A420")).query();

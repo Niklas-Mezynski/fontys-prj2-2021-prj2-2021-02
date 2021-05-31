@@ -318,6 +318,10 @@ public class CreatePlaneController implements Controller {
             changeAvailableSpinner.getValueFactory().setValue(seatOption.getPrice());
         }
 
+        @Override
+        public int getID() {
+            return -1;
+        }
     }
 
     /**

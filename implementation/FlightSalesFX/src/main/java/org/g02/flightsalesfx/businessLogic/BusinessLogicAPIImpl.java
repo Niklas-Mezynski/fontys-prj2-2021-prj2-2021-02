@@ -225,6 +225,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     public boolean createFlightFromUI(SalesOfficer creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price, List<? extends FlightOption> flightOptions) {
         var flight = getFlightManager().createFlight(creator, dep, arr, route, plane, price);
         flight.addAllFlightOptions(flightOptions);
+
         System.out.println(flight);
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
@@ -234,6 +235,9 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     @Override
     public boolean createFlightFromUI(Flight flight) {
         var f = getFlightManager().createFlight(flight.getCreatedBy(), flight.getDeparture(), flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
+        if(flight.getSalesProcessStatus()) {
+            f.startSalesProcess();
+        }
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
         return flightStorageService.add(flight)!=null;
@@ -267,7 +271,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     public boolean addFlightOptionFromUI(String name, int maxAvailable, double price, Flight flight) {
         var flightOption = getOptionManager().createFlightOption(name, maxAvailable, price);
         flight.addFlightOption(flightOption);
-        return persistenceAPI.getFlightOptionStorageService(getOptionManager()).add(flightOption)!=null;
+        return persistenceAPI.getFlightStorageService(getFlightManager()).update(flight)!=null;
     }
 
     @Override
@@ -292,6 +296,24 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         var plane = new PlaneImpl(oldPlane.getId(), name, type, manufacturer);
         plane.addAllSeats(collect);
         return persistenceAPI.getPlaneStorageService(getPlaneManager()).update(plane);
+    }
+
+    @Override
+    public Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, double price, boolean salesprocess) {
+        var flightImpl = oldFlight;
+        System.out.println(flightImpl.getFlightNumber());
+        if(salesprocess) {
+            flightImpl.startSalesProcess();
+        } else {
+            flightImpl.stopSalesProcess();
+        }
+        return persistenceAPI.getFlightStorageService(getFlightManager()).update(flightImpl);
+    }
+
+    @Override
+    public List<Employee> getAllEmployees(Predicate<Employee> predicate) {
+        var all = persistenceAPI.getEmployeeStorageService(employeeManager).getAll();
+        return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
     }
 
     private static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException

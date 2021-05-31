@@ -56,4 +56,9 @@ public class SalesEmployeeImpl implements SalesEmployee, Savable {
     public static SalesEmployeeImpl of(SalesEmployee se){
         return new SalesEmployeeImpl(se.getName(), se.getEmail(), se.getPassword());
     }
+
+    @Override
+    public String toString() {
+        return getName() + ", " + getEmail();
+    }
 }

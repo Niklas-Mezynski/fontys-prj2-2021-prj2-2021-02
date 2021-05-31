@@ -29,6 +29,8 @@ public class ReoccurringFlightImpl implements ReoccurringFlight, Savable {
         this.interval = interval;
     }
 
+    private ReoccurringFlightImpl(){}
+
 
     private void afterConstruction() {
         id=flight.getFlightNumber();
@@ -54,6 +56,11 @@ public class ReoccurringFlightImpl implements ReoccurringFlight, Savable {
     @Override
     public void startSalesProcess() {
         flight.startSalesProcess();
+    }
+
+    @Override
+    public void stopSalesProcess() {
+        flight.stopSalesProcess();
     }
 
     @Override
@@ -137,6 +144,11 @@ public class ReoccurringFlightImpl implements ReoccurringFlight, Savable {
     @Override
     public void addAllFlightOptions(List<? extends FlightOption> options) {
         flight.addAllFlightOptions(options);
+    }
+
+    @Override
+    public void removeFlightOption(FlightOption flightOption) {
+        flight.removeFlightOption(flightOption);
     }
 
     @Override

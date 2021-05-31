@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-import static org.g02.flightsalesfx.App.setRoot;
+import static org.g02.flightsalesfx.App.*;
 
 public class FlightOptionController implements Controller {
 
@@ -18,7 +18,7 @@ public class FlightOptionController implements Controller {
     private Label flightNumberLabel;
 
     @FXML
-    private TextField planeInfoText;
+    private Label planeInfoText;
 
     @FXML
     private VBox mainVBox;
@@ -43,9 +43,10 @@ public class FlightOptionController implements Controller {
             App.setRoot("home");
             return;
         }
-        flightNumberLabel.setText("Edit Flight Options for flight number: " + selectedFlight.getFlightNumber());
+        flightNumberLabel.setText("Edit Flight Options for Flight number: " + selectedFlight.getFlightNumber());
         planeInfoText.setText("Seats: " + selectedFlight.getPlane().getSeatCount());
 
+        optionName.setTooltip(new Tooltip("The name that this Flight Option should have, e.g. \"50kg extra luggage weight\" or \"warm meal\" "));
 
         optionMaxAvailable.textProperty().addListener(((observableValue, oldValue, newValue) -> {
             if (isIntegerGreater0(optionMaxAvailable.getText())) {
@@ -54,6 +55,7 @@ public class FlightOptionController implements Controller {
                 optionMaxAvailable.setStyle("-fx-border-color:red;");
             }
         }));
+        optionMaxAvailable.setTooltip(new Tooltip("The Number of times that this Flight Option can be booked"));
 
         optionPrice.textProperty().addListener(((observableValue, oldValue, newValue) -> {
             if (isNumeric(optionPrice.getText())) {
@@ -62,6 +64,7 @@ public class FlightOptionController implements Controller {
                 optionPrice.setStyle("-fx-border-color:red;");
             }
         }));
+        optionPrice.setTooltip(new Tooltip("The surcharge that selecting this Option should add to the Price"));
 
 
         ContextMenu contextMenu = new ContextMenu();
@@ -71,7 +74,20 @@ public class FlightOptionController implements Controller {
         //TODO Delete the FlightOption
         deleteItem.setOnAction(event -> {
             System.out.println("Trying to delete: " + optionList.getSelectionModel().getSelectedItem().toString());
-            selectedFlight.getFlightOptions().remove(optionList.getSelectionModel().getSelectedItem());
+            var selectedFlightOption=optionList.getSelectionModel().getSelectedItem();
+            selectedFlight.removeFlightOption(selectedFlightOption);
+//            selectedFlight.getFlightOptions().remove(optionList.getSelectionModel().getSelectedItem());
+            var success=persistenceAPI.getFlightStorageService(businessLogicAPI.getFlightManager()).update(selectedFlight);
+            if(success==null||success.getFlightOptions().stream().anyMatch(fo->fo.getID()==selectedFlightOption.getID())){
+                Alert alert=new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Could not delete the selected FlightOption");
+                alert.setContentText("updating the plane failed");
+                alert.showAndWait();
+            }
+            else { //Only attempt if successful
+                persistenceAPI.getFlightOptionStorageService(businessLogicAPI.getOptionManager()).remove(selectedFlightOption);//This should fail silently
+                selectedFlight=success;
+            }
             updateListView();
         });
         contextMenu.getItems().addAll( deleteItem );
@@ -90,13 +106,13 @@ public class FlightOptionController implements Controller {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Error while adding the FlightOption");
-            alert.setContentText("Input must be an Integer");
+            alert.setContentText("Input must be an Integer and smaller or equal to the Number of Seats the Plane has");
             alert.showAndWait();
             return;
         }
         double optionPriceDouble = 0;
         if (isNumeric(optionPrice.getText())) {
-            optionPriceDouble = Double.parseDouble(optionPrice.getText());
+            optionPriceDouble = Double.parseDouble(optionPrice.getText().replace(",",".").replaceAll("[$€]",""));
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -132,6 +148,8 @@ public class FlightOptionController implements Controller {
             return false;
         }
         try {
+            strNum=strNum.replace(",",".");
+            strNum=strNum.replaceAll("[$€]","");
             double d = Double.parseDouble(strNum);
         } catch (NumberFormatException nfe) {
             return false;

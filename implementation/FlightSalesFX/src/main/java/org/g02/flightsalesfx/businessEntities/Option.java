@@ -12,4 +12,6 @@ public interface Option {
      */
     double getPrice();
 
+    int getID();
+
 }

@@ -41,9 +41,10 @@ public interface Seat extends Comparable<Seat> {
 
     public List<SeatOption> getSeatOptions();
 
-
     static List<Seat> getSeatsInRow(Collection<? extends Seat> seats, int row) {
         return seats.stream().filter(seat -> seat.getRowNumber() == row).collect(Collectors.toList());
     }
+  
+    int getID();
 
 }

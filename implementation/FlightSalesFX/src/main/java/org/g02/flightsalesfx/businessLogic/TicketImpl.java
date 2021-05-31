@@ -11,6 +11,7 @@ import org.g02.flightsalesfx.businessEntities.Ticket;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @TableName("tickets")
 public class TicketImpl implements Ticket, Savable {
@@ -38,9 +39,13 @@ public class TicketImpl implements Ticket, Savable {
         this.paxLName = lastName;
 
     }
-    public static TicketImpl of(Ticket t){
 
-        return new TicketImpl(t.getFlight(), t.getSeat(), t.getFirstName(), t.getLastName(), t.getSeatOptions());
+    private TicketImpl() {}
+
+    public static TicketImpl of(Ticket t){
+        var ticket = new TicketImpl(t.getFlight(), t.getSeat(), t.getFirstName(), t.getLastName(), t.getSeatOptions());
+        ticket.id=t.getID();
+        return ticket;
     }
 
     @Override
@@ -70,7 +75,17 @@ public class TicketImpl implements Ticket, Savable {
     }
 
     @Override
+    public int getID() {
+        return id;
+    }
+
+    @Override
     public SeatOption[] getSeatOptions() {
+        if (seatOptions == null) {
+            seatOptions = new SeatOptionImpl[0];
+        }
         return seatOptions;
     }
+
+
 }

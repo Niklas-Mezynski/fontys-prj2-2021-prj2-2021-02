@@ -18,6 +18,10 @@ public interface Flight {
      */
     public void startSalesProcess();
 
+    /**
+     * Stops the salesprocess for this flight
+     */
+    public void stopSalesProcess();
 
     /**
      * @return Flight number of this Flight
@@ -87,4 +91,5 @@ public interface Flight {
 
     void addAllFlightOptions(List<? extends FlightOption> options);
 
+    public void removeFlightOption(FlightOption flightOption);
 }

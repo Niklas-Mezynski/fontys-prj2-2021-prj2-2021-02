@@ -20,6 +20,4 @@ public interface FlightOption extends Option{
      * @return How often this FlightOption was available at the start of the Sales Process
      */
     public int getMaxAvailability();
-
-    public int getID();
 }
