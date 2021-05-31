@@ -1,7 +1,10 @@
 package org.g02.flightsalesfx;
 
 import javafx.fxml.FXML;
-import javafx.scene.chart.*;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -13,19 +16,14 @@ import org.g02.flightsalesfx.businessLogic.SalesEmployeeImpl;
 import org.g02.flightsalesfx.helpers.Bundle;
 import org.g02.flightsalesfx.helpers.Controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.OptionalDouble;
 import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ViewSpecEmpNumbersController implements Controller {
 
@@ -101,7 +99,7 @@ public class ViewSpecEmpNumbersController implements Controller {
 
             //Predicate to get the date interval right
             Predicate<Booking> pred = (booking -> booking.getBookingDate().isAfter(startDate.plusMonths(cMonth - 1)) && booking.getBookingDate().isBefore(startDate.plusMonths(cMonth)));
-            double revenueThisMonth = sumRevenue(allBookingsByEmp, booking -> true, pred);
+            double revenueThisMonth = sumRevenue(allBookingsByEmp.stream(), pred);
 
             String formattedDate = startDate.plusMonths(month - 1).format(DateTimeFormatter.ofPattern("dd.MM.yy"));
             monthSeries.getData().add(new XYChart.Data<>(formattedDate, revenueThisMonth));
@@ -118,10 +116,9 @@ public class ViewSpecEmpNumbersController implements Controller {
             int cMonth = month;
             List<Double> revenues = new ArrayList<>();
             for (SalesEmployee se : allSalesEmps) {
-                Predicate<Booking> pred1 = (booking -> booking.getSalesEmployee().equals(se));
-                Predicate<Booking> pred2 = (booking -> booking.getBookingDate().isAfter(startDate.plusMonths(cMonth - 1)) && booking.getBookingDate().isBefore(startDate.plusMonths(cMonth)));
+                Predicate<Booking> pred = (booking -> booking.getBookingDate().isAfter(startDate.plusMonths(cMonth - 1)) && booking.getBookingDate().isBefore(startDate.plusMonths(cMonth)));
 
-                double revenueThisMonth = sumRevenue(allBokings, pred1, pred2);
+                double revenueThisMonth = sumRevenue(allBokings.stream().filter(booking -> booking.getSalesEmployee().equals(se)), pred);
 
                 revenues.add(revenueThisMonth);
             }
@@ -159,10 +156,9 @@ public class ViewSpecEmpNumbersController implements Controller {
     }
 
     //Helper method to calculate the sum of revenues
-    private double sumRevenue(List<Booking> bookings, Predicate<Booking> predicate1, Predicate<Booking> predicate2) {
-        return bookings.stream()
-                .filter(predicate1)
-                .filter(predicate2)
+    private double sumRevenue(Stream<Booking> stream, Predicate<Booking> predicate) {
+        return stream
+                .filter(predicate)
                 .mapToDouble(Booking::getBookingPrice)
                 .sum();
     }
