@@ -70,7 +70,7 @@ public class ManagementDashboardTest {
         var flight = new FlightImpl(so, 123, LocalDateTime.now(), LocalDateTime.now().plusMinutes(10), route, null, 50);
         Ticket[] tickets = new Ticket[]{new TicketImpl(flight, new SeatImpl(0,0), "Peter", "Gockel", new SeatOption[0])};
         FlightOption[] flightOptions = new FlightOption[0];
-        bookings.add(new BookingImpl(se, flight, tickets , flightOptions, "no mail", LocalDateTime.of(2021, 4, 10, 20, 0), 123.00));
+        bookings.add(new BookingImpl(se, flight, tickets , flightOptions, "no mail", LocalDateTime.of(2021, 4, 10, 20, 0), 50.00));
 
         Mockito.when(businessLogicAPI.getAllBookings(any())).thenReturn(bookings);
         Mockito.when(businessLogicAPI.getAllEmployees(any())).thenReturn(List.of(se, so));
@@ -105,12 +105,8 @@ public class ManagementDashboardTest {
         fxRobot.clickOn(fxRobot.lookup(node -> ((Button) node).getText().contains("View KPI")).queryAs(Button.class));
 
         var totalRevenueField= fxRobot.lookup("#totalRevenueField").queryAs(TextField.class);
-        var totalRevenueString = totalRevenueField.getText();
 
-//        double totalRevenue = Double.parseDouble(totalRevenueString.split("€")[0]);
-        double totalRevenue = Double.parseDouble(totalRevenueString.split("€")[0].split(",")[0]);
-
-        assertThat(totalRevenue).isEqualTo(50);
+        assertThat(TestUtil.getDoubleConsideringLocale(totalRevenueField.getText().split("€")[0])).isEqualTo(50);
     }
 
     @Test
