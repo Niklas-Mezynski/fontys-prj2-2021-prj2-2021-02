@@ -10,4 +10,6 @@ public interface FlightOptionStorageService {
     List<FlightOption> getAll();
 
     FlightOption update(FlightOption flightOption);
+
+    boolean remove(FlightOption flightOption);
 }

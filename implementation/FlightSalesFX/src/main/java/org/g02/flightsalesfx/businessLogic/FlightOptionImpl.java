@@ -69,4 +69,31 @@ public class FlightOptionImpl implements FlightOption, Savable {
     public int getID() {
         return id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FlightOptionImpl that = (FlightOptionImpl) o;
+
+        if (id != that.id) return false;
+        if (maxAvailable != that.maxAvailable) return false;
+        if (currentAvailable != that.currentAvailable) return false;
+        if (Double.compare(that.price, price) != 0) return false;
+        return name != null ? name.equals(that.name) : that.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + maxAvailable;
+        result = 31 * result + currentAvailable;
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 }

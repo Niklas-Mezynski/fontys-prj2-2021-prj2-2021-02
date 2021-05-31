@@ -270,7 +270,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     public boolean addFlightOptionFromUI(String name, int maxAvailable, double price, Flight flight) {
         var flightOption = getOptionManager().createFlightOption(name, maxAvailable, price);
         flight.addFlightOption(flightOption);
-        return persistenceAPI.getFlightOptionStorageService(getOptionManager()).add(flightOption)!=null;
+        return persistenceAPI.getFlightStorageService(getFlightManager()).update(flight)!=null;
     }
 
     @Override

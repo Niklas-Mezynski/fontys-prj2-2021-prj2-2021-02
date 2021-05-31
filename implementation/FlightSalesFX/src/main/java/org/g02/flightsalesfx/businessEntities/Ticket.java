@@ -29,5 +29,5 @@ public interface Ticket {
 
     public SeatOption[] getSeatOptions();
 
-    Optional<Integer> getId();
+    int getID();
 }

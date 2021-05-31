@@ -3,7 +3,9 @@ package org.g02.flightsalesfx.persistence;
 import org.g02.btfdao.dao.Dao;
 import org.g02.flightsalesfx.businessEntities.FlightOption;
 import org.g02.flightsalesfx.businessEntities.OptionManager;
+import org.g02.flightsalesfx.businessEntities.Plane;
 import org.g02.flightsalesfx.businessLogic.FlightOptionImpl;
+import org.g02.flightsalesfx.businessLogic.PlaneImpl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,7 +23,8 @@ public class FlightOptionStorageServiceImpl implements FlightOptionStorageServic
     @Override
     public FlightOption add(FlightOption flightOption) {
         try {
-            var ret = dao.insert(new FlightOptionImpl(flightOption.getName(), flightOption.getMaxAvailability(), flightOption.getPrice()));
+            var flightOptionImpl=FlightOptionImpl.of(flightOption);
+            var ret = dao.insert(flightOptionImpl);
             return ret.isPresent()?ret.get():null;
         } catch ( SQLException e) {
             e.printStackTrace();
@@ -48,5 +51,17 @@ public class FlightOptionStorageServiceImpl implements FlightOptionStorageServic
             throwables.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean remove(FlightOption flightOption) {
+        var flightOptionImpl=FlightOptionImpl.of(flightOption);
+            try {
+                dao.remove(flightOptionImpl,false);
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
     }
 }
