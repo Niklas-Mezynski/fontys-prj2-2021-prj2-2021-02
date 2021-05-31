@@ -1,10 +1,7 @@
 package org.g02.flightsalesfx;
 
 import javafx.fxml.FXML;
-import javafx.scene.chart.AreaChart;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -19,11 +16,15 @@ import org.g02.flightsalesfx.helpers.Controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.OptionalDouble;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ViewSpecEmpNumbersController implements Controller {
@@ -67,7 +68,7 @@ public class ViewSpecEmpNumbersController implements Controller {
 
         //Calculating totalRevenue
         double sum = allBookingsByEmp.stream()
-                .mapToDouble(booking -> booking.getFlight().getPrice()) //TODO get booking price instead of flight price
+                .mapToDouble(Booking::getBookingPrice)
                 .sum();
         totalRevenueField.setText(String.format("%.2f", sum) + "€");
 
@@ -79,19 +80,19 @@ public class ViewSpecEmpNumbersController implements Controller {
         OptionalDouble avgTicketAmount = allBookingsByEmp.stream()
                 .mapToInt(booking -> booking.getTickets().size())
                 .average();
-        avgTickets.setText(String.format("%.2f",avgTicketAmount.orElse(0)));
+        avgTickets.setText(String.format("%.2f", avgTicketAmount.orElse(0)));
 
 
         /*
             Here the diagram is calculated
          */
-        LocalDateTime startDate = LocalDateTime.now().minusMonths(12);
-        final NumberAxis xAxis = new NumberAxis(1, 12, 1);
+        final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
-        xAxis.setLabel("Months beginning from " + startDate.toLocalDate());
+        LocalDateTime startDate = LocalDateTime.now().minusMonths(12);
+        xAxis.setLabel("Month start date");
         yAxis.setLabel("Revenue in €");
-        LineChart<Number, Number> chart = new LineChart<>(xAxis, yAxis);
-        XYChart.Series<Number, Number> monthSeries = new XYChart.Series();
+        LineChart<String, Number> chart = new LineChart<>(xAxis, yAxis);
+        XYChart.Series monthSeries = new XYChart.Series();
         monthSeries.setName(emp.getName());
 
         //Iterating through each month of last year
@@ -101,16 +102,22 @@ public class ViewSpecEmpNumbersController implements Controller {
             //Predicate to get the date interval right
             Predicate<Booking> pred = (booking -> booking.getBookingDate().isAfter(startDate.plusMonths(cMonth - 1)) && booking.getBookingDate().isBefore(startDate.plusMonths(cMonth)));
             double revenueThisMonth = sumRevenue(allBookingsByEmp, booking -> true, pred);
-            monthSeries.getData().add(new XYChart.Data<>(month, revenueThisMonth));
+
+            String formattedDate = startDate.plusMonths(month - 1).format(DateTimeFormatter.ofPattern("dd.MM.yy"));
+            monthSeries.getData().add(new XYChart.Data<>(formattedDate, revenueThisMonth));
         }
 
-        XYChart.Series<Number, Number> avgMonthSeries = new XYChart.Series();
+        XYChart.Series<String, Number> avgMonthSeries = new XYChart.Series();
         avgMonthSeries.setName("Average Employee");
-        List<SalesEmployee> allSalesEmps = allBokings.stream().map(Booking::getSalesEmployee).distinct().collect(Collectors.toList());
+        List<SalesEmployee> allSalesEmps = App.businessLogicAPI.getAllEmployees(employee -> true).stream()
+                .filter(employee -> employee instanceof SalesEmployee)
+                .map(employee -> (SalesEmployee) employee)
+                .collect(Collectors.toList());
+
         for (int month = 1; month <= 12; month++) {
             int cMonth = month;
             List<Double> revenues = new ArrayList<>();
-            for (SalesEmployee se: allSalesEmps) {
+            for (SalesEmployee se : allSalesEmps) {
                 Predicate<Booking> pred1 = (booking -> booking.getSalesEmployee().equals(se));
                 Predicate<Booking> pred2 = (booking -> booking.getBookingDate().isAfter(startDate.plusMonths(cMonth - 1)) && booking.getBookingDate().isBefore(startDate.plusMonths(cMonth)));
 
@@ -119,7 +126,8 @@ public class ViewSpecEmpNumbersController implements Controller {
                 revenues.add(revenueThisMonth);
             }
             OptionalDouble average = revenues.stream().mapToDouble(Double::valueOf).average();
-            avgMonthSeries.getData().add(new XYChart.Data<>(month, average.orElse(0)));
+            String formattedDate = startDate.plusMonths(month - 1).format(DateTimeFormatter.ofPattern("dd.MM.yy"));
+            avgMonthSeries.getData().add(new XYChart.Data<>(formattedDate, average.orElse(0)));
         }
 
         chart.getData().add(monthSeries);
@@ -155,7 +163,7 @@ public class ViewSpecEmpNumbersController implements Controller {
         return bookings.stream()
                 .filter(predicate1)
                 .filter(predicate2)
-                .mapToDouble(booking -> booking.getFlight().getPrice())
+                .mapToDouble(Booking::getBookingPrice)
                 .sum();
     }
 }

@@ -63,7 +63,7 @@ public class ViewSpecificRoutesKPIsController implements Controller {
 
         //Calculate the total revenue for this route
         double sumRevenue = bookings.stream()
-                .mapToDouble(booking -> booking.getFlight().getPrice()) //TODO later have to include prices of different SeatOptions etc... (Maybe directly save the final price of a booking in the object?)
+                .mapToDouble(Booking::getBookingPrice)
                 .sum();
 
         totalRevenueField.setText(String.format("%.2f", sumRevenue) + "€");
@@ -106,18 +106,11 @@ public class ViewSpecificRoutesKPIsController implements Controller {
         XYChart.Series<Number, Number> routeSeries = new XYChart.Series();
         routeSeries.setName(selectedRoute.toString());
 
-//        Sample Data
-//        routeSeries.getData().add(new XYChart.Data(2010, 55000.0));
-//        routeSeries.getData().add(new XYChart.Data(2011, 59000.0));
-//        routeSeries.getData().add(new XYChart.Data(2012, 70000.0));
-//        routeSeries.getData().add(new XYChart.Data(2013, 62000.0));
-        //Calculate XYChart.Data for each year
         for (int year = minBookingYear.orElse(2010); year <= currentYear; year++ ) {
             int finalYear = year;
             double sumRevenueOneYear = bookings.stream()
                     .filter(booking -> booking.getBookingDate().getYear() == finalYear)
-                    .flatMap(booking -> booking.getTickets().stream())
-                    .mapToDouble(ticket -> ticket.getFlight().getPrice()) //TODO later have to include prices of different SeatOptions etc... (Maybe directly save the final price of a booking in the object?)
+                    .mapToDouble(Booking::getBookingPrice)
                     .sum();
             routeSeries.getData().add(new XYChart.Data(year, sumRevenueOneYear));
         }
