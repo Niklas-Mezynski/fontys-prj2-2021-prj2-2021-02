@@ -42,6 +42,8 @@ public class CreatePlaneController implements Controller {
     public TextField planeManufacturer;
     @FXML
     public Button deleteButton;
+    @FXML
+    public Label seatCounterLabel;
     private SeatOptionBox currentSelected = null;
     private boolean editMode;
     private PlaneImpl oldPlane;
