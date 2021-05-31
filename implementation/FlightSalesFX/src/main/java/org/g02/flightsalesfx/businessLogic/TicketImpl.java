@@ -87,11 +87,5 @@ public class TicketImpl implements Ticket, Savable {
         return seatOptions;
     }
 
-    @Override
-    public Optional<Integer> getId() {
-        if(id != 0)
-            return Optional.of(id);
 
-        return Optional.empty();
-    }
 }
