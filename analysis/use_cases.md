@@ -295,12 +295,6 @@ System shows available flight
 Actor selects to start the sales process
 </li>
 <li>
-System asks for a start and stop date
-</li>
-<li>
-Actor enters dates
-</li>
-<li>
 System asks for confirmation to start the sale
 </li>
 <li>
