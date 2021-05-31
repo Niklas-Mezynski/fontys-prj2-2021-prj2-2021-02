@@ -1,7 +1,11 @@
 package org.g02.flightsalesfx;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
@@ -25,7 +29,7 @@ public class CreatePlaneController implements Controller {
 
     private final ToggleGroup toggleGroupSeatOptions = new ToggleGroup();
 
-    private final List<SeatButton> seats = new ArrayList<>();
+    private final ObservableList<SeatButton> seats = FXCollections.observableList(new ArrayList<>());
     @FXML
     public VBox seatOptions;
     @FXML
@@ -44,6 +48,8 @@ public class CreatePlaneController implements Controller {
     public Button deleteButton;
     @FXML
     public Label seatCounterLabel;
+    @FXML
+    public Label rowCounterLabel;
     private SeatOptionBox currentSelected = null;
     private boolean editMode;
     private PlaneImpl oldPlane;
@@ -221,6 +227,12 @@ public class CreatePlaneController implements Controller {
 
     @Override
     public void init(Bundle bundle) {
+        seats.addListener((ListChangeListener<SeatButton>) change -> {
+            seatCounterLabel.setText("Seats: " + seats.size());
+        });
+        seatContainer.getChildren().addListener((ListChangeListener<? super Node>) change -> {
+            rowCounterLabel.setText("Rows: " + seatContainer.getChildren().size());
+        } );
         if (bundle.getBoolean("edit", false)) {
             this.editMode = true;
             var plane = bundle.get("plane", PlaneImpl.class);
