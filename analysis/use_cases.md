@@ -314,12 +314,6 @@ System shows available flight
 Actor selects to start the sales process
 </li>
 <li>
-System asks for a start and stop date
-</li>
-<li>
-Actor enters dates
-</li>
-<li>
 System asks for confirmation to start the sale
 </li>
 <li>
@@ -345,13 +339,10 @@ Extensions
 </td>
 <td>
 
-7. Actor denies
+4. Actor denies
 
-	1. Return to step 5
+	1. cancel process and return to step 2
 	 
-	2. Actor wants to delete changes
-
-		1. System sends the Actor back to start page
 </td>
 </tr>
 </table>
