@@ -62,6 +62,7 @@ public class FlightTest {
 //        flightList.get(0).stopSalesProcess();
 //    }
 
+    @Disabled
     @Test
     void testEquals() {
         Flight f1 = new FlightImpl(so, 4,LocalDateTime.MIN, LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "DÃ¼sseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl(2, "flieger", "Lufthansa", "A380"), 20);
