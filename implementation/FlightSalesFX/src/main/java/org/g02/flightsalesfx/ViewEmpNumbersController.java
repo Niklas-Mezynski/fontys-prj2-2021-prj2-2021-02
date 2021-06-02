@@ -40,16 +40,7 @@ public class ViewEmpNumbersController implements Controller {
                 .filter(emp -> emp instanceof SalesEmployee)
                 .map(emp -> SalesEmployeeImpl.of((SalesEmployee) emp))
                 .collect(Collectors.toList());
-//        empListView.getItems().addAll(salesEmployees);
-////        routeListView.setMinWidth(routePane.getPrefWidth());
-//
-//        searchTextField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
-//            var filteredEmployees = salesEmployees.stream()
-//                    .filter(emp -> emp.getName().contains(newValue) || emp.getEmail().contains(newValue))
-//                    .collect(Collectors.toList());
-//            empListView.getItems().clear();
-//            empListView.getItems().addAll(filteredEmployees);
-//        }));
+
         createOrUpdateEmpTable(salesEmployees, employee -> true);
 
         searchTextField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
