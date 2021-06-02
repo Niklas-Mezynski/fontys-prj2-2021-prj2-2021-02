@@ -71,13 +71,19 @@ public class createBookingController implements Controller {
     private HBox contactEmailOverview;
 
     @FXML
+    private HBox totalPriceVBox;
+
+    @FXML
     private VBox seatsOverviewVBox;
 
     @FXML
     private Text selectedFlightText;
 
+    @FXML
+    private TabPane tabPane;
 
 
+    private double sum = 0.0;
 
     private FlightTable flightTable;
 
@@ -97,6 +103,8 @@ public class createBookingController implements Controller {
 
     private TextField contactEmailField;
 
+    private Label invalidEmailLabel;
+
     private List<FlightOption> availableFlightOptions = new ArrayList<>();
 
     private List<FlightOptionSelector> flightOptionSelectors;
@@ -110,6 +118,7 @@ public class createBookingController implements Controller {
     public void initialize(){
 
         createOrUpdateRouteTable(v -> v.getSalesProcessStatus() == true && v.getDeparture().isAfter(LocalDateTime.now()));
+
         createSearchFunctionality();
 
         paxTab.setDisable(true);
@@ -129,7 +138,7 @@ public class createBookingController implements Controller {
                 String arrField = arrivalField.getText().toLowerCase();
                 String dep = f.getRoute().getDepartureAirport().toString().toLowerCase();
                 String arr = f.getRoute().getArrivalAirport().toString().toLowerCase();
-                return dep.contains(depField)&&arr.contains(arrField);
+                return dep.contains(depField)&&arr.contains(arrField) && f.getSalesProcessStatus() && f.getDeparture().isAfter(LocalDateTime.now());
             });
         }));
         arrivalField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
@@ -138,7 +147,7 @@ public class createBookingController implements Controller {
                 String arrField = newValue.toLowerCase();
                 String dep = f.getRoute().getDepartureAirport().toString().toLowerCase();
                 String arr = f.getRoute().getArrivalAirport().toString().toLowerCase();
-                return dep.contains(depField)&&arr.contains(arrField);
+                return dep.contains(depField)&&arr.contains(arrField)&&f.getSalesProcessStatus() && f.getDeparture().isAfter(LocalDateTime.now());
             });
         }));
 
@@ -208,9 +217,11 @@ public class createBookingController implements Controller {
                     availableSeatsText.setText(rowData.getPlane().getSeatCount()+"");
                     row.getTableView().refresh();
                     List<Seat> bookedSeats = new ArrayList<Seat>();
-                    App.businessLogicAPI.getAllBookings(booking -> true).stream().filter(booking -> booking.getFlight().equals(this.selectedFlight)).forEach(booking ->{
+                    App.businessLogicAPI.getAllBookings(booking -> booking.getFlight().getFlightNumber() == selectedFlight.getFlightNumber()).stream().forEach(booking -> {
+                        System.out.println("Found Booking");
                         booking.getTickets().forEach(ticket -> bookedSeats.add(ticket.getSeat()));
                     });
+                    tabPane.getSelectionModel().select(seatsTab);
                     createSeatMapAndLoadSeatOptions(bookedSeats);
 
                 }
@@ -224,18 +235,17 @@ public class createBookingController implements Controller {
      * @param bookedSeats List of Seats, that are already booked, thus not available for new bookings
      */
     public void createSeatMapAndLoadSeatOptions(List<Seat> bookedSeats){
+        seatHBox.getChildren().clear();
         Plane currentPlane = selectedFlight.getPlane();
         List<Seat> seatsOfPlane = currentPlane.getAllSeats();
         loadSeatOptions(seatsOfPlane);
         createOrUpdateOptionFilterBox();
         int rows = seatsOfPlane.stream().mapToInt(Seat::getRowNumber).max().orElse(-1) + 1;
-        Map<Integer, List<Seat>> seatMap = new HashMap<Integer, List<Seat>>();
 
         for(int i = 0; i < rows; i++){
+            System.out.println(i);
             int currentRow = i;
             Comparator<Seat> comparator = (Seat s1, Seat s2) -> s1.getSeatNumber()- s2.getSeatNumber();
-            List<Seat> row = seatsOfPlane.stream().filter(seat -> seat.getRowNumber()==currentRow).sorted(comparator).collect(Collectors.toUnmodifiableList());
-            seatMap.put(i, row);
             VBox rowBox = new VBox();
             seatsOfPlane.stream().filter(seat -> seat.getRowNumber()==currentRow).sorted(comparator).forEach(seat -> {
                 var addButton = new SeatBookButton(seat, bookedSeats);
@@ -302,9 +312,10 @@ public class createBookingController implements Controller {
                     }
                 }
             });
-            if(bookedSeats.contains(this.s)){
+            if(bookedSeats.stream().anyMatch(seat -> (seat.getRowNumber() == this.s.getRowNumber() && seat.getSeatNumber() == this.s.getSeatNumber()))){
                 available = false;
             }
+
             this.setDisable(!available);
             updateText();
 
@@ -431,9 +442,11 @@ public class createBookingController implements Controller {
         contactEmailField = new TextField();
         contactEmailField.setPromptText("E-Mail");
         contactEmailField.textProperty().addListener((observableValue, oldValue, newValue) -> checkPaxInfoStatus());
+        invalidEmailLabel = new Label("The entered Email is invalid. Verify your input or try anothe Email");
         HBox hBox = new HBox();
         hBox.getChildren().addAll(new Label("E-Mail for Contacting: "), contactEmailField);
         paxListVBox.getChildren().add(hBox);
+        paxListVBox.getChildren().add(invalidEmailLabel);
     }
 
     /**
@@ -452,7 +465,13 @@ public class createBookingController implements Controller {
                     personNameSeatComb.put(p.getSeat(), new Pair<String,String>(p.getFirstName(), p.getLastName()));
                 }
             }
-            if(contactEmailField.getText().equals("")){
+
+
+            String rfc5322CompliantRegex = "(?:[a-z0-9!#$%&'*+=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+            if(contactEmailField.getText().matches(rfc5322CompliantRegex)){
+                invalidEmailLabel.setVisible(false);
+            }else{
+                invalidEmailLabel.setVisible(true);
                 infoMissing = true;
             }
             if(infoMissing) {
@@ -467,30 +486,46 @@ public class createBookingController implements Controller {
      * Collects all Information entered and displays them in textual form
      */
     public void generateOverview(){
+
         flightOverview.getChildren().add(new Label("FlightNo: "+selectedFlight.getFlightNumber()+"; From: "+selectedFlight.getRoute().getDepartureAirport().toString()+"; To: "+selectedFlight.getRoute().getArrivalAirport().toString()+"; On: "+selectedFlight.getDeparture().toString()));
 
+        double basePricePerSeat = selectedFlight.getPriceWithPriceReductionsApplied();
         contactEmailOverview.getChildren().add(new Label(contactEmail));
 
         VBox flightOptions = new VBox();
         for(FlightOption fo : selectedFlightOptions.keySet()){
-            String overviewString = selectedFlightOptions.get(fo)+"x : "+fo.getName()+ " : +"+fo.getPrice();
+            int qty = selectedFlightOptions.get(fo);
+            double pricePerFO = fo.getPrice();
+            String overviewString = qty+"x : "+fo.getName()+ " : +"+pricePerFO;
+            double flightOptionTotal = qty * pricePerFO;
+            sum += flightOptionTotal;
             flightOptions.getChildren().add(new Label(overviewString));
         }
         flightOptionsOverview.getChildren().add(flightOptions);
 
         //seatsOverviewVBox
         //selectedSeatsForBooking
+        seatsOverviewVBox.getChildren().add(new Label("Baseprice per Seat: "+ basePricePerSeat));
         for(Seat s : selectedSeatsForBooking.keySet()){
             HBox seatBox = new HBox();
             Pair<String,String> namePair = personNameSeatComb.get(s);
-            String seatInfoString = seatToText(s)+ ": "+ namePair.getValue()+", "+namePair.getKey();
+            String seatInfoString = seatToText(s)+ ": "+ namePair.getValue()+", "+namePair.getKey()+": ";
             seatBox.getChildren().add(new Label(seatInfoString));
 
             VBox seatOptionsBox = new VBox();
-            selectedSeatsForBooking.get(s).forEach(so -> seatOptionsBox.getChildren().add(new Label(so.getName()+": "+so.getPrice()+"€")));
+            double seatTotal = basePricePerSeat;
+
+            var seatOptions = selectedSeatsForBooking.get(s);
+            for(SeatOption so : seatOptions){
+                double seatOptionBasePrice = so.getPrice();
+                seatOptionsBox.getChildren().add(new Label(so.getName()+": +"+seatOptionBasePrice+"€"));
+                seatTotal += seatOptionBasePrice;
+            }
+            sum += seatTotal;
             seatBox.getChildren().add(seatOptionsBox);
             seatsOverviewVBox.getChildren().add(seatBox);
         }
+        totalPriceVBox.getChildren().add(new Label(sum+"€"));
 
     }
 
@@ -508,10 +543,6 @@ public class createBookingController implements Controller {
         }
 
 
-
-
-
-
         List<Ticket> tickets = new ArrayList<>();
 
         for(Seat s : selectedSeatsForBooking.keySet()){
@@ -522,7 +553,7 @@ public class createBookingController implements Controller {
         }
 
         Ticket[] ticketsForBooking = tickets.toArray(Ticket[]::new);
-        Booking booking = bm.createBooking((SalesEmployee) App.employee, this.selectedFlight, ticketsForBooking, flightOptions.toArray(FlightOption[]::new), contactEmail, LocalDateTime.now());
+        Booking booking = bm.createBooking((SalesEmployee) App.employee, this.selectedFlight, ticketsForBooking, flightOptions.toArray(FlightOption[]::new), contactEmail, LocalDateTime.now(), sum);
 
         boolean saveComplete = true;
         if(!App.businessLogicAPI.addBookingFromUI(booking)){
@@ -554,7 +585,7 @@ public class createBookingController implements Controller {
      * @param seat
      * @return SeatPosition in format, which is used in the real world (e.g. 5F, 6D) not Row:5 Col:6
      */
-    String seatToText(Seat seat) {
+     static String seatToText(Seat seat) {
         var i = seat.getSeatNumber();
         var i1 = seat.getRowNumber() + 1;
         String s = String.format("%02d", i1);

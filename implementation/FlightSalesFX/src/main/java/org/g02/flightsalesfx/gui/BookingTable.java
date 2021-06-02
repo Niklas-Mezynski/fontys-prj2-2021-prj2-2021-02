@@ -14,6 +14,11 @@ public class BookingTable extends TableView<Booking>{
 
     public BookingTable (List<Booking> bookings, RowClickHandler<Booking> clickHandler) {
 
+        TableColumn<Booking,String> bookingNr = new TableColumn("Booking Nr");
+        bookingNr.setCellValueFactory(param -> {
+            Booking b = param.getValue();
+            return new SimpleStringProperty(b.getID().get()+"");
+        });
         TableColumn<Booking,String> flightColumn = new TableColumn("FlightNo");
         flightColumn.setCellValueFactory(param -> {
             Booking b = param.getValue();
@@ -24,20 +29,15 @@ public class BookingTable extends TableView<Booking>{
             Booking b = param.getValue();
             return new SimpleStringProperty(b.getCustomerEmail());
         });
+        TableColumn<Booking,String> priceColumn = new TableColumn("Price Paid");
+        priceColumn.setCellValueFactory(param -> {
+            Booking b = param.getValue();
+            return new SimpleStringProperty(b.getBookingPrice()+"€");
+        });
         setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        TableColumn<Route, String> enabledColumn = new TableColumn("Enabled");
         getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        //Extract EnableStatus from Route field "rteEnable"
-        enabledColumn.setCellValueFactory(param -> {
-            Route rte = param.getValue();
-            if(rte.getEnabled()){
-                return new SimpleStringProperty("Enabled");
-            }else{
-                return new SimpleStringProperty("Disabled");
-            }
 
-        });
 
 
 
@@ -45,7 +45,7 @@ public class BookingTable extends TableView<Booking>{
 
         getItems().addAll(bookings);
         getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        getColumns().addAll(flightColumn, emailColumn);
+        getColumns().addAll(bookingNr, flightColumn, emailColumn, priceColumn);
         setRowFactory(bookTableView -> {
             TableRow<Booking> row = new TableRow<>();
             row.setOnMouseClicked(mouseEvent -> {

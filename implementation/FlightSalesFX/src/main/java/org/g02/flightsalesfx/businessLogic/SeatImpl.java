@@ -64,6 +64,11 @@ public class SeatImpl implements Seat, Savable {
     }
 
     @Override
+    public int getID() {
+        return id;
+    }
+
+    @Override
     public String toString() {
         return "SeatImpl{" +
                 "rowNumber=" + rowNumber +
@@ -108,6 +113,7 @@ public class SeatImpl implements Seat, Savable {
 
     public static SeatImpl of(Seat s) {
         var seat = new SeatImpl(s.getRowNumber(), s.getSeatNumber());
+        seat.id=s.getID();
         seat.addAllSeatOptions(s.getSeatOptions());
         return seat;
     }

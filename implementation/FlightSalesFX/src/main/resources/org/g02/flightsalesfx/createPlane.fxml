@@ -141,29 +141,52 @@
       </VBox>
    </bottom>
    <center>
-      <ScrollPane BorderPane.alignment="CENTER">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0">
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <ScrollPane BorderPane.alignment="CENTER">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0">
+                     <children>
+                          <HBox fx:id="seatContainer" alignment="CENTER" spacing="10.0" styleClass="plane">
+                           <HBox fx:id="seatContainer" spacing="2.0" />
+                           <VBox alignment="CENTER_LEFT" maxWidth="100.0" HBox.hgrow="ALWAYS">
+                              <children>
+                                    <Button fx:id="addRow" mnemonicParsing="false" onAction="#addSeatRow" styleClass="buttonOrange" text="Add Row">
+                                    <VBox.margin>
+                                       <Insets />
+                                    </VBox.margin>
+                                 </Button>
+                                 <Button fx:id="addRow1" layoutX="20.0" layoutY="10.0" mnemonicParsing="false" onAction="#cloneSeatRow" styleClass="buttonOrange" text="Clone Row" />
+                              </children>
+                           </VBox>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                          </HBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+         </center>
+         <bottom>
+            <HBox alignment="CENTER_RIGHT" spacing="2.0" BorderPane.alignment="CENTER_RIGHT">
                <children>
-                    <HBox fx:id="seatContainer" alignment="CENTER" spacing="10.0" styleClass="plane">
-                     <HBox fx:id="seatContainer" spacing="2.0" />
-                     <VBox alignment="CENTER_LEFT" maxWidth="100.0" HBox.hgrow="ALWAYS">
-                        <children>
-                              <Button fx:id="addRow" mnemonicParsing="false" onAction="#addSeatRow" styleClass="buttonOrange" text="Add Row">
-                              <VBox.margin>
-                                 <Insets />
-                              </VBox.margin>
-                           </Button>
-                           <Button fx:id="addRow1" layoutX="20.0" layoutY="10.0" mnemonicParsing="false" onAction="#cloneSeatRow" styleClass="buttonOrange" text="Clone Row" />
-                        </children>
-                     </VBox>
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                    </HBox>
+                  <Label fx:id="seatCounterLabel" textAlignment="RIGHT">
+                     <font>
+                        <Font size="9.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="rowCounterLabel" layoutX="10.0" layoutY="10.0" textAlignment="RIGHT">
+                     <font>
+                        <Font size="9.0" />
+                     </font>
+                  </Label>
                </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
+               <BorderPane.margin>
+                  <Insets bottom="1.0" right="1.0" />
+               </BorderPane.margin>
+            </HBox>
+         </bottom>
+      </BorderPane>
    </center>
 </BorderPane>
