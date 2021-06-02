@@ -1,7 +1,7 @@
 package org.g02.flightsalesfx.businessLogic;
 
 import javafx.stage.Stage;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.*;
 import org.g02.flightsalesfx.App;
 import org.g02.flightsalesfx.TestUtil;
 import org.g02.flightsalesfx.businessEntities.Flight;
@@ -16,6 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
@@ -39,7 +40,6 @@ public class FlightTest {
     private BusinessLogicAPIImpl businessLogicAPI;
 
     //sampleData
-    private List<Flight> flights = new ArrayList<>();
     private SalesOfficerImpl so = new SalesOfficerImpl("Officer", "officermail", "123");
 
     private Flight sampleFlight = new FlightImpl(so, 4,LocalDateTime.MIN, LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "DÃ¼sseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl(2, "flieger", "Lufthansa", "A380"), 20);
@@ -96,9 +96,8 @@ public class FlightTest {
         var returnedFlight = businessLogicAPI.updateFlight(FlightImpl.of(currentFlight), currentFlight.getDeparture(), currentFlight.getArrival(), currentFlight.getPrice(), boolParameter);
         ArgumentCaptor<Flight> flightCaptor = ArgumentCaptor.forClass(Flight.class);
         verify(persistenceAPI, times(2)).getFlightStorageService(any());
-
-        //capture returnedFlight
         verify(flightStorageService).update(flightCaptor.capture());
+
         Assertions.assertThat(flightCaptor.getValue().getSalesProcessStatus())
                 .isEqualTo(expectedBool);
     }
