@@ -232,13 +232,34 @@ System shows available flights
 Actor selects a flight
 </li>
 <li>
-System shows <ins>available options</ins>
+Systems shows available Seats and seat options
 </li>
 <li>
-Actor selects options
+Actor selects required seat options
 </li>
 <li>
-Actor chooses to finish current booking
+System updates seats, to match selected seat options
+</li>
+<li>
+Actor choses seat
+</li>
+<li>
+System requests names of the passengers and Email for contacting
+</li>
+<li>
+Actor provides names of passengers and gives email
+</li>
+<li>
+System shows <ins>available Flight options</ins>
+</li>
+<li>
+Actor selects requsted flight Options
+</li>
+<li>
+System gives overview of booking
+</li>
+<li>
+Actor confirms booking
 </li>
 <li>
 System prints the tickets and returns to main page
@@ -250,15 +271,13 @@ System prints the tickets and returns to main page
 <td><b>Exception</b></td>
 <td>
 
-6. Actor clicks for another booking
 
-7. System returns to Step 1
 </td>
 </tr>
 <tr>
 <td><b>Result</b></td>
 <td>
-Customer receive the Tickets from the Actor
+Customer receives the Tickets from the Actor and the booking is created
 </td>
 </tr>
 </table>
@@ -490,26 +509,41 @@ PriceReduction is edited and saved.
 Pre-condition
 </td>
 <td>
-Actor has selected the Flight for which the Ticket should be
-canceled
+
 </td>
 </tr>
 <tr>
 <td><b>Scenario</b></td>
 <td>
 
-1. Actor selects the Seat for which the Ticket is valid
+1. Actor searches by FlightNo and/or by email and selects the booking to be canceled
    
-2. Actor removes the Ticket, and the Booking which it is a
-   Part of if it is the only Ticket in that Booking
+2. System provides overview of the booking
+
+3. Actor chooses to cancel the selected booking
+
+4. System asks for confirmation
+
+5. Actor confirms cancelation
+
+6. System cancels the selected booking
+
+</td>
+
+</tr>
+<tr>
+<td>
+<b>Exceptions</b>
+</td>
+<td>
+3. No booking is selected
 
 </td>
 </tr>
 <tr>
 <td><b>Result</b></td>
 <td>
-Ticket is canceled, and Booking too if it has no other 
-Tickets in it
+The entire Booking is cancelled incl its tickets
 </td>
 </tr>
 </table>
