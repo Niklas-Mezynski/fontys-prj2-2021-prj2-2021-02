@@ -5,6 +5,7 @@ import org.g02.flightsalesfx.businessEntities.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public interface BusinessLogicAPI {
@@ -72,4 +73,18 @@ public interface BusinessLogicAPI {
     Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, double price, boolean salesprocess);
 
     public List<Employee> getAllEmployees(Predicate<Employee> predicate);
+
+    /**
+     * Calculates the revenue an employee has made each month beginning from {@code startDate}
+     *
+     * @return An ordered HashMap with the dates as key and the revenue as value
+     */
+    Map<LocalDateTime, Double> getMonthlyRevenue(SalesEmployee se, LocalDateTime startDate);
+
+    /**
+     * Calculates the average revenue all employees have made each month beginning from {@code startDate}
+     *
+     * @return An ordered HashMap with the dates as key and the average revenue as value
+     */
+    Map<LocalDateTime, Double> getAvgMonthlyRevenues(LocalDateTime startDate);
 }

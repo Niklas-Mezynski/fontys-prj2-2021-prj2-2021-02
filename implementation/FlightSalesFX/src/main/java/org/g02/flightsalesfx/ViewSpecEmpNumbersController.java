@@ -18,8 +18,8 @@ import org.g02.flightsalesfx.helpers.Controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.OptionalDouble;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -84,27 +84,26 @@ public class ViewSpecEmpNumbersController implements Controller {
         /*
             Here the diagram is calculated
          */
+
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         LocalDateTime startDate = LocalDateTime.now().minusMonths(12);
         xAxis.setLabel("Month start date");
         yAxis.setLabel("Revenue in €");
         LineChart<String, Number> chart = new LineChart<>(xAxis, yAxis);
-        XYChart.Series monthSeries = new XYChart.Series();
+
+        //1. Revenue for spec Employee
+        XYChart.Series<String, Number> monthSeries = new XYChart.Series();
         monthSeries.setName(emp.getName());
-
-        //Iterating through each month of last year
-        for (int month = 1; month <= 12; month++) {
-            int cMonth = month;
-
-            //Predicate to get the date interval right
-            Predicate<Booking> pred = (booking -> booking.getBookingDate().isAfter(startDate.plusMonths(cMonth - 1)) && booking.getBookingDate().isBefore(startDate.plusMonths(cMonth)));
-            double revenueThisMonth = sumRevenue(allBookingsByEmp.stream(), pred);
-
-            String formattedDate = startDate.plusMonths(month - 1).format(DateTimeFormatter.ofPattern("dd.MM.yy"));
-            monthSeries.getData().add(new XYChart.Data<>(formattedDate, revenueThisMonth));
+        
+        Map<LocalDateTime, Double> monthlyRevenue = App.businessLogicAPI.getMonthlyRevenue(emp, LocalDateTime.now().minusMonths(12));
+        for (Map.Entry<LocalDateTime, Double> entry : monthlyRevenue.entrySet()) {
+            String formattedDate = entry.getKey().format(DateTimeFormatter.ofPattern("dd.MM.yy"));
+            monthSeries.getData().add(new XYChart.Data<>(formattedDate, entry.getValue()));
         }
 
+
+        //2. Revenue for average Employee
         XYChart.Series<String, Number> avgMonthSeries = new XYChart.Series();
         avgMonthSeries.setName("Average Employee");
         List<SalesEmployee> allSalesEmps = App.businessLogicAPI.getAllEmployees(employee -> true).stream()
@@ -112,19 +111,10 @@ public class ViewSpecEmpNumbersController implements Controller {
                 .map(employee -> (SalesEmployee) employee)
                 .collect(Collectors.toList());
 
-        for (int month = 1; month <= 12; month++) {
-            int cMonth = month;
-            List<Double> revenues = new ArrayList<>();
-            for (SalesEmployee se : allSalesEmps) {
-                Predicate<Booking> pred = (booking -> booking.getBookingDate().isAfter(startDate.plusMonths(cMonth - 1)) && booking.getBookingDate().isBefore(startDate.plusMonths(cMonth)));
-
-                double revenueThisMonth = sumRevenue(allBokings.stream().filter(booking -> booking.getSalesEmployee().equals(se)), pred);
-
-                revenues.add(revenueThisMonth);
-            }
-            OptionalDouble average = revenues.stream().mapToDouble(Double::valueOf).average();
-            String formattedDate = startDate.plusMonths(month - 1).format(DateTimeFormatter.ofPattern("dd.MM.yy"));
-            avgMonthSeries.getData().add(new XYChart.Data<>(formattedDate, average.orElse(0)));
+        Map<LocalDateTime, Double> avgMonthlyRevenues = App.businessLogicAPI.getAvgMonthlyRevenues(LocalDateTime.now().minusMonths(12));
+        for (Map.Entry<LocalDateTime, Double> entry : avgMonthlyRevenues.entrySet()) {
+            String formattedDate = entry.getKey().format(DateTimeFormatter.ofPattern("dd.MM.yy"));
+            avgMonthSeries.getData().add(new XYChart.Data<>(formattedDate, entry.getValue()));
         }
 
         chart.getData().add(monthSeries);

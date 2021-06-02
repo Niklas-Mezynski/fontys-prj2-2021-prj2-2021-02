@@ -6,18 +6,16 @@ import org.g02.flightsalesfx.businessEntities.*;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
@@ -50,7 +48,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public TicketManager getTicketManager() {
-        if(ticketManager == null){
+        if (ticketManager == null) {
             ticketManager = new TicketManagerImpl();
             ticketManager.setTicketStorageService(persistenceAPI.getTicketStorageService(ticketManager));
         }
@@ -59,7 +57,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public BookingManager getBookingManager() {
-        if(bookingManager == null){
+        if (bookingManager == null) {
             bookingManager = new BookingManagerImpl();
             bookingManager.setBookingStorageService(persistenceAPI.getBookingStorageService(bookingManager));
         }
@@ -105,7 +103,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public AirportManager getAirportManager() {
-        if(airportManager == null) {
+        if (airportManager == null) {
             airportManager = new AirportManagerImpl();
             airportManager.setAirportStorageService(persistenceAPI.getAirportStorageService(airportManager));
         }
@@ -115,7 +113,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public RouteManager getRouteManager() {
-        if(routeManager == null) {
+        if (routeManager == null) {
             routeManager = new RouteManagerImpl();
             routeManager.setRouteStorageService(persistenceAPI.getRouteStorageService(routeManager));
         }
@@ -125,7 +123,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public PriceReductionManager getPriceReductionManager() {
-        if(priceReductionManager == null) {
+        if (priceReductionManager == null) {
             priceReductionManager = new PriceReductionManagerImpl();
             priceReductionManager.setPriceReductionStorageService(persistenceAPI.getPriceReductionStorageService(priceReductionManager));
         }
@@ -135,7 +133,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public FlightManager getFlightManager() {
-        if(flightManager == null) {
+        if (flightManager == null) {
             flightManager = new FlightManagerImpl();
             flightManager.setFlightStorageService(persistenceAPI.getFlightStorageService(flightManager));
         }
@@ -145,7 +143,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     @Override
     public ReoccurringFlightManager getReoccurringFlightManager() {
         //todo: review to verify consistency
-        if(reoccurringFlightManager == null) {
+        if (reoccurringFlightManager == null) {
             reoccurringFlightManager = new ReoccurringFlightManagerImpl();
             reoccurringFlightManager.setReoccurringFlightStorageService(flightManager);
         }
@@ -155,9 +153,9 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     @Override
     public Employee login(String email, String password) {
         var employeeStorageService = persistenceAPI.getEmployeeStorageService(getEmployeeManager());
-        var first=employeeStorageService.get(email);
+        var first = employeeStorageService.get(email);
         if (first.isEmpty()) {
-            var examplehash="1000:61a54968a3c8f1eb1dc1173c64f2e6d9:3ce71ef9a8359b266ce8135b4a753ce5d3411a5ee151d315312943f104c35339d190d9aa3328ab462661a339bc597dfffd0e14043b60e0bcffdbe261f1dc2ddc";
+            var examplehash = "1000:61a54968a3c8f1eb1dc1173c64f2e6d9:3ce71ef9a8359b266ce8135b4a753ce5d3411a5ee151d315312943f104c35339d190d9aa3328ab462661a339bc597dfffd0e14043b60e0bcffdbe261f1dc2ddc";
             try {
                 boolean matched = validatePassword(password, examplehash); //This may seem useless, but this prevents a side-channel attack
             } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
@@ -165,12 +163,12 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
             }
             return null;
         }
-        var employee=first.get();
+        var employee = first.get();
 
         //Check hashed PW in DB against entered one
         try {
             boolean matched = validatePassword(password, employee.getPassword());
-            return matched?employee:null;
+            return matched ? employee : null;
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
             return null;
@@ -205,7 +203,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         System.out.println(route);
 
         var routeStorageService = persistenceAPI.getRouteStorageService(getRouteManager());
-        return routeStorageService.add(route)!=null;
+        return routeStorageService.add(route) != null;
     }
 
     @Override
@@ -228,18 +226,18 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         System.out.println(flight);
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
-        return flightStorageService.add(flight)!=null;
+        return flightStorageService.add(flight) != null;
     }
 
     @Override
     public boolean createFlightFromUI(Flight flight) {
         var f = getFlightManager().createFlight(flight.getCreatedBy(), flight.getDeparture(), flight.getArrival(), flight.getRoute(), flight.getPlane(), flight.getPrice());
-        if(flight.getSalesProcessStatus()) {
+        if (flight.getSalesProcessStatus()) {
             f.startSalesProcess();
         }
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
-        return flightStorageService.add(flight)!=null;
+        return flightStorageService.add(flight) != null;
     }
 
     @Override
@@ -248,14 +246,14 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         System.out.println(reOccurFlight);
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
-        if(flightStorageService.remove(flight)) {
-            return flightStorageService.add(reOccurFlight)!=null;
+        if (flightStorageService.remove(flight)) {
+            return flightStorageService.add(reOccurFlight) != null;
         }
         return false;
     }
 
     @Override
-    public void createAirportFromUI(String name, String city, String country){
+    public void createAirportFromUI(String name, String city, String country) {
         var airport = getAirportManager().createAirport(name, city, country);
         persistenceAPI.getAirportStorageService(getAirportManager()).add(airport);
     }
@@ -270,19 +268,19 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     public boolean addFlightOptionFromUI(String name, int maxAvailable, double price, Flight flight) {
         var flightOption = getOptionManager().createFlightOption(name, maxAvailable, price);
         flight.addFlightOption(flightOption);
-        return persistenceAPI.getFlightStorageService(getFlightManager()).update(flight)!=null;
+        return persistenceAPI.getFlightStorageService(getFlightManager()).update(flight) != null;
     }
 
     @Override
-    public boolean addBookingFromUI(Booking booking){
+    public boolean addBookingFromUI(Booking booking) {
         BookingImpl b = persistenceAPI.getBookingStorageService(getBookingManager()).add(booking);
         return b != null;
     }
 
     @Override
-    public boolean addTicketFromUI(Ticket t){
+    public boolean addTicketFromUI(Ticket t) {
         TicketImpl tr = persistenceAPI.getTicketStorageService(getTicketManager()).add(t);
-        return tr != null ;
+        return tr != null;
     }
 
     @Override
@@ -301,7 +299,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     public Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, double price, boolean salesprocess) {
         var flightImpl = oldFlight;
         System.out.println(flightImpl.getFlightNumber());
-        if(salesprocess) {
+        if (salesprocess) {
             flightImpl.startSalesProcess();
         } else {
             flightImpl.stopSalesProcess();
@@ -315,8 +313,53 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
     }
 
-    private static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException
-    {
+    private double sumRevenue(Stream<Booking> stream, Predicate<Booking> predicate) {
+        return stream
+                .filter(predicate)
+                .mapToDouble(Booking::getBookingPrice)
+                .sum();
+    }
+
+    @Override
+    public Map<LocalDateTime, Double> getMonthlyRevenue(SalesEmployee se, LocalDateTime startDate) {
+        Map<LocalDateTime, Double> map = new LinkedHashMap<>();
+        List<Booking> allBookingsByEmp = getAllBookings(booking -> booking.getSalesEmployee().equals(se));
+        while (startDate.isBefore(LocalDateTime.now().minusDays(1))) {
+//            if (startDate.getDayOfMonth() == LocalDateTime.now().getDayOfMonth())
+//                break;
+
+            LocalDateTime currentDate = startDate;
+            Predicate<Booking> pred = (booking -> booking.getBookingDate().isAfter(currentDate) && booking.getBookingDate().isBefore(currentDate.plusMonths(1)));
+            double revenueThisMonth = sumRevenue(allBookingsByEmp.stream(), pred);
+            map.put(startDate, revenueThisMonth);
+            startDate = startDate.plusMonths(1);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<LocalDateTime, Double> getAvgMonthlyRevenues(LocalDateTime startDate) {
+        Map<LocalDateTime, Double> map = new LinkedHashMap<>();
+        List<Employee> allEmployees = getAllEmployees(employee -> employee instanceof SalesEmployee);
+        List<Booking> allBookings = getAllBookings(booking -> true);
+
+        while (startDate.isBefore(LocalDateTime.now().minusDays(1))) {
+            List<Double> revenueByEachEmpThisMonth = new ArrayList<>();
+            for (Employee emp : allEmployees) {
+                List<Booking> allBookingsByEmp = allBookings.stream().filter(booking -> booking.getSalesEmployee().equals(emp)).collect(Collectors.toList());
+                LocalDateTime currentDate = startDate;
+                Predicate<Booking> pred = (booking -> booking.getBookingDate().isAfter(currentDate) && booking.getBookingDate().isBefore(currentDate.plusMonths(1)));
+                double revenueThisMonth = sumRevenue(allBookingsByEmp.stream(), pred);
+                revenueByEachEmpThisMonth.add(revenueThisMonth);
+            }
+            OptionalDouble average = revenueByEachEmpThisMonth.stream().mapToDouble(Double::doubleValue).average();
+            map.put(startDate, average.orElse(0));
+            startDate = startDate.plusMonths(1);
+        }
+        return map;
+    }
+
+    private static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
         String[] parts = storedPassword.split(":");
         int iterations = Integer.parseInt(parts[0]);
         byte[] salt = fromHex(parts[1]);
@@ -327,24 +370,21 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         byte[] testHash = skf.generateSecret(spec).getEncoded();
 
         int diff = hash.length ^ testHash.length;
-        for(int i = 0; i < hash.length && i < testHash.length; i++)
-        {
+        for (int i = 0; i < hash.length && i < testHash.length; i++) {
             diff |= hash[i] ^ testHash[i];
         }
         return diff == 0;
     }
 
-    private static byte[] fromHex(String hex) throws NoSuchAlgorithmException
-    {
+    private static byte[] fromHex(String hex) throws NoSuchAlgorithmException {
         byte[] bytes = new byte[hex.length() / 2];
-        for(int i = 0; i<bytes.length ;i++)
-        {
-            bytes[i] = (byte)Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
         return bytes;
     }
-    private static String generateStrongPasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException
-    {
+
+    private static String generateStrongPasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         int iterations = 1000;
         char[] chars = password.toCharArray();
         byte[] salt = getSalt();
@@ -355,26 +395,25 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         return iterations + ":" + toHex(salt) + ":" + toHex(hash);
     }
 
-    private static byte[] getSalt() throws NoSuchAlgorithmException
-    {
+    private static byte[] getSalt() throws NoSuchAlgorithmException {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
         byte[] salt = new byte[16];
         sr.nextBytes(salt);
         return salt;
     }
-    private static String toHex(byte[] array) throws NoSuchAlgorithmException
-    {
+
+    private static String toHex(byte[] array) throws NoSuchAlgorithmException {
         BigInteger bi = new BigInteger(1, array);
         String hex = bi.toString(16);
         int paddingLength = (array.length * 2) - hex.length();
-        if(paddingLength > 0)
-        {
-            return String.format("%0"  +paddingLength + "d", 0) + hex;
-        }else{
+        if (paddingLength > 0) {
+            return String.format("%0" + paddingLength + "d", 0) + hex;
+        } else {
             return hex;
         }
     }
-    public String genPWHash(String pw){
+
+    public String genPWHash(String pw) {
         try {
             return generateStrongPasswordHash(pw);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
