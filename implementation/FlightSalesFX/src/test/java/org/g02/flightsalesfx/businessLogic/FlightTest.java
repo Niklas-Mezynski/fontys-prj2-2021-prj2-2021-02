@@ -45,11 +45,7 @@ public class FlightTest {
     private Flight sampleFlight = new FlightImpl(so, 4,LocalDateTime.MIN, LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "DÃ¼sseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl(2, "flieger", "Lufthansa", "A380"), 20);
     private List<Flight> flightList = List.of(sampleFlight);
 
-    @Start
-    void start(Stage stage) throws IOException {
-        App app = new App();
-        app.start(stage);
-
+    FlightTest() {
         //mocking persistence
         persistenceAPI = mock(PersistenceAPI.class);
         flightStorageService = mock(FlightStorageService.class);
@@ -70,8 +66,8 @@ public class FlightTest {
     void testEquals() {
         Flight f1 = new FlightImpl(so, 4,LocalDateTime.MIN, LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "DÃ¼sseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl(2, "flieger", "Lufthansa", "A380"), 20);
         Flight f2 = new FlightImpl(so, 4,LocalDateTime.MIN, LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "DÃ¼sseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl(2, "flieger", "Lufthansa", "A380"), 20);
-        Flight f3 = new FlightImpl(so, 5,LocalDateTime.MIN, LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "DÃ¼sseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl(2, "flieger", "Lufthansos", "A380"), 20);
-        Flight f4 = new FlightImpl(so, 6,LocalDateTime.MIN, LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "DÃ¼sseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl(2, "flieger", "Lufthansa", "A380"), 20);
+        Flight f3 = new FlightImpl(so, 5,LocalDateTime.MIN, LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "DÃ¼sseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl(2, "flieger", "Lufthansa", "A380"), 23);
+        Flight f4 = new FlightImpl(so, 6,LocalDateTime.MIN, LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "DÃ¼sseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl(2, "flieger", "Lufthansa", "A380"), 70);
         Flight f5 = new FlightImpl(so, 7,LocalDateTime.MIN, LocalDateTime.now(), new RouteImpl(new AirportImpl("DUS", "DÃ¼sseldorf", "Germany"), new AirportImpl("BER", "Berlin", "Germany")), new PlaneImpl(2, "flieger", "Lufthansa", "A380"), 42);
         TestUtil.verifyEqualsHasCode(f1, f2, f3, f4, f5);
     }
