@@ -317,11 +317,6 @@ public class CreatePlaneController implements Controller {
             changeNameTextField.setText(seatOption.getName());
             changeAvailableSpinner.getValueFactory().setValue(seatOption.getPrice());
         }
-
-        @Override
-        public int getID() {
-            return -1;
-        }
     }
 
     /**
