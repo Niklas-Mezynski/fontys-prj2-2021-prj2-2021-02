@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-import static org.g02.flightsalesfx.App.setRoot;
+import static org.g02.flightsalesfx.App.*;
 
 public class FlightOptionController implements Controller {
 
@@ -74,7 +74,20 @@ public class FlightOptionController implements Controller {
         //TODO Delete the FlightOption
         deleteItem.setOnAction(event -> {
             System.out.println("Trying to delete: " + optionList.getSelectionModel().getSelectedItem().toString());
-            selectedFlight.getFlightOptions().remove(optionList.getSelectionModel().getSelectedItem());
+            var selectedFlightOption=optionList.getSelectionModel().getSelectedItem();
+            selectedFlight.removeFlightOption(selectedFlightOption);
+//            selectedFlight.getFlightOptions().remove(optionList.getSelectionModel().getSelectedItem());
+            var success=persistenceAPI.getFlightStorageService(businessLogicAPI.getFlightManager()).update(selectedFlight);
+            if(success==null||success.getFlightOptions().stream().anyMatch(fo->fo.getID()==selectedFlightOption.getID())){
+                Alert alert=new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Could not delete the selected FlightOption");
+                alert.setContentText("updating the plane failed");
+                alert.showAndWait();
+            }
+            else { //Only attempt if successful
+                persistenceAPI.getFlightOptionStorageService(businessLogicAPI.getOptionManager()).remove(selectedFlightOption);//This should fail silently
+                selectedFlight=success;
+            }
             updateListView();
         });
         contextMenu.getItems().addAll( deleteItem );

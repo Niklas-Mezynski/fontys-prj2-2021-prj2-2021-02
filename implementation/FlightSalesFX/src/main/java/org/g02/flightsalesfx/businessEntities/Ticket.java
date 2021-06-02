@@ -6,6 +6,7 @@
 package org.g02.flightsalesfx.businessEntities;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -27,4 +28,6 @@ public interface Ticket {
     public String getLastName();
 
     public SeatOption[] getSeatOptions();
+
+    int getID();
 }
