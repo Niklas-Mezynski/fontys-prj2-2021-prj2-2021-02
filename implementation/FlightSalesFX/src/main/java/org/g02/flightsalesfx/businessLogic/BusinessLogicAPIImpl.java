@@ -179,10 +179,11 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public Plane createPlaneFromUI(String name, String type, String manufacturer, List<Seat> seats) {
-        var plane = getPlaneManager().createPlane(name, manufacturer, type);
+        var planeManager = getPlaneManager();
+        var plane = planeManager.createPlane(name, manufacturer, type);
         plane.addAllSeats(seats.stream().sorted().collect(Collectors.toList()));
         System.out.println(plane);
-        var planeStorageService = persistenceAPI.getPlaneStorageService(getPlaneManager());
+        var planeStorageService = persistenceAPI.getPlaneStorageService(planeManager);
         return planeStorageService.add(plane);
     }
 

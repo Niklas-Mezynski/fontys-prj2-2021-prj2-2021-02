@@ -22,7 +22,6 @@
 
 - Register?
 
-
 ## Create Route
 
 <table>
@@ -211,6 +210,7 @@ information displayed
 </table>
 
 ## Book Tickets
+
 <table>
    <tr>
       <td><b>Actor</b></td><td>Sales Employee</td>
@@ -270,8 +270,6 @@ System prints the tickets and returns to main page
 <tr>
 <td><b>Exception</b></td>
 <td>
-
-
 </td>
 </tr>
 <tr>
@@ -348,10 +346,11 @@ Extensions
 7. Actor denies
 
 	1. Return to step 5
-	 
+
 	2. Actor wants to delete changes
 
 		1. System sends the Actor back to start page
+
 </td>
 </tr>
 </table>
@@ -381,11 +380,11 @@ flight was searched for</ins>
 1. <ins>Actor searches for flight</ins>
 
 2. System shows available flight
-   
+
 3. Actor selects to stop the sales process
-   
+
 6. System asks for confirmation to stop the sales process
-   
+
 7. Actor confirms
 
 </td>
@@ -404,9 +403,10 @@ Extensions
 </td>
 <td>
 
-7. Actor denies 
-   
-	7.1 System sends the Actor back to start page
+7. Actor denies
+
+   7.1 System sends the Actor back to start page
+
 </td>
 </tr>
 </table>
@@ -434,13 +434,12 @@ flight was searched for</ins>
 <td>
 
 1. Actor opens the overview page for the flight
-   
-2. System show the flight overview
-   
-3. Actor chooses to view additional FLightOptions
-   
-4. System shows the FlightOptions
 
+2. System show the flight overview
+
+3. Actor chooses to view additional FLightOptions
+
+4. System shows the FlightOptions
 
 </td>
 </tr>
@@ -475,15 +474,14 @@ flight was searched for</ins>
 <td>
 
 1. Actor chooses a <ins>created PriceReduction<ins>
-   
+
 2. System displays selected PriceReduction
-   
+
 3. Actor edits the PriceReduction
-   
+
 4. Actor submits changes
-   
-5. System applies the changes and display modified
-   PriceReduction
+
+5. System applies the changes and display modified PriceReduction
 
 </td>
 </tr>
@@ -588,7 +586,6 @@ routes or flight options
 </tr>
 </table>
 
-
 ## Create PriceReductions
 
 <table>
@@ -603,13 +600,13 @@ routes or flight options
 <td>
 
 1. Actor chooses a <ins>created Flight<ins>
-   
+
 2. System displays selected Flight and offers to add a new PriceReduction
-   
+
 3. Actor chooses the type of the new PriceReduction and its content for the flight
-   
+
 4. Actor submits the PriceReduction
-   
+
 5. System applies the PriceReduction and displays the updated flight
 
 </td>
@@ -636,11 +633,11 @@ A new PriceReduction is created and applied to a Flight
 <td>
 
 1. Actor chooses a Flight with an existing PriceReduction<ins>
-   
+
 2. System displays selected Flight and offers the option to remove the PriceReduction
-   
+
 3. Actor chooses to remove the flight
-   
+
 4. System informs the Actor that the PriceReduction has been removed.
 
 </td>
@@ -673,16 +670,16 @@ flight is at its initial price again
 <td><b>Scenario</b></td>
 <td>
 
-1.  Actor selects a <ins>created FlightOption<ins>
-    
-2.  System displays selected FlightOption and its content
-    
-3.  Actor modifies specific attributes
-    
-4.  Actor submits changes
-    
-5.  System applies changes and displays the updated 
-    FlightOption
+1. Actor selects a <ins>created FlightOption<ins>
+
+2. System displays selected FlightOption and its content
+
+3. Actor modifies specific attributes
+
+4. Actor submits changes
+
+5. System applies changes and displays the updated FlightOption
+
 </td>
 </tr>
 <tr>
@@ -690,7 +687,6 @@ flight is at its initial price again
 <td>The selected FlightOption is modified</td>
 </tr>
 </table>
-
 
 ## Create FlightLeg Stops
 
@@ -712,12 +708,13 @@ flight is at its initial price again
 <td>
 
 1. System gives opportunity to enter the destination of the FlightLeg
-   
+
 2. Actor gives the new destination
-   
+
 3. System gives opportunity to put the new destination in the wanted order
-   
+
 4. User indicates, where to put the new destination
+
 </td>
 </tr>
 
@@ -728,7 +725,6 @@ flight is at its initial price again
 </table>
 
 ## Create FlightOption
-
 
 <table>
 <tr>
@@ -748,19 +744,19 @@ flight is at its initial price again
 <td>
 
 1. System asks for name of the new FlightOption
-   
+
 2. Actor gives name for the FlightOption
-   
+
 3. System gives the option to select for which seats this option is available
-   
+
 4. Actor selects the wanted seats
-   
+
 5. System gives opportunity to set the price for this option
-   
+
 6. Actor gives price for the option
-   
+
 7. System gives overview of the option, and asks to submit
-   
+
 8. Actor submits
 
 </td>
@@ -781,7 +777,6 @@ flight is at its initial price again
 
 ## Remove FlightOption
 
-
 <table>
 <tr>
 <td><b>Actor</b></td>
@@ -800,12 +795,13 @@ flight is at its initial price again
 <td>
 
 1. System gives Overview of all registered Flight Options for selected Flight
-   
+
 2. Actor selects the Option, which should be deleted
-   
+
 3. System asks Actor to confirm the deletion
-   
+
 4. Actor Confirms the deletion
+
 </td>
 </tr>
 <tr>
@@ -813,8 +809,6 @@ flight is at its initial price again
 <td>FlightOption has been deleted from an existing flight</td>
 </tr>
 </table>
-
-
 
 ## Create a flight
 
@@ -848,6 +842,7 @@ flight is at its initial price again
 7. Actor confirms the values
 
 8. System adds the flight to the system.
+
 </td>
 </tr>
 <tr>
@@ -860,17 +855,16 @@ A new flight has been registered in the system.
 <td><b>Extension</b></td>
 <td>
 
-3. Actor wants to create a flight route.    
-    1.  Use case <ins>create route</ins>
-    2. Continue at step 4.
+3. Actor wants to create a flight route.
+	1. Use case <ins>create route</ins>
+	2. Continue at step 4.
 
 7. Actor does not confirm the values
-    1. Return to step 4.
+	1. Return to step 4.
+
 </td>
 </tr>
 </table>
-
-
 
 ## Edit flight
 
@@ -904,6 +898,7 @@ A new flight has been registered in the system.
 7. Actor confirms the values.
 
 8. System edits the flight in the system.
+
 </td>
 </tr>
 <tr>
@@ -917,12 +912,11 @@ The flight has been edited.
 <td>
 
 7. Actor does not confirm the values
-    1. Return to step 4.
+	1. Return to step 4.
+
 </td>
 </tr>
 </table>
-
-
 
 ## Remove flight
 
@@ -952,6 +946,7 @@ The flight has been edited.
 5. Actor confirms.
 
 6. System removes the flight from the system.
+
 </td>
 </tr>
 <tr>
@@ -966,14 +961,16 @@ The flight has been removed.
 
 5. Sales process already started
 
-    1. System shows error message
+	1. System shows error message
 
-    2. Return to step 1.
+	2. Return to step 1.
+
 </td>
 </tr>
 </table>
 
 ## Logout
+
 <table>
    <tr>
       <td><b>Actor</b></td><td>Sales Employee, Sales Officer, Sales Manager</td>
@@ -1010,8 +1007,8 @@ Actor is logged out and not able to access the application without logging in
 </tr>
 </table>
 
-
 ## Log-in
+
 <table>
    <tr>
       <td><b>Actor</b></td><td>Sales Employee, Sales Officer, Sales Manager</td>
@@ -1040,8 +1037,7 @@ System checks logon data
 
 3. No account with the logon data
 
-    3.1 System notifies User about incorrect input and is 
-   ready for new input
+   3.1 System notifies User about incorrect input and is ready for new input
 
 </td>
 </tr>
@@ -1053,15 +1049,18 @@ Actor is logged in and granted access onto several functions
 </tr>
 </table>
 
-
-
 ## Create Plane
+
 <table>
    <tr>
       <td><b>Actor</b></td><td>Sales Officer</td>
    </tr>
 	<tr>
-      <td><b>Description</b></td><td>The Actor is about to create a new plane that can be used for flights</td>
+        <td><b>Description</b></td>
+		<td>
+			The Actor is about to create a new plane that can be used for flights
+			This includes adding seats in the wanted layout and choosing/creating seat options. 
+		</td>
     </tr>
     <tr>
         <td><b>Pre-condition</b></td>
@@ -1081,6 +1080,29 @@ System offers to add seatrows/-columns
 Actor determines the amount of rows and seats in total
 </li>
 <li>
+System asks the actor if he wants to add a seat option
+</li>
+<li>
+Actor enters information for the seat option
+</li>
+<li>
+System adds the seat option
+</li>
+<li>
+Actor chooses to add the options to seats
+</li>
+<li>
+System marks the option as active
+</li>
+<li>
+Actor chooses all seats he want to add the option to
+</li>
+<li>System asks if the actor wants to add another seat option
+</li>
+<li>
+Actor does not want to add another one
+</li>
+<li>
 System requires other plane information
 </li>
 <li>
@@ -1092,6 +1114,183 @@ System saves the new plane and its characteristics
 </ol>
 </td>
 
+</tr>
+<tr>
+<td>Extension</td>
+<td>
+
+4. Actor does not want to add seat options
+
+	1. Go to step 12
+	
+11. Actor want to add another one
+
+	1. Go to step 5
+	
+</td>
+</tr>
+<tr>
+<td><b>Result</b></td>
+<td>
+A new plane is created and can be edited, removed or used for a specific flight
+</td>
+</tr>
+</table>
+
+## Edit Plane
+
+<table>
+   <tr>
+      <td><b>Actor</b></td><td>Sales Officer</td>
+   </tr>
+	<tr>
+        <td><b>Description</b></td>
+		<td>
+			The Actor is about to edit an already existing plane.
+			This includes adding/removing seats and choosing/creating or removing seat options. 
+		</td>
+    </tr>
+    <tr>
+        <td><b>Pre-condition</b></td>
+        <td>Actor is already logged in</td>
+    </tr>
+<tr>
+<td><b>Scenario</b></td>
+<td>
+<ol>
+<li>
+Actor chooses to edit an existing plane
+</li>
+<li>
+System offers to add/remove seats
+</li>
+<li>
+Actor adds/removes the amount of seats they want
+</li>
+<li>
+System asks the actor if he wants to add a seat option
+</li>
+<li>
+Actor enters information for the seat option
+</li>
+<li>
+System adds the seat option
+</li>
+<li>
+System asks if the actor wants to add another seat option
+</li>
+<li>
+Actor does not want to add another one
+</li>
+<li>
+System asks if the actor wants to add options to seats
+</li>
+<li>
+Actor chooses the option they want to add to seats
+</li>
+<li>
+System marks the option as active
+</li>
+<li>
+Actor chooses all seats he want to add the option to
+</li>
+<li>
+System asks if the actor wants to select another option
+</li>
+<li>
+Actor chooses to select no further options
+</li>
+<li>
+System requires other plane information
+</li>
+<li>
+Actor enters specific information and confirms
+</li>
+<li>
+System saves the new plane and its characteristics
+</li>
+</ol>
+</td>
+
+</tr>
+<tr>
+<td>Extension</td>
+<td>
+
+4. Actor does not want to add seat options
+
+	1. Go to step 12
+
+8. Actor want to add another one
+
+	1. Go to step 5
+	
+9. Actor does not want to add an option to seats
+
+	1. Go to step 15
+
+
+14. Actor chooses to select another option
+
+	1. Go to step 10
+	
+</td>
+</tr>
+<tr>
+<td><b>Result</b></td>
+<td>
+A new plane is created and can be edited, removed or used for a specific flight
+</td>
+</tr>
+</table>
+
+## Delete Plane
+
+<table>
+   <tr>
+      <td><b>Actor</b></td><td>Sales Officer</td>
+   </tr>
+	<tr>
+        <td><b>Description</b></td>
+		<td>
+			The Actor is about to delete an already existing plane.
+		</td>
+    </tr>
+    <tr>
+        <td><b>Pre-condition</b></td>
+        <td>Actor is already logged in</td>
+    </tr>
+<tr>
+<td><b>Scenario</b></td>
+<td>
+<ol>
+<li>
+Actor decides to delete an existing plane
+</li>
+<li>
+System offers a list of all planes
+</li>
+<li>
+Actor chooses the plane they want to delete
+</li>
+<li>
+System asks the actor if he wants to add a seat option
+</li>
+<li>
+Actor chooses to delete the plane
+</li>
+<li>System deletes the plane</li>
+</ol>
+</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>
+
+5. Actor doesn't want to delete the plane
+	
+	1. System goes back to the overview (step 2)
+</td>
 </tr>
 <tr>
 <td><b>Result</b></td>
