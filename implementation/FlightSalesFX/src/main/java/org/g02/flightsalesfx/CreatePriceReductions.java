@@ -90,31 +90,39 @@ public class CreatePriceReductions implements Controller {
     }
 
     public void saveReductions(){
-        String eD=endDate.getEditor().getText();
-        String sD=startDate.getEditor().getText();
-        eD=eD.replace(',','.');
-        eD=eD.replace('/','.');
-        eD=eD.replace('\\','.');
-        sD=sD.replace(',','.');
-        sD=sD.replace('/','.');
-        sD=sD.replace('\\','.');
-        String[] eDs=eD.split("\\.");
-        String[] sDs=sD.split("\\.");
-        if(Integer.parseInt(eDs[2])<1000){
-            eDs[2]="20"+eDs[2];
-        }
-        if(Integer.parseInt(sDs[2])<1000){
-            sDs[2]="20"+sDs[2];
-        }
-        LocalDateTime end=LocalDateTime.of(Integer.parseInt(eDs[2]),Integer.parseInt(eDs[1]),Integer.parseInt(eDs[0]),Integer.parseInt(endHour.getValue()),Integer.parseInt(endMin.getValue()));
-        LocalDateTime start=LocalDateTime.of(Integer.parseInt(sDs[2]),Integer.parseInt(sDs[1]),Integer.parseInt(sDs[0]),Integer.parseInt(startHour.getValue()),Integer.parseInt(startMin.getValue()));
-        var priceS=redPrice.getText();
-        priceS=priceS.replace(',','.');
-        double price=Double.valueOf(priceS);
+        try {
+            String eD = endDate.getEditor().getText();
+            String sD = startDate.getEditor().getText();
+            eD = eD.replace(',', '.');
+            eD = eD.replace('/', '.');
+            eD = eD.replace('\\', '.');
+            sD = sD.replace(',', '.');
+            sD = sD.replace('/', '.');
+            sD = sD.replace('\\', '.');
+            String[] eDs = eD.split("\\.");
+            String[] sDs = sD.split("\\.");
+            if (Integer.parseInt(eDs[2]) < 1000) {
+                eDs[2] = "20" + eDs[2];
+            }
+            if (Integer.parseInt(sDs[2]) < 1000) {
+                sDs[2] = "20" + sDs[2];
+            }
+            LocalDateTime end = LocalDateTime.of(Integer.parseInt(eDs[2]), Integer.parseInt(eDs[1]), Integer.parseInt(eDs[0]), Integer.parseInt(endHour.getValue()), Integer.parseInt(endMin.getValue()));
+            LocalDateTime start = LocalDateTime.of(Integer.parseInt(sDs[2]), Integer.parseInt(sDs[1]), Integer.parseInt(sDs[0]), Integer.parseInt(startHour.getValue()), Integer.parseInt(startMin.getValue()));
+            var priceS=redPrice.getText();
+            priceS=priceS.replace(',','.');
+            double price=Double.valueOf(priceS);
 
-        var priceRed=new StaticPriceReductionImpl(redName.getText().trim(),end,start,isPercent.isSelected(),price);
-        App.businessLogicAPI.createPriceReductionFromUI(priceRed);
-        updateTables();
+            var priceRed=new StaticPriceReductionImpl(redName.getText().trim(),end,start,isPercent.isSelected(),price);
+            App.businessLogicAPI.createPriceReductionFromUI(priceRed);
+            updateTables();
+        }
+        catch (Exception disable){Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error saving Price Reduction");
+            alert.setContentText("There was an error while saving the created Price Reduction. Try again!");
+            alert.showAndWait();
+        }
     }
 
     public void updateTables(){
