@@ -1,5 +1,6 @@
 package org.g02.flightsalesfx;
 
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -85,24 +86,36 @@ public class CreatePriceReductionTest {
     public void createPriceReduction(FxRobot test){
         test.clickOn(test.lookup("#redName").queryAs(TextField.class));
         test.write("Winter Sale");
-        test.push(KeyCode.TAB);
+        Node v=test.lookup("#startDate").query();
+        test.clickOn(v);
         test.write("10.10.20");
-        test.push(KeyCode.TAB);
+        v=test.lookup("#endDate").query();
+        test.clickOn(v);
         test.write("10.10.25");
-        test.push(KeyCode.TAB);
-        test.push(KeyCode.TAB);
-        test.write("100");
-        test.push(KeyCode.DOWN);
-        test.push(KeyCode.TAB);
-        test.push(KeyCode.DOWN);
-        test.push(KeyCode.TAB);
-        test.push(KeyCode.DOWN);
-        test.push(KeyCode.TAB);
-        test.push(KeyCode.DOWN);
-        test.push(KeyCode.TAB);
-        test.push(KeyCode.DOWN);
-        test.push(KeyCode.TAB);
+        v=test.lookup("#isPercent").query();
+        test.clickOn(v);
         test.push(KeyCode.ENTER);
+        v=test.lookup("#redPrice").query();
+        test.clickOn(v);
+        test.write("10");
+        v=test.lookup("#startHour").query();
+        test.clickOn(v);
+        Node s=test.lookup(n -> ((Text)n).getText().contains("00")).query();
+        test.clickOn(s);
+        v=test.lookup("#endHour").query();
+        test.clickOn(v);
+        s=test.lookup(n -> ((Text)n).getText().contains("00")).query();
+        test.clickOn(s);
+        v=test.lookup("#startMin").query();
+        test.clickOn(v);
+        s=test.lookup(n -> ((Text)n).getText().contains("00")).query();
+        test.clickOn(s);
+        v=test.lookup("#endMin").query();
+        test.clickOn(v);
+        s=test.lookup(n -> ((Text)n).getText().contains("00")).query();
+        test.clickOn(s);
+        v=test.lookup("#addReduction").query();
+        test.clickOn(v);
 //        var v=test.lookup(node -> ((Text)node).getText().contains("AirportA")).query();
 //        test.clickOn(v);
     }

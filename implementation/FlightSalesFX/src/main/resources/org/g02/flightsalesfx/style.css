@@ -64,27 +64,6 @@
     -fx-effect: dropshadow(three-pass-box, black, 10, 0.5, 0, 0);
 }
 
-.planeTab{
-    -fx-background-image: url("Planes.png");
-    -fx-background-position: center center;
-    -fx-background-repeat: no-repeat;
-}
-.routeTab{
-    -fx-background-image: url("Routes.png");
-    -fx-background-position: center center;
-    -fx-background-repeat: stretch;
-}
-.flightTab{
--fx-background-image: url("Flight.png");
-    -fx-background-position: center center;
-    -fx-background-repeat: no-repeat;
-}
-.reductionTab{
--fx-background-image: url("Reduction.png");
-    -fx-background-position: center center;
-    -fx-background-repeat: no-repeat;
-}
-
 
 .textLabel {
     -fx-text-fill: #FFFFFF;
