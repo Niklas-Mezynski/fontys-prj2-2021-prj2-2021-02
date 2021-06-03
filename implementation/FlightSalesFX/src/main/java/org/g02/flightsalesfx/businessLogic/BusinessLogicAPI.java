@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public interface BusinessLogicAPI {
@@ -98,4 +99,12 @@ public interface BusinessLogicAPI {
     int totalNumOfBookingsByAnEmployee(SalesEmployee se);
 
     double avgNumOfTicketsPerBooking(SalesEmployee se);
+
+    double totalRevenueByRoute(Route route);
+
+    double sumOfAClassesRevenue(Route route, String className);
+
+    double getRevenueForSpecificRouteInOneYear(Route route, int year);
+
+    Optional<Booking> getFirstBookingOfARoute(Route route);
 }

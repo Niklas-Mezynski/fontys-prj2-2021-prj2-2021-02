@@ -12,10 +12,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
@@ -375,6 +373,36 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         }
         return map;
     }
+
+    @Override
+    public double totalRevenueByRoute(Route route) {
+        return sumRevenue(getAllBookings(booking -> true), booking -> booking.getFlight().getRoute().equals(route));
+    }
+
+    @Override
+    public double sumOfAClassesRevenue(Route route, String className) {
+        return getAllBookings(booking -> booking.getFlight().getRoute().equals(route)).stream()
+                .flatMap(booking -> booking.getTickets().stream())
+                .flatMap(ticket -> Arrays.stream(ticket.getSeatOptions()))
+                .filter(seatOption -> seatOption.getName().toLowerCase().contains(className.toLowerCase()))
+                .mapToDouble(Option::getPrice)
+                .sum();
+    }
+
+    @Override
+    public Optional<Booking> getFirstBookingOfARoute(Route route) {
+        return getAllBookings(booking -> booking.getFlight().getRoute().equals(route)).stream()
+                .min((b1, b2) -> b1.getBookingDate().compareTo(b2.getBookingDate()));
+    }
+
+    @Override
+    public double getRevenueForSpecificRouteInOneYear(Route route, int year) {
+        return getAllBookings(booking -> booking.getFlight().getRoute().equals(route)).stream()
+                .filter(booking -> booking.getBookingDate().getYear() == year)
+                .mapToDouble(Booking::getBookingPrice)
+                .sum();
+    }
+
 
     private static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
         String[] parts = storedPassword.split(":");

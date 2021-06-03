@@ -73,7 +73,9 @@ public class ManagementDashboardTest {
 //        bookings.add(new BookingImpl(se, flight, tickets , flightOptions, "no mail", LocalDateTime.of(2021, 4, 10, 20, 0), 50.00));
 
         Mockito.when(businessLogicAPI.getAllEmployees(any())).thenReturn(List.of(se, so));
-        Mockito.when(businessLogicAPI.sumRevenue(any(), any())).thenReturn(50.0);
+        Mockito.when(businessLogicAPI.totalRevenueByRoute(route)).thenReturn(60.0);
+        Mockito.when(businessLogicAPI.sumOfAClassesRevenue(route, "business")).thenReturn(40.0);
+        Mockito.when(businessLogicAPI.sumOfAClassesRevenue(route, "first")).thenReturn(80.0);
         Mockito.when(businessLogicAPI.totalRevenueByEmp(se)).thenReturn(50.0);
         Mockito.when(businessLogicAPI.totalNumOfBookingsByAnEmployee(se)).thenReturn(1);
         Mockito.when(businessLogicAPI.avgNumOfTicketsPerBooking(se)).thenReturn(1.0);
@@ -108,8 +110,15 @@ public class ManagementDashboardTest {
         fxRobot.clickOn(fxRobot.lookup(node -> ((Button) node).getText().contains("View KPI")).queryAs(Button.class));
 
         var totalRevenueField= fxRobot.lookup("#totalRevenueField").queryAs(TextField.class);
+        var businessClassRevenueField= fxRobot.lookup("#businessClassRevenue").queryAs(TextField.class);
+        var firstClassRevenueField= fxRobot.lookup("#firstClassRevenue").queryAs(TextField.class);
 
-        assertThat(TestUtil.getDoubleConsideringLocale(totalRevenueField.getText().split("€")[0])).isEqualTo(50);
+        SoftAssertions.assertSoftly((s) -> {
+            s.assertThat(TestUtil.getDoubleConsideringLocale(totalRevenueField.getText().split("€")[0])).isEqualTo(60);
+            s.assertThat(TestUtil.getDoubleConsideringLocale(businessClassRevenueField.getText().split("€")[0])).isEqualTo(40);
+            s.assertThat(TestUtil.getDoubleConsideringLocale(firstClassRevenueField.getText().split("€")[0])).isEqualTo(80);
+        });
+        assertThat(TestUtil.getDoubleConsideringLocale(totalRevenueField.getText().split("€")[0])).isEqualTo(60);
     }
 
     @Test
