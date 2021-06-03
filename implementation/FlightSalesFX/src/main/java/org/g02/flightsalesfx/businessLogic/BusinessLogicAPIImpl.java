@@ -313,11 +313,30 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
     }
 
-    private double sumRevenue(Stream<Booking> stream, Predicate<Booking> predicate) {
-        return stream
+    @Override
+    public double sumRevenue(List<Booking> list, Predicate<Booking> predicate) {
+        return list.stream()
                 .filter(predicate)
                 .mapToDouble(Booking::getBookingPrice)
                 .sum();
+    }
+
+    @Override
+    public double totalRevenueByEmp(SalesEmployee se) {
+        return sumRevenue(getAllBookings(booking -> true), booking -> booking.getSalesEmployee().equals(se));
+    }
+
+    @Override
+    public int totalNumOfBookingsByAnEmployee(SalesEmployee se) {
+        return getAllBookings(booking -> booking.getSalesEmployee().equals(se)).size();
+    }
+
+    @Override
+    public double avgNumOfTicketsPerBooking(SalesEmployee se) {
+        OptionalDouble average = getAllBookings(booking -> booking.getSalesEmployee().equals(se)).stream()
+                .mapToInt(booking -> booking.getTickets().size())
+                .average();
+        return average.orElse(0);
     }
 
     @Override
@@ -325,12 +344,10 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         Map<LocalDateTime, Double> map = new LinkedHashMap<>();
         List<Booking> allBookingsByEmp = getAllBookings(booking -> booking.getSalesEmployee().equals(se));
         while (startDate.isBefore(LocalDateTime.now().minusDays(1))) {
-//            if (startDate.getDayOfMonth() == LocalDateTime.now().getDayOfMonth())
-//                break;
 
             LocalDateTime currentDate = startDate;
             Predicate<Booking> pred = (booking -> booking.getBookingDate().isAfter(currentDate) && booking.getBookingDate().isBefore(currentDate.plusMonths(1)));
-            double revenueThisMonth = sumRevenue(allBookingsByEmp.stream(), pred);
+            double revenueThisMonth = sumRevenue(allBookingsByEmp, pred);
             map.put(startDate, revenueThisMonth);
             startDate = startDate.plusMonths(1);
         }
@@ -349,7 +366,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
                 List<Booking> allBookingsByEmp = allBookings.stream().filter(booking -> booking.getSalesEmployee().equals(emp)).collect(Collectors.toList());
                 LocalDateTime currentDate = startDate;
                 Predicate<Booking> pred = (booking -> booking.getBookingDate().isAfter(currentDate) && booking.getBookingDate().isBefore(currentDate.plusMonths(1)));
-                double revenueThisMonth = sumRevenue(allBookingsByEmp.stream(), pred);
+                double revenueThisMonth = sumRevenue(allBookingsByEmp, pred);
                 revenueByEachEmpThisMonth.add(revenueThisMonth);
             }
             OptionalDouble average = revenueByEachEmpThisMonth.stream().mapToDouble(Double::doubleValue).average();

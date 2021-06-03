@@ -62,12 +62,9 @@ public class ViewSpecificRoutesKPIsController implements Controller {
         List<Booking> bookings = App.businessLogicAPI.getAllBookings(booking -> booking.getFlight().getRoute().equals(selectedRoute));
 
         //Calculate the total revenue for this route
-        double sumRevenue = bookings.stream()
-                .mapToDouble(Booking::getBookingPrice)
-                .sum();
+        double sumRevenue = App.businessLogicAPI.sumRevenue(bookings, booking -> true);
 
         totalRevenueField.setText(String.format("%.2f", sumRevenue) + "€");
-
 
         //Calculate revenue for Tickets with SeatOption "Business Class"
         double sumBusinessClass = bookings.stream()
@@ -78,7 +75,6 @@ public class ViewSpecificRoutesKPIsController implements Controller {
                 .sum();
 
         businessClassRevenue.setText(String.format("%.2f", sumBusinessClass) + "€");
-
 
         // Calculate revenue for Tickets with SeatOption "First Class"
         double sumFirstClass = bookings.stream()

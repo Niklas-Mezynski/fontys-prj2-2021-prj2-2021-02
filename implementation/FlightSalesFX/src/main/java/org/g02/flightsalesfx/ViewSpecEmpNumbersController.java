@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import org.g02.flightsalesfx.businessEntities.Booking;
-import org.g02.flightsalesfx.businessEntities.SalesEmployee;
 import org.g02.flightsalesfx.businessLogic.SalesEmployeeImpl;
 import org.g02.flightsalesfx.helpers.Bundle;
 import org.g02.flightsalesfx.helpers.Controller;
@@ -20,9 +19,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.OptionalDouble;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ViewSpecEmpNumbersController implements Controller {
@@ -61,24 +58,18 @@ public class ViewSpecEmpNumbersController implements Controller {
         /*
             Here the number statistics are calculated
          */
-        List<Booking> allBokings = App.businessLogicAPI.getAllBookings(booking -> true);
-        List<Booking> allBookingsByEmp = allBokings.stream().filter(booking -> booking.getSalesEmployee().equals(emp)).collect(Collectors.toList());
 
         //Calculating totalRevenue
-        double sum = allBookingsByEmp.stream()
-                .mapToDouble(Booking::getBookingPrice)
-                .sum();
+        double sum = App.businessLogicAPI.totalRevenueByEmp(emp);
         totalRevenueField.setText(String.format("%.2f", sum) + "€");
 
         //Calculating No. of Bookings
-        long numOfBookings = allBookingsByEmp.size();
+        long numOfBookings = App.businessLogicAPI.totalNumOfBookingsByAnEmployee(emp);
         noBookings.setText(String.valueOf(numOfBookings));
 
         //Calculating avgNumberOfTicketsPerBooking
-        OptionalDouble avgTicketAmount = allBookingsByEmp.stream()
-                .mapToInt(booking -> booking.getTickets().size())
-                .average();
-        avgTickets.setText(String.format("%.2f", avgTicketAmount.orElse(0)));
+        double avgTicketAmount = App.businessLogicAPI.avgNumOfTicketsPerBooking(emp);
+        avgTickets.setText(String.format("%.2f", avgTicketAmount));
 
 
         /*
@@ -95,7 +86,7 @@ public class ViewSpecEmpNumbersController implements Controller {
         //1. Revenue for spec Employee
         XYChart.Series<String, Number> monthSeries = new XYChart.Series();
         monthSeries.setName(emp.getName());
-        
+
         Map<LocalDateTime, Double> monthlyRevenue = App.businessLogicAPI.getMonthlyRevenue(emp, LocalDateTime.now().minusMonths(12));
         for (Map.Entry<LocalDateTime, Double> entry : monthlyRevenue.entrySet()) {
             String formattedDate = entry.getKey().format(DateTimeFormatter.ofPattern("dd.MM.yy"));
@@ -106,10 +97,6 @@ public class ViewSpecEmpNumbersController implements Controller {
         //2. Revenue for average Employee
         XYChart.Series<String, Number> avgMonthSeries = new XYChart.Series();
         avgMonthSeries.setName("Average Employee");
-        List<SalesEmployee> allSalesEmps = App.businessLogicAPI.getAllEmployees(employee -> true).stream()
-                .filter(employee -> employee instanceof SalesEmployee)
-                .map(employee -> (SalesEmployee) employee)
-                .collect(Collectors.toList());
 
         Map<LocalDateTime, Double> avgMonthlyRevenues = App.businessLogicAPI.getAvgMonthlyRevenues(LocalDateTime.now().minusMonths(12));
         for (Map.Entry<LocalDateTime, Double> entry : avgMonthlyRevenues.entrySet()) {
@@ -122,8 +109,6 @@ public class ViewSpecEmpNumbersController implements Controller {
         chart.setMinWidth(diagramView.getPrefWidth());
         chart.setMinHeight(diagramView.getPrefHeight());
         diagramPane.setCenter(chart);
-
-
     }
 
     @FXML

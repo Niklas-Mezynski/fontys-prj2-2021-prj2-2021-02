@@ -75,6 +75,11 @@ public interface BusinessLogicAPI {
     public List<Employee> getAllEmployees(Predicate<Employee> predicate);
 
     /**
+     * Calculates the revenue of a booking list, you can add a predicate to filter the list
+     */
+    double sumRevenue(List<Booking> list, Predicate<Booking> predicate);
+
+    /**
      * Calculates the revenue an employee has made each month beginning from {@code startDate}
      *
      * @return An ordered HashMap with the dates as key and the revenue as value
@@ -87,4 +92,10 @@ public interface BusinessLogicAPI {
      * @return An ordered HashMap with the dates as key and the average revenue as value
      */
     Map<LocalDateTime, Double> getAvgMonthlyRevenues(LocalDateTime startDate);
+
+    double totalRevenueByEmp(SalesEmployee se);
+
+    int totalNumOfBookingsByAnEmployee(SalesEmployee se);
+
+    double avgNumOfTicketsPerBooking(SalesEmployee se);
 }
