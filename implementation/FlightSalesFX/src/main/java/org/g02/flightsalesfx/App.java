@@ -59,7 +59,7 @@ public class App extends Application {
         businessLogicAPI = BusinessLogicImplementationProvider.getImplementation(persistenceAPI);
         scene = new Scene(loadFXML("login").load(), 800, 600);
         stage.setScene(scene);
-        stage.setResizable(true);
+        stage.setResizable(false);
         stage.setTitle("Flight Ticket Sales");
         stage.show();
     }

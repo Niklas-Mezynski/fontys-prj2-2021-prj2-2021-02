@@ -151,7 +151,8 @@ public class CreateDB {
                 tickets,
                 new FlightOption[0],
                 "hans@gmail.com",
-                LocalDateTime.of(2021, 4, 10, 10, 0)
+                LocalDateTime.of(2021, 4, 10, 10, 0),
+                123.99
         )));
 
 
@@ -165,7 +166,8 @@ public class CreateDB {
                 tickets,
                 new FlightOption[0],
                 "hans@gmail.com",
-                LocalDateTime.of(2021, 1, 10, 10, 0)
+                LocalDateTime.of(2021, 1, 10, 10, 0),
+                123.99
         )));
 
 
@@ -179,7 +181,8 @@ public class CreateDB {
                 tickets,
                 new FlightOption[0],
                 "hans@gmail.com",
-                LocalDateTime.of(2020, 8, 10, 10, 0)
+                LocalDateTime.of(2020, 8, 10, 10, 0),
+                123.99
         )));
 
 
@@ -193,7 +196,8 @@ public class CreateDB {
                 tickets,
                 new FlightOption[0],
                 "hans@gmail.com",
-                LocalDateTime.of(2019, 4, 10, 10, 0)
+                LocalDateTime.of(2019, 4, 10, 10, 0),
+                123.99
         )));
 
         flight = persistenceAPI.getFlightStorageService(new FlightManagerImpl()).getAll().get(3);
@@ -206,7 +210,8 @@ public class CreateDB {
                 tickets,
                 new FlightOption[0],
                 "hans@gmail.com",
-                LocalDateTime.of(2021, 1, 10, 10, 0)
+                LocalDateTime.of(2021, 1, 10, 10, 0),
+                123.99
         )));
 
         flight = persistenceAPI.getFlightStorageService(new FlightManagerImpl()).getAll().get(3);
@@ -219,7 +224,8 @@ public class CreateDB {
                 tickets,
                 new FlightOption[0],
                 "hans@gmail.com",
-                LocalDateTime.of(2021, 1, 10, 10, 0)
+                LocalDateTime.of(2021, 1, 10, 10, 0),
+                123.99
         )));
     }
 }

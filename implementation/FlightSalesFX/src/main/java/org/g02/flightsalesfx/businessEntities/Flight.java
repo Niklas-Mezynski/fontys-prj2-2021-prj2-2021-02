@@ -91,4 +91,5 @@ public interface Flight {
 
     void addAllFlightOptions(List<? extends FlightOption> options);
 
+    public void removeFlightOption(FlightOption flightOption);
 }

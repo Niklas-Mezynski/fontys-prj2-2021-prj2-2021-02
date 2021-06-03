@@ -15,7 +15,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.g02.flightsalesfx.createBookingController">
    <center>
-      <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="flightTab" text="Flight Selection">
             <content>
@@ -130,6 +130,11 @@
                                  <children>
                                     <Label text="Seats: " />
                                     <VBox fx:id="seatsOverviewVBox" prefHeight="100.0" prefWidth="766.0" />
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="totalPriceVBox" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Total: " />
                                  </children>
                               </HBox>
                               <Button fx:id="createBooking" mnemonicParsing="false" onAction="#createBooking" text="Create Booking" />

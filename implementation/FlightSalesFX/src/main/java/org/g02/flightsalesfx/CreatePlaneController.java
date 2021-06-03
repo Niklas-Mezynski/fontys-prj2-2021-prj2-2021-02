@@ -9,8 +9,12 @@ import org.g02.flightsalesfx.businessLogic.PlaneImpl;
 import org.g02.flightsalesfx.businessLogic.SeatImpl;
 import org.g02.flightsalesfx.helpers.Bundle;
 import org.g02.flightsalesfx.helpers.Controller;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.KeyCode;
@@ -18,19 +22,23 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import org.g02.flightsalesfx.businessEntities.Plane;
+import org.g02.flightsalesfx.businessEntities.Seat;
+import org.g02.flightsalesfx.businessEntities.SeatOption;
+import org.g02.flightsalesfx.businessLogic.PlaneImpl;
+import org.g02.flightsalesfx.businessLogic.SeatImpl;
+import org.g02.flightsalesfx.businessLogic.SeatOptionImpl;
+import org.g02.flightsalesfx.helpers.Bundle;
+import org.g02.flightsalesfx.helpers.Controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import static org.g02.flightsalesfx.App.setRoot;
 
 public class CreatePlaneController implements Controller {
 
     private final ToggleGroup toggleGroupSeatOptions = new ToggleGroup();
-
-    private final List<SeatButton> seats = new ArrayList<>();
+    private final ObservableList<SeatButton> seats = FXCollections.observableList(new ArrayList<>());
     private final List<Button> addButtons = new ArrayList<>();
     @FXML
     public VBox seatOptions;
@@ -48,9 +56,14 @@ public class CreatePlaneController implements Controller {
     public TextField planeManufacturer;
     @FXML
     public Button deleteButton;
+    @FXML
+    public Label seatCounterLabel;
+    @FXML
+    public Label rowCounterLabel;
     private SeatOptionBox currentSelected = null;
     private boolean editMode;
     private PlaneImpl oldPlane;
+
 
     /**
      * Creates a new SeatRow and adds the corresponding VBox to the container
@@ -91,7 +104,18 @@ public class CreatePlaneController implements Controller {
      */
     @FXML
     private void addSeatOption() {
-        seatOptions.getChildren().add(seatOptions.getChildren().size() - 1, new SeatOptionBox());
+        addSeatOption(new SeatOptionBox());
+    }
+
+    private void addSeatOption(SeatOptionBox seatOptionBox) {
+        seatOptions.getChildren().add(seatOptions.getChildren().size() - 1, seatOptionBox);
+    }
+
+    private SeatOptionBox createNewSeatOptionBox(SeatOption seatOption) {
+        var seatOptionBox = new SeatOptionBox();
+        seatOptionBox.setSeatOption(seatOption);
+        addSeatOption(seatOptionBox);
+        return seatOptionBox;
     }
 
     /**
@@ -133,7 +157,8 @@ public class CreatePlaneController implements Controller {
      *
      * @param box The box to which the seats are to be added
      */
-    public void createSeat(VBox box) {
+    public SeatButton createSeat(VBox box) {
+        System.out.println("new seat");
         var seatButton = new SeatButton(box);
         seatButton.getStyleClass().add("seatButton");
 //        Font f=Font.loadFont("file:resources/com/g02/flightsalesfx/SourceCodePro-Regular.ttf",45);
@@ -142,6 +167,7 @@ public class CreatePlaneController implements Controller {
         var children = box.getChildren();
         children.add(children.size() - 1, seatButton);
         updateSeatText();
+        return seatButton;
     }
 
     /**
@@ -154,9 +180,9 @@ public class CreatePlaneController implements Controller {
         var manufacturer = planeManufacturer.getText();
         // Map all internal used SeatButtons to Seat
         var collect = seats.stream()
-                .map(s->{
-                    var ret = new SeatImpl(s.row(),s.column());
-                    ret.addAllSeatOptions(s.options);
+                .map(s -> {
+                    var ret = new SeatImpl(s.row(), s.column());
+                    ret.addAllSeatOptions(s.options.stream().map(SeatOptionBox::getSeatOption).collect(Collectors.toList()));
                     return (Seat) ret;
                 })
                 .collect(Collectors.toList());
@@ -181,6 +207,7 @@ public class CreatePlaneController implements Controller {
 
     /**
      * Exit the current scene and return to the previous one, using the static setRoot method of App
+     *
      * @see App#setRoot(String)
      */
     @FXML
@@ -194,12 +221,18 @@ public class CreatePlaneController implements Controller {
     @FXML
     private void delete() {
         if (editMode) {
-            var plane = App.businessLogicAPI.deletePlane(oldPlane);
+            var plane = false;
+            plane = App.businessLogicAPI.deletePlane(oldPlane);
             System.out.println(plane);
             if (plane) {
                 App.setRoot("home");
             } else {
                 System.out.println("Error deleting plane");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error deleting plane");
+                alert.setContentText("There was an error while deleting the current plane. Try again!");
+                alert.showAndWait();
             }
         }
     }
@@ -210,6 +243,12 @@ public class CreatePlaneController implements Controller {
 
     @Override
     public void init(Bundle bundle) {
+        seats.addListener((ListChangeListener<SeatButton>) change -> {
+            seatCounterLabel.setText("Seats: " + seats.size());
+        });
+        seatContainer.getChildren().addListener((ListChangeListener<? super Node>) change -> {
+            rowCounterLabel.setText("Rows: " + seatContainer.getChildren().size());
+        } );
         if (bundle.getBoolean("edit", false)) {
             this.editMode = true;
             var plane = bundle.get("plane", PlaneImpl.class);
@@ -220,14 +259,30 @@ public class CreatePlaneController implements Controller {
             System.out.println(plane);
             int lastRowNum = -1;
             VBox lastRow = null;
-            for (SeatImpl seat : plane.seatList) {
+            var seats = Arrays.stream(plane.seatList).sorted(Comparator.comparingInt(o -> o.rowNumber)).collect(Collectors.toList());
+//            var addedSeatOptions = new ArrayList<SeatOption>();
+            Map<SeatOption, SeatOptionBox> seatOptionBoxMap = new HashMap<>();
+            for (SeatImpl seat : seats) {
                 if (seat.getRowNumber() > lastRowNum) {
                     lastRowNum++;
                     lastRow = createRow();
                     seatContainer.getChildren().add(lastRow);
                 }
-                createSeat(lastRow);
+                var seatButton = createSeat(lastRow);
+                var seatOptions = seat.getSeatOptions();
+                for (SeatOption seatOption : seatOptions) {
+                    if (!seatOptionBoxMap.containsKey(seatOption)) {
+                        var newSeatOption = createNewSeatOptionBox(seatOption);
+                        seatOptionBoxMap.put(seatOption, newSeatOption);
+                    }
+                    var seatOptionBox = seatOptionBoxMap.get(seatOption);
+                    seatOptionBox.chooseButton.fire();
+                    seatButton.fire();
+                    seatOptionBox.chooseButton.fire();
+                }
             }
+            System.out.println(seatContainer);
+            System.out.println(this.seats);
         } else {
             deleteButton.setVisible(false);
         }
@@ -237,7 +292,7 @@ public class CreatePlaneController implements Controller {
      * Inner class that represents a SeatOption on the UI.
      * Extends HBox and has a Button, TextField and Spinner
      */
-    public class SeatOptionBox extends HBox implements SeatOption {
+    public class SeatOptionBox extends HBox {
         String optionName = "";
         // Button to toggle which SeatOption will be applied to the Seats if they are selected
         ToggleButton chooseButton;
@@ -274,20 +329,13 @@ public class CreatePlaneController implements Controller {
             });
         }
 
-        /**
-         * @return The Name of this Option
-         */
-        @Override
-        public String getName() {
-            return changeNameTextField.getText();
+        public SeatOption getSeatOption() {
+            return new SeatOptionImpl(changeNameTextField.getText(), changeAvailableSpinner.getValue());
         }
 
-        /**
-         * @return The price that this FlightOption costs
-         */
-        @Override
-        public double getPrice() {
-            return changeAvailableSpinner.getValue();
+        public void setSeatOption(SeatOption seatOption) {
+            changeNameTextField.setText(seatOption.getName());
+            changeAvailableSpinner.getValueFactory().setValue(seatOption.getPrice());
         }
     }
 
@@ -349,6 +397,7 @@ public class CreatePlaneController implements Controller {
 
         /**
          * get the row of the seat
+         *
          * @return Integer
          */
         public int row() {
@@ -357,6 +406,7 @@ public class CreatePlaneController implements Controller {
 
         /**
          * get the seat number of the seat
+         *
          * @return Integer
          */
         public int column() {

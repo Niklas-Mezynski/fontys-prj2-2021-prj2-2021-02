@@ -5,6 +5,6 @@ import java.time.LocalDateTime;
 
 public interface BookingManager {
 
-    public Booking createBooking(SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail, LocalDateTime booking);
+    public Booking createBooking(SalesEmployee se, Flight flight, Ticket[] tickets, FlightOption[] bookedFlightOptions, String eMail, LocalDateTime booking, double price);
 
 }

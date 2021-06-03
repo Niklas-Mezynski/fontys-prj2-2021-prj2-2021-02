@@ -48,7 +48,7 @@
                   <Insets top="5.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#cancelBookingPressed" styleClass="buttonBlack" text="Cancel Booking">
+            <Button fx:id="cancelBookingButton" mnemonicParsing="false" onAction="#cancelBookingPressed" styleClass="buttonBlack" text="Cancel Booking">
                <VBox.margin>
                   <Insets top="5.0" />
                </VBox.margin>

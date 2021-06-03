@@ -70,7 +70,7 @@ public class ManagementDashboardTest {
         var flight = new FlightImpl(so, 123, LocalDateTime.now(), LocalDateTime.now().plusMinutes(10), route, null, 50);
         Ticket[] tickets = new Ticket[]{new TicketImpl(flight, new SeatImpl(0,0), "Peter", "Gockel", new SeatOption[0])};
         FlightOption[] flightOptions = new FlightOption[0];
-        bookings.add(new BookingImpl(se, flight, tickets , flightOptions, "no mail", LocalDateTime.of(2021, 4, 10, 20, 0)));
+        bookings.add(new BookingImpl(se, flight, tickets , flightOptions, "no mail", LocalDateTime.of(2021, 4, 10, 20, 0), 123.00));
 
         Mockito.when(businessLogicAPI.getAllBookings(any())).thenReturn(bookings);
         Mockito.when(businessLogicAPI.getAllEmployees(any())).thenReturn(List.of(se, so));
