@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="342.0" prefWidth="867.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.g02.flightsalesfx.CreatePlaneController">
+<BorderPane prefHeight="342.0" prefWidth="867.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.g02.flightsalesfx.CreatePlaneController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>

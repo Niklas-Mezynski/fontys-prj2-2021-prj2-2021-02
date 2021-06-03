@@ -43,6 +43,8 @@ public interface BusinessLogicAPI {
 
     public List<Plane> getAllPlanes(Predicate<Plane> predicate);
 
+    public List<Plane> getAllPlanes();
+
     public List<Route> getAllRoutes(Predicate<Route> predicate);
 
     void viewPlane(Plane plane);
@@ -57,7 +59,15 @@ public interface BusinessLogicAPI {
 
     public void createAirportFromUI(String name, String city, String country);
 
+    public boolean createPriceReductionFromUI(PriceReduction priceReduction);
+
     public List<Flight> getAllFlights(Predicate<Flight> predicate);
+
+    public List<Flight> getAllFlights();
+
+    public List<PriceReduction> getAllPriceReductions(Predicate<PriceReduction> predicate);
+
+    public List<PriceReduction> getAllPriceReductions();
 
     boolean addFlightOptionFromUI(String name, int maxAvailable, double price, Flight flight);
 

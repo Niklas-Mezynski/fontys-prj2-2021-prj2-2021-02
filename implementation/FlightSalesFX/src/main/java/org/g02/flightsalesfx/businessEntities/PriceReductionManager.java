@@ -9,6 +9,7 @@ import org.g02.flightsalesfx.businessLogic.DynamicPriceReductionImpl;
 import org.g02.flightsalesfx.businessLogic.StaticPriceReductionImpl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -16,9 +17,9 @@ import java.time.LocalDate;
  */
 public interface PriceReductionManager {
 
-    public StaticPriceReductionImpl createStaticPriceReduction(String name, LocalDate endDate, double percentage);
+    public StaticPriceReductionImpl createStaticPriceReduction(String name, LocalDateTime endDate,LocalDateTime start,boolean isPercentage, double percentage);
 
     // todo: source
-    public DynamicPriceReductionImpl createDynamicPriceReduction(String name, String source, LocalDate endDate);
+    public DynamicPriceReductionImpl createDynamicPriceReduction(String name, String source, LocalDateTime endDate,LocalDateTime start,boolean isPercentage, double percentage);
 
 }

@@ -310,21 +310,21 @@ public class CreatePlaneTest {
                 seatButton = button;
             }
         }
-        var p = seatButton.getTextFill();
+        var p = seatButton.getBackground().getFills().get(0).getFill();
         fxRobot.clickOn(fxRobot.lookup("#addSeatOptionButton").queryButton());
         var seatOptionButtons = fxRobot.lookup(b -> b instanceof ToggleButton).queryAs(ToggleButton.class);
         assertThat(seatOptionButtons).isNotNull();
         fxRobot.clickOn(seatOptionButtons);
         fxRobot.clickOn(seatButton);
-        assertThat(seatButton.getTextFill()).isNotEqualTo(p);
+        assertThat(seatButton.getBackground().getFills().get(0).getFill()).isNotEqualTo(p);
         fxRobot.clickOn(seatButton);
-        assertThat(seatButton.getTextFill()).isEqualTo(p);
+        assertThat(seatButton.getBackground().getFills().get(0).getFill()).isEqualTo(p);
         fxRobot.clickOn(seatButton);
-        assertThat(seatButton.getTextFill()).isNotEqualTo(p);
+        assertThat(seatButton.getBackground().getFills().get(0).getFill()).isNotEqualTo(p);
         fxRobot.clickOn(seatOptionButtons);
-        assertThat(seatButton.getTextFill()).isEqualTo(p);
+        assertThat(seatButton.getBackground().getFills().get(0).getFill()).isEqualTo(p);
         fxRobot.clickOn(seatOptionButtons);
-        assertThat(seatButton.getTextFill()).isNotEqualTo(p);
+        assertThat(seatButton.getBackground().getFills().get(0).getFill()).isNotEqualTo(p);
     }
 
     @Test

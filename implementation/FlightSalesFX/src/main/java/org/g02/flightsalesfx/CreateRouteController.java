@@ -41,7 +41,6 @@ public class CreateRouteController implements Controller {
 
     public void initialize() {
         final var allAirports = App.businessLogicAPI.getAllAirports(Airport -> true);
-//        allAirports.sort((a, b) -> a.getName().compareTo(b.getName()));
 
         listDep.getItems().addAll(allAirports);
         listArr.getItems().addAll(allAirports);

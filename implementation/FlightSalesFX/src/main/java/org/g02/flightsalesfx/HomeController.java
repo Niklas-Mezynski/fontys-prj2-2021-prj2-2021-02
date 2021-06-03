@@ -11,6 +11,9 @@ import org.g02.flightsalesfx.gui.RouteTable;
 import org.g02.flightsalesfx.helpers.Bundle;
 import org.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -250,4 +253,10 @@ public class HomeController implements Controller {
         alert.setContentText("There occurred an issue while retrieving the requested data.");
         alert.showAndWait();
     }
+    @FXML
+    public void goToPriceReductions() throws IOException {
+        App.inRootTab = 3;
+        App.setRoot("createPriceReductions");
+    }
+
 }

@@ -32,13 +32,17 @@ public class FlightImpl implements Flight, Savable {
     @ForeignKey("com.g02.flightsalesfx.businessLogic.SalesOfficerImpl")
     public SalesOfficerImpl creator;
     @ForeignKey("com.g02.flightsalesfx.businessLogic.StaticPriceReductionImpl")
-    public StaticPriceReductionImpl[] staticPriceReductions = new StaticPriceReductionImpl[0];
+    public StaticPriceReductionImpl[] staticPriceReductionsDB = new StaticPriceReductionImpl[0];
     @ForeignKey("com.g02.flightsalesfx.businessLogic.DynamicPriceReductionImpl")
-    public DynamicPriceReductionImpl[] dynamicPriceReductions = new DynamicPriceReductionImpl[0];
+    public DynamicPriceReductionImpl[] dynamicPriceReductionsDB = new DynamicPriceReductionImpl[0];
     @ForeignKey("com.g02.flightsalesfx.businessLogic.FlightOptionImpl")
     private FlightOptionImpl[] optionsListDB = new FlightOptionImpl[0];
     @Ignore
     private List<FlightOptionImpl> optionsList;
+    @Ignore
+    private List<StaticPriceReductionImpl> staticPriceReductions;
+    @Ignore
+    private List<DynamicPriceReductionImpl> dynamicPriceReductions;
 
     public FlightImpl(SalesOfficerImpl creator, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
         this.creator = creator;
@@ -48,6 +52,8 @@ public class FlightImpl implements Flight, Savable {
         this.plane = PlaneImpl.of(plane);
         this.price = price;
         optionsList=new ArrayList<>();
+        staticPriceReductions=new ArrayList<>();
+        dynamicPriceReductions=new ArrayList<>();
     }
 
     public FlightImpl(SalesOfficerImpl creator, int flightNumber, LocalDateTime dep, LocalDateTime arr, Route route, Plane plane, double price) {
@@ -59,6 +65,8 @@ public class FlightImpl implements Flight, Savable {
         this.plane = PlaneImpl.of(plane);
         this.price = price;
         optionsList=new ArrayList<>();
+        staticPriceReductions=new ArrayList<>();
+        dynamicPriceReductions=new ArrayList<>();
     }
 
     public static FlightImpl of(Flight f) {
@@ -165,22 +173,17 @@ public class FlightImpl implements Flight, Savable {
      */
     @Override
     public List<PriceReduction> getPriceReductions() {
-        List<PriceReduction> staticPriceReductions = Arrays.asList(this.staticPriceReductions);
-        List<PriceReduction> dynamicPriceReductions = Arrays.asList(this.dynamicPriceReductions);
-        staticPriceReductions.addAll(dynamicPriceReductions);
-        return staticPriceReductions;
+        List<PriceReduction> priceReductions = new ArrayList<>(staticPriceReductions);
+        priceReductions.addAll(dynamicPriceReductions);
+        return priceReductions;
     }
 
     @Override
     public void addPriceReduction(PriceReduction p) {
         if (p instanceof DynamicPriceReductionImpl) {
-            var dynamicPriceReductions = Arrays.asList(this.dynamicPriceReductions);
             dynamicPriceReductions.add((DynamicPriceReductionImpl) p);
-            this.dynamicPriceReductions = dynamicPriceReductions.toArray(new DynamicPriceReductionImpl[0]);
         } else if (p instanceof StaticPriceReductionImpl) {
-            var staticPriceReductions = Arrays.asList(this.staticPriceReductions);
             staticPriceReductions.add((StaticPriceReductionImpl) p);
-            this.staticPriceReductions = staticPriceReductions.toArray(new StaticPriceReductionImpl[0]);
         }
     }
 
@@ -197,12 +200,12 @@ public class FlightImpl implements Flight, Savable {
      */
     @Override
     public double getPriceWithPriceReductionsApplied() {
-        List<PriceReduction> availablePriceReductions = Arrays.stream(this.staticPriceReductions)
-                .filter(priceReduction -> priceReduction.getEndDate().isAfter(LocalDate.now()))
+        List<PriceReduction> availablePriceReductions = staticPriceReductions.stream()
+                .filter(priceReduction -> priceReduction.getEndTime().isAfter(LocalDateTime.now())&&priceReduction.getStartTime().isBefore(LocalDateTime.now()))
                 .sorted()
                 .collect(Collectors.toList());
-        List<PriceReduction> collect = Arrays.stream(dynamicPriceReductions)
-                .filter(priceReduction -> priceReduction.getEndDate().isAfter(LocalDate.now()))
+        List<PriceReduction> collect = dynamicPriceReductions.stream()
+                .filter(priceReduction -> priceReduction.getEndTime().isAfter(LocalDateTime.now())&&priceReduction.getStartTime().isBefore(LocalDateTime.now()))
                 .sorted()
                 .collect(Collectors.toList());
         availablePriceReductions.addAll(collect);
@@ -250,21 +253,25 @@ public class FlightImpl implements Flight, Savable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FlightImpl flight = (FlightImpl) o;
-        return getFlightNumber() == flight.getFlightNumber() && Double.compare(flight.getPrice(), getPrice()) == 0 && salesProcessStarted == flight.salesProcessStarted && Objects.equals(getDeparture(), flight.getDeparture()) && Objects.equals(getArrival(), flight.getArrival()) && Objects.equals(getRoute(), flight.getRoute()) && Objects.equals(getPlane(), flight.getPlane()) && Objects.equals(creator, flight.creator) && Arrays.equals(staticPriceReductions, flight.staticPriceReductions) && Arrays.equals(dynamicPriceReductions, flight.dynamicPriceReductions) && optionsList.equals(flight.optionsList);
+        return getFlightNumber() == flight.getFlightNumber() && Double.compare(flight.getPrice(), getPrice()) == 0 && salesProcessStarted == flight.salesProcessStarted && Objects.equals(getDeparture(), flight.getDeparture()) && Objects.equals(getArrival(), flight.getArrival()) && Objects.equals(getRoute(), flight.getRoute()) && Objects.equals(getPlane(), flight.getPlane()) && Objects.equals(creator, flight.creator) && staticPriceReductions.equals(flight.staticPriceReductions) && dynamicPriceReductions.equals(flight.dynamicPriceReductions) && optionsList.equals(flight.optionsList);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(getFlightNumber(), getDeparture(), getArrival(), getRoute(), getPlane(), getPrice(), salesProcessStarted, creator);
-        result = 31 * result + Arrays.hashCode(staticPriceReductions);
-        result = 31 * result + Arrays.hashCode(dynamicPriceReductions);
+        result = 31 * result + staticPriceReductions.hashCode();
+        result = 31 * result + dynamicPriceReductions.hashCode();
         result = 31 * result + optionsList.hashCode();
         return result;
     }
     private void beforeDeconstruction(){
         optionsListDB=optionsList.toArray(FlightOptionImpl[]::new);
+        staticPriceReductionsDB=staticPriceReductions.toArray(StaticPriceReductionImpl[]::new);
+        dynamicPriceReductionsDB=dynamicPriceReductions.toArray(DynamicPriceReductionImpl[]::new);
     }
     private void afterConstruction(){
         optionsList= Arrays.stream(optionsListDB).collect(Collectors.toList());
+        staticPriceReductions=Arrays.stream(staticPriceReductionsDB).collect(Collectors.toList());
+        dynamicPriceReductions=Arrays.stream(dynamicPriceReductionsDB).collect(Collectors.toList());
     }
 }

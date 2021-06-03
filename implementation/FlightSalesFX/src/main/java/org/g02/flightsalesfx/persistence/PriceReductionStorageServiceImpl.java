@@ -27,11 +27,11 @@ public class PriceReductionStorageServiceImpl implements PriceReductionStorageSe
         Optional<? extends PriceReduction> ret= Optional.empty();
         try {
             if (priceReduction instanceof StaticPriceReductionImpl) {
-                ret = sdao.insert((StaticPriceReductionImpl) priceReduction);
+                ret = sdao.insert(StaticPriceReductionImpl.of(priceReduction));
             } else if (priceReduction instanceof DynamicPriceReductionImpl) {
                 ret = ddao.insert((DynamicPriceReductionImpl) priceReduction);
             } else {
-                priceReduction = new StaticPriceReductionImpl(priceReduction.getName(), priceReduction.getEndDate(), priceReduction.getPercentageAsDouble()); //Default if not Impl already
+                priceReduction = new StaticPriceReductionImpl(priceReduction.getName(), priceReduction.getEndTime(),priceReduction.getStartTime(),priceReduction.isPercentage(), priceReduction.getPercentageAsDouble()); //Default if not Impl already
                 ret = sdao.insert((StaticPriceReductionImpl) priceReduction);
             }
         } catch (SQLException e){

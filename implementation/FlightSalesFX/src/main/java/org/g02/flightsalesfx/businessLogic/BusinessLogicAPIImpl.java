@@ -196,6 +196,11 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
+    public List<Plane> getAllPlanes() {
+        return getAllPlanes(s->true);
+    }
+
+    @Override
     public void viewPlane(Plane plane) {
         // Todo
     }
@@ -243,6 +248,15 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         return flightStorageService.add(flight)!=null;
     }
 
+
+
+    @Override
+    public boolean createPriceReductionFromUI(PriceReduction reduction) {
+        System.out.println(reduction);
+        var reductionStorageService = persistenceAPI.getPriceReductionStorageService(getPriceReductionManager());
+        return reductionStorageService.add(reduction)!=null;
+    }
+
     @Override
     public boolean createReoccurringFlightFromUI(Flight flight, Duration interval) {
         var reOccurFlight = getReoccurringFlightManager().createRoccurringFlight(flight, interval);
@@ -264,6 +278,23 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     @Override
     public List<Flight> getAllFlights(Predicate<Flight> predicate) {
         var all = persistenceAPI.getFlightStorageService(flightManager).getAll();
+        return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public List<Flight> getAllFlights() {
+        return getAllFlights(a->true);
+    }
+
+
+    @Override
+    public List<PriceReduction> getAllPriceReductions(){
+        return getAllPriceReductions(a->true);
+    }
+
+    @Override
+    public List<PriceReduction> getAllPriceReductions(Predicate<PriceReduction> predicate){
+        var all = persistenceAPI.getPriceReductionStorageService(priceReductionManager).getAll();
         return all.stream().filter(predicate).collect(Collectors.toUnmodifiableList());
     }
 
