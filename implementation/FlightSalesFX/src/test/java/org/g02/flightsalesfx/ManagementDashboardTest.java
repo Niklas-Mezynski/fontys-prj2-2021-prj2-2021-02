@@ -63,17 +63,20 @@ public class ManagementDashboardTest {
         routes.add( route);
         Mockito.when(businessLogicAPI.getAllRoutes(any())).thenReturn(routes);
 
-        //SampleData Booking
-        List<Booking> bookings = new ArrayList<>();
         var se = new SalesEmployeeImpl("Snens", "email@gmail.com", "");
         var so = new SalesOfficerImpl("", "", "");
-        var flight = new FlightImpl(so, 123, LocalDateTime.now(), LocalDateTime.now().plusMinutes(10), route, null, 50);
-        Ticket[] tickets = new Ticket[]{new TicketImpl(flight, new SeatImpl(0,0), "Peter", "Gockel", new SeatOption[0])};
-        FlightOption[] flightOptions = new FlightOption[0];
-        bookings.add(new BookingImpl(se, flight, tickets , flightOptions, "no mail", LocalDateTime.of(2021, 4, 10, 20, 0), 50.00));
+//        //SampleData Booking
+//        List<Booking> bookings = new ArrayList<>();
+//        var flight = new FlightImpl(so, 123, LocalDateTime.now(), LocalDateTime.now().plusMinutes(10), route, null, 50);
+//        Ticket[] tickets = new Ticket[]{new TicketImpl(flight, new SeatImpl(0,0), "Peter", "Gockel", new SeatOption[0])};
+//        FlightOption[] flightOptions = new FlightOption[0];
+//        bookings.add(new BookingImpl(se, flight, tickets , flightOptions, "no mail", LocalDateTime.of(2021, 4, 10, 20, 0), 50.00));
 
-        Mockito.when(businessLogicAPI.getAllBookings(any())).thenReturn(bookings);
         Mockito.when(businessLogicAPI.getAllEmployees(any())).thenReturn(List.of(se, so));
+        Mockito.when(businessLogicAPI.sumRevenue(any(), any())).thenReturn(50.0);
+        Mockito.when(businessLogicAPI.totalRevenueByEmp(se)).thenReturn(50.0);
+        Mockito.when(businessLogicAPI.totalNumOfBookingsByAnEmployee(se)).thenReturn(1);
+        Mockito.when(businessLogicAPI.avgNumOfTicketsPerBooking(se)).thenReturn(1.0);
 
         var app = new App();
         app.start(stage);
