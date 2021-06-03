@@ -25,7 +25,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.testfx.assertions.api.Assertions.assertThat;
 
 @ExtendWith(ApplicationExtension.class)
 public class CreatePriceReductionTest {
@@ -75,7 +77,8 @@ public class CreatePriceReductionTest {
         priceReductions.add(pr2);
         Mockito.when(businessLogicAPI.getAllPriceReductions(any())).thenReturn(priceReductions);
         Mockito.when(businessLogicAPI.getAllPriceReductions()).thenReturn(priceReductions);
-        Mockito.when(businessLogicAPI.createPriceReductionFromUI(any())).thenReturn(true);
+        PriceReduction pr=new StaticPriceReductionImpl("Winter Sale",LocalDateTime.of(2020,10,10,0,0),LocalDateTime.of(2025,10,10,0,0),true,10);
+        Mockito.when(businessLogicAPI.createPriceReductionFromUI(pr)).thenReturn(true);
         var app = new App();
         app.start(stage);
         App.businessLogicAPI = businessLogicAPI;
@@ -111,7 +114,5 @@ public class CreatePriceReductionTest {
         test.push(KeyCode.DOWN);
         v=test.lookup("#addReduction").query();
         test.clickOn(v);
-//        var v=test.lookup(node -> ((Text)node).getText().contains("AirportA")).query();
-//        test.clickOn(v);
     }
 }
