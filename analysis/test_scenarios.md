@@ -133,35 +133,71 @@
 
 <tr>
 <td><!-- UseCase Name-->Book tickets (Normal case)</td>
-<td><!-- TestCaseDescription-->Sales employee wants to book a ticket for flight "XAX-01B"</td>
+<td><!-- TestCaseDescription-->Sales employee wants to book a ticket for flight "XAX-01B" with the seat Option "business class" and flight option "Tomatensaft"</td>
 <td>
 
-1. Actor selects the flight
+1. Actor searches for a flight
 
-2. System shows that there are still business class seats available
+2. System shows available flight for booking
 
-3. Actor choosed "business class" as a flight option
+3. Actor chooses flight for the booking
 
-4. System confimrs the selction.
+4. System shows all unbooked seats
 
-5. Actor chooses to finish the booking.
+5. Actor selects the filters for the desired seatoption
 
-6. System prints the ticket for the customer.
+6. System shows unbooked seats and those matching the filter
+
+7. Actor selects random selectable seat and confirms.
+
+8. System asks for passenger names and contacting email
+
+9. Actor enters names and the email and confirms
+
+10. System shows available flight options
+
+11. Actor selects flight option "Tomatensaft" with Quantity 1
+
+12. System shows overview of the booking
+
+13. Actor confirms booking
 </td>
-<td><!--Expected Result-->Customer has his ticket for flight "XAX-01B" with a business class seat</td>
+<td><!--Expected Result-->Customer has his ticket for flight "XAX-01B" with a business class seat and 1x Tomatensaft</td>
 </tr>
 
 <tr>
-<td><!-- UseCase Name-->Book tickets (Extension 5.1)</td>
+<td><!-- UseCase Name-->Book tickets with no options</td>
 <td><!-- TestCaseDescription-->Employee wants to add another flight with id "X1B-406"</td>
 <td>
 
-1. Actor selects flight
+1. Actor searches for a flight
 
-2. Start again at Book tickets (Normal case) Step 2.
+2. System shows available flight for booking
+
+3. Actor chooses flight for the booking
+
+4. System shows all unbooked seats
+
+5. Actor selects no filters for seatoptions
+
+6. System shows all unbooked seats and 
+
+7. Actor selects random selectable seat and confirms.
+
+8. System asks for passenger names and contacting email
+
+9. Actor enters names and the email and confirms
+
+10. System shows available flight options
+
+11. Actor selects no flight option
+
+12. System shows overview of the booking
+
+13. Actor confirms booking
 
 </td>
-<td><!--Expected Result-->Customer now has two flight tickets with seats in the business class.</td>
+<td><!--Expected Result-->Customer now has a booking with no options at all</td>
 </tr>
 
 <tr>
