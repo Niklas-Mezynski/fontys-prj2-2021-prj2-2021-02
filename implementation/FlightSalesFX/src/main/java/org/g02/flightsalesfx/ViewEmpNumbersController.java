@@ -36,7 +36,7 @@ public class ViewEmpNumbersController implements Controller {
     @FXML
     void initialize() {
         List<Employee> employees = App.businessLogicAPI.getAllEmployees(employee -> true);
-        List<Employee> salesEmployees = employees.stream()
+        List<SalesEmployee> salesEmployees = employees.stream()
                 .filter(emp -> emp instanceof SalesEmployee)
                 .map(emp -> SalesEmployeeImpl.of((SalesEmployee) emp))
                 .collect(Collectors.toList());
@@ -44,14 +44,14 @@ public class ViewEmpNumbersController implements Controller {
         createOrUpdateEmpTable(salesEmployees, employee -> true);
 
         searchTextField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
-            Predicate<Employee> pred = (emp -> emp.getName().toLowerCase().contains(newValue.toLowerCase()) || emp.getEmail().toLowerCase().contains(newValue.toLowerCase()));
+            Predicate<SalesEmployee> pred = (emp -> emp.getName().toLowerCase().contains(newValue.toLowerCase()) || emp.getEmail().toLowerCase().contains(newValue.toLowerCase()));
             createOrUpdateEmpTable(salesEmployees, pred);
         }));
 
 
     }
 
-    public void createOrUpdateEmpTable(List<Employee> allSalesEmps, Predicate<Employee> pr) {
+    public void createOrUpdateEmpTable(List<SalesEmployee> allSalesEmps, Predicate<SalesEmployee> pr) {
         tablePane.getChildren().remove(empTable);
 
         var filteredEmps = allSalesEmps.stream().filter(pr).collect(Collectors.toList());

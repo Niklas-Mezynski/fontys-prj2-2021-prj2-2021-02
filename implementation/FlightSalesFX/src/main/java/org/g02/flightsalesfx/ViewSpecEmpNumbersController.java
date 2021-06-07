@@ -129,12 +129,4 @@ public class ViewSpecEmpNumbersController implements Controller {
     void backToMenu() {
         App.setRoot("managementDashboard");
     }
-
-    //Helper method to calculate the sum of revenues
-    private double sumRevenue(Stream<Booking> stream, Predicate<Booking> predicate) {
-        return stream
-                .filter(predicate)
-                .mapToDouble(Booking::getBookingPrice)
-                .sum();
-    }
 }

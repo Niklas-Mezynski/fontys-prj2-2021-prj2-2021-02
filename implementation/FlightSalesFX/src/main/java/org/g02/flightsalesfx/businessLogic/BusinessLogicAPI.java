@@ -4,6 +4,7 @@ import org.g02.flightsalesfx.businessEntities.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -85,14 +86,14 @@ public interface BusinessLogicAPI {
      *
      * @return An ordered HashMap with the dates as key and the revenue as value
      */
-    Map<LocalDateTime, Double> getMonthlyRevenue(SalesEmployee se, LocalDateTime startDate);
+    LinkedHashMap<LocalDateTime, Double> getMonthlyRevenue(SalesEmployee se, LocalDateTime startDate);
 
     /**
      * Calculates the average revenue all employees have made each month beginning from {@code startDate}
      *
      * @return An ordered HashMap with the dates as key and the average revenue as value
      */
-    Map<LocalDateTime, Double> getAvgMonthlyRevenues(LocalDateTime startDate);
+    LinkedHashMap<LocalDateTime, Double> getAvgMonthlyRevenues(LocalDateTime startDate);
 
     double totalRevenueByEmp(SalesEmployee se);
 

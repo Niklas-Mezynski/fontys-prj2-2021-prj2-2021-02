@@ -321,7 +321,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public double totalRevenueByEmp(SalesEmployee se) {
-        return sumRevenue(getAllBookings(booking -> true), booking -> booking.getSalesEmployee().equals(se));
+        return sumRevenue(getAllBookings(booking -> booking.getSalesEmployee().equals(se)), booking -> true);
     }
 
     @Override
@@ -338,8 +338,8 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
-    public Map<LocalDateTime, Double> getMonthlyRevenue(SalesEmployee se, LocalDateTime startDate) {
-        Map<LocalDateTime, Double> map = new LinkedHashMap<>();
+    public LinkedHashMap<LocalDateTime, Double> getMonthlyRevenue(SalesEmployee se, LocalDateTime startDate) {
+        LinkedHashMap<LocalDateTime, Double> map = new LinkedHashMap<>();
         List<Booking> allBookingsByEmp = getAllBookings(booking -> booking.getSalesEmployee().equals(se));
         while (startDate.isBefore(LocalDateTime.now().minusDays(1))) {
 
@@ -353,9 +353,10 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
-    public Map<LocalDateTime, Double> getAvgMonthlyRevenues(LocalDateTime startDate) {
-        Map<LocalDateTime, Double> map = new LinkedHashMap<>();
-        List<Employee> allEmployees = getAllEmployees(employee -> employee instanceof SalesEmployee);
+    public LinkedHashMap<LocalDateTime, Double> getAvgMonthlyRevenues(LocalDateTime startDate) {
+        LinkedHashMap<LocalDateTime, Double> map = new LinkedHashMap<>();
+        List<SalesEmployee> allEmployees = getAllEmployees(employee -> employee instanceof SalesEmployee).stream()
+                .map(employee -> (SalesEmployee) employee).collect(Collectors.toList());
         List<Booking> allBookings = getAllBookings(booking -> true);
 
         while (startDate.isBefore(LocalDateTime.now().minusDays(1))) {
@@ -376,7 +377,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public double totalRevenueByRoute(Route route) {
-        return sumRevenue(getAllBookings(booking -> true), booking -> booking.getFlight().getRoute().equals(route));
+        return sumRevenue(getAllBookings(booking -> booking.getFlight().getRoute().equals(route)), booking -> true);
     }
 
     @Override
@@ -397,8 +398,8 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public double getRevenueForSpecificRouteInOneYear(Route route, int year) {
-        return getAllBookings(booking -> booking.getFlight().getRoute().equals(route)).stream()
-                .filter(booking -> booking.getBookingDate().getYear() == year)
+        return getAllBookings(booking -> booking.getFlight().getRoute().equals(route) && booking.getBookingDate().getYear() == year)
+                .stream()
                 .mapToDouble(Booking::getBookingPrice)
                 .sum();
     }
