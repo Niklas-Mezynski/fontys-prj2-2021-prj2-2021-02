@@ -294,7 +294,7 @@ Customer receives the Tickets from the Actor and the booking is created
 Pre-condition
 </td>
 <td>
-<ins>Flight created</ins> and open after <ins>the 
+<ins>Flight created</ins> and selected after <ins>the 
 flight was searched for</ins>
 </td>
 </tr>
@@ -310,12 +310,6 @@ System shows available flight
 </li>
 <li>
 Actor selects to start the sales process
-</li>
-<li>
-System asks for a start and stop date
-</li>
-<li>
-Actor enters dates
 </li>
 <li>
 System asks for confirmation to start the sale
@@ -343,13 +337,9 @@ Extensions
 </td>
 <td>
 
-7. Actor denies
+4. Actor denies
 
-	1. Return to step 5
-
-	2. Actor wants to delete changes
-
-		1. System sends the Actor back to start page
+	1. cancel process and return to step 2
 
 </td>
 </tr>
