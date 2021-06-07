@@ -343,15 +343,20 @@
 
 <tr>
 <td><!-- UseCase Name-->View KPIs</td>
-<td><!-- TestCaseDescription-->SalesManager sees the selected KPIs</td>
+<td><!-- TestCaseDescription-->SalesManager wants to see KPIs for employee 'Snens'</td>
 <td>
-<ol>
-<!--Steps-->
-<li>Select KPI section</li>
-<li>Select Filters, that should be applied to the KPIs</li>
-</ol>
+
+1. Actor selects option to view KPIs for employees
+  
+2. System offers a table with allemployees
+  
+3. Actor selects Employee 'Snens'.
+  
+4. System shows that the total Revenue by this employe, the total number of bookings he made and
+  the avg amount of tickets sold in one booking. (e.g. 20€, 4 total bookings and an average ticket amount of 1.25).
+  
 </td>
-<td><!--Expected Result-->System shows filtered KPIs</td>
+<td><!--Expected Result-->Actor can see the statistics for 'Snens'</td>
 </tr>
 
 <tr>
