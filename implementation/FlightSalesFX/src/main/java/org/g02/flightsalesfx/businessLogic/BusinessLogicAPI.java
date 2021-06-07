@@ -4,7 +4,10 @@ import org.g02.flightsalesfx.businessEntities.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public interface BusinessLogicAPI {
@@ -82,4 +85,37 @@ public interface BusinessLogicAPI {
     Flight updateFlight(FlightImpl oldFlight, LocalDateTime dep, LocalDateTime arr, double price, boolean salesprocess);
 
     public List<Employee> getAllEmployees(Predicate<Employee> predicate);
+
+    /**
+     * Calculates the revenue of a booking list, you can add a predicate to filter the list
+     */
+    double sumRevenue(List<Booking> list, Predicate<Booking> predicate);
+
+    /**
+     * Calculates the revenue an employee has made each month beginning from {@code startDate}
+     *
+     * @return An ordered HashMap with the dates as key and the revenue as value
+     */
+    LinkedHashMap<LocalDateTime, Double> getMonthlyRevenue(SalesEmployee se, LocalDateTime startDate);
+
+    /**
+     * Calculates the average revenue all employees have made each month beginning from {@code startDate}
+     *
+     * @return An ordered HashMap with the dates as key and the average revenue as value
+     */
+    LinkedHashMap<LocalDateTime, Double> getAvgMonthlyRevenues(LocalDateTime startDate);
+
+    double totalRevenueByEmp(SalesEmployee se);
+
+    int totalNumOfBookingsByAnEmployee(SalesEmployee se);
+
+    double avgNumOfTicketsPerBooking(SalesEmployee se);
+
+    double totalRevenueByRoute(Route route);
+
+    double sumOfAClassesRevenue(Route route, String className);
+
+    double getRevenueForSpecificRouteInOneYear(Route route, int year);
+
+    Optional<Booking> getFirstBookingOfARoute(Route route);
 }
