@@ -1,27 +1,5 @@
 # Use Cases
 
-- Search for Flight: Nils
-- View FlightOptions: Nils
-- Start sales Process Luca
-- Stop sales process Luca
-- book tickets Luca
-- Edit PriceReduction : Philip
-- Create PriceReduction : Philip
-- edit flight options: Philip
-- Create FlightLeg Stops: Anatol (for removal)
-- Create Flight Option: Anatol
-- remove flight options: Anatol
-- View KPIs: Niklas
-- Remove Price Reductions: Niklas
-- Cancel tickets: Eric
-- Create a flight
-- Login
-- Logout
-
-***TODO***:
-
-- Register?
-
 ## Create Route
 
 <table>
@@ -543,7 +521,7 @@ The entire Booking is cancelled incl its tickets
       <td><b>Actor</b></td><td>Sales Manager</td>
    </tr>
 	<tr>
-      <td><b>Description</b></td><td>Sales Manager wants to see some Key Performance Indicatorss in order to see which Routes/Employees perform best.</td>
+      <td><b>Description</b></td><td>A Sales Manager wants to see some Key Performance Indicatorss in order to get an overview about the performance of different Routes/Employees.</td>
 </tr>
 <tr>
 <td><b>Scenario</b></td>
