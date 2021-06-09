@@ -43,11 +43,12 @@ public class ManagementDashboardLogicTest {
         var flight = new FlightImpl(so, 123, LocalDateTime.now(), LocalDateTime.now().plusMinutes(10), route, null, 50);
         Ticket[] tickets = new Ticket[]{new TicketImpl(flight, new SeatImpl(0, 0), "Peter", "Gockel", new SeatOption[0])};
         Ticket[] tickets2 = new Ticket[]{new TicketImpl(flight, new SeatImpl(0, 0), "Peter", "Gockel", new SeatOption[]{new SeatOptionImpl("Business class", 35.0)})};
+        Ticket[] tickets3 = new Ticket[]{new TicketImpl(flight, new SeatImpl(0, 0), "Peter", "Gockel", new SeatOption[0]), new TicketImpl(flight, new SeatImpl(0, 0), "Peter", "Gockel", new SeatOption[0])};
         FlightOption[] flightOptions = new FlightOption[0];
         bookings.add(new BookingImpl(se, flight, tickets, flightOptions, "mail@mail.com", LocalDateTime.of(2021, 4, 10, 20, 0), 50.00));
         bookings.add(new BookingImpl(se, flight, tickets2, flightOptions, "mail@mail.com", LocalDateTime.of(2021, 4, 8, 20, 0), 80.00));
         bookings.add(new BookingImpl(se2, flight, tickets, flightOptions, "mail@mail.com", LocalDateTime.of(2021, 4, 9, 20, 0), 70.00));
-        bookings.add(new BookingImpl(se, flight, tickets, flightOptions, "mail@mail.com", LocalDateTime.of(2021, 5, 20, 16, 0), 60.00));
+        bookings.add(new BookingImpl(se, flight, tickets3, flightOptions, "mail@mail.com", LocalDateTime.of(2021, 5, 20, 16, 0), 60.00));
         bookings.add(new BookingImpl(se, flight, tickets, flightOptions, "mail@mail.com", LocalDateTime.of(2020, 7, 12, 20, 0), 30.00));
 
         Mockito.when(bookingStorageService.getAll()).thenReturn(bookings);
@@ -72,7 +73,7 @@ public class ManagementDashboardLogicTest {
 
     @Test
     void t03avgNumOfTicketsPerBooking() {
-        assertThat(businessLogicAPI.avgNumOfTicketsPerBooking(se)).isEqualTo(1);
+        assertThat(businessLogicAPI.avgNumOfTicketsPerBooking(se)).isEqualTo(1.25);
     }
 
     @Test
