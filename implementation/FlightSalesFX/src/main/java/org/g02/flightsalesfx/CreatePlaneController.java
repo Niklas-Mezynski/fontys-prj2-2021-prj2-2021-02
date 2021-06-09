@@ -62,7 +62,7 @@ public class CreatePlaneController implements Controller {
     public Label rowCounterLabel;
     private SeatOptionBox currentSelected = null;
     private boolean editMode;
-    private PlaneImpl oldPlane;
+    private Plane oldPlane;
 
 
     /**
@@ -179,19 +179,13 @@ public class CreatePlaneController implements Controller {
         var type = planeType.getText();
         var manufacturer = planeManufacturer.getText();
         // Map all internal used SeatButtons to Seat
-        var collect = seats.stream()
-                .map(s -> {
-                    var ret = new SeatImpl(s.row(), s.column());
-                    ret.addAllSeatOptions(s.options.stream().map(SeatOptionBox::getSeatOption).collect(Collectors.toList()));
-                    return (Seat) ret;
-                })
-                .collect(Collectors.toList());
+
         // Create the plane using the businessLogicAPI
         Plane updatedPlane;
         if (editMode) {
-            updatedPlane = App.businessLogicAPI.updatePlane(oldPlane, name, type, manufacturer, collect);
+            updatedPlane = App.businessLogicAPI.updatePlaneFromUI(oldPlane, name, type, manufacturer, seats);
         } else {
-            updatedPlane = App.businessLogicAPI.createPlaneFromUI(name, type, manufacturer, collect);
+            updatedPlane = App.businessLogicAPI.createPlaneFromUI(name, type, manufacturer, seats);
         }
 
         if (updatedPlane != null) { // If the plane was saved successfully exit and return to the previous scene
@@ -251,7 +245,7 @@ public class CreatePlaneController implements Controller {
         } );
         if (bundle.getBoolean("edit", false)) {
             this.editMode = true;
-            var plane = bundle.get("plane", PlaneImpl.class);
+            var plane = bundle.get("plane", Plane.class);
             this.oldPlane = plane;
             planeName.setText(oldPlane.getName());
             planeType.setText(oldPlane.getType());
@@ -259,10 +253,10 @@ public class CreatePlaneController implements Controller {
             System.out.println(plane);
             int lastRowNum = -1;
             VBox lastRow = null;
-            var seats = Arrays.stream(plane.seatList).sorted(Comparator.comparingInt(o -> o.rowNumber)).collect(Collectors.toList());
+            var seats = plane.getAllSeats().stream().sorted(Comparator.comparingInt(Seat::getRowNumber)).collect(Collectors.toList());
 //            var addedSeatOptions = new ArrayList<SeatOption>();
             Map<SeatOption, SeatOptionBox> seatOptionBoxMap = new HashMap<>();
-            for (SeatImpl seat : seats) {
+            for (Seat seat : seats) {
                 if (seat.getRowNumber() > lastRowNum) {
                     lastRowNum++;
                     lastRow = createRow();
@@ -344,7 +338,7 @@ public class CreatePlaneController implements Controller {
      */
     public class SeatButton extends Button {
         private final VBox box;
-        List<SeatOptionBox> options = new ArrayList<>();
+        public List<SeatOptionBox> options = new ArrayList<>();
 
         public SeatButton(VBox box) {
             this.box = box;

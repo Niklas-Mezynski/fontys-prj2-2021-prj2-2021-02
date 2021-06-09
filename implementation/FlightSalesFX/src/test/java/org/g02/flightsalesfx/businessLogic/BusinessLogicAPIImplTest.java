@@ -1,5 +1,7 @@
 package org.g02.flightsalesfx.businessLogic;
 
+import javafx.scene.layout.VBox;
+import org.g02.flightsalesfx.CreatePlaneController;
 import org.g02.flightsalesfx.persistence.PersistenceAPIImpl;
 import org.assertj.core.api.SoftAssertions;
 import org.g02.flightsalesfx.businessEntities.*;
@@ -8,7 +10,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,14 +64,13 @@ public class BusinessLogicAPIImplTest {
         assertThat(Integer.signum(seat1.compareTo(seat2))).isEqualTo(expected);
     }
 
-    @Disabled
+    /*@Disabled
     @Test
     void t04PlaneTest() {
         List<Seat> seats = new ArrayList<>();
         seats.add(new SeatImpl(0, 0));
         seats.add(new SeatImpl(0, 1));
-        api.createPlaneFromUI("D-ABCH", "A380", "Airbus", seats);
-
+        api.createPlane("D-ABCH", "A380", "Airbus", seats);
         var planes = api.persistenceAPI.getPlaneStorageService(api.getPlaneManager()).getAll();
         var plane = new PlaneImpl("D-ABCH", "A380", "Airbus");
         plane.addSeat(new SeatImpl(0, 0));
@@ -75,7 +79,7 @@ public class BusinessLogicAPIImplTest {
         assertThat(plane1.getRowCount()).isEqualTo(1);
         assertThat(plane1.getSeatCount()).isEqualTo(2);
         assertThat(plane1).isEqualTo(plane);
-    }
+    }*/
 
     @Test
     void t05EmployeeTest() {

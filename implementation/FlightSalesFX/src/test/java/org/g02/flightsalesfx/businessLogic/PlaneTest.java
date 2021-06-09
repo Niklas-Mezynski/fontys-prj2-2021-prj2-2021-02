@@ -20,6 +20,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -94,9 +95,9 @@ public class PlaneTest {
         var planeOld = planeHashMap.get(keyOld);
         var planeNew = planeHashMap.get(keyNew);
         var seats = seatMap.get(seatKey);
-        var planeProduced = businessLogicAPI.updatePlane(PlaneImpl.of(planeOld), newName, newMan, newType, seats);
+        businessLogicAPI.updatePlane(PlaneImpl.of(planeOld), newName, newMan, newType, seats);
         ArgumentCaptor<Plane> planeArgumentCaptor = ArgumentCaptor.forClass(Plane.class);
-        verify(persistenceAPI, times(2)).getPlaneStorageService(any());
+        verify(persistenceAPI, times(1)).getPlaneStorageService(any());
         verify(planeStorageService).update(planeArgumentCaptor.capture());
         assertThat(planeArgumentCaptor.getValue()).isEqualTo(planeNew);
         assertThat(planeArgumentCaptor.getValue().getId()).isEqualTo(planeOld.getId());
@@ -137,7 +138,8 @@ public class PlaneTest {
             "D-BCDE,B,B,1,2",
     })
     void t04testCreatePlaneMethodWorking(String name, String man, String type, String seatsKey, String planeKey) {
-        businessLogicAPI.createPlaneFromUI(name, man, type, seatMap.get(seatsKey));
+//        businessLogicAPI.createPlaneFromUI(name, man, type, seatMap.get(seatsKey));
+        businessLogicAPI.createPlaneFromUI(name, man, type, new ArrayList<>());
         var plane = planeHashMap.get(planeKey);
         ArgumentCaptor<Plane> planeArgumentCaptor = ArgumentCaptor.forClass(Plane.class);
         verify(planeStorageService).add(planeArgumentCaptor.capture());

@@ -558,16 +558,94 @@
 <td><!--Expected Result--> Desired Route was removed</td>
 </tr>
 
+
+<tr>
+<td>Create Plane</td>
+<td>Sales Officer creates a new Plane</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Chooses to add a new plane</li>
+<li>Enter the name "D-ABCD"</li>
+<li>Enter the type "A380"</li>
+<li>Enter the manufacturer "Airbus"</li>
+<li>Add four seats in two rows</li>
+<li>Sales Officers adds a seat option called "First Class"</li>
+<li>Newly created seat option is added to the two seats in the first row</li>
+<li></li>
+</ol>
+</td>
+<td><!--Expected Result--></td>
+</tr>
+
 <tr>
 <td><!-- UseCase Name--></td>
 <td><!-- TestCaseDescription--></td>
 <td>
 <ol>
 <!--Steps-->
-<li></li>
+<li>Selecting to save the plane</li>
 </ol>
 </td>
-<td><!--Expected Result--></td>
+<td><!--Expected Result-->Plane is saved</td>
+</tr>
+
+<tr>
+<td>Edit Plane</td>
+<td>Sales Officer successfully edits a previously created plane</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Chooses an plane to edit</li>
+<li>Change the name to "D-BCDE"</li>
+<li>Change the type to "747"</li>
+<li>Change manufacturer to "Boeing</li>
+<li>Choosing to save the changes</li>
+</ol>
+</td>
+<td>Changes are saved and no error appears</td>
+</tr>
+
+<tr>
+<td>Edit Plane</td>
+<td>Sales Officer successfully edits a previously created plane and adds new seats with a new seat option</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Chooses an plane to edit</li>
+<li>A new row with three seats is added</li>
+<li>Add a new seat option called "Extra Leg Room"</li>
+<li>Add the new seat option to the newly added three seats</li>
+<li>Choosing to save the changes</li>
+</ol>
+</td>
+<td>Changes are saved and no error appears</td>
+</tr>
+
+<tr>
+<td>Delete Plane</td>
+<td>Sales Officer successfully deletes a plane that is not used in any flights</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Chooses an plane to delete</li>
+<li>After the plane edit window was opened delete is chosen</li>
+</ol>
+</td>
+<td>The plane is deleted without an error</td>
+</tr>
+
+<tr>
+<td>Delete Plane (Error)</td>
+<td>Sales Officer tries to delete a plane that is used in a flight</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Chooses an plane to delete</li>
+<li>After the plane edit window was opened delete is chosen</li>
+</ol>
+</td>
+<td>The plane is not deleted but instead an error dialog is shown</td>
 </tr>
 
 
