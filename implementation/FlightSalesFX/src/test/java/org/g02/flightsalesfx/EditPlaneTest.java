@@ -125,9 +125,9 @@ public class EditPlaneTest {
     @Test
     void t04testUpdatePlane(FxRobot fxRobot) {
         var lookup = fxRobot.lookup("#savePlaneButton").queryButton();
-        when(businessLogicAPI.updatePlane(any(), any(), any(), any(), any())).thenReturn(plane1);
+        when(businessLogicAPI.updatePlaneFromUI(any(), any(), any(), any(), any())).thenReturn(plane1);
         fxRobot.clickOn(lookup);
-        verify(businessLogicAPI).updatePlane(any(), any(), any(), any(), any());
+        verify(businessLogicAPI).updatePlaneFromUI(any(), any(), any(), any(), any());
     }
 
     @Test

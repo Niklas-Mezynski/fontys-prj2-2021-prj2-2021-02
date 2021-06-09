@@ -101,15 +101,7 @@ public class PlaneImpl implements Plane, Savable {
 
     @Override
     public String toString() {
-        return "Plane " + name + ", ID: " + id + ", Manufacturer: " + manufacturer + ", Seats: " + seatList.length + " Rows: " + getRows();
-    }
-
-    public int getRows() {
-        int rows = 0;
-        if (seatList.length != 0) {
-            rows = seatList[seatList.length - 1].getRowNumber() + 1;
-        }
-        return rows;
+        return "Plane " + name + ", ID: " + id + ", Manufacturer: " + manufacturer + ", Seats: " + seatList.length + " Rows: " + getRowCount();
     }
 
     @Override

@@ -1,14 +1,17 @@
 package org.g02.flightsalesfx.businessLogic;
 
+import org.g02.flightsalesfx.CreatePlaneController;
 import org.g02.flightsalesfx.persistence.PersistenceAPI;
 import org.g02.flightsalesfx.businessEntities.*;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -32,6 +35,35 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     public BusinessLogicAPIImpl(PersistenceAPI persistenceAPI) {
         this.persistenceAPI = persistenceAPI;
+    }
+
+    private static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String[] parts = storedPassword.split(":");
+        int iterations = Integer.parseInt(parts[0]);
+        byte[] salt = fromHex(parts[1]);
+        byte[] hash = fromHex(parts[2]);
+
+        PBEKeySpec spec = new PBEKeySpec(originalPassword.toCharArray(), salt, iterations, hash.length * 8);
+        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        byte[] testHash = skf.generateSecret(spec).getEncoded();
+
+        int diff = hash.length ^ testHash.length;
+        for (int i = 0; i < hash.length && i < testHash.length; i++) {
+            diff |= hash[i] ^ testHash[i];
+        }
+        return diff == 0;
+    }
+
+
+    private static String generateStrongPasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        int iterations = 1000;
+        char[] chars = password.toCharArray();
+        byte[] salt = getSalt();
+
+        PBEKeySpec spec = new PBEKeySpec(chars, salt, iterations, 64 * 8);
+        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        byte[] hash = skf.generateSecret(spec).getEncoded();
+        return iterations + ":" + toHex(salt) + ":" + toHex(hash);
     }
 
     @Override
@@ -111,7 +143,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public RouteManager getRouteManager() {
-        if (routeManager == null) {
+        if(routeManager == null) {
             routeManager = new RouteManagerImpl();
             routeManager.setRouteStorageService(persistenceAPI.getRouteStorageService(routeManager));
         }
@@ -127,7 +159,6 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         }
         return priceReductionManager;
     }
-
 
     @Override
     public FlightManager getFlightManager() {
@@ -173,19 +204,21 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         }
     }
 
-    @Override
-    public Plane createPlaneFromUI(String name, String type, String manufacturer, List<Seat> seats) {
+    public Plane createPlane(String name, String type, String manufacturer, List<Seat> seats) {
         var planeManager = getPlaneManager();
-        var plane = planeManager.createPlane(name, manufacturer, type);
-        plane.addAllSeats(seats.stream().sorted().collect(Collectors.toList()));
-        System.out.println(plane);
-        var planeStorageService = persistenceAPI.getPlaneStorageService(planeManager);
-        return planeStorageService.add(plane);
+        var plane = planeManager.create(name, manufacturer, type);
+        plane.addAllSeats(seats);
+        return planeManager.add(plane);
+    }
+
+    @Override
+    public Plane createPlaneFromUI(String name, String type, String manufacturer, List<CreatePlaneController.SeatButton> seats) {
+        return createPlane(name, type, manufacturer, convertSeatButtonToSeat(seats));
     }
 
     @Override
     public List<Plane> getAllPlanes(Predicate<Plane> predicate) {
-        var all = persistenceAPI.getPlaneStorageService(planeManager).getAll();
+        var all = planeManager.getAll();
         System.out.println(all);
         var planeStream = all.stream().filter(predicate);
         return planeStream.collect(Collectors.toUnmodifiableList());
@@ -259,8 +292,8 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
         System.out.println(reOccurFlight);
 
         var flightStorageService = persistenceAPI.getFlightStorageService(getFlightManager());
-        if (flightStorageService.remove(flight)) {
-            return flightStorageService.add(reOccurFlight) != null;
+        if(flightStorageService.remove(flight)) {
+            return flightStorageService.add(reOccurFlight)!=null;
         }
         return false;
     }
@@ -314,15 +347,29 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
     @Override
-    public boolean deletePlane(PlaneImpl oldPlane) {
+    public boolean deletePlane(Plane oldPlane) {
         return persistenceAPI.getPlaneStorageService(getPlaneManager()).delete(oldPlane);
     }
 
+    private List<Seat> convertSeatButtonToSeat(List<CreatePlaneController.SeatButton> seats) {
+        return seats.stream()
+                .map(s -> {
+                    var ret = new SeatImpl(s.row(), s.column());
+                    ret.addAllSeatOptions(s.options.stream().map(CreatePlaneController.SeatOptionBox::getSeatOption).collect(Collectors.toList()));
+                    return (Seat) ret;
+                }).sorted().collect(Collectors.toList());
+    }
+
     @Override
-    public Plane updatePlane(PlaneImpl oldPlane, String name, String type, String manufacturer, List<Seat> collect) {
+    public Plane updatePlane(Plane oldPlane, String name, String type, String manufacturer, List<Seat> collect) {
         var plane = new PlaneImpl(oldPlane.getId(), name, type, manufacturer);
         plane.addAllSeats(collect);
-        return persistenceAPI.getPlaneStorageService(getPlaneManager()).update(plane);
+        return getPlaneManager().update(plane);
+    }
+
+    @Override
+    public Plane updatePlaneFromUI(Plane oldPlane, String name, String type, String manufacturer, List<CreatePlaneController.SeatButton> collect) {
+        return updatePlane(oldPlane, name, type, manufacturer, convertSeatButtonToSeat(collect));
     }
 
     @Override
@@ -437,40 +484,12 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
     }
 
 
-    private static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String[] parts = storedPassword.split(":");
-        int iterations = Integer.parseInt(parts[0]);
-        byte[] salt = fromHex(parts[1]);
-        byte[] hash = fromHex(parts[2]);
-
-        PBEKeySpec spec = new PBEKeySpec(originalPassword.toCharArray(), salt, iterations, hash.length * 8);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        byte[] testHash = skf.generateSecret(spec).getEncoded();
-
-        int diff = hash.length ^ testHash.length;
-        for (int i = 0; i < hash.length && i < testHash.length; i++) {
-            diff |= hash[i] ^ testHash[i];
-        }
-        return diff == 0;
-    }
-
     private static byte[] fromHex(String hex) throws NoSuchAlgorithmException {
         byte[] bytes = new byte[hex.length() / 2];
         for (int i = 0; i < bytes.length; i++) {
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
         return bytes;
-    }
-
-    private static String generateStrongPasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        int iterations = 1000;
-        char[] chars = password.toCharArray();
-        byte[] salt = getSalt();
-
-        PBEKeySpec spec = new PBEKeySpec(chars, salt, iterations, 64 * 8);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        byte[] hash = skf.generateSecret(spec).getEncoded();
-        return iterations + ":" + toHex(salt) + ":" + toHex(hash);
     }
 
     private static byte[] getSalt() throws NoSuchAlgorithmException {
