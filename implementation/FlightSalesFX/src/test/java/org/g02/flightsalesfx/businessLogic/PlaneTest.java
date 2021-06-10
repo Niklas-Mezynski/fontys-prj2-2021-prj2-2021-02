@@ -57,8 +57,6 @@ public class PlaneTest {
 
     @Start
     void start(Stage stage) throws IOException {
-        App app = new App();
-        app.start(stage);
         persistenceAPI = mock(PersistenceAPI.class);
         planeStorageService = mock(PlaneStorageService.class);
         businessLogicAPI = new BusinessLogicAPIImpl(persistenceAPI);
