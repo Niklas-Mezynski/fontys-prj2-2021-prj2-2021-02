@@ -218,6 +218,7 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public List<Plane> getAllPlanes(Predicate<Plane> predicate) {
+        var planeManager = getPlaneManager();
         var all = planeManager.getAll();
         System.out.println(all);
         var planeStream = all.stream().filter(predicate);
