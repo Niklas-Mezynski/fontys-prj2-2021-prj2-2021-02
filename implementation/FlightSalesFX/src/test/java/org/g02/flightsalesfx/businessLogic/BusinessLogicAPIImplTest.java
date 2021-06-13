@@ -153,4 +153,5 @@ public class BusinessLogicAPIImplTest {
             s.assertThat(f1.getRoute()).isEqualTo(route);
         });
     }
+
 }
