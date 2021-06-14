@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.FlightOption;
 import org.g02.flightsalesfx.businessEntities.Seat;
+import org.g02.flightsalesfx.businessEntities.SeatOption;
 import org.g02.flightsalesfx.businessLogic.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,6 +62,8 @@ public class CreateBookingTest {
         seats.add(new SeatImpl(2, 1));
         seats.add(new SeatImpl(2, 2));
         seats.add(new SeatImpl(2, 3));
+        SeatOption so = new SeatOptionImpl("First Row", 12.99);
+        seats.stream().filter(seat -> seat.getRowNumber() == 0).forEach(seat -> seat.addSeatOption(so));
         p.addAllSeats(seats);
         var f = new FlightImpl(new SalesOfficerImpl("OfficerA", "OfficerA", "OfficerA"), 1, LocalDateTime.of(2020, 12, 1, 12, 0), LocalDateTime.of(2020, 12, 2, 12, 0), r, p, 100);
         List<FlightOption> flOp = new ArrayList<>();
@@ -84,13 +87,13 @@ public class CreateBookingTest {
 
 
     @BeforeEach
-    void goToCreateRoute(FxRobot test) {
+    void goToCreateBooking(FxRobot test) {
         test.clickOn(test.lookup("#createBookingButton").queryButton());
     }
 
 
     @Test
-    void createRoute(FxRobot test) {
+    void createBooking(FxRobot test) {
         var v = test.lookup(node -> ((Text) node).getText().contains("AirportA")).query();
         test.clickOn(v);
         v = test.lookup(n -> ((Text) n).getText().contains("Seat All")).query();
@@ -114,5 +117,8 @@ public class CreateBookingTest {
 
 
     }
+
+
+
 }
 

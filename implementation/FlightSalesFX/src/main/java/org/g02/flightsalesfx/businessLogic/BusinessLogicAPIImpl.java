@@ -337,6 +337,62 @@ public class BusinessLogicAPIImpl implements BusinessLogicAPI {
 
     @Override
     public boolean addBookingFromUI(Booking booking) {
+        boolean bookingViolatesConstraints = false;
+
+        Flight f = booking.getFlight();
+        List<Booking> bookingsForFlight = getAllBookings(bookingParam -> bookingParam.getFlight().equals(f));
+        List<Seat> bookedSeats = new ArrayList<Seat>();
+        bookingsForFlight.forEach(b -> {
+            b.getTickets().stream().forEach(ticket -> bookedSeats.add(ticket.getSeat()));
+        });
+
+        if(booking.getBookingDate().isAfter(f.getDeparture())){
+            System.out.println("Booking would be after departure");
+            bookingViolatesConstraints = true;
+        }
+        var tickets = booking.getTickets();
+        for(Ticket t : tickets){
+            if(bookedSeats.contains(t.getSeat())) {
+                System.out.println("Seat already taken");
+                bookingViolatesConstraints = true;
+            }
+        }
+        Map<FlightOption, Integer> optionAvailablilityMap = new HashMap<>();
+        f.getFlightOptions().forEach(flightOption -> optionAvailablilityMap.put(flightOption, flightOption.getMaxAvailability()));
+        bookingsForFlight.forEach(b -> b.getBookedFlightOptions().forEach(bookedFlightOpt -> optionAvailablilityMap.put(bookedFlightOpt, optionAvailablilityMap.get(bookedFlightOpt)-1)));
+        booking.getBookedFlightOptions().forEach(flightOption -> {
+            int availability = optionAvailablilityMap.get(flightOption);
+            availability = availability -1;
+            optionAvailablilityMap.put(flightOption, availability);
+        });
+        for(FlightOption fo : optionAvailablilityMap.keySet()){
+            if(optionAvailablilityMap.get(fo) < 0){
+                System.out.println(fo.getName() +"would have an availability of "+ optionAvailablilityMap.get(fo)+" after insertion");
+                bookingViolatesConstraints = true;
+            }
+        }
+        for(Ticket t : tickets){
+            var bookedSeatOptions = t.getSeatOptions();
+            var availableSeatOptions = t.getSeat().getSeatOptions();
+            for(SeatOption so : bookedSeatOptions){
+                if(!availableSeatOptions.contains(so)) {
+                    System.out.println("Given SeatOption is not available for the Seat");
+                    bookingViolatesConstraints = true;
+                }
+            }
+            if(!booking.getFlight().getPlane().getAllSeats().contains(t.getSeat())){
+                System.out.println("Seat is not contained by the Plane");
+                bookingViolatesConstraints = true;
+            }
+        }
+
+        if(bookingViolatesConstraints){
+            System.out.println("Booking violates constraints");
+            return false;
+        }
+
+
+
         BookingImpl b = persistenceAPI.getBookingStorageService(getBookingManager()).add(booking);
         return b != null;
     }
