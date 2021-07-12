@@ -154,6 +154,9 @@ public class CreatePriceReductions implements Controller {
             else if(price==-5){
                 contentText="Failed to save Price Reduction. Use \'.\' or \',\' to use Decimals. Try again!";
             }
+            else if(reduction.getEndTime().isBefore(end)){
+                contentText="Time is not inside the Flight Time. Try again!";
+            }
             else {
                 contentText = "There was an error while saving the created Price Reduction. Try again!";
             }
