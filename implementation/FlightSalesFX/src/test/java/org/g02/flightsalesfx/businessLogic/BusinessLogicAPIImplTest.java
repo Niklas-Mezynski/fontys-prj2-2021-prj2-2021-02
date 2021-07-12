@@ -149,4 +149,18 @@ public class BusinessLogicAPIImplTest {
             s.assertThat(f1.getRoute()).isEqualTo(route);
         });
     }
+
+    @Test
+    void t10PriceReduction() {
+        StaticPriceReductionImpl pr1 = api.getPriceReductionManager().createStaticPriceReduction("PR1", LocalDateTime.MAX,LocalDateTime.MIN,true, 10D);
+        StaticPriceReductionImpl pr2 = api.getPriceReductionManager().createStaticPriceReduction("PR1", LocalDateTime.MAX,LocalDateTime.MIN,true, 10D);
+        StaticPriceReductionImpl pr3 = api.getPriceReductionManager().createStaticPriceReduction("PR3", LocalDateTime.MAX.minusYears(3),LocalDateTime.MIN.plusYears(10),false, 49.99);
+        SoftAssertions.assertSoftly( s -> {
+            s.assertThat(pr1.getName()).isEqualTo("PR1");
+            s.assertThat(pr1.getEndTime()).isEqualTo(LocalDateTime.MAX);
+            s.assertThat(pr1.getPercentageAsDouble()).isEqualTo(10D);
+            s.assertThat(pr1).isEqualTo(pr2);
+            s.assertThat(pr1).isNotEqualTo(pr3);
+        });
+    }
 }

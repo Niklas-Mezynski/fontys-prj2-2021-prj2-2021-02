@@ -54,7 +54,7 @@
                                                 <ComboBox fx:id="endMin" prefHeight="25.0" prefWidth="75.0" promptText="MM" />
                                              </children>
                                           </HBox>
-                                          <Button fx:id="addReduction" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" styleClass="buttonOrange" text="Add Reduction" />
+                                          <Button fx:id="addReduction" mnemonicParsing="false" onAction="#helperSaveReductions" prefHeight="25.0" prefWidth="150.0" styleClass="buttonOrange" text="Add Reduction" />
                                        </children>
                                     </VBox>
                                  </children>

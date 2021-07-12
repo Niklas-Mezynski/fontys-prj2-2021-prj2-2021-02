@@ -24,6 +24,8 @@ public interface PersistenceAPI {
 
     PriceReductionStorageService getPriceReductionStorageService(PriceReductionManager PriceReductionManager);
 
+    void setPriceReductionStorageService(PriceReductionStorageService PriceReductionStorageService);
+
     FlightStorageService getFlightStorageService(FlightManager flightManager);
 
 }

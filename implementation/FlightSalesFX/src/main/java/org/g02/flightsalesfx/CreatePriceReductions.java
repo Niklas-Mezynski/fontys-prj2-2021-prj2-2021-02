@@ -1,23 +1,19 @@
 package org.g02.flightsalesfx;
 
 
-import javafx.event.ActionEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.g02.flightsalesfx.businessEntities.Flight;
 import org.g02.flightsalesfx.businessEntities.PriceReduction;
-import org.g02.flightsalesfx.businessLogic.PriceReductionImpl;
+import org.g02.flightsalesfx.businessLogic.FlightImpl;
 import org.g02.flightsalesfx.businessLogic.StaticPriceReductionImpl;
 import org.g02.flightsalesfx.gui.FlightTable;
 import org.g02.flightsalesfx.gui.PriceReductionsTable;
 import org.g02.flightsalesfx.helpers.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import org.g02.flightsalesfx.persistence.PriceReductionStorageService;
-import org.g02.flightsalesfx.persistence.PriceReductionStorageServiceImpl;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +38,7 @@ public class CreatePriceReductions implements Controller {
     public VBox flightVBox;
     public VBox reductionsVBox;
     public FlightTable flightTable;
+    public PriceReductionsTable reductionTable;
     public Button exitButton;
     public HBox saveHBox;
 
@@ -78,58 +75,109 @@ public class CreatePriceReductions implements Controller {
         saveButton.setDisable(true);
         saveButton.getStyleClass().add("buttonOrange");
         saveButton.setOnMouseClicked(e->{
-            flight.addPriceReduction(reduction);
-            App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).update(flight);
+            if(!flight.getPriceReductions().contains(reduction)){
+                flight.addPriceReduction(reduction);
+                App.persistenceAPI.getFlightStorageService(App.businessLogicAPI.getFlightManager()).update(flight);
+                saveButton.setText("Successfully Saved");
+                saveButton.setDisable(true);
+            }
+            else {
+                saveButton.setDisable(true);
+                saveButton.setText("Already Saved");
+            }
         });
         saveHBox.getChildren().add(0,saveButton);
-        addReduction.setOnMouseClicked((event)->{
-            saveReductions();
-        });
         setData();
-        setTables();
+        helperSetTables();
     }
-
-    public void saveReductions(){
+    public void helperSaveReductions(){
+        LocalDateTime end=null;
+        LocalDateTime start=null;
+        boolean biggerThan=false;
+        double price=-5;
         try {
             String eD = endDate.getEditor().getText();
             String sD = startDate.getEditor().getText();
             eD = eD.replace(',', '.');
             eD = eD.replace('/', '.');
             eD = eD.replace('\\', '.');
-            sD = sD.replace(',', '.');
-            sD = sD.replace('/', '.');
-            sD = sD.replace('\\', '.');
             String[] eDs = eD.split("\\.");
-            String[] sDs = sD.split("\\.");
             if (Integer.parseInt(eDs[2]) < 1000) {
                 eDs[2] = "20" + eDs[2];
             }
+            end = LocalDateTime.of(Integer.parseInt(eDs[2]), Integer.parseInt(eDs[1]), Integer.parseInt(eDs[0]), Integer.parseInt(endHour.getValue()), Integer.parseInt(endMin.getValue()));
+            sD = sD.replace(',', '.');
+            sD = sD.replace('/', '.');
+            sD = sD.replace('\\', '.');
+            String[] sDs = sD.split("\\.");
             if (Integer.parseInt(sDs[2]) < 1000) {
                 sDs[2] = "20" + sDs[2];
             }
-            LocalDateTime end = LocalDateTime.of(Integer.parseInt(eDs[2]), Integer.parseInt(eDs[1]), Integer.parseInt(eDs[0]), Integer.parseInt(endHour.getValue()), Integer.parseInt(endMin.getValue()));
-            LocalDateTime start = LocalDateTime.of(Integer.parseInt(sDs[2]), Integer.parseInt(sDs[1]), Integer.parseInt(sDs[0]), Integer.parseInt(startHour.getValue()), Integer.parseInt(startMin.getValue()));
+            start = LocalDateTime.of(Integer.parseInt(sDs[2]), Integer.parseInt(sDs[1]), Integer.parseInt(sDs[0]), Integer.parseInt(startHour.getValue()), Integer.parseInt(startMin.getValue()));
+            biggerThan=start.isBefore(end);
             var priceS=redPrice.getText();
             priceS=priceS.replace(',','.');
-            double price=Double.valueOf(priceS);
+            price=Double.valueOf(priceS);
 
             var priceRed=new StaticPriceReductionImpl(redName.getText().trim(),end,start,isPercent.isSelected(),price);
-            App.businessLogicAPI.createPriceReductionFromUI(priceRed);
-            updateTables();
+            boolean saved=true;
+            if(biggerThan) {
+                if (App.businessLogicAPI.createPriceReductionFromUI(priceRed)) {
+                    helperUpdateTables();
+                    resetFields();
+                }
+                else{
+                    saved=false;
+                }
+            }
+            else{
+                saved=false;
+            }
+            if(!saved){
+                System.out.println("Failed to Save "+priceRed);
+                throw new Exception("Failed to Save");
+            }
         }
         catch (Exception disable){Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Error saving Price Reduction");
-            alert.setContentText("There was an error while saving the created Price Reduction. Try again!");
+            String contentText="";
+            if(start==null){
+                contentText="Failed to save start Date. Use DD.MM.YYYY as format. Use \'.\' or \',\' or \'\\\' or \'/\' to split the Dates. Try again!";
+            }
+            else if(end==null){
+                contentText="Failed to save end Date. Use DD.MM.YYYY as format. Use \'.\' or \',\' or \'\\\' or \'/\' to split the Dates. Try again!";
+            }
+            else if(!biggerThan){
+                contentText= "Start Date is bigger than End Date. Try again!";
+            }
+            else if(price==-5){
+                contentText="Failed to save Price Reduction. Use \'.\' or \',\' to use Decimals. Try again!";
+            }
+            else {
+                contentText = "There was an error while saving the created Price Reduction. Try again!";
+            }
+            alert.setContentText(contentText);
             alert.showAndWait();
         }
     }
+    private void resetFields() {
+        endDate.getEditor().setText(null);
+        endMin.setValue(null);
+        endHour.setValue(null);
+        startDate.getEditor().setText(null);
+        startMin.setValue(null);
+        startHour.setValue(null);
+        redPrice.setText("");
+        redName.setText("");
+        isPercent.setSelected(false);
 
-    public void updateTables(){
+    }
+    public void helperUpdateTables(){
         reductionsVBox.getChildren().remove(1);
         var allReductions = App.businessLogicAPI.getAllPriceReductions();
         System.out.println(allReductions);
-        var reductionTable = new PriceReductionsTable(allReductions, (event, row) -> {
+        reductionTable = new PriceReductionsTable(allReductions, (event, row) -> {
             PriceReduction selectedReduction = row.getItem();
             System.out.println("Clicked on: " + selectedReduction);
         });
@@ -138,14 +186,19 @@ public class CreatePriceReductions implements Controller {
         reductionTable.setOnMouseClicked(e->{
             reduction=reductionTable.getSelectionModel().getSelectedItem();
             if(flight!=null){
-                saveButton.setDisable(false);
-                saveButton.setText("Add \""+reduction.getName()+"\" to Flight Nr. \""+flight.getFlightNumber()+"\"");
+                if(!flight.getPriceReductions().contains(reduction)) {
+                    saveButton.setDisable(false);
+                    saveButton.setText("Add \"" + reduction.getName() + "\" to Flight Nr. \"" + flight.getFlightNumber() + "\"");
+                }
+                else{
+                    saveButton.setDisable(true);
+                    saveButton.setText("Already Saved");
+                }
             }
         });
     }
-    public void setTables(){
+    public void helperSetTables(){
         var allFlights = App.businessLogicAPI.getAllFlights(f -> true);
-        System.out.println(allFlights);
         flightTable = new FlightTable(allFlights, (event, row) -> {
             Flight selectedFlight = row.getItem();
             System.out.println("Clicked on: " + selectedFlight);
@@ -155,15 +208,20 @@ public class CreatePriceReductions implements Controller {
             flight=flightTable.getSelectionModel().getSelectedItem();
             if(reduction!=null){
                 if(flight!=null) {
-                    saveButton.setDisable(false);
-                    saveButton.setText("Add \"" + reduction.getName() + "\" to Flight Nr. \"" + flight.getFlightNumber() + "\"");
+                    if(!flight.getPriceReductions().contains(reduction)) {
+                        saveButton.setDisable(false);
+                        saveButton.setText("Add \"" + reduction.getName() + "\" to Flight Nr. \"" + flight.getFlightNumber() + "\"");
+                    }
+                    else{
+                        saveButton.setDisable(true);
+                        saveButton.setText("Already Saved");
+                    }
                 }
             }
         });
         flightTable.setMinWidth(400);
         var allReductions = App.businessLogicAPI.getAllPriceReductions();
-        System.out.println(allReductions);
-        var reductionTable = new PriceReductionsTable(allReductions, (event, row) -> {
+        reductionTable = new PriceReductionsTable(allReductions, (event, row) -> {
             PriceReduction selectedReduction = row.getItem();
             System.out.println("Clicked on: " + selectedReduction);
         });
@@ -173,13 +231,18 @@ public class CreatePriceReductions implements Controller {
             reduction=reductionTable.getSelectionModel().getSelectedItem();
             if(flight!=null){
                 if(reduction!=null) {
-                    saveButton.setDisable(false);
-                    saveButton.setText("Add \"" + reduction.getName() + "\" to Flight Nr. \"" + flight.getFlightNumber() + "\"");
+                    if(!flight.getPriceReductions().contains(reduction)) {
+                        saveButton.setDisable(false);
+                        saveButton.setText("Add \"" + reduction.getName() + "\" to Flight Nr. \"" + flight.getFlightNumber() + "\"");
+                    }
+                    else{
+                        saveButton.setDisable(true);
+                        saveButton.setText("Already Saved");
+                    }
                 }
             }
         });
     }
-
     public void exit() throws IOException {
         App.setRoot("home");
     }

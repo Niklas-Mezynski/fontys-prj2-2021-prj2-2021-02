@@ -7,6 +7,7 @@ import org.g02.flightsalesfx.businessEntities.PriceReduction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @TableName("staticpriceredutions")
 public class StaticPriceReductionImpl implements Savable,PriceReduction {
@@ -72,5 +73,18 @@ public class StaticPriceReductionImpl implements Savable,PriceReduction {
                 ", isPercent=" + isPercent +
                 ", reductionPercentage=" + reductionPercentage +
                 ']';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StaticPriceReductionImpl that = (StaticPriceReductionImpl) o;
+        return isPercent == that.isPercent && Double.compare(that.reductionPercentage, reductionPercentage) == 0 && name.equals(that.name) && endDate.equals(that.endDate) && startDate.equals(that.startDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, endDate, startDate, isPercent, reductionPercentage);
     }
 }

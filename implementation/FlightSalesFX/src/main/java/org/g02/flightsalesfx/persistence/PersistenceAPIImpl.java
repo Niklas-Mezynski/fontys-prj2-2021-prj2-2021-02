@@ -133,6 +133,11 @@ public class PersistenceAPIImpl implements PersistenceAPI, PersistenceApiImpleme
     }
 
     @Override
+    public void setPriceReductionStorageService(PriceReductionStorageService priceReductionStorageService) {
+        this.priceReductionStorageService=priceReductionStorageService;
+    }
+
+    @Override
     public FlightStorageService getFlightStorageService(FlightManager flightManager) {
         if(flightStorageService == null) {
             flightStorageService = new FlightStorageServiceImpl(flightManager, new Dao<>(FlightImpl.class,connection));

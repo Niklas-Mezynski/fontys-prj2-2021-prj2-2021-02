@@ -22,8 +22,8 @@ import java.io.IOException;
 public class App extends Application {
 
     public static Employee employee;
-    static PersistenceAPI persistenceAPI;
-    static BusinessLogicAPI businessLogicAPI;
+    public static PersistenceAPI persistenceAPI;
+    public static BusinessLogicAPI businessLogicAPI;
     static int inRootTab = 0;
     static boolean comesFromCreateFlight = false;
     private static Scene scene;
