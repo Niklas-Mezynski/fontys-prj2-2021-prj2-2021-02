@@ -133,35 +133,71 @@
 
 <tr>
 <td><!-- UseCase Name-->Book tickets (Normal case)</td>
-<td><!-- TestCaseDescription-->Sales employee wants to book a ticket for flight "XAX-01B"</td>
+<td><!-- TestCaseDescription-->Sales employee wants to book a ticket for flight "XAX-01B" with the seat Option "business class" and flight option "Tomatensaft"</td>
 <td>
 
-1. Actor selects the flight
+1. Actor searches for a flight
 
-2. System shows that there are still business class seats available
+2. System shows available flight for booking
 
-3. Actor choosed "business class" as a flight option
+3. Actor chooses flight for the booking
 
-4. System confimrs the selction.
+4. System shows all unbooked seats
 
-5. Actor chooses to finish the booking.
+5. Actor selects the filters for the desired seatoption
 
-6. System prints the ticket for the customer.
+6. System shows unbooked seats and those matching the filter
+
+7. Actor selects random selectable seat and confirms.
+
+8. System asks for passenger names and contacting email
+
+9. Actor enters names and the email and confirms
+
+10. System shows available flight options
+
+11. Actor selects flight option "Tomatensaft" with Quantity 1
+
+12. System shows overview of the booking
+
+13. Actor confirms booking
 </td>
-<td><!--Expected Result-->Customer has his ticket for flight "XAX-01B" with a business class seat</td>
+<td><!--Expected Result-->Customer has his ticket for flight "XAX-01B" with a business class seat and 1x Tomatensaft</td>
 </tr>
 
 <tr>
-<td><!-- UseCase Name-->Book tickets (Extension 5.1)</td>
+<td><!-- UseCase Name-->Book tickets with no options</td>
 <td><!-- TestCaseDescription-->Employee wants to add another flight with id "X1B-406"</td>
 <td>
 
-1. Actor selects flight
+1. Actor searches for a flight
 
-2. Start again at Book tickets (Normal case) Step 2.
+2. System shows available flight for booking
+
+3. Actor chooses flight for the booking
+
+4. System shows all unbooked seats
+
+5. Actor selects no filters for seatoptions
+
+6. System shows all unbooked seats and 
+
+7. Actor selects random selectable seat and confirms.
+
+8. System asks for passenger names and contacting email
+
+9. Actor enters names and the email and confirms
+
+10. System shows available flight options
+
+11. Actor selects no flight option
+
+12. System shows overview of the booking
+
+13. Actor confirms booking
 
 </td>
-<td><!--Expected Result-->Customer now has two flight tickets with seats in the business class.</td>
+<td><!--Expected Result-->Customer now has a booking with no options at all</td>
 </tr>
 
 <tr>
@@ -307,15 +343,20 @@
 
 <tr>
 <td><!-- UseCase Name-->View KPIs</td>
-<td><!-- TestCaseDescription-->SalesManager sees the selected KPIs</td>
+<td><!-- TestCaseDescription-->SalesManager wants to see KPIs for employee 'Snens'</td>
 <td>
-<ol>
-<!--Steps-->
-<li>Select KPI section</li>
-<li>Select Filters, that should be applied to the KPIs</li>
-</ol>
+
+1. Actor selects option to view KPIs for employees
+  
+2. System offers a table with allemployees
+  
+3. Actor selects Employee 'Snens'.
+  
+4. System shows that the total Revenue by this employe, the total number of bookings he made and
+  the avg amount of tickets sold in one booking. (e.g. 20€, 4 total bookings and an average ticket amount of 1.25).
+  
 </td>
-<td><!--Expected Result-->System shows filtered KPIs</td>
+<td><!--Expected Result-->Actor can see the statistics for 'Snens'</td>
 </tr>
 
 <tr>
@@ -517,16 +558,94 @@
 <td><!--Expected Result--> Desired Route was removed</td>
 </tr>
 
+
+<tr>
+<td>Create Plane</td>
+<td>Sales Officer creates a new Plane</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Chooses to add a new plane</li>
+<li>Enter the name "D-ABCD"</li>
+<li>Enter the type "A380"</li>
+<li>Enter the manufacturer "Airbus"</li>
+<li>Add four seats in two rows</li>
+<li>Sales Officers adds a seat option called "First Class"</li>
+<li>Newly created seat option is added to the two seats in the first row</li>
+<li></li>
+</ol>
+</td>
+<td><!--Expected Result--></td>
+</tr>
+
 <tr>
 <td><!-- UseCase Name--></td>
 <td><!-- TestCaseDescription--></td>
 <td>
 <ol>
 <!--Steps-->
-<li></li>
+<li>Selecting to save the plane</li>
 </ol>
 </td>
-<td><!--Expected Result--></td>
+<td><!--Expected Result-->Plane is saved</td>
+</tr>
+
+<tr>
+<td>Edit Plane</td>
+<td>Sales Officer successfully edits a previously created plane</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Chooses an plane to edit</li>
+<li>Change the name to "D-BCDE"</li>
+<li>Change the type to "747"</li>
+<li>Change manufacturer to "Boeing</li>
+<li>Choosing to save the changes</li>
+</ol>
+</td>
+<td>Changes are saved and no error appears</td>
+</tr>
+
+<tr>
+<td>Edit Plane</td>
+<td>Sales Officer successfully edits a previously created plane and adds new seats with a new seat option</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Chooses an plane to edit</li>
+<li>A new row with three seats is added</li>
+<li>Add a new seat option called "Extra Leg Room"</li>
+<li>Add the new seat option to the newly added three seats</li>
+<li>Choosing to save the changes</li>
+</ol>
+</td>
+<td>Changes are saved and no error appears</td>
+</tr>
+
+<tr>
+<td>Delete Plane</td>
+<td>Sales Officer successfully deletes a plane that is not used in any flights</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Chooses an plane to delete</li>
+<li>After the plane edit window was opened delete is chosen</li>
+</ol>
+</td>
+<td>The plane is deleted without an error</td>
+</tr>
+
+<tr>
+<td>Delete Plane (Error)</td>
+<td>Sales Officer tries to delete a plane that is used in a flight</td>
+<td>
+<ol>
+<!--Steps-->
+<li>Chooses an plane to delete</li>
+<li>After the plane edit window was opened delete is chosen</li>
+</ol>
+</td>
+<td>The plane is not deleted but instead an error dialog is shown</td>
 </tr>
 
 

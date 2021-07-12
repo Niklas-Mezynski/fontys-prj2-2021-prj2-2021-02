@@ -1,27 +1,5 @@
 # Use Cases
 
-- Search for Flight: Nils
-- View FlightOptions: Nils
-- Start sales Process Luca
-- Stop sales process Luca
-- book tickets Luca
-- Edit PriceReduction : Philip
-- Create PriceReduction : Philip
-- edit flight options: Philip
-- Create FlightLeg Stops: Anatol (for removal)
-- Create Flight Option: Anatol
-- remove flight options: Anatol
-- View KPIs: Niklas
-- Remove Price Reductions: Niklas
-- Cancel tickets: Eric
-- Create a flight
-- Login
-- Logout
-
-***TODO***:
-
-- Register?
-
 ## Create Route
 
 <table>
@@ -294,7 +272,7 @@ Customer receives the Tickets from the Actor and the booking is created
 Pre-condition
 </td>
 <td>
-<ins>Flight created</ins> and open after <ins>the 
+<ins>Flight created</ins> and selected after <ins>the 
 flight was searched for</ins>
 </td>
 </tr>
@@ -310,12 +288,6 @@ System shows available flight
 </li>
 <li>
 Actor selects to start the sales process
-</li>
-<li>
-System asks for a start and stop date
-</li>
-<li>
-Actor enters dates
 </li>
 <li>
 System asks for confirmation to start the sale
@@ -343,13 +315,9 @@ Extensions
 </td>
 <td>
 
-7. Actor denies
+4. Actor denies
 
-	1. Return to step 5
-
-	2. Actor wants to delete changes
-
-		1. System sends the Actor back to start page
+	1. cancel process and return to step 2
 
 </td>
 </tr>
@@ -553,7 +521,7 @@ The entire Booking is cancelled incl its tickets
       <td><b>Actor</b></td><td>Sales Manager</td>
    </tr>
 	<tr>
-      <td><b>Description</b></td><td>Sales Manager wants to see some Key Performance Indicatorss in order to see which Routes/Employees perform best.</td>
+      <td><b>Description</b></td><td>A Sales Manager wants to see some Key Performance Indicatorss in order to get an overview about the performance of different Routes/Employees.</td>
 </tr>
 <tr>
 <td><b>Scenario</b></td>

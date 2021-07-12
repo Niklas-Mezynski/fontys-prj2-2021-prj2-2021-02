@@ -128,8 +128,8 @@ public class CreateDB {
         )));
         System.out.println(flightStorageService.add(new FlightImpl(
                 (SalesOfficerImpl) persistenceAPI.getEmployeeStorageService(new EmployeeManagerImpl()).get("o").get(),
-                LocalDateTime.of(2021, 6, 5, 12, 30),
-                LocalDateTime.of(2021, 6, 5, 14, 30),
+                LocalDateTime.of(2021, 8, 5, 12, 30),
+                LocalDateTime.of(2021, 8, 5, 14, 30),
                 persistenceAPI.getRouteStorageService(new RouteManagerImpl()).getAll().get(0),
                 persistenceAPI.getPlaneStorageService(new PlaneManagerImpl()).getAll().get(0),
                 95.99

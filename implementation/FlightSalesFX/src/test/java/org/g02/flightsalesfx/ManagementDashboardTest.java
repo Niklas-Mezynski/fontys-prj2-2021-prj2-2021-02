@@ -63,17 +63,22 @@ public class ManagementDashboardTest {
         routes.add( route);
         Mockito.when(businessLogicAPI.getAllRoutes(any())).thenReturn(routes);
 
-        //SampleData Booking
-        List<Booking> bookings = new ArrayList<>();
         var se = new SalesEmployeeImpl("Snens", "email@gmail.com", "");
         var so = new SalesOfficerImpl("", "", "");
-        var flight = new FlightImpl(so, 123, LocalDateTime.now(), LocalDateTime.now().plusMinutes(10), route, null, 50);
-        Ticket[] tickets = new Ticket[]{new TicketImpl(flight, new SeatImpl(0,0), "Peter", "Gockel", new SeatOption[0])};
-        FlightOption[] flightOptions = new FlightOption[0];
-        bookings.add(new BookingImpl(se, flight, tickets , flightOptions, "no mail", LocalDateTime.of(2021, 4, 10, 20, 0), 123.00));
+//        //SampleData Booking
+//        List<Booking> bookings = new ArrayList<>();
+//        var flight = new FlightImpl(so, 123, LocalDateTime.now(), LocalDateTime.now().plusMinutes(10), route, null, 50);
+//        Ticket[] tickets = new Ticket[]{new TicketImpl(flight, new SeatImpl(0,0), "Peter", "Gockel", new SeatOption[0])};
+//        FlightOption[] flightOptions = new FlightOption[0];
+//        bookings.add(new BookingImpl(se, flight, tickets , flightOptions, "no mail", LocalDateTime.of(2021, 4, 10, 20, 0), 50.00));
 
-        Mockito.when(businessLogicAPI.getAllBookings(any())).thenReturn(bookings);
         Mockito.when(businessLogicAPI.getAllEmployees(any())).thenReturn(List.of(se, so));
+        Mockito.when(businessLogicAPI.totalRevenueByRoute(route)).thenReturn(60.0);
+        Mockito.when(businessLogicAPI.sumOfAClassesRevenue(route, "business")).thenReturn(40.0);
+        Mockito.when(businessLogicAPI.sumOfAClassesRevenue(route, "first")).thenReturn(80.0);
+        Mockito.when(businessLogicAPI.totalRevenueByEmp(se)).thenReturn(50.0);
+        Mockito.when(businessLogicAPI.totalNumOfBookingsByAnEmployee(se)).thenReturn(1);
+        Mockito.when(businessLogicAPI.avgNumOfTicketsPerBooking(se)).thenReturn(1.0);
 
         var app = new App();
         app.start(stage);
@@ -105,12 +110,15 @@ public class ManagementDashboardTest {
         fxRobot.clickOn(fxRobot.lookup(node -> ((Button) node).getText().contains("View KPI")).queryAs(Button.class));
 
         var totalRevenueField= fxRobot.lookup("#totalRevenueField").queryAs(TextField.class);
-        var totalRevenueString = totalRevenueField.getText();
+        var businessClassRevenueField= fxRobot.lookup("#businessClassRevenue").queryAs(TextField.class);
+        var firstClassRevenueField= fxRobot.lookup("#firstClassRevenue").queryAs(TextField.class);
 
-//        double totalRevenue = Double.parseDouble(totalRevenueString.split("€")[0]);
-        double totalRevenue = Double.parseDouble(totalRevenueString.split("€")[0].split(",")[0]);
-
-        assertThat(totalRevenue).isEqualTo(50);
+        SoftAssertions.assertSoftly((s) -> {
+            s.assertThat(TestUtil.getDoubleConsideringLocale(totalRevenueField.getText().split("€")[0])).isEqualTo(60);
+            s.assertThat(TestUtil.getDoubleConsideringLocale(businessClassRevenueField.getText().split("€")[0])).isEqualTo(40);
+            s.assertThat(TestUtil.getDoubleConsideringLocale(firstClassRevenueField.getText().split("€")[0])).isEqualTo(80);
+        });
+        assertThat(TestUtil.getDoubleConsideringLocale(totalRevenueField.getText().split("€")[0])).isEqualTo(60);
     }
 
     @Test

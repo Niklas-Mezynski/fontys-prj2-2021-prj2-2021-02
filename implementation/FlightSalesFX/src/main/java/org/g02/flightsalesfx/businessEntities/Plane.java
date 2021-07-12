@@ -26,8 +26,14 @@ public interface Plane extends Serializable {
      */
     String getType();
 
+    /**
+     * @return The Number of Seats that this Plane has
+     */
     int getSeatCount();
 
+    /**
+     * @return The Number of Rows that this Plane has
+     */
     int getRowCount();
 
     /**
@@ -42,9 +48,5 @@ public interface Plane extends Serializable {
      */
     Plane addAllSeats(List<? extends Seat> seatList);
 
-    /**
-     * @return The Number of Rows that this Plane has
-     */
-    int getRows();
 
 }

@@ -26,13 +26,15 @@ public class FlightTable extends TableView<Flight>{
         planeType.setCellValueFactory(v -> {return new SimpleStringProperty(v.getValue().getPlane().getType());});
         TableColumn<Flight, String> planeID = new TableColumn("P.-ID");
         planeID.setCellValueFactory(v -> {return new SimpleStringProperty(v.getValue().getPlane().getName());});
+        TableColumn<Flight, String> salesProcessStatus = new TableColumn("Salesprocess");
+        salesProcessStatus.setCellValueFactory(v -> {return new SimpleStringProperty(displaySalesprocessAsString(v.getValue().getSalesProcessStatus()));});
 
         setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         getItems().addAll(flights);
         getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        getColumns().addAll(flightNumber, departAirport, departureTime, arrivalAirport, arrivalTime, planeType, planeID);
+        getColumns().addAll(flightNumber, departAirport, departureTime, arrivalAirport, arrivalTime, planeType, planeID, salesProcessStatus);
         setRowFactory(fltTableView -> {
             TableRow<Flight> row = new TableRow<>();
             row.setOnMouseClicked(mouseEvent -> {
@@ -40,5 +42,12 @@ public class FlightTable extends TableView<Flight>{
             });
             return row ;
         });
+    }
+
+    String displaySalesprocessAsString(Boolean value) {
+        if(value) {
+            return "started";
+        }
+        return "stopped";
     }
 }
